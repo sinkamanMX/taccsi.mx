@@ -1,0 +1,75 @@
+        <header class="header">
+            <a href="javascrip:void(0)" class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+            <img src="/images/assets/icon-page.png" class="center-block img-responsive" alt="Logo">
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Taccsi</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav navbar-static-top">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span><?php echo $this->dataUser['NOMBRE'];?>  <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-light-blue">
+                                    <img src="/img/default-user-icon-profile.png" class="img-circle" alt="User Image" />
+                                    <p>
+                                        <?php echo $this->dataUser['NOMBRE'];?> 
+                                        <small><?php echo $this->dataUser['DESCRIPCION'];?> </small>
+                                    </p>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="/login/main/logout" class="btn btn-default btn-flat">Salir</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+                
+        <aside class="left-side sidebar-offcanvas">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <?php $controlMenu = -1; ?>
+                    <?php foreach($this->modules as $key => $items): ?>
+                        <?php if($controlMenu!=$items['IDMENU']): ?>
+                            <?php $controlMenu=$items['IDMENU']; ?>
+                                <li class="treeview <?php echo ($items['IDMENU']==@$this->moduleInfo["ID_MENU"]) ? 'active':'';?> ">
+                                    <a href="#">
+                                        <i class="fa <?php echo $items['N_ICONO'];?>"></i> <span><?php echo $items['N_DESCRIPCION'];?></span>
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <?php foreach($this->modules as $key => $itemsModule): ?>
+                                            <?php if($itemsModule['ID_MENU'] == $items['ID_MENU']):?>
+                                                <li class="<?php echo ($itemsModule['ID_MODULO']==@$this->moduleInfo["ID_MODULO"]) ? 'active':'';?>">
+                                                    <a href="<?php echo $itemsModule['S_MODULE']; ?>">
+                                                        <i class="fa <?php echo $itemsModule['ICONO']; ?>"></i> 
+                                                        <?php echo $itemsModule['M_DESCRIPCION']; ?></a></li>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                    </ul>
+                                </li>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                </ul>
+            </section>
+            <!-- /.sidebar -->
+        </aside>

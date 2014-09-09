@@ -1,0 +1,98 @@
+<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/scripts.js') ?>
+<aside class="right-side">
+    <section class="content">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Búsqueda de Clientes</h3>
+                    <div class="pull-right">
+                        <button onClick="goToSetClient();" id="btnSearch" type="button" class="btn btn-success">
+                            <i class="fa fa-plus-square"></i> Nuevo Cliente</button>
+                    </div>                       
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <form role="form">                                  
+                    <div class="box-body">                                          
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindName">Nombre</label>
+                            <input type="text" class="form-control" id="inputFindName" placeholder="Nombre">
+                        </div>
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindApp">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="inputFindApp" placeholder="Apellido Paterno">
+                        </div>                                                                                                                                              
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindApm">Appelido Materno</label>
+                            <input type="text" class="form-control" id="inputFindApm" placeholder="Appelido Materno">
+                        </div>
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindNumber">Nùmero Telefónico</label>
+                            <input type="text" class="form-control" id="inputFindNumber" placeholder="Nùmero Telefónico">
+                        </div>
+                    </div>
+
+                    <div class="box-footer">
+                        <button id="btnSearch" type="button" class="btn btn-primary">
+                            <i class="fa fa-search"></i>  Buscar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Resultados de la Búsqueda</h3>  
+                    <!--<div class="pull-right">
+                        <button onclick="location.href='/callcenter/services/createclient'" id="btnSearch" type="button" class="btn btn-success">
+                            <i class="fa fa-plus-square"></i> Nuevo Cliente</button>
+                    </div>-->                                 
+                </div>
+                <div class="box-body table-responsive">                                    
+                    <table id="tableCLients" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Ap. Paterno</th>
+                                <th>Ap. Materno</th>
+                                <th>Telèfono</th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>                               
+
+                        </tbody>
+
+                        <tfoot></tfoot>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->
+
+<!-- COMPOSE MESSAGE MODAL -->
+<div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Usuario no Existe</h4>
+            </div>
+                <div class="modal-body">
+                    <div class="col-xs-offset-2" style="height: 50px;">
+                        <button onClick="goToSetClient();" type="button" class="btn margin btn-success pull-left" data-dismiss="modal">Registrar Nuevo Cliente</button>
+                        <button class="btn btn-primary margin pull-left" data-dismiss="modal">Buscar Otro Cliente</button>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">                     
+                    <!--<button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Buscar Otro Cliente</button>-->
+                </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

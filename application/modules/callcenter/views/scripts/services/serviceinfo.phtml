@@ -1,0 +1,188 @@
+<?php $this->headScript()->appendFile('/js/jquery.countdown360.js'); ?>
+<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/serviceinfo.js') ?>
+
+<aside class="right-side">
+    <section class="content-header no-margin">
+        <h1 class="text-center">
+            Información del Viaje
+            <medium>#<?php echo $this->idViaje;?></medium>
+            <small class="pull-right">Estatus: <?php echo $this->aDataViaje['ESTATUS'];?></small>
+        </h1>
+    </section>    
+    <section class="content">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box box-solid">
+                    <div class="box-header bg-aqua font-white">
+                        <i class="fa fa-info-circle"></i>
+                        <h3 class="box-title">Información del Viaje</h3>
+                    </div>
+                    <div class="box-body row-min-h200">
+                        <dl class="dl-horizontal">
+                            <dt>Id del Viaje</dt>
+                            <dd><?php echo $this->aDataViaje['ID_VIAJES'];?></dd>
+                            <dt>Fecha Viaje</dt>
+                            <dd><?php echo $this->aDataViaje['FECHA_VIAJE'];?></dd>                            
+                            <dt>Origen</dt>
+                            <dd><?php echo $this->aDataViaje['ORIGEN'];?></dd>
+                            <dt>Destino</dt>
+                            <dd><?php echo $this->aDataViaje['DESTINO'];?></dd>
+                            <dt>Estatus</dt>
+                            <dd><?php echo $this->aDataViaje['ESTATUS'];?></dd>                            
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-solid">
+                    <div class="box-header bg-green font-white">
+                        <i class="fa fa-user"></i>
+                        <h3 class="box-title">Cliente</h3>
+                    </div>
+                    <div class="box-body row-min-h200">
+                        <dl class="dl-horizontal">
+                            <dt>Nombre Completo</dt>
+                            <dd><?php echo $this->aDataCliente['NOMBRE']." ".$this->aDataCliente['APATERNO']." ".$this->aDataCliente['AMATERNO'];?></dd>
+                            <dt>Teléfono</dt>
+                            <dd><?php echo $this->aDataCliente['TELEFONO'];?></dd>                            
+                            <dt>E-mail</dt>
+                            <dd><?php echo $this->aDataCliente['EMAIL'];?></dd>                            
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-solid">
+                    <div class="box-header bg-yellow font-white">
+                        <i class="fa fa-truck"></i>
+                        <h3 class="box-title">Taxi</h3>
+                    </div>
+                    <div class="box-body row-min-h200">                    
+                        <?php if($this->aDataViaje['ID_SRV_ESTATUS']==-1 || $this->aDataViaje['ID_SRV_ESTATUS']==1 ||
+                                 $this->aDataViaje['ID_SRV_ESTATUS']== 6 || $this->aDataViaje['ID_SRV_ESTATUS']==7):?>
+                            
+                            <input type="hidden" id="inputTaxi" value="<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? '1': '0';?>"/>                                            
+                            <?php if($this->aDataViaje['SEG_DIF']<300):?>
+
+                                <?php if (!isset($this->aDataViaje['ID_TAXISTA'])):?>
+                                        <div id="divOptions" style="display:<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? 'none': 'block';?>; text-align:center">
+                                            <h3> Esperando Taxi </h3>
+                                                <address>
+                                                    <div id="countdown" ></div>
+                                                </address>
+                                        </div>        
+                                        <div id="divOptionsRenew" style="display:<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? 'block': 'none';?>; text-align:center;">
+                                            <form role="form" id="FormData" method="POST" action="/callcenter/services/serviceinfo">
+                                                <input  type="hidden" id="inputOpr" name="optReg" value="renew" />                        
+                                                <input  type="hidden" id="strViaje" name="strViaje" value="<?php echo $this->aDataViaje['ID_VIAJES'];?>"/>
+                                                <button type="submit" class="btn btn-primary" data-dismiss="modal">Volver a Solicitar</button>
+                                            </form>
+                                        </div>                                        
+                                    <?php endif;?>
+                                
+                            <?php else:?>
+                                <div style="text-align:center;">
+                                    <h3>Sin Taxi Asignado</h3> 
+                                </div>
+                                <div id="divOptionsRenew" style="display:<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? 'none': 'block';?>; text-align:center;">
+                                    <form role="form" id="FormData" method="POST" action="/callcenter/services/serviceinfo">
+                                        <input  type="hidden" id="inputOpr" name="optReg" value="renew" />                        
+                                        <input  type="hidden" id="strViaje" name="strViaje" value="<?php echo $this->aDataViaje['ID_VIAJES'];?>"/>
+                                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Volver a Solicitar</button>
+                                    </form>
+                                </div>                                
+                            <?php  endif;?> 
+                        <?php else:?>
+
+                            <dl class="dl-horizontal">
+                                <dt>Clave Viaje</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['CLAVE_VIAJE'] : 'Sin Taxi Asignado';?></dd>                            
+                                <dt>Taxista</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['TAXISTA'] : 'Sin Taxi Asignado';?></dd>
+                                <dt>Taxi</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['TAXI'] : 'Sin Taxi Asignado';?></dd>
+                            </dl>
+
+                        <?php endif;?>                      
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="box box-solid">
+                
+                    <div class="box-header bg-yellow font-white">
+                        <i class="fa fa-road"></i>
+                        <h3 class="box-title">Guia del Viaje</h3>
+                    </div>
+                    <div class="box-body row-min-h200">
+                        <div id="MapGeo" class="bg-green" style="width:100%;height:350px;">
+
+                        </div>
+                    </div>
+                
+                </div>
+            </div>  
+
+          <div class="col-md-4">
+                <div class="box box-solid">
+                
+                    <div class="box-header bg-red font-white">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <h3 class="box-title">Reportes</h3>
+                    </div>
+                    <div class="box-body row-min-h350">
+                        <table id="tableViajes" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Id Viaje</th>
+                                    <th>Fecha</th>
+                                    <th>Taxista</th>
+                                    <th>Taxi</th>
+                                    <th>Estatus</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($this->aDataIncidencias as $key => $items):?>
+                                    <tr>
+                                        <td><?php echo $items['ID_VIAJES']; ?></td>
+                                        <td><?php echo $items['FECHA_VIAJE']; ?></td>
+                                        <td><?php echo $items['TAXISTA']; ?></td>
+                                        <td><?php echo $items['PLACAS']; ?></td>
+                                        <td><?php echo $items['ESTATUS']; ?></td>
+                                        <td><button type="button" class="btn btn-primary" onClick="getToServicio('<?php echo $items['ID_VIAJES']; ?>')">
+                                            <i class="fa fa-arrow-circle-right"></i> </button></td>
+                                    </tr>
+                                <?php endforeach;?>
+                            </tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>                        
+        </div>
+    </section>
+</aside>
+
+<div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Taxistas no disponibles</h4>
+            </div>
+                <div class="modal-body">
+                    <span>Por el momento no hay taxis disponibles. 
+                        Indicar al cliente, que en un momento se pondra en contacto con el, para confirmar el servicio.
+                    </span>
+                </div>
+                <div class="modal-footer clearfix">                     
+                    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Cerrar</button>
+                </div>
+        </div>
+    </div>
+</div>

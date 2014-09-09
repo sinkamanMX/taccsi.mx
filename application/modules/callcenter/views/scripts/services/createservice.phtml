@@ -1,0 +1,77 @@
+<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/createService.js') ?>
+
+<aside class="right-side">
+    <section class="content">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="box">                
+                <h3 class="box-title">Información del Viaje</h3>
+                <form role="form" id="FormData" class="row-min-h" method="POST" action="/callcenter/services/createservice">
+                    <input type="hidden" id="inputOpr"          name="optReg" value="new" />
+                    <input type="hidden" id="strClient"         name="strClient"       value="<?php echo @$this->data['strClient'];  ?>">
+                    <input type="hidden" id="inputLatOrigen"    name="inputLatOrigen"  value="<?php echo @$this->data['inputLatOrigen'];  ?>">
+                    <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->data['inputLonOrigen'];  ?>">
+                    <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->data['inputLatDestino']; ?>">
+                    <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->data['inputLonDestino']; ?>">                    
+                    <div class="box-body">          
+                        <div class="">
+                            <div class=" col-xs-3">
+                                <label for="inputNoPasajeros">No. Pasajeros</label>
+                                <select class="form-control" id="inputNoPasajeros" name="inputNoPasajeros">
+                                    <option value="">Seleccionar una opción</option>  
+                                    <?php echo $this->totalClientes;?>
+                                </select>
+                            </div>
+                            <div class="col-xs-3">
+                                <label for="inputFormaPago">Forma de Pago</label>
+                                <select class="form-control" id="inputFormaPago" name="inputFormaPago">
+                                    <option value="">Seleccionar una opción</option>  
+                                    <?php echo $this->formaPago;?>
+                                </select>
+                            </div>
+                            <div id="divFechaHora" class="col-xs-3">
+                                <label for="inputFechaViaje">Fecha/Hora del Viaje</label>
+                                <input readonly  id="inputFechaViaje" type="text" class="form-control noEnterSubmit" name="inputFechaViaje"  placeholder="">
+                            </div>
+                            <br/>
+                            <br/>
+                        </div>                                    
+                    </div>  
+                    <br/>
+                    <div class="box-body">
+                        <span><b>Origen</b></span>
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
+                            <span class="input-group-btn">
+                                <span id="spanOrigen" class="input-group-addon cursor-hand btn btn-warning font-white" onClick="setOrigen()"><i id="iOrigen" class="fa fa-minus"></i></span>
+                            </span>
+                        </div>
+                        <span><b>Destino</b></span>
+                        <div class="input-group input-group-sm">
+                            <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
+                            <span class="input-group-btn">
+                                <span id="spanDestino" class="input-group-addon cursor-hand btn btn-warning font-white" onClick="setDestino()"><i class="fa fa-minus"></i></span>
+                            </span>
+                        </div><br/>                        
+                        <span class="box-title">Verifique que la ubicaciones sean correctas, puedes cambiar la ubicación con el ratón(dando click o arrastrando el icono).</span>
+                        <br/>
+                        <div id="myMapDraw" style="width:100%; height:350px;"> 
+
+                        </div>
+                        <br/>
+                        <div id="divBtnSubmit" class="pull-right" style="display:none;">
+                            <button id="btnSearch" type="submit" class="btn btn-primary">
+                                Continuar</button>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->
