@@ -67,5 +67,163 @@ class My_Model_Taxis extends My_Db_Table
         }
 		return $result;
 	}	
+	
+	public function getPositionTaxi($idTaxi){
+		$result= Array();
+    	$sql ="SELECT LATITUD,LONGITUD,FECHA_GPS, PROVEEDOR
+				FROM DISP_ULTIMA_POSICION
+				WHERE ID_USUARIO = ".$idTaxi."
+				LIMIT 1";	         	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0];
+		}
+		        
+		return $result;				
+	}
+	
+	public function getDataNoAssign($idEmpresa){
+		$result= Array();
+    	$sql ="SELECT *
+				FROM ADMIN_TAXIS 
+				WHERE ID_EMPRESA = $idEmpresa
+				 AND  ADMIN_USUARIOS_ID_USUARIO IS NULL";	         	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query;
+		}
+		        
+		return $result;			
+	}
+	
+	public function setDriver($data){
+        $result = false;
+        
+        $sql="UPDATE ADMIN_TAXIS 
+	        	SET ADMIN_USUARIOS_ID_USUARIO = ".$data['catId'].",
+              		NOMBRE_CHOFER	= '".$data['inputNombre']."  ".$data['inputApaterno']." ".$data['inputAmaterno']."'
+              		WHERE ID_TAXI   = ".$data['inputTaxi']."
+              		LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);    	
+			if($query){
+				$result  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;		
+	}
+	
+	public function getDataTables($idEmpresa){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT t.*, M.DESCRIPCION AS MODELO_NAME, A.DESCRIPCION AS MARCA_NAME
+				FROM ADMIN_TAXIS t
+				LEFT JOIN ADMIN_USUARIOS U ON t.ADMIN_USUARIOS_ID_USUARIO = U.ID_USUARIO
+				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
+				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
+				WHERE t.ID_EMPRESA = $idEmpresa
+				ORDER BY PLACAS ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	        
+		return $result;			
+	}  
+
+    
+    public function getData($idObject){
+		try{
+			$result= Array();
+	    	$sql ="SELECT *
+				FROM ADMIN_TAXIS t
+				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
+				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
+				WHERE t.ID_TAXI = $idObject
+				LIMIT 1";
+			$query   = $this->query($sql);
+			if(count($query)>0){
+				$result	 = $query[0];			
+			}	
+			return $result;	   			
+			
+        } catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }                    
+    }	
+    
+    public function insertRow($data){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $sql="INSERT INTO $this->_name	
+        		SET ID_EMPRESA		= ".$data['dataIdEmpresa'].",
+					ID_MODELO		= ".$data['inputModelo'].",
+					ID_ESTATUS_TAXI	= ".$data['inputEstatus'].",
+					ID_COLOR		= ".$data['inputColor'].",
+					NOMBRE_CHOFER	='".$data['inputChofer']."',
+					PLACAS			='".$data['inputPlacas']."',
+					ECO				='".$data['inputEco']."',
+					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
+					USUARIO_REGISTRO= ".$data['userCreate'].", 
+					IMAGEN			='".$data['nameImagen']."'";
+        try{            
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']  = $query_id[0]['ID_LAST'];  			 	
+				$result['status']  = true;	
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }    
+    
+    public function updateRow($data){
+       	$result     = Array();
+        $result['status']  = false;
+
+        $sql="UPDATE $this->_name	
+        		SET ID_MODELO		= ".$data['inputModelo'].",
+					ID_ESTATUS_TAXI	= ".$data['inputEstatus'].",
+					ID_COLOR		= ".$data['inputColor'].",
+					NOMBRE_CHOFER	='".$data['inputChofer']."',
+					PLACAS			='".$data['inputPlacas']."',
+					ECO				='".$data['inputEco']."',					
+					IMAGEN			='".$data['nameImagen']."'
+			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }       
+
+    public function deleteRow($data){
+		$result = false;    	
+    	try{    	
+			$sqlInsert="DELETE FROM $this->_name
+        			WHERE $this->_primary = ".$data['catId']." LIMIT 1";
+    		$queryInsert   = $this->query($sqlInsert,false);				
+			if($queryInsert){
+				$result = true;	
+			}					
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;    	
+    }       
 	   
 }	

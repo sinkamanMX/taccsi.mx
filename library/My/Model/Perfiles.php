@@ -82,6 +82,21 @@ class My_Model_Perfiles extends My_Db_Table
 		}	
         
 		return $result;	 		
-	}		
+	}
+
+	public function getCbo($noIdObject=-1){
+		$result= Array();
+		$this->query("SET NAMES utf8",false);
+		 		
+    	$sql ="SELECT ID_TIPO_USUARIO AS ID, DESCRIPCION AS NAME
+				FROM ADMIN_TIPO_USUARIOS
+				WHERE ID_TIPO_USUARIO NOT IN ($noIdObject)";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}
 		
 }

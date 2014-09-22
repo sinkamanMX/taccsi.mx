@@ -57,7 +57,6 @@ class My_Model_Viajes extends My_Db_Table
 		if(count($query)>0){
 			$result	 = $query[0];			
 		}	
-        
 		return $result;
 	}
 	

@@ -81,7 +81,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initDatabase(){
 		// get config from config/application.ini
 		$config = $this->getOptions();
-		$db = Zend_Db::factory($config['resources']['db']['adapter'], $config['resources']['db']['params']);	
+	
+		$db = Zend_Db::factory($config['resources']['db']['adapter'], $config['resources']['db']['params']);
+	
 		//set default adapter
 		Zend_Db_Table::setDefaultAdapter($db);
 	
@@ -103,6 +105,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initRequest()
     {
     	try{
+			$front = Zend_Controller_Front::getInstance();
+    		$dispatcher = $front->getDispatcher();
+    		
 	        $config = $this->getOptions();
 	    	// Ensure front controller instance is present, and fetch it
 	    	$this->bootstrap('FrontController');

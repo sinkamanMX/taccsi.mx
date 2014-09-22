@@ -27,8 +27,17 @@
 .row-min-h350{
   min-height: 350px;
 }
+.row-min-h450{
+  min-height: 450px;
+}
+.row-min-h470{
+  min-height: 470px;
+}
 .row-min-h200{
   min-height: 200px;
+}
+.row-min-h700{
+  min-height: 700px;
 }
 
 .cursor-hand{
@@ -42,4 +51,40 @@
 }
 #countdown {
   
+}
+.margin-r10{
+  margin-right: 10%;
+}
+.margin-t10{
+  margin-top: 10%;
+}
+.count-down-map {
+  height: 5px;
+  position: relative;
+  right: -85%;
+  top: -90px;
+  width: 15%;
+}
+.hmodal550 {
+  height: 550px;
+  width: 99.9%;
+}
+.margin-btn-bt {
+  bottom: -20px;
+  position: relative !important;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal550{
+    height: 550px;
+    width: 99.9%;
+  }
+}
+
+.margin-5{
+  margin: 5px;
+}
+.modal-lg {
+  width: 800px;
+  left: 40% !important;
 }

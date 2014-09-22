@@ -1,0 +1,147 @@
+<?php $this->headScript()->appendFile('/controllers/gralFunctions.js') ?>
+<?php $this->headScript()->appendFile('/js/jasny-bootstrap.min.js') ?>
+<?php echo $this->headLink()->appendStylesheet('/css/jasny-bootstrap.min.css'); ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/validateTaxi.js') ?>
+<?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
+<input id="hRefLinkMain" type="hidden" value="/admin/cars/index" />
+
+<aside class="right-side">
+    <section class="content">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+
+          <div class="box box-primary row-min-h450">
+                <div class="box-header">
+                    <h3 class="box-title">Nuevo Taxi</h3>
+                </div>
+            <form role="form" method="POST" action="/admin/cars/getinfo" id="FormData" enctype="multipart/form-data">
+                <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+
+                <div class="col-xs-3">              
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/taxis/<?php echo (isset($this->data['IMAGEN']) && $this->data['IMAGEN']!="") ? $this->data['IMAGEN']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                      </div>
+                      <div>
+                        <span class="btn btn-default btn-file">
+                        <span class="fileinput-new">Seleccionar Imagen</span>
+                        <span class="fileinput-exists">Cambiar</span>
+                        <input type="file" name="imageProfile"></span>
+                        <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                      </div>
+                    </div>
+
+                    <div class="<?php echo (isset($this->errors['errorImage'])) ? 'div-border-error': '';?>">
+                        <p class="">Formatos permitidos: .png .jpg .jpeg<br/>
+                            Tamaño máximo: 10MB
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-9">   
+                        <?php if(count(@$this->errors)>0):?>
+                            <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
+                              <button type="button" class="close" data-dismiss="alert">×</button>
+                              <h4>Error</h4>
+                              <div>Ocurrio un error.</div>
+                                <?php if(@$this->errors['errorImage']==1):?>
+                                    <div>La imagen no fue posible guardarla, favor de verificar las especificaciones.</div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif;?>
+
+                        <?php if(@$this->resultOp=='okRegister'):?>
+                            <div class="alert alert-success alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b> Los datos se han guardado correctamente.
+                            </div>
+                        <?php endif;?>                
+
+                        <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+                            <div id="divAlert" class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-ban"></i>
+                                <b>!Atención¡</b>
+                                <div>Usted no tiene permiso para ver esta información</div>
+                            </div>                                      
+                        <?php else:?>   
+
+
+                                <div class="box-body">
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputNombre">Marca</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputMarca" name="inputMarca" onChange="getoptionsCbo('Modelo','modeloe',this.value,'','');">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aMarcas;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputApaterno">Modelo</label>
+                                            <div class="input-group col-xs-12">      
+                                                <div id="divModelo">
+                                                    <select class="form-control upperClass" name="inputModelo" id="inputModelo" <?php echo $disabled;?> >
+                                                        <option value="">Seleccionar una opción</option>
+                                                        <?php echo $this->aModelos;  ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputAmaterno">Color</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputColor" name="inputColor" >
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aColores;?>                                
+                                                </select>
+                                            </div>
+                                        </div>                                        
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputNombre">Placas</label>
+                                            <input type="text" class="form-control upperClass" name="inputPlacas" id="inputPlacas" placeholder="Placas" value="<?php echo @$this->data['PLACAS']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputApaterno">Eco</label>
+                                            <input type="text" class="form-control upperClass" name="inputEco" id="inputEco" placeholder="ECO" value="<?php echo @$this->data['ECO']; ?>">
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputAmaterno">Nombre Chofer</label>
+                                            <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
+                                        </div>                                        
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputPhone">Estatus</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control" id="inputEstatus" name="inputEstatus" >
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aStatus;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>                                          
+                                </div><!-- /.box-body -->
+
+                                <div class="box-footer col-xs-12">                                                        
+                                    <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                                </div>
+                            </form>
+                        <?php endif;?>
+                </div>             
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->           

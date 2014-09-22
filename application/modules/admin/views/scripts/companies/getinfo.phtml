@@ -1,0 +1,219 @@
+<?php $this->headScript()->appendFile('/controllers/gralFunctions.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/validateCompanies.js') ?>
+<?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
+<input id="hRefLinkMain" type="hidden" value="/admin/companies/index" />
+<aside class="right-side">
+    <section class="content">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+          <div class="box box-primary row-min-h700">
+                <div class="box-header">
+                    <h3 class="box-title">Información de la Empresa</h3>
+                </div>
+
+                <?php if(@$this->resultOp=='okRegister'):?>
+                    <div class="alert alert-success alert-dismissable">
+                        <i class="fa fa-check"></i>
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <b>!Atención¡</b> Los datos se han guardado correctamente.
+                    </div>
+                <?php endif;?>                
+
+                <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+                    <div id="divAlert" class="alert alert-danger alert-dismissable">
+                        <i class="fa fa-ban"></i>
+                        <b>!Atención¡</b>
+                        <div>Usted no tiene permiso para ver esta información</div>
+                    </div>                                      
+                <?php else:?>   
+                    <form role="form" method="POST" action="/admin/companies/getinfo" id="FormData" >
+                        <input type="hidden" id="optReg" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                        <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+                        <input type="hidden" id="typeSearch"  name="typeSearch"  value="" />
+                        <input type="hidden" id="inputSearch" name="inputSearch" value="" />                        
+
+                        <div class="box-body">
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-8">
+                                    <label for="inputNameEmpresa">Nombre de la Empresa</label>
+                                    <input type="text" class="form-control upperClass" name="inputNameEmpresa" id="inputNameEmpresa" placeholder="Nombre de la Empresa" value="<?php echo @$this->data['NOMBRE_EMPRESA']; ?>">
+                                </div>
+                                <div class="form-group col-xs-4">
+                                    <label for="inputTipoRazon">Tipo Razón</label>
+                                    <div class="input-group col-xs-12">                     
+                                        <select class="form-control" id="inputTipoRazon" name="inputTipoRazon" >
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->aTipoClientes;?>                                
+                                        </select>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-4">
+                                    <label for="inputRazon">Razón Social</label>
+                                    <input type="text" class="form-control upperClass" name="inputRazon" id="inputRazon" placeholder="Razón Social" value="<?php echo @$this->data['RAZON_SOCIAL']; ?>">
+                                </div>
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputRFC">RFC</label>
+                                    <input type="text" class="form-control upperClass" name="inputRFC" id="inputRFC" placeholder="RFC" value="<?php echo @$this->data['RFC']; ?>">
+                                </div>
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputRep">Representante Legal</label>
+                                    <input type="text" class="form-control upperClass" name="inputRep" id="inputRep" placeholder="Representante Legal" value="<?php echo @$this->data['REPRESENTANTE_LEGAL']; ?>">
+                                </div>                                
+                            </div>
+
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-8">
+                                    <label for="inputCalle">Calle</label>
+                                    <input type="text" class="form-control upperClass" name="inputCalle" id="inputCalle" placeholder="Calle" value="<?php echo @$this->data['CALLE']; ?>">
+                                </div>
+
+                                <div class="form-group col-xs-2">
+                                    <label for="inputNoext">No. Ext</label>
+                                    <input type="text" class="form-control upperClass" name="inputNoext" id="inputNoext" placeholder="No. Ext" value="<?php echo @$this->data['NOEXT']; ?>">
+                                </div>
+                                <div class="form-group col-xs-2">
+                                    <label for="inputNoint">No. Int</label>
+                                    <input type="text" class="form-control upperClass" name="inputNoint" id="inputNoint" placeholder="No. Int" value="<?php echo @$this->data['NOINT']; ?>">
+                                </div>                                
+                            </div>  
+
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-4">
+                                    <label for="inputEstado">Estado</label>
+                                    <div class="input-group col-xs-12">                     
+                                        <select class="form-control" id="inputEstado" name="inputEstado" onChange="getoptionsCbo('Municipio','mun',this.value,false,'');">
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->aEstados;?>                                
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputMunicipio">Municipio</label>
+                                    <div class="input-group col-xs-12" id="divMunicipio">
+                                        <select class="form-control" id="inputMunicipio" name="inputMunicipio">
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->aMunicipios;?>                                
+                                        </select>
+                                    </div>
+                                </div>                              
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputColonia">Colonia</label>
+                                    <input type="text" class="form-control upperClass" name="inputColonia" id="inputColonia" placeholder="Colonia" value="<?php echo @$this->data['COLONIA']; ?>">
+                                </div>                                
+                            </div>                                
+
+                            <div class="col-xs-12">
+                                <div class="form-group col-xs-4">
+                                    <label for="inputCp">C.P</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control upperClass" name="inputCp" id="inputCp" placeholder="C.P" value="<?php echo @$this->data['CP']; ?>">                                        
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" onClick="searchCp(0)">
+                                                <i class="fa fa-search"></i>
+                                            </button>                                                   
+                                        </span>
+                                    </div>                                
+                                </div>                           
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputEstatus">Estatus</label>
+                                    <div class="input-group col-xs-12">                     
+                                        <select class="form-control" id="inputEstatus" name="inputEstatus" >
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->aStatus;?>                                
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-4">
+                                    <label for="inputDirDif">Dirección Fiscal Diferente</label>
+                                    <select class="form-control" id="inputDirDif" name="inputDirDif" onChange="directionDif(this.value)">
+                                        <option value="">Seleccione una opción</option>
+                                        <?php echo $this->aDirDif;?>                                
+                                    </select>
+                                </div>                                                                   
+                            </div> 
+                            <div id="divDirDif" style="display:<?php echo (@$this->data['DIR_DIFERENTE'] && @$this->data['DIR_DIFERENTE']=="1") ? 'block':'none';?>">
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-8">
+                                        <label for="inputCalleF">Calle</label>
+                                        <input type="text" class="form-control upperClass" name="inputCalleF" id="inputCalleF" placeholder="Calle" value="<?php echo @$this->data['FIS_CALLE']; ?>">
+                                    </div>
+
+                                    <div class="form-group col-xs-2">
+                                        <label for="inputNoextF">No. Ext</label>
+                                        <input type="text" class="form-control upperClass" name="inputNoextF" id="inputNoextF" placeholder="No. Ext" value="<?php echo @$this->data['FIS_NOEXTc']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-2">
+                                        <label for="inputNointF">No. Int</label>
+                                        <input type="text" class="form-control upperClass" name="inputNointF" id="inputNointF" placeholder="No. Int" value="<?php echo @$this->data['FIS_NOINT']; ?>">
+                                    </div>                                
+                                </div>  
+
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputEstadoF">Estado</label>
+                                        <div class="input-group col-xs-12">                     
+                                            <select class="form-control" id="inputEstadoF" name="inputEstadoF" onChange="getoptionsCbo('MunicipioF','mun',this.value,false,'');">
+                                                <option value="">Seleccione una opción</option>
+                                                <?php echo $this->aEstadosF;?>                                
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputNombre">Municipio</label>
+                                        <div class="input-group col-xs-12" id="divMunicipioF">
+                                            <select class="form-control" id="inputMunicipioF" name="inputMunicipioF">
+                                                <option value="">Seleccione una opción</option>
+                                                <?php echo $this->aMunicipiosF;?>                                
+                                            </select>
+                                        </div>
+                                    </div>                              
+
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputColoniaF">Colonia</label>
+                                        <input type="text" class="form-control upperClass" name="inputColoniaF" id="inputColoniaF" placeholder="Colonia" value="<?php echo @$this->data['FIS_COLONIA']; ?>">
+                                    </div>                                
+                                </div>                                
+
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputCpF">C.P</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control upperClass" name="inputCpF" id="inputCpF" placeholder="C.P" value="<?php echo @$this->data['FIS_CP']; ?>">                                        
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" onClick="searchCp(1)">
+                                                    <i class="fa fa-search"></i>
+                                                </button>                                                   
+                                            </span>
+                                        </div>
+                                    </div>
+                              
+                                </div>   
+                            </div>  
+
+                        </div><!-- /.box-body -->
+
+                        <div class="box-footer col-xs-12">                                                        
+                            <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                        </div>
+                    </form>
+                <?php endif;?>
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->           

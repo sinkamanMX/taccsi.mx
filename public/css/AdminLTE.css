@@ -1845,7 +1845,7 @@ Component: timeline
 }
 .btn.btn-file {
   position: relative;
-  width: 120px;
+  width: 100%;
   height: 35px;
   overflow: hidden;
 }

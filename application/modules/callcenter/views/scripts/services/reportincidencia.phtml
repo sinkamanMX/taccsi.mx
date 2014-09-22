@@ -1,0 +1,122 @@
+<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/atencionInfo.js') ?>
+    <section class="">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+    	<div class="">
+          <div class="box box-primary">
+                
+            	<?php if(count(@$this->errors)>0):?>
+			        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+			            <i class="fa fa-ban"></i>
+			            <b>!Error</b>
+			            <div id="divErrorContent">    
+                            <?php if(@$this->errors['errorInsert']==1): ?>
+                                Ocurrio un error al insertar el registro.
+                            <?php elseif(@$this->errors['errorUpdate']==1):?>
+                                Ocurrio un error al actualizar el registro.
+                            <?php endif;?>
+			            	
+			            </div>
+			        </div>
+				<?php endif;?>
+
+                <?php if(@$this->resultOp=='resultOk'):?>
+                    Datos Actualizados.
+                <?php endif;?>
+
+                <img id="loader1" style="display:none;" class="col-xs-offset-4" src="/images/assets/loading.gif" alt="loading gif"/>
+                <!-- Custom tabs (Charts with tabs)-->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#info" data-toggle="tab">Información</a></li>
+                        <li><a href="#notes" data-toggle="tab" style="display:<?php echo (@$this->idInc>-1) ? 'block': 'none';?>;">Notas</a></li>
+                    </ul>
+                    <div class="tab-content no-padding row-min-h470" >
+                        <div class="chart tab-pane active" id="info" style="position: relative; height: 300px;">
+                            <?php $validate = (@$this->aData['ID_INCIDENCIAS_ESTATUS']!="3") ? '':'disabled';?>
+                            <form role="form" method="POST" action="/callcenter/services/reportincidencia" id="FormData" >                    
+                                <input type="hidden" id="inputOpr" name="optReg" value="<?php echo (@$this->idInc==-   1) ? 'new': 'update';?>" />
+                                <input type="hidden" id="strInc"   name="strInc" value="<?php echo @$this->idInc;?>" />
+                                <input type="hidden" id="idViaje"  name="idViaje" value="<?php echo $this->idViaje;?>"/>
+                                
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="inputNombre">Tipo incidencia</label>
+                                        <select class="form-control" id="inputTipo" name="inputTipo" <?php echo $validate;?> >
+                                            <optionvalue="">Seleccione una opción</option>
+                                            <?php echo $this->aTipos;?>                                
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputApaterno">Estatus</label>
+                                        <select class="form-control" id="inputEstatus" name="inputEstatus" <?php echo $validate;?> >
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->aEstatus;?>                                
+                                        </select>                            
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputAmaterno">Descripción</label>
+                                        <textarea id="inputDescripcion" name="inputDescripcion" class="form-control" rows="3" placeholder="Descripción de la incidencia ..." <?php echo (@$this->idInc>-1)? 'disabled': '';?> ><?php echo @$this->aData['DESCRIPCION']; ?></textarea>
+                                    </div>
+
+                                    <?php if(@$this->idInc>-1 && @$this->aData['ID_INCIDENCIAS_ESTATUS']!="3"):?>
+                                        <div class="form-group">
+                                            <label for="inputAmaterno">Comentario</label>
+                                            <textarea id="inputComment" name="inputComment" class="form-control" rows="3" placeholder="Escribe aqui para agregar una nota a la incidencia ..."></textarea>
+                                        </div>
+                                    <?php endif;?>                                    
+                                </div>
+                                <div class="">
+                                    <?php if(@$this->idInc>-1):?>
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputPhone">Registrado:</label>
+                                            <div class="input-group">                                                       
+                                                <input type="text" class="form-control upperClass" value="<?php echo @$this->aData['FECHA_REGISTRO']; ?>" disabled>
+                                            </div>
+                                        </div>           
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputPhone">Usuario Atendio</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control upperClass" value="<?php echo @$this->aData['UATENCION']; ?>" disabled>
+                                            </div>
+                                        </div>
+                                    <?php endif;?>                                          
+                                    <div class="col-xs-<?php echo (@$this->idInc>-1) ? '4': '12';?>">
+                                        <?php if(@$this->aData['ID_INCIDENCIAS_ESTATUS']!="3"):?>
+                                            <button type="submit" class="btn btn-primary pull-right margin-btn-bt">Guardar</button>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="chart tab-pane" id="notes" style="position: relative; height: 300px;">                    
+                            <table id="tableNotas" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Comentario</th>
+                                        <th>Fecha</th>
+                                        <th>Registro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($this->aDataNotas as $key => $items):?>
+                                        <tr>
+                                            <td><?php echo $items['COMENTARIO']; ?></td>
+                                            <td><?php echo $items['FECHA_REGISTRO']; ?></td>
+                                            <td><?php echo $items['UATENCION']; ?></td>                                            
+                                        </tr>
+                                    <?php endforeach;?>
+                                </tbody>
+                                <tfoot></tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div><!-- /.nav-tabs-custom -->
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->

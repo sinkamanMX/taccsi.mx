@@ -53,12 +53,7 @@ class My_Controller_Functions
     public $aOptions = Array(
 		array("id"=>"1",'name'=>'Si' ),
 		array("id"=>"0",'name'=>'No' )    
-    );  
-
-    public $aOptionsString = Array(
-		array("id"=>"S",'name'=>'Si' ),
-		array("id"=>"N",'name'=>'No' )    
-    );        
+    );    
 
     public function dateToText($fecha_db){
     	$fecha=explode("-",$fecha_db);
@@ -101,18 +96,7 @@ class My_Controller_Functions
 			$options .= '<option '.$select.' value="'.$this->optionStatusString[$p]['id'].'" >'.$this->optionStatusString[$p]['name'].'</option>';
 		}
 		return $options;
-    } 
-
-    
-    public function cboStatusYesNo($option=''){
-		$options='';
-		for($p=0;$p<count($this->aOptionsString);$p++){
-			$select='';
-			if($this->aOptionsString[$p]['id']==@$option){$select='selected';}
-			$options .= '<option '.$select.' value="'.$this->aOptionsString[$p]['id'].'" >'.$this->aOptionsString[$p]['name'].'</option>';
-		}
-		return $options;
-    }        
+    }    
     
 	public function cbo_from_array($array,$option=''){
 		$options='';
@@ -125,7 +109,8 @@ class My_Controller_Functions
 	}
 
 	public function cbo_number($n,$option=''){
-	  for($i=0; $i<$n; $i++){
+	  $select='';
+	  for($i=1; $i<$n; $i++){
 		  $h = ($i<=9)?"0".$i:$i;
 		  $current = ($h==$option) ? 'selected': '';
 		  $select .= '<option '.$current.' value="'.$h.'" >'.$h.'</option>';
