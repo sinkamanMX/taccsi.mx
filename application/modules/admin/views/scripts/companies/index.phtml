@@ -16,7 +16,8 @@
                 <table id="dataTable" class="table table-bordered table-striped">
                     <thead>
                         <tr>               
-                            <th>Nombre</th>                         
+                            <th>Nombre</th>                                                   
+                            <th>Clave</th>
                             <th>Razón Social</th>                            
                             <th>Tipo</th>
                             <th>Estatus</th>
@@ -27,6 +28,7 @@
                         <?php foreach($this->datatTable as $key => $items): ?>  
                         <tr class="odd gradeX">                     
                             <td><?php echo $items['NOMBRE_EMPRESA']; ?></td>                   
+                            <td><?php echo $items['CODIGO_EMPRESA']; ?></td>    
                             <td><?php echo $items['RAZON_SOCIAL']; ?></td>
                             <td><?php echo $items['TIPO']; ?></td>
                             <td class="text-center"><?php echo ($items['ESTATUS']==1)?'Activo':'Inactivo'; ?></td>

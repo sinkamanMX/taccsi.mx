@@ -59,6 +59,7 @@ class My_Model_Empresas extends My_Db_Table
         
         $sql="INSERT INTO $this->_name	
         		SET	  TIPO_RAZON		='".$data['inputTipoRazon']."',
+        			  CODIGO_EMPRESA	='".$data['CLAVE_EMP']."',
 				  	  NOMBRE_EMPRESA	='".$data['inputNameEmpresa']."', 
 					  RAZON_SOCIAL		='".$data['inputRazon']."',
 					  RFC				='".$data['inputRFC']."',
@@ -266,4 +267,49 @@ class My_Model_Empresas extends My_Db_Table
         	echo "Message: " . $e->getMessage() . "\n";                
         }      	  			
 	}
+	
+    public function getCodeEmp($inputRfc){
+		try{
+			$codeRandom = $this->getRandomCode($inputRfc);
+			$sResult = '';
+	    	$sql ="SELECT COUNT(*) AS TOTAL
+					FROM $this->_name
+	                WHERE CODIGO_EMPRESA = '$codeRandom'";
+			$query   = $this->query($sql);
+			if(count($query)>0){
+				$result	 = $query[0];
+				if($result['TOTAL']==0){
+					$sResult = $codeRandom;
+				}else{
+					$codeRandom = $this->getRandomCode($inputRfc);
+					$sResult = '';
+			    	$sql ="SELECT COUNT(*) AS TOTAL
+							FROM $this->_name
+			                WHERE CODIGO_EMPRESA = '$codeRandom'";
+					$query   = $this->query($sql);					
+					if(count($query)>0){
+						$result	 = $query[0];
+						if($result['TOTAL']==0){
+							$sResult = $codeRandom;
+						}
+					}		
+				}
+			}
+	        
+			return $sResult;	   			
+			
+        } catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }                    
+    }
+
+	function getRandomCode($sRandomPrev){
+		$an = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	    $su = strlen($an) - 1;
+	    return  substr($sRandomPrev, 0, 3).
+	    		substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1);
+	}       
 }

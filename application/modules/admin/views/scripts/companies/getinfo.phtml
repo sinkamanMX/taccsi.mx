@@ -14,7 +14,12 @@
         <div class="col-xs-12">
           <div class="box box-primary row-min-h700">
                 <div class="box-header">
-                    <h3 class="box-title">Información de la Empresa</h3>
+                    <h3 class="box-title">Información de la Empresa</h3>                    
+                    <?php if($this->idToUpdate>0):?>
+                        <div class="pull-right">
+                            <h3 class="box-title">Clave de Empresa: <b><?php echo $this->data['CODIGO_EMPRESA']; ?> </b> </h3>
+                        </div>
+                    <?php endif;?>
                 </div>
 
                 <?php if(@$this->resultOp=='okRegister'):?>

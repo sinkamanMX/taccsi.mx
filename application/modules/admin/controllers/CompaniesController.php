@@ -56,7 +56,7 @@ class admin_CompaniesController extends My_Controller_Action
 			$aEstados  = $estados->getCbo();
 			$cMunicipios=new My_Model_Municipios();
 			$cColonias = new My_Model_Colonias();
-			    		
+			
 			$aMunicipios  = Array();
 			$aMunicipiosF = Array();
     		$sEstatus	= '';
@@ -80,8 +80,10 @@ class admin_CompaniesController extends My_Controller_Action
 				$dMunicipios = $cMunicipios->getCbo($sEstado);
 				$aMunicipios = $cFunctions->selectDb($dMunicipios,@$dataInfo['ID_MUNICIPIO']);
 				
-				$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
-				$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);    	    	
+				if($sEstadoF!="" && $sEstadoF!="NULL"){
+					$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
+					$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);
+				}    	    	
 			}
 			
 			if(isset($this->_dataOp) && $this->_dataOp=="searchCP"){
@@ -132,7 +134,8 @@ class admin_CompaniesController extends My_Controller_Action
 	            $dataInfo = $aDataRetrieve;
 			}		
 			
-    		if($this->_dataOp=='new'){    			
+    		if($this->_dataOp=='new'){
+				$this->_dataIn['CLAVE_EMP'] = $classObject->getCodeEmp($this->_dataIn['inputRFC']);    			
 			 	$insert = $classObject->insertRow($this->_dataIn);
 		 		if($insert['status']){
 		 			$this->_idUpdate = $insert['id'];
@@ -147,8 +150,7 @@ class admin_CompaniesController extends My_Controller_Action
 					$aMunicipios = $cFunctions->selectDb($dMunicipios,@$dataInfo['ID_MUNICIPIO']);
 					
 					$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
-					$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);
-						    	    	
+					$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);						    	    	
 			 		$this->_resultOp = 'okRegister';
 				}else{
 					$this->errors['status'] = 'no-insert';
@@ -229,7 +231,7 @@ class admin_CompaniesController extends My_Controller_Action
 				$aDataRetrieve['FIS_CP']		= $this->_dataIn['inputCpF'];	            
     			
 	            $dataInfo = $aDataRetrieve;
-			}	
+			}
 					
 			$this->view->aTipoClientes= $cFunctions->cboTipoCliente($sTipoCliente);
 			$this->view->aDirDif	= $cFunctions->cboOptions($sDirDif);
@@ -250,5 +252,4 @@ class admin_CompaniesController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         } 
     }      
-    
 }
