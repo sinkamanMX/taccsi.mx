@@ -30,6 +30,11 @@ $( document ).ready(function() {
 	$("#countdown").hide('fast'); 
 	drawTable();	 	
 	drawSelectPersonal();
+
+    $('#iFrameSearch').on('load', function () {        
+        $('#loader1').hide();
+        $('#iFrameSearch').show();
+    }); 	
 });
 
 function drawTable(){	
@@ -120,8 +125,8 @@ function drawSelectPersonal(){
 	for(var i=0;i<datapersonal.length;i++){
 		var datainfo = datapersonal[i].split("|");
 		$("#dataTable tbody").append('<tr><td><input type="checkbox" class="chkMap" name="inputChk'+ $.trim(datainfo[0])+'" id="inputChk'+$.trim(datainfo[0])+'" value="'+$.trim(datainfo[0])+'" onChange="searchSelected(this.value)"/></td><td>'+datainfo[1]+'</td>'+
-					'<td> <div style="width: 80px"><button class="btn btn-primary" onClick="getReport('+$.trim(datainfo[0])+')"><i class="fa fa-map-marker icon-white"></i></button>'+
-						 '<button id="btnCenter'+$.trim(datainfo[0])+'" class="btn btn-success btnCenter" onClick="centerTel('+$.trim(datainfo[0])+')" style="display:none;"><i class="fa fa-globe icon-white"></i></button>'+
+					'<td> <div style="width: 80px"><button class="btn btn-primary" onClick="centerTel('+$.trim(datainfo[0])+')"><i class="fa fa-map-marker icon-white"></i></button>'+
+						 '<button id="btnCenter'+$.trim(datainfo[0])+'" class="btn btn-success btnCenter" onClick="getReport('+$.trim(datainfo[0])+')" style="display:none;"><i class="fa fa-globe icon-white"></i></button>'+
 					'</div></td></tr>');
 	}
 	drawTable();
@@ -197,7 +202,7 @@ function printTravelsMap(){
 	    var content     = '';
 	    var markerTable = null;
 
-	    if(travelInfo[3]!="null" && travelInfo[4]!="null"){
+	    if(travelInfo[2]!="null" && travelInfo[3]!="null"){
 	    	var latitude  = travelInfo[2]; 
 	    	var longitude = travelInfo[3]; 
 
@@ -206,19 +211,28 @@ function printTravelsMap(){
 	    			'<tr><td align="right"><b>Velocidad</b></td><td align="left">'+travelInfo[4]+' kms/h.</td><tr>'+
 	    			'<tr><td align="right"><b>Tipo GPS</b></td><td align="left">'+travelInfo[5]+' </td><tr>'+
 	    			'<tr><td align="right"><b>Ubicación</b></td><td align="left">'+travelInfo[7]+'</td><tr>'+
-	    			'</table>';	    	
+	    			'</table>';	 
+
+            var image = {
+              url: '/images/assets/taxi.png',
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(50, 50)
+            };
+
 			markerTable = new google.maps.Marker({
 				map: map,
 				position: new google.maps.LatLng(latitude,longitude),
 				title: 	travelInfo[1],
-				icon: 	'/images/assets/taxi.png'
+				icon: 	image
 			});
 			markers.push(markerTable);
 			infoMarkerTable(markerTable,content);	    	
 	    }
 	}
 	
-	fitBoundsToVisibleMarkers();
+	//fitBoundsToVisibleMarkers();
 	timerUpdate();
 }
 
@@ -249,25 +263,25 @@ function infoMarkerTable(marker,content){
 	});
 }
 
-function centerTel(idValue){
-	/*
+function centerTel(idValue){	
 	for(var i=0;i<arrayTravels.length;i++){
 		var travelInfo = arrayTravels[i].split('|');
 
 		if(idValue == travelInfo[0]){
 			var content     = '';
 		    var markerTable = null;
-		    if(travelInfo[3]!="null" && travelInfo[4]!="null"){
-		    	var latitude  = travelInfo[3]; 
-		    	var longitude = travelInfo[4]; 
 
-		    	content='<table width="350" class="table-striped" ><tr><td align="right"><b>Evento</b></td><td width="200" align="left">'+travelInfo[2]+'</td><tr>'+
+		    if(travelInfo[2]!="null"  && travelInfo[3]!="null"){
+		    	var latitude  = travelInfo[2]; 
+		    	var longitude = travelInfo[3]; 
+
+		    	content='<table width="350" class="table-striped" >'+
 		    			'<tr><td align="right"><b>Fecha</b></td><td align="left">'+travelInfo[1]+' </td><tr>'+	    			
-		    			'<tr><td align="right"><b>Velocidad</b></td><td align="left">'+travelInfo[5]+' kms/h.</td><tr>'+
-		    			'<tr><td align="right"><b>Bateria</b></td><td align="left">'+travelInfo[6]+' %</td><tr>'+
-		    			'<tr><td align="right"><b>Tipo GPS</b></td><td align="left">'+travelInfo[7]+' </td><tr>'+
-		    			'<tr><td align="right"><b>Ubicación</b></td><td align="left">'+travelInfo[9]+'</td><tr>'+
+		    			'<tr><td align="right"><b>Velocidad</b></td><td align="left">'+travelInfo[4]+' kms/h.</td><tr>'+
+		    			'<tr><td align="right"><b>Tipo GPS</b></td><td align="left">'+travelInfo[5]+' </td><tr>'+
+		    			'<tr><td align="right"><b>Ubicación</b></td><td align="left">'+travelInfo[7]+'</td><tr>'+
 		    			'</table>';	    	
+				
 				markerTable = new google.maps.Marker({
 					position: new google.maps.LatLng(latitude,longitude)
 				});
@@ -277,16 +291,18 @@ function centerTel(idValue){
 					var latLng = marker.getPosition();
 					infoWindow.setContent(content);
 					infoWindow.open(map, marker);
-					map.setZoom(13);
+					map.setZoom(17);
 					map.setCenter(latLng); 
 					map.panTo(latLng);     
 		    	}			
 			break;
 		}
-	}*/
+	}
 }
 
 function getReport(idValue){
-    $('#iFrameModalMapa').attr('src','/atn/rastreo/reporte?strInput='+idValue);
-    $("#myModalMapa").modal("show");
+	$('#loader1').show();
+	$('#iFrameSearch').hide();	
+    $('#iFrameSearch').attr('src','/admin/rastreo/reporte?strInput='+idValue);
+    $("#MyModalSearch").modal("show");
 }

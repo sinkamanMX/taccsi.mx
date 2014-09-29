@@ -160,6 +160,27 @@ class My_Model_Taxis extends My_Db_Table
         }                    
     }	
     
+    public function getDataByDriver($idObject){
+		try{
+			$result= Array();
+	    	$sql ="SELECT t.*,CONCAT(t.ECO,' ',t.PLACAS) AS N_TAXI, CONCAT(M.DESCRIPCION,'-',A.DESCRIPCION) AS N_MODELO
+				FROM ADMIN_TAXIS t
+				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
+				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
+				WHERE t.ADMIN_USUARIOS_ID_USUARIO = $idObject
+				LIMIT 1";
+			$query   = $this->query($sql);
+			if(count($query)>0){
+				$result	 = $query[0];			
+			}	
+			return $result;	   			
+			
+        } catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }                    
+    }    
+    
     public function insertRow($data){
         $result     = Array();
         $result['status']  = false;

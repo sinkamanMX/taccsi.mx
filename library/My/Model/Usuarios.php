@@ -35,10 +35,11 @@ class My_Model_Usuarios extends My_Db_Table
     public function getDataUser($datauser){
 		try{
 			$result= Array();
-	    	$sql ="SELECT *
+	    	$sql ="SELECT u.*,tu.*,E.NOMBRE_EMPRESA AS N_EMPRESA
 	                FROM ADMIN_USUARIOS u
 					INNER JOIN ADMIN_TIPO_USUARIOS tu ON u.TIPO_USUARIO = tu.ID_TIPO_USUARIO
-	                WHERE u.ID_USUARIO = $datauser";
+					INNER JOIN ADMIN_EMPRESAS    E  ON u.ID_EMPRESA    = E.ID_EMPRESA
+	                WHERE u.ID_USUARIO = $datauser";	    	
 			$query   = $this->query($sql);
 			if(count($query)>0){
 				$result	 = $query[0];			

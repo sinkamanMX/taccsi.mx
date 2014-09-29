@@ -97,6 +97,8 @@ function deleteRowRel(){
 }
 
 function openSearch(){
+    $('#loader1').show();
+    $('#iFrameSearch').hide();    
     $('#iFrameSearch').attr('src','/admin/drivers/searchtaxis');
     $("#MyModalSearch").modal("show");
 }

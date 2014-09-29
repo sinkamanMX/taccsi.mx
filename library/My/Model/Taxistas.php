@@ -198,4 +198,22 @@ class My_Model_Taxistas extends My_Db_Table
         
 		return $result;				
 	}
+	
+	
+	public function getReporte($data){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_USUARIO, FECHA_GPS, PROVEEDOR, LATITUD, LONGITUD, VELOCIDAD,UBICACION
+				FROM DISP_HISTORICO_POSICION
+				WHERE ID_USUARIO = ".$data['strInput']."
+				 AND  FECHA_GPS BETWEEN '".$data['inputFechaIn']."'
+				 					AND '".$data['inputFechaFin']."'
+				 ORDER BY FECHA_GPS ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}		
 }
