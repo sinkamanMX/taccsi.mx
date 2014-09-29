@@ -18,7 +18,7 @@ class callcenter_ClientController extends My_Controller_Action
     	if(isset($this->_dataIn['optReg'])){
 			$this->_dataOp = $this->_dataIn['optReg'];				
 		}
-		
+
 		$this->view->layout()->setLayout('admin_layout');	
 		$this->view->dataUser   = $this->_dataUser;
 		$this->view->modules    = $perfiles->getModules($this->view->dataUser['TIPO_USUARIO']);

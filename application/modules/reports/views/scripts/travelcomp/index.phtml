@@ -1,0 +1,138 @@
+<?php $this->headScript()->appendFile('/controllers/reports/js/reportCompanies.js') ?>
+<aside class="right-side">
+    <section class="content-header">
+        <h1>
+            Resumen de Empresas
+        </h1>
+    </section>
+
+    <section class="content  connectedSortable">
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Viajes por Empresa</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="ChartDiv" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div> 
+
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Ingresos por Empresa</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="chartIngreso" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>   
+
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Forma de pago por Empresa</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="chartForma" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>     
+
+        <div class="col-md-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Rating Promedio por Empresa</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="chartRating" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div> 
+
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Empresas</h3>
+                </div>
+                <div class="box-body chart-responsive">
+                   <table id="dataTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>               
+                                <th>Nombre</th>                         
+                                <th>Razón Social</th>                            
+                                <th>Tipo</th>
+                                <th>Estatus</th>
+                                <th style="width:150px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($this->datatTable as $key => $items): ?>  
+                            <tr class="odd gradeX">                     
+                                <td><?php echo $items['NOMBRE_EMPRESA']; ?></td>                   
+                                <td><?php echo $items['RAZON_SOCIAL']; ?></td>
+                                <td><?php echo $items['TIPO']; ?></td>
+                                <td class="text-center"><?php echo ($items['ESTATUS']==1)?'Activo':'Inactivo'; ?></td>
+                                <td class="text-center"> 
+                                    <a href="/reports/traveldet/index?catId=<?php echo $items['ID_EMPRESA']; ?>"><button class="btn btn-info">    <i class="fa fa-info-circle"></i> Detalle</button></a>
+                                </td>
+                            </tr>    
+                            <?php endforeach;?>                        
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>           
+    </section>
+</aside>
+<script>
+    var aResumeTravels= [
+        <?php foreach(@$this->aResumen as $key => $items):?>
+            { "Empresa": "<?php echo $items['TITULO']; ?>",
+            <?php foreach($items['ESTATUS'] as $key => $iEstatus):?>
+                "<?php echo $iEstatus['N_ESTATUS']; ?>": <?php echo $iEstatus['TOTAL']; ?>,
+            <?php endforeach;?>
+            },
+        <?php endforeach;?>
+    ];
+
+    var dataCurso = [
+        <?php foreach(@$this->aResumen as $key => $items):?>
+            <?php if(isset($items['ESTATUS'][5])):?>
+                { "Empresa": "<?php echo $items['TITULO']; ?>", "Viajes": <?php echo $items['ESTATUS'][5]['TOTAL']; ?> }
+            <?php endif;?>
+        <?php endforeach;?>
+    ];    
+
+    var dataIngresos = [
+        {<?php foreach(@$this->aResumen as $key => $items):?>
+            <?php if(isset($items['PRECIO'])):?>
+                 "Empresa": "<?php echo $items['TITULO']; ?>", "Ingresos ($)": <?php echo $items['PRECIO']; ?>,
+            <?php else:?>
+                 "Empresa": "<?php echo $items['TITULO']; ?>", "Ingresos ($)": 0 ,
+            <?php endif;?>
+        <?php endforeach;?>}
+    ];  
+
+    var dataFpagos = [
+        <?php foreach(@$this->aResumen as $key => $items):?>
+            { "Empresa": "<?php echo $items['TITULO']; ?>",
+            <?php foreach($items['FPAGOS'] as $key => $iEstatus):?>
+                "<?php echo $iEstatus['N_FORMA']; ?>": <?php echo $iEstatus['TOTAL']; ?>,
+            <?php endforeach;?>
+            },
+        <?php endforeach;?>
+    ];  
+
+    var dataRating = [
+        <?php foreach(@$this->aResumen as $key => $items):?>
+            <?php if(isset($items['RATING'])):?>
+                <?php $totalNo  = $items['TOTALT']   * 5; ?>
+                <?php $promedio = (($items['RATING'] * 5) / $totalNo); ?>
+                { "Empresa": "<?php echo $items['TITULO']; ?>", "Rating": <?php echo $promedio; ?> },
+            <?php endif;?>            
+        <?php endforeach;?>
+    ];  
+
+</script>

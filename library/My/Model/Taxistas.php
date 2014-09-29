@@ -58,6 +58,25 @@ class My_Model_Taxistas extends My_Db_Table
 		}	        
 		return $result;			
 	}   
+	
+	public function getDataTablesReport($idEmpresa){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT  U.ID_USUARIO,
+				CONCAT(U.NOMBRE,' ',U.APATERNO,' ',U.AMATERNO) AS NOMBRE,
+				CONCAT(T.ECO,' ',T.PLACAS) AS N_TAXI				
+						FROM ADMIN_USUARIOS U
+						INNER JOIN ADMIN_TIPO_USUARIOS   P ON U.TIPO_USUARIO   = P.ID_TIPO_USUARIO
+						INNER JOIN ADMIN_TAXIS           T ON U.ID_USUARIO     = T.ADMIN_USUARIOS_ID_USUARIO
+						WHERE U.ID_EMPRESA    = 1
+						  AND U.TIPO_USUARIO  = 4 
+						ORDER BY NOMBRE ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	        
+		return $result;			
+	}   	
 
     public function validateData($dataSearch,$idObject,$optionSearch){
 		$result=true;		
@@ -79,6 +98,8 @@ class My_Model_Taxistas extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
+        $nameImage  = ($data['nameImagen']!="") ? ",FOTO			='".$data['nameImagen']."'": "";        
+        
         $sql="INSERT INTO $this->_name	
         		SET ID_EMPRESA		=  ".$data['dataIdEmpresa'].",
 					TIPO_USUARIO	=  ".$data['inputTipo'].",
@@ -90,7 +111,7 @@ class My_Model_Taxistas extends My_Db_Table
 					PASSWORD		= SHA1('".$data['inputPassword']."'),
 					PASSWORD_TEXT	= '".$data['inputPassword']."',
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
-					FOTO			= '".$data['nameImagen']."',
+					$nameImage
 					ACTIVO 			= ".$data['inputEstatus'];
         try{            
     		$query   = $this->query($sql,false);
@@ -115,6 +136,8 @@ class My_Model_Taxistas extends My_Db_Table
         if($data['inputPassword']!=""){
         	$sPassword = " PASSWORD	=  SHA1('".$data['inputPassword']."'), PASSWORD_TEXT	= '".$data['inputPassword']."',";
         }
+        
+        $nameImage  = ($data['nameImagen']!="") ? ",FOTO			='".$data['nameImagen']."'": "";         
 
         $sql="UPDATE $this->_name	
         		SET TIPO_USUARIO	=  ".$data['inputTipo'].",
@@ -124,7 +147,7 @@ class My_Model_Taxistas extends My_Db_Table
 					TELEFONO		= '".$data['inputPhone']."',
 					$sPassword
 					NICKNAME		= '".$data['inputUsuario']."',
-					FOTO			= '".$data['nameImagen']."',			
+					$nameImage			
 					ACTIVO 			= ".$data['inputEstatus']."
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            
@@ -153,5 +176,26 @@ class My_Model_Taxistas extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;    	
-    }    
+    }
+
+	public function getLastPositions($values){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT U.ID_USUARIO AS ID,
+				U.FECHA_GPS,
+				U.LATITUD,
+				U.LONGITUD,
+				U.PROVEEDOR,
+				U.VELOCIDAD,
+				U.ANGULO,
+				U.UBICACION
+				FROM DISP_ULTIMA_POSICION U
+				WHERE U.ID_USUARIO IN ($values)";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;				
+	}
 }

@@ -18,8 +18,14 @@
 .bg-white{
   background-color: #FFFFFF;
 }
+.row-min-h30{
+  min-height: 30px;
+}
 .row-min-h{
   min-height: 550px;
+}
+.row-min-h200{
+  min-height: 200px;
 }
 .row-min-h300{
   min-height: 300px;
@@ -33,12 +39,20 @@
 .row-min-h470{
   min-height: 470px;
 }
-.row-min-h200{
-  min-height: 200px;
+.row-min-h550{
+  min-height: 550px;
+}
+.row-min-h600{
+  min-height: 600px;
+}
+.row-min-h650{
+  min-height: 650px;
 }
 .row-min-h700{
   min-height: 700px;
 }
+
+
 
 .cursor-hand{
 	cursor: pointer;	
@@ -81,10 +95,45 @@
   }
 }
 
-.margin-5{
-  margin: 5px;
+.margin-l5{
+  margin-left: 5%;
 }
 .modal-lg {
   width: 800px;
   left: 40% !important;
+}
+
+.dl-horizontal dt {
+    clear: left;
+    float: left;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 25% !important;
+}
+.p-botom-0{
+  padding-bottom: 0px !important;
+}
+.star-rating {
+    color: orange;
+    cursor: pointer;
+    font-size: 2.25em;
+}
+.star-no-rating {
+    color: gray;
+    cursor: pointer;
+    font-size: 2.25em;
+}
+#countdown {
+  margin-left: 90%;
+  margin-top: -10%;
+  position: relative;
+}
+#ex1Slider .slider-selection {
+  background: #BABABA;
+}
+.slider.slider-horizontal {
+    height: 20px;
+    width: 210px !important;
 }

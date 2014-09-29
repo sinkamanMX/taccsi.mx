@@ -1,0 +1,113 @@
+<?php $this->headScript()->appendFile('/controllers/reports/js/reportTravelOn.js') ?>
+<aside class="right-side">
+	<section class="content">
+        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+            <i class="fa fa-ban"></i>
+            <b>!Atención¡</b>
+            <div id="divErrorContent">                
+            </div>
+        </div>
+
+    	<div class="col-xs-12">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Viajes Atendidos</h3>
+                </div>
+                <form role="form" id="FormData"  method="POST" action="/reports/travelon/index">
+                    <input type="hidden" id="inputOpr"          name="optReg" value="search" />
+                    <div class="box-body">                                          
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindName">Fecha Inicio</label>
+                            <input type="text" class="form-control" id="inputFechaIn" name="inputFechaIn" value="<?php echo @$this->data['inputFechaIn']; ?>">
+                        </div>
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindApp">Fecha Final</label>
+                            <input type="text" class="form-control" id="inputFechaFin" name="inputFechaFin" value="<?php echo @$this->data['inputFechaFin']; ?>">
+                        </div>                                                                                                                                              
+                        <div class="form-group col-xs-3">
+                            <label for="inputFindApm">Estatus</label>
+                            <select class="form-control" id="inputEstatus" name="inputEstatus" <?php echo $validate;?> >
+                                <option value="-99">Todos</option>
+                                <?php echo $this->aEstatus;?>                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button id="btnSearch" type="submit" class="btn btn-primary">
+                            <i class="fa fa-search"></i>  Buscar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-solid">
+                        <div class="box-header">
+                            <i class="fa fa-bar-chart-o"></i>
+                            <h3 class="box-title">Resumen</h3>
+                            <div class="box-tools pull-right">
+                                <!--<button class="btn btn-default btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button class="btn btn-default btn-sm" data-widget="remove"><i class="fa fa-times"></i></button>-->
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-6 col-xs-6 text-center">
+                                    <input type="text" class="knob" value="<?php echo (@$this->totalResume>0) ? 100 : 0; ?>" data-skin="tron"  
+                                        data-thickness="0.2" 
+                                        data-width="120" data-height="120" 
+                                        data-fgColor="#3D7BCB" 
+                                        data-readonly="true"/>
+                                    <div class="knob-label"><b><?php echo (@$this->totalResume>0) ? "(".@$this->totalResume.") </b> Total Viajes" : 'Sin Información'; ?></div>
+                                </div>
+                                <?php foreach(@$this->aResume as $key => $items):?>
+                                    <?php $porcent = ($items['TOTAL'] / (@$this->totalResume*.01));  ?>
+                                    <?php $porcent = round($porcent,0);?>
+                                    <div class="col-md-2 col-sm-6 col-xs-6 text-center">
+                                        <input type="text" class="knob" value="<?php echo $porcent; ?>" data-skin="tron"  
+                                            data-thickness="0.2" 
+                                            data-width="120" data-height="120" 
+                                            data-fgColor="<?php echo @$items['COLOR'];?>" 
+                                            data-readonly="true"/>
+                                        <div class="knob-label"><b>(<?php echo $items['TOTAL']; ?>)</b> <?php echo $items['ESTATUS']; ?></div>
+                                    </div><!-- ./col -->                                
+                                <?php endforeach;?>                    
+                            </div><!-- /.row -->
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+            </div><!-- /.row -->            
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Detalle de los Viajes</h3>                       
+                </div>
+                <div class="box-body table-responsive">                                    
+                    <table id="tableCLients" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id Viaje</th>
+                                <th>Estatus</th>
+                                <th>Fecha</th>
+                                <th>Nombre Cliente</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>   
+                            <?php foreach(@$this->aTravels as $key => $items):?>
+                                <tr>
+                                    <td><?php echo $items['ID_VIAJES'];?></td>
+                                    <td><?php echo $items['N_ESTATUS'];?></td>
+                                    <td><?php echo $items['FECHA_VIAJE'];?></td>
+                                    <td><?php echo $items['N_CLIENTE'];?></td>
+                                    <td> 
+                                        <a href="/callcenter/services/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach;?>
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->         
+        </div>
+    </section>
+</aside>

@@ -152,6 +152,118 @@ class My_Model_Empresas extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;    	
-    }        
-	 	
+    }   
+
+	public function getGlobalViajes(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT V.*, E.ESTATUS AS N_ESTATUS, CONCAT(U.NOMBRE,' ',U.APATERNO,' ',U.AMATERNO) AS N_TAXISTA, 
+				IF(M.NOMBRE_EMPRESA IS NULL,'Sin Asignar',M.NOMBRE_EMPRESA) AS N_EMPRESA,    P.DESCRIPCION AS FPAGO,
+				IF(M.ID_EMPRESA IS NULL,'-1',M.ID_EMPRESA) AS IDEMPRESA ,
+				ROUND(V.MONTO_TOTAL,2)  AS PRECIO
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				 LEFT JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				 LEFT JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				WHERE V.FECHA_VIAJE > date_sub(NOW(), INTERVAL 30 DAY)";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;			
+		}
+		return $result;
+	}    
+
+	public function getViajesByEmpresa($idEmpresa){			
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT COUNT(V.ID_VIAJES) AS TOTAL, E.ESTATUS , E.COLOR
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				 LEFT JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				 LEFT JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				WHERE V.FECHA_VIAJE > date_sub(NOW(), INTERVAL 30 DAY)
+				 AND  U.ID_EMPRESA = $idEmpresa
+				 GROUP BY V.ID_SRV_ESTATUS";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;
+		}
+		return $result;
+	}
+	
+	public function getTotalViajes($idEmpresa){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT COUNT(V.ID_VIAJES) AS TOTAL
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				 LEFT JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				 LEFT JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				WHERE V.FECHA_VIAJE > date_sub(NOW(), INTERVAL 30 DAY)
+				 AND  U.ID_EMPRESA = $idEmpresa";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query[0]['TOTAL'];			
+		}
+		return $result;
+	}
+	
+	public function getViajesByTaxis($idEmpresa){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT V.*, CONCAT(U.NOMBRE,' ',U.APATERNO,' ',U.AMATERNO) AS N_TAXISTA, CONCAT(T.PLACAS,', ECO: ',T.`ECO`) AS N_TAXI,
+    			ROUND(V.MONTO_TOTAL,2)  AS PRECIO
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				INNER JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				INNER JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				INNER JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO
+				WHERE V.FECHA_VIAJE > date_sub(NOW(), INTERVAL 30 DAY)
+				 AND  U.ID_EMPRESA 		= $idEmpresa
+				 ORDER BY V.ID_TAXISTA";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;			
+		}
+		return $result;		
+	}
+	
+	public function getTaxisDes($aData){
+        try{
+    		$moreTravels  = Array();
+    		$moreMoney    = Array();
+    		$moreRecha    = Array();
+    		
+    		$controlTRavle = 0;
+    		$controlMoney  = 0;
+    		$controlRec	   = 0;
+    		
+    		foreach($aData AS $key => $items){
+    			if($items['VIAJES'] > @$moreTravels['VIAJES']){
+    				$moreTravels = $items;
+    			}
+    			if(@$items['RECHAZADO']!=""){
+	    		    if(@$items['RECHAZADO'] > @$moreRecha['RECHAZADO']){
+	    				$moreRecha = $items;
+	    			}    		    				
+    			}
+
+    		    if($items['PRECIO'] > @$moreMoney['PRECIO']){
+    				$moreMoney = $items;
+    			}      
+    		}
+			return Array(
+				'aViajes'	=> $moreTravels,
+				'aRechazado'=> $moreRecha,
+				'aPrecio'	=> $moreMoney
+			);			
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }      	  			
+	}
 }

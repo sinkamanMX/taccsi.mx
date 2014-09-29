@@ -46,13 +46,13 @@
                 </div>
                 <div class="col-xs-9">   
                         <?php if(count(@$this->errors)>0):?>
-                            <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
-                              <button type="button" class="close" data-dismiss="alert">×</button>
-                              <h4>Error</h4>
-                              <div>Ocurrio un error.</div>
+                         <div class="alert alert-success alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b>
                                 <?php if(@$this->errors['errorImage']==1):?>
                                     <div>La imagen no fue posible guardarla, favor de verificar las especificaciones.</div>
-                                <?php endif; ?>
+                                <?php endif; ?>                                
                             </div>
                         <?php endif;?>
 

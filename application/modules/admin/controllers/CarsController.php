@@ -104,7 +104,11 @@ class admin_CarsController extends My_Controller_Action
 							  $upload = move_uploaded_file($_FILES["imageProfile"]["tmp_name"], "images/taxis/" . $newNameimage);
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;  	
-							  }				
+							  }else{
+							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
+							  	unlink($nameDelete);
+							  	$this->_dataIn['nameImagen'] = $sNameImage;
+							  }			
 						  }
 					}else {
 					  $this->_aErrors['errorImage'] = 1;
@@ -112,7 +116,7 @@ class admin_CarsController extends My_Controller_Action
 	            }
 	            
 	            if(count($this->_aErrors)==0){
-	            	$this->_dataIn['nameImagen'] = $sNameImage;
+	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';
 	            	$insert = $classObject->insertRow($this->_dataIn);
 			 		if($insert['status']){
 			 			$this->_idUpdate = $insert['id'];				 		
@@ -138,7 +142,7 @@ class admin_CarsController extends My_Controller_Action
 					$temp = explode(".", $_FILES["imageProfile"]["name"]);
 					$extension = end($temp);
 					
-					$newNameimage = Date("Ymdhis").$extension;
+					$newNameimage = Date("Ymdhis").".".$extension;
 					if ((($_FILES["imageProfile"]["type"] == "image/jpeg")
 						|| ($_FILES["imageProfile"]["type"] == "image/jpg")
 						|| ($_FILES["imageProfile"]["type"] == "image/pjpeg")
@@ -156,7 +160,9 @@ class admin_CarsController extends My_Controller_Action
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;  	
 							  }else{
-							  	$data['nameImg'] = $newNameimage; 
+							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
+							  	unlink($nameDelete);
+							  	$this->_dataIn['nameImagen'] = $sNameImage;
 							  }							  
 						  }
 					}else {
@@ -164,8 +170,8 @@ class admin_CarsController extends My_Controller_Action
 					}
 	            }
 	            
-				if(count($this->_aErrors)==0){
-	            	$this->_dataIn['nameImagen'] = $sNameImage;
+				if(count($this->_aErrors)==0){	   
+					$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';         	
 	            	$updated = $classObject->updateRow($this->_dataIn);
 			 		if($updated['status']){		 		
 		    	    	$dataInfo	= $classObject->getData($this->_idUpdate);

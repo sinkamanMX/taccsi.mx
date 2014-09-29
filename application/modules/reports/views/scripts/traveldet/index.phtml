@@ -1,0 +1,178 @@
+<?php $this->headScript()->appendFile('/controllers/reports/js/reportDetail.js') ?>
+<script>
+    var aResumeTravels= [
+        <?php foreach(@$this->aResume as $key => $items):?>
+        {
+            "VIAJES" :  <?php echo $items['TOTAL']; ?>,
+            "ESTATUS": "<?php echo $items['ESTATUS']; ?>"
+        },
+        <?php endforeach;?>
+    ];
+
+    var dataIngresos = [
+        <?php foreach(@$this->aResumeTaxi as $key => $items):?>
+            <?php if(isset($items['PRECIO'])):?>
+                 {"Empresa": "<?php echo $items['TAXI']; ?>", 
+                 "Ingresos ($)": <?php echo $items['PRECIO']; ?>},
+            <?php else:?>
+                 {"Empresa": "<?php echo $items['TAXI']; ?>", 
+                 "Ingresos ($)": 0 },
+            <?php endif;?>
+        <?php endforeach;?>
+    ]; 
+
+    var dataTaxis = [
+        <?php foreach(@$this->aResumeTaxi as $key => $items):?>
+            <?php if(isset($items['VIAJES'])):?>
+                 {"Empresa": "<?php echo $items['TAXI']; ?>", 
+                 "Taxis": <?php echo $items['VIAJES']; ?>},
+            <?php else:?>
+                 {"Empresa": "<?php echo $items['VIAJES']; ?>", 
+                 "Taxis": 0 },
+            <?php endif;?>
+        <?php endforeach;?>
+    ];     
+
+    var dataRating = [
+        <?php foreach(@$this->aResumeTaxi as $key => $items):?>
+            <?php if(isset($items['RATING'])):?>
+                <?php $totalNo  = $items['TOTALT']   * 5; ?>
+                <?php $promedio = (($items['RATING'] * 5) / $totalNo); ?>
+                { "Taxi": "<?php echo $items['TAXI']; ?>", "Rating": <?php echo $promedio; ?> },
+            <?php endif;?>            
+        <?php endforeach;?>
+    ];      
+</script>
+
+<aside class="right-side">
+    <section class="content-header">
+        <h1>
+            <?php echo @$this->data['NOMBRE_EMPRESA'];?>
+        </h1>
+    </section>
+
+    <div class="row margin-5">
+        <?php if(isset($this->aDataDes['aViajes']['VIAJES'])):?>        
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3>
+                            # <?php echo $this->aDataDes["aViajes"]['VIAJES']; ?>
+                        </h3>
+                        <p>
+                            <?php echo $this->aDataDes['aViajes']['TAXI']; ?>
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="javascript:void(0)" class="small-box-footer">
+                        Unidad con mas Viajes                    
+                    </a>
+                </div>
+            </div>
+        <?php endif;?>         
+        <?php if(isset($this->aDataDes['aPrecio']['PRECIO'])):?>
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3>
+                            $ <?php echo number_format($this->aDataDes['aPrecio']['PRECIO'], 2); ?>
+                        </h3>
+                        <p>
+                            <?php echo $this->aDataDes['aViajes']['TAXI']; ?>    
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">                    
+                        Unidad con mas ingresos
+                    </a>
+                </div>
+            </div>        
+        <?php endif;?>        
+        <?php if(isset($this->aDataDes['aRechazado']['VIAJES'])):?>
+            <div class="col-lg-3 col-xs-6">            
+                <div class="small-box  bg-red">
+                    <div class="inner">
+                        <h3>
+                            # <?php echo $this->aDataDes['aRechazado']['VIAJES']; ?>
+                        </h3>
+                        <p>
+                            <?php echo $this->aDataDes['aRechazado']['TAXI']; ?>
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        Unidad con mas Rechazos
+                    </a>
+                </div>            
+            </div>
+        <?php endif;?>
+    </div>
+
+    <section class="content  connectedSortable">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Resumen de Viajes</h3>
+                    <div class="pull-right box-tools">
+                        <button class="btn btn-primary btn-sm" data-widget='collapse' data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary btn-sm" data-widget='remove' data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>                
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="ChartDiv" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div> 
+
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Viajes por Taxis</h3>
+                    <div class="pull-right box-tools">
+                        <button class="btn btn-primary btn-sm" data-widget='collapse' data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary btn-sm" data-widget='remove' data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>                    
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="ChartViajes" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>           
+
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Ingresos por Taxis</h3>
+                    <div class="pull-right box-tools">
+                        <button class="btn btn-primary btn-sm" data-widget='collapse' data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary btn-sm" data-widget='remove' data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>                    
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="ChartIngresos" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>     
+
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Rating por Taxis</h3>
+                    <div class="pull-right box-tools">
+                        <button class="btn btn-primary btn-sm" data-widget='collapse' data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary btn-sm" data-widget='remove' data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>                    
+                </div>
+                <div class="box-body chart-responsive">
+                    <div id="ChartRating" style="width:100%;height:350px;display:inline-block"></div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->                
+        </div>                              
+    </section>    
+</aside>

@@ -86,6 +86,10 @@ class admin_DriversController extends My_Controller_Action
 							  $upload = move_uploaded_file($_FILES["imageProfile"]["tmp_name"], "images/taxis/" . $newNameimage);
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;  	
+							  }else{
+							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
+							  	unlink($nameDelete);							  	
+							  	$this->_dataIn['nameImagen'] = $sNameImage;							  	
 							  }				
 						  }
 					}else {
@@ -94,7 +98,7 @@ class admin_DriversController extends My_Controller_Action
 	            }
 	            
 	            if(count($this->_aErrors)==0){
-	            	$this->_dataIn['nameImagen'] = $sNameImage;
+	            	 $this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';
 	            	 $validateUser = $classObject->validateData($this->_dataIn['inputUsuario'],-1,'user');
 					 if($validateUser){
 					 	$this->_dataIn['inputTipo'] = 4;
@@ -143,7 +147,11 @@ class admin_DriversController extends My_Controller_Action
 
 							  $upload = move_uploaded_file($_FILES["imageProfile"]["tmp_name"], "images/taxis/" . $newNameimage);
 							  if(!$upload){
-								$this->_aErrors['errorImage'] = 1;  	
+								$this->_aErrors['errorImage'] = 1;
+							  }else{
+							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
+							  	unlink($nameDelete);							  	
+							  	$this->_dataIn['nameImagen'] = $sNameImage;
 							  }				
 						  }
 					}else {
@@ -152,7 +160,7 @@ class admin_DriversController extends My_Controller_Action
 	            }
 	            
 	            if(count($this->_aErrors)==0){
-	            	$this->_dataIn['nameImagen'] = $sNameImage;
+	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';	            	
 	            	if($this->_idUpdate>-1){
 						$validateUser = $classObject->validateData($this->_dataIn['inputUsuario'],$this->_idUpdate,'user');
 						if($validateUser){
