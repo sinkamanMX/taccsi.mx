@@ -9,7 +9,7 @@
             </a>            
             <?php echo $this->dataClient['NOMBRE']." ".$this->dataClient['APATERNO']." ".$this->dataClient['AMATERNO']; ?>
             <div class="btn-group pull-right">
-                <button type="button" onclick="javascript:location.href='/callcenter/services/createservice?strClient=<?php echo $this->dataClient['ID_CLIENTE']; ?>'" class="btn btn-success btn-flat"><i class="fa  fa-plus"></i> Nuevo Viaje</button>
+                <button type="button" onclick="javascript:location.href='/callcenter/services/createservice?strClient=<?php echo $this->dataClient['ID_SRV_USUARIO']; ?>'" class="btn btn-success btn-flat"><i class="fa  fa-plus"></i> Nuevo Viaje</button>
             </div>  
         </h1>
     </section>
@@ -38,7 +38,7 @@
                                         <li>E-Mail:</li>
                                         <li class="header"><?php echo ($this->dataClient['EMAIL']!="") ? $this->dataClient['EMAIL'] : '---'; ?></li>                                        
                                         <li>Fecha de Registro:</li>
-                                        <li class="header"><?php echo $this->dataClient['FECHA_CREACION']; ?></li>
+                                        <li class="header"><?php echo $this->dataClient['FECHA_CREADO']; ?></li>
                                     </ul>
                                 </div>
                             </div><!-- /.col (LEFT) -->

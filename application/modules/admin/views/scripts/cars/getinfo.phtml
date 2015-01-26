@@ -46,8 +46,8 @@
                 </div>
                 <div class="col-xs-9">   
                         <?php if(count(@$this->errors)>0):?>
-                         <div class="alert alert-success alert-dismissable">
-                                <i class="fa fa-check"></i>
+                         <div class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-ban"></i>
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                 <b>!Atención¡</b>
                                 <?php if(@$this->errors['errorImage']==1):?>
@@ -105,23 +105,28 @@
                                                     <?php echo $this->aColores;?>                                
                                                 </select>
                                             </div>
-                                        </div>                                        
+                                        </div>           
+
                                         <div class="form-group col-xs-6">
-                                            <label for="inputNombre">Placas</label>
-                                            <input type="text" class="form-control upperClass" name="inputPlacas" id="inputPlacas" placeholder="Placas" value="<?php echo @$this->data['PLACAS']; ?>">
+                                            <label for="inputNombre">Año</label>
+                                            <input type="text" class="form-control upperClass" name="inputAno" id="inputAno" placeholder="Año" value="<?php echo @$this->data['ANIO']; ?>">
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputNombre">Placas</label>
+                                            <input type="text" class="form-control upperClass" name="inputPlacas" id="inputPlacas" placeholder="Placas" value="<?php echo @$this->data['PLACAS']; ?>">
+                                        </div>                                        
                                         <div class="form-group col-xs-6">
                                             <label for="inputApaterno">Eco</label>
                                             <input type="text" class="form-control upperClass" name="inputEco" id="inputEco" placeholder="ECO" value="<?php echo @$this->data['ECO']; ?>">
                                         </div>
+                                    </div>
+                                    <div class="col-xs-12">
                                         <div class="form-group col-xs-6">
                                             <label for="inputAmaterno">Nombre Chofer</label>
                                             <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
-                                        </div>                                        
-                                    </div>
-                                    <div class="col-xs-12">
+                                        </div>                                            
                                         <div class="form-group col-xs-6">
                                             <label for="inputPhone">Estatus</label>
                                             <div class="input-group col-xs-12">                     

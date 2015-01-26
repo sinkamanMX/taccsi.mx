@@ -15,8 +15,8 @@
 class My_Model_Clientes extends My_Db_Table
 {
     protected $_schema 	= 'taccsi';
-	protected $_name 	= 'SRV_CLIENTES';
-	protected $_primary = 'ID_CLIENTE';
+	protected $_name 	= 'SRV_USUARIOS';
+	protected $_primary = 'ID_SRV_USUARIO';
 	   
 	public function getClients($data){
 		$filter = "";
@@ -42,8 +42,9 @@ class My_Model_Clientes extends My_Db_Table
 		} 		
 		
 		$result= Array();
-    	$sql ="SELECT NOMBRE AS NAME, APATERNO AS APP, AMATERNO AS APM, TELEFONO, ID_CLIENTE
-                FROM ".$this->_name." ".$filter;       	
+		$this->query("SET NAMES utf8",false); 	
+    	$sql ="SELECT NOMBRE AS NAME, APATERNO AS APP, AMATERNO AS APM, TELEFONO, ID_SRV_USUARIO
+                FROM ".$this->_name." ".$filter; 
 		$query   = $this->query($sql);
 		if(count($query)>0){
 			$result	 = $query;			
@@ -54,10 +55,15 @@ class My_Model_Clientes extends My_Db_Table
 	public function getDataClient($idClient=0){
 		try{
 			$result= Array();
+			$sql = "SELECT *
+					FROM ".$this->_name."
+					WHERE ".$this->_name.".".$this->_primary." = $idClient";
+			/*
 	    	$sql ="SELECT ".$this->_name.".*, SRV_USUARIOS.USUARIO,SRV_USUARIOS.VIAJES, SRV_USUARIOS.TELEFONO, SRV_USUARIOS.EMAIL
 	                FROM ".$this->_name."
 	               	 LEFT JOIN SRV_USUARIOS ON ".$this->_name.".ID_SRV_USUARIO = SRV_USUARIOS.ID_SRV_USUARIO   
-	                WHERE ".$this->_name.".".$this->_primary." = $idClient";		         	
+	                WHERE ".$this->_name.".".$this->_primary." = $idClient";	*/
+	    		         	
 			$query   = $this->query($sql);
 			if(count($query)>0){
 				$result	 = $query[0];			
@@ -81,8 +87,7 @@ class My_Model_Clientes extends My_Db_Table
         				AMATERNO		= '".$data['inputAmaterno']."', 
         				TELEFONO		= '".$data['inputPhone']."', 
         				EMAIL			= '".$data['inputEmail']."', 
-        				FECHA_CREACION 	= CURRENT_TIMESTAMP, 
-        				USUARIO_CREO   	= ".$data['userCreate'];
+        				FECHA_CREADO 	=  CURRENT_TIMESTAMP";
         try{
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -107,7 +112,7 @@ class My_Model_Clientes extends My_Db_Table
 					 LEFT JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA     = U.ID_USUARIO
 					 LEFT JOIN ADMIN_TAXIS    T ON U.ID_USUARIO     = T.ADMIN_USUARIOS_ID_USUARIO
 					WHERE V.ID_CLIENTE = $idClient 
-	                ORDER BY V.ID_VIAJES DESC";			         	
+	                ORDER BY V.ID_VIAJES DESC";	         	
 			$query   = $this->query($sql);
 			if(count($query)>0){
 				$result	 = $query;			

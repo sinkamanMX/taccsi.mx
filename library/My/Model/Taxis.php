@@ -195,6 +195,7 @@ class My_Model_Taxis extends My_Db_Table
 					NOMBRE_CHOFER	='".$data['inputChofer']."',
 					PLACAS			='".$data['inputPlacas']."',
 					ECO				='".$data['inputEco']."',
+					ANIO			= ".$data['inputAno'].",
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
 					USUARIO_REGISTRO= ".$data['userCreate']."
 					$nameImage";
@@ -225,7 +226,8 @@ class My_Model_Taxis extends My_Db_Table
 					ID_COLOR		= ".$data['inputColor'].",
 					NOMBRE_CHOFER	='".$data['inputChofer']."',
 					PLACAS			='".$data['inputPlacas']."',
-					ECO				='".$data['inputEco']."'
+					ECO				='".$data['inputEco']."',
+					ANIO			= ".$data['inputAno']."
 					$nameImage
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            

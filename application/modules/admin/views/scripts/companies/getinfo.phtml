@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-xs-12">
-          <div class="box box-primary row-min-h700">
+          <div class="box box-primary row-min-h1200">
                 <div class="box-header">
                     <h3 class="box-title">Información de la Empresa</h3>                    
                     <?php if($this->idToUpdate>0):?>
@@ -47,7 +47,7 @@
                             <div class="col-xs-12">
                                 <div class="form-group col-xs-8">
                                     <label for="inputNameEmpresa">Nombre de la Empresa</label>
-                                    <input type="text" class="form-control upperClass" name="inputNameEmpresa" id="inputNameEmpresa" placeholder="Nombre de la Empresa" value="<?php echo @$this->data['NOMBRE_EMPRESA']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off"  name="inputNameEmpresa" id="inputNameEmpresa" placeholder="Nombre de la Empresa" value="<?php echo @$this->data['NOMBRE_EMPRESA']; ?>">
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="inputTipoRazon">Tipo Razón</label>
@@ -62,33 +62,33 @@
                             <div class="col-xs-12">
                                 <div class="form-group col-xs-4">
                                     <label for="inputRazon">Razón Social</label>
-                                    <input type="text" class="form-control upperClass" name="inputRazon" id="inputRazon" placeholder="Razón Social" value="<?php echo @$this->data['RAZON_SOCIAL']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputRazon" id="inputRazon" placeholder="Razón Social" value="<?php echo @$this->data['RAZON_SOCIAL']; ?>">
                                 </div>
 
                                 <div class="form-group col-xs-4">
                                     <label for="inputRFC">RFC</label>
-                                    <input type="text" class="form-control upperClass" name="inputRFC" id="inputRFC" placeholder="RFC" value="<?php echo @$this->data['RFC']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputRFC" id="inputRFC" placeholder="RFC" value="<?php echo @$this->data['RFC']; ?>">
                                 </div>
 
                                 <div class="form-group col-xs-4">
                                     <label for="inputRep">Representante Legal</label>
-                                    <input type="text" class="form-control upperClass" name="inputRep" id="inputRep" placeholder="Representante Legal" value="<?php echo @$this->data['REPRESENTANTE_LEGAL']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputRep" id="inputRep" placeholder="Representante Legal" value="<?php echo @$this->data['REPRESENTANTE_LEGAL']; ?>">
                                 </div>                                
                             </div>
 
                             <div class="col-xs-12">
                                 <div class="form-group col-xs-8">
                                     <label for="inputCalle">Calle</label>
-                                    <input type="text" class="form-control upperClass" name="inputCalle" id="inputCalle" placeholder="Calle" value="<?php echo @$this->data['CALLE']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputCalle" id="inputCalle" placeholder="Calle" value="<?php echo @$this->data['CALLE']; ?>">
                                 </div>
 
                                 <div class="form-group col-xs-2">
                                     <label for="inputNoext">No. Ext</label>
-                                    <input type="text" class="form-control upperClass" name="inputNoext" id="inputNoext" placeholder="No. Ext" value="<?php echo @$this->data['NOEXT']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputNoext" id="inputNoext" placeholder="No. Ext" value="<?php echo @$this->data['NOEXT']; ?>">
                                 </div>
                                 <div class="form-group col-xs-2">
                                     <label for="inputNoint">No. Int</label>
-                                    <input type="text" class="form-control upperClass" name="inputNoint" id="inputNoint" placeholder="No. Int" value="<?php echo @$this->data['NOINT']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputNoint" id="inputNoint" placeholder="No. Int" value="<?php echo @$this->data['NOINT']; ?>">
                                 </div>                                
                             </div>  
 
@@ -96,7 +96,7 @@
                                 <div class="form-group col-xs-4">
                                     <label for="inputEstado">Estado</label>
                                     <div class="input-group col-xs-12">                     
-                                        <select class="form-control" id="inputEstado" name="inputEstado" onChange="getoptionsCbo('Municipio','mun',this.value,false,'');">
+                                        <select class="form-control" id="inputEstado" autocomplete="off" name="inputEstado" onChange="getoptionsCbo('Municipio','mun',this.value,false,'');">
                                             <option value="">Seleccione una opción</option>
                                             <?php echo $this->aEstados;?>                                
                                         </select>
@@ -115,7 +115,7 @@
 
                                 <div class="form-group col-xs-4">
                                     <label for="inputColonia">Colonia</label>
-                                    <input type="text" class="form-control upperClass" name="inputColonia" id="inputColonia" placeholder="Colonia" value="<?php echo @$this->data['COLONIA']; ?>">
+                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputColonia" id="inputColonia" placeholder="Colonia" value="<?php echo @$this->data['COLONIA']; ?>">
                                 </div>                                
                             </div>                                
 
@@ -123,7 +123,7 @@
                                 <div class="form-group col-xs-4">
                                     <label for="inputCp">C.P</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control upperClass" name="inputCp" id="inputCp" placeholder="C.P" value="<?php echo @$this->data['CP']; ?>">                                        
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputCp" id="inputCp" placeholder="C.P" value="<?php echo @$this->data['CP']; ?>">                                        
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" onClick="searchCp(0)">
                                                 <i class="fa fa-search"></i>
@@ -151,19 +151,20 @@
                                 </div>                                                                   
                             </div> 
                             <div id="divDirDif" style="display:<?php echo (@$this->data['DIR_DIFERENTE'] && @$this->data['DIR_DIFERENTE']=="1") ? 'block':'none';?>">
+                                <h3 class="subtittleForm">Dirección Fiscal</h3>
                                 <div class="col-xs-12">
                                     <div class="form-group col-xs-8">
                                         <label for="inputCalleF">Calle</label>
-                                        <input type="text" class="form-control upperClass" name="inputCalleF" id="inputCalleF" placeholder="Calle" value="<?php echo @$this->data['FIS_CALLE']; ?>">
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputCalleF" id="inputCalleF" placeholder="Calle" value="<?php echo @$this->data['FIS_CALLE']; ?>">
                                     </div>
 
                                     <div class="form-group col-xs-2">
                                         <label for="inputNoextF">No. Ext</label>
-                                        <input type="text" class="form-control upperClass" name="inputNoextF" id="inputNoextF" placeholder="No. Ext" value="<?php echo @$this->data['FIS_NOEXTc']; ?>">
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputNoextF" id="inputNoextF" placeholder="No. Ext" value="<?php echo @$this->data['FIS_NOEXTc']; ?>">
                                     </div>
                                     <div class="form-group col-xs-2">
                                         <label for="inputNointF">No. Int</label>
-                                        <input type="text" class="form-control upperClass" name="inputNointF" id="inputNointF" placeholder="No. Int" value="<?php echo @$this->data['FIS_NOINT']; ?>">
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputNointF" id="inputNointF" placeholder="No. Int" value="<?php echo @$this->data['FIS_NOINT']; ?>">
                                     </div>                                
                                 </div>  
 
@@ -171,7 +172,7 @@
                                     <div class="form-group col-xs-4">
                                         <label for="inputEstadoF">Estado</label>
                                         <div class="input-group col-xs-12">                     
-                                            <select class="form-control" id="inputEstadoF" name="inputEstadoF" onChange="getoptionsCbo('MunicipioF','mun',this.value,false,'');">
+                                            <select class="form-control" id="inputEstadoF" autocomplete="off" name="inputEstadoF" onChange="getoptionsCbo('MunicipioF','mun',this.value,false,'');">
                                                 <option value="">Seleccione una opción</option>
                                                 <?php echo $this->aEstadosF;?>                                
                                             </select>
@@ -181,7 +182,7 @@
                                     <div class="form-group col-xs-4">
                                         <label for="inputNombre">Municipio</label>
                                         <div class="input-group col-xs-12" id="divMunicipioF">
-                                            <select class="form-control" id="inputMunicipioF" name="inputMunicipioF">
+                                            <select class="form-control" id="inputMunicipioF" autocomplete="off" name="inputMunicipioF">
                                                 <option value="">Seleccione una opción</option>
                                                 <?php echo $this->aMunicipiosF;?>                                
                                             </select>
@@ -190,7 +191,7 @@
 
                                     <div class="form-group col-xs-4">
                                         <label for="inputColoniaF">Colonia</label>
-                                        <input type="text" class="form-control upperClass" name="inputColoniaF" id="inputColoniaF" placeholder="Colonia" value="<?php echo @$this->data['FIS_COLONIA']; ?>">
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputColoniaF" id="inputColoniaF" placeholder="Colonia" value="<?php echo @$this->data['FIS_COLONIA']; ?>">
                                     </div>                                
                                 </div>                                
 
@@ -198,23 +199,52 @@
                                     <div class="form-group col-xs-4">
                                         <label for="inputCpF">C.P</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control upperClass" name="inputCpF" id="inputCpF" placeholder="C.P" value="<?php echo @$this->data['FIS_CP']; ?>">                                        
+                                            <input type="text" class="form-control upperClass" autocomplete="off" name="inputCpF" id="inputCpF" placeholder="C.P" value="<?php echo @$this->data['FIS_CP']; ?>">                                        
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button" onClick="searchCp(1)">
                                                     <i class="fa fa-search"></i>
                                                 </button>                                                   
                                             </span>
                                         </div>
-                                    </div>
-                              
+                                    </div>                              
                                 </div>   
                             </div>  
 
-                        </div><!-- /.box-body -->
-
-                        <div class="box-footer col-xs-12">                                                        
+                            <div id="divDirDif" style="display:<?php echo ($this->idToUpdate>0) ? 'none':'block';?>">
+                                <h3 class="subtittleForm">Usuario Administrador</h3>
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputNombre">Nombre</label>
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputApaterno">Ap. Paterno</label>
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputAmaterno">Ap. Materno</label>
+                                        <input type="text" class="form-control upperClass" autocomplete="off" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputNombre">Usuario</label>
+                                        <input type="text" class="form-control" autocomplete="off" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['NICKNAME']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputApaterno">Contraseña</label>
+                                        <input type="password" class="form-control upperClass"  autocomplete="off"name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputAmaterno">Confirmar Contraseña</label>
+                                        <input type="password" class="form-control upperClass"  autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div>
+                        <div class="box-footer">
                             <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
-                            <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                            <button type="submit" class="btn btn-primary pull-right margin-5 ">Guardar</button>
                         </div>
                     </form>
                 <?php endif;?>

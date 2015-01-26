@@ -111,8 +111,8 @@ class My_Model_Taxistas extends My_Db_Table
 					PASSWORD		= SHA1('".$data['inputPassword']."'),
 					PASSWORD_TEXT	= '".$data['inputPassword']."',
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
-					$nameImage
-					ACTIVO 			= ".$data['inputEstatus'];
+					ACTIVO 			= ".$data['inputEstatus'].
+					$nameImage;
         try{            
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -146,9 +146,9 @@ class My_Model_Taxistas extends My_Db_Table
 					AMATERNO		= '".$data['inputAmaterno']."',
 					TELEFONO		= '".$data['inputPhone']."',
 					$sPassword
-					NICKNAME		= '".$data['inputUsuario']."',
-					$nameImage			
+					NICKNAME		= '".$data['inputUsuario']."',					
 					ACTIVO 			= ".$data['inputEstatus']."
+					$nameImage			
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            
     		$query   = $this->query($sql,false);

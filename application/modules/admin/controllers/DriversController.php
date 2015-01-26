@@ -150,7 +150,9 @@ class admin_DriversController extends My_Controller_Action
 								$this->_aErrors['errorImage'] = 1;
 							  }else{
 							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
-							  	unlink($nameDelete);							  	
+							  	if(file_exists($nameDelete)){
+							  		unlink($nameDelete);	
+							  	}							  								  
 							  	$this->_dataIn['nameImagen'] = $sNameImage;
 							  }				
 						  }
@@ -160,14 +162,13 @@ class admin_DriversController extends My_Controller_Action
 	            }
 	            
 	            if(count($this->_aErrors)==0){
-	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';	            	
+	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';       	
 	            	if($this->_idUpdate>-1){
-						$validateUser = $classObject->validateData($this->_dataIn['inputUsuario'],$this->_idUpdate,'user');
+						$validateUser = $classObject->validateData($this->_dataIn['inputUsuario'],$this->_idUpdate,'user');	
 						if($validateUser){
 						 	$this->_dataIn['inputTipo'] = 4;
 							$updated = $classObject->updateRow($this->_dataIn);
 							 if($updated['status']){	
-				 			
 					 			if(isset($this->_dataIn['inputIdAssign']) && $this->_dataIn['inputIdAssign']){
 					 				$this->_dataIn['inputTaxi'] = $this->_dataIn['inputIdAssign'];
 									

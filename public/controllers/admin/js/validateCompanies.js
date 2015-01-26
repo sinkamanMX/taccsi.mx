@@ -23,7 +23,17 @@ $().ready(function() {
             inputColoniaF   : "required",
             inputEstadoF    : "required",
             inputMunicipioF : "required",
-            inputCpF        : "required"
+            inputCpF        : "required",
+            
+            inputNombre     : "required",
+            inputApaterno   : "required",
+            inputAmaterno   : "required",
+            inputUsuario    : "required",
+            inputPassword   : "required",
+            inputCpassword  : {
+                required: true,
+                equalTo: "#inputPassword",
+            }
         },
         messages: {
             inputNameEmpresa: "Campo Requerido",
@@ -48,7 +58,16 @@ $().ready(function() {
             inputColoniaF   : "Campo Requerido",
             inputEstadoF    : "Campo Requerido",
             inputMunicipioF : "Campo Requerido",
-            inputCpF        : "Campo Requerido"                      
+            inputCpF        : "Campo Requerido",
+            inputNombre     : "Campo Requerido",
+            inputApaterno   : "Campo Requerido",
+            inputAmaterno   : "Campo Requerido",
+            inputUsuario    : "Campo Requerido",            
+            inputPassword   : "Campo Requerido",
+            inputCpassword  : {
+                required    : "Campo Requerido",
+                equalTo     : "La contraseña no coincide."
+            }                                          
         },
         submitHandler: function(form) {
             form.submit();

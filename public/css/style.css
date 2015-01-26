@@ -52,7 +52,12 @@
   min-height: 700px;
 }
 
-
+.row-min-h900{
+  min-height: 900px;
+}
+.row-min-h1200{
+  min-height: 1200px;
+}
 
 .cursor-hand{
 	cursor: pointer;	
@@ -98,6 +103,10 @@
 .margin-l5{
   margin-left: 5%;
 }
+
+.margin-5{
+  margin-left: 5px;
+}
 .modal-lg {
  width: 80%;
 }
@@ -135,4 +144,10 @@
 .slider.slider-horizontal {
     height: 20px;
     width: 210px !important;
+}
+
+.subtittleForm{
+  font-size: 18px !important;
+  font-weight: 400;
+  padding: 10px 0 10px 10px;
 }

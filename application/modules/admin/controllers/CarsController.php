@@ -80,13 +80,12 @@ class admin_CarsController extends My_Controller_Action
 			}
 			
 			if($this->_dataOp=='new'){
-				$sNameImage = '';
-				
+				$sNameImage = '';				
 				if($_FILES['imageProfile']['name']!=""){
 		            $allowedExts = array("jpeg", "jpg", "png");
 					$temp = explode(".", $_FILES["imageProfile"]["name"]);
 					$extension = end($temp);
-					
+
 					$newNameimage = Date("Ymdhis").".".$extension;
 					if ((($_FILES["imageProfile"]["type"] == "image/jpeg")
 						|| ($_FILES["imageProfile"]["type"] == "image/jpg")
@@ -101,12 +100,14 @@ class admin_CarsController extends My_Controller_Action
 						  }else{
 							  $sNameImage  = $newNameimage;
 
-							  $upload = move_uploaded_file($_FILES["imageProfile"]["tmp_name"], "images/taxis/" . $newNameimage);
+							  $upload = move_uploaded_file($_FILES["imageProfile"]["tmp_name"],  "images/taxis/" . $newNameimage);
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;  	
 							  }else{
-							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
-							  	unlink($nameDelete);
+							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];							  	
+							  	if(file_exists($nameDelete)){
+							  		unlink($nameDelete);	
+							  	}							  	
 							  	$this->_dataIn['nameImagen'] = $sNameImage;
 							  }			
 						  }
@@ -206,11 +207,12 @@ class admin_CarsController extends My_Controller_Action
 				$dataInfo['PLACAS']	= $this->_dataIn['inputPlacas'];
 				$dataInfo['ECO']	= $this->_dataIn['inputEco'];
 				$dataInfo['NOMBRE_CHOFER']	= $this->_dataIn['inputChofer'];
+				$dataInfo['ANIO']	= $this->_dataIn['inputAno'];
 				
     	    	$sColores	= $this->_dataIn['inputColor'];		    	
     	    	$sModelos	= $this->_dataIn['inputModelo'];		
     	    	$sMarcas	= $this->_dataIn['inputMarca'];
-    	    	$sEstatus	= $this->_dataIn['inputEstatus'];	
+    	    	$sEstatus	= $this->_dataIn['inputEstatus'];
     	    	
 				$aModelos	= $cModelos->getCbo($sMarcas);
 				$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);

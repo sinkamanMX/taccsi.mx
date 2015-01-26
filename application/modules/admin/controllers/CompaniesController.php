@@ -139,19 +139,32 @@ class admin_CompaniesController extends My_Controller_Action
 			 	$insert = $classObject->insertRow($this->_dataIn);
 		 		if($insert['status']){
 		 			$this->_idUpdate = $insert['id'];
-	    	    	$dataInfo	 = $classObject->getData($this->_idUpdate);
-	    	    	$sTipoCliente= $dataInfo['TIPO_RAZON'];
-	    	    	$sEstatus	 = $dataInfo['ESTATUS'];
-	    	    	$sDirDif	 = $dataInfo['DIR_DIFERENTE'];
-	    	    	$sEstado 	 = $dataInfo['ID_ESTADO'];
-	    	    	$sEstadoF	 = $dataInfo['FIS_ID_ESTADO'];
-	    	    		    	    	
-					$dMunicipios = $cMunicipios->getCbo($sEstado);
-					$aMunicipios = $cFunctions->selectDb($dMunicipios,@$dataInfo['ID_MUNICIPIO']);
-					
-					$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
-					$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);						    	    	
-			 		$this->_resultOp = 'okRegister';
+		 			
+		 			$this->_dataIn['dataIdEmpresa']= $insert['id'];
+		 			$this->_dataIn['inputTipo'] 	= 1; 
+		 			$this->_dataIn['inputPhone'] 	= '';
+		 			$this->_dataIn['inputEstatus'] = 1;
+		 			
+		 			$cUsuarios = new My_Model_Usuarios($this->_dataIn);
+		 			$insertUser= $cUsuarios->insertRow($this->_dataIn);
+		 			
+		 			if($insertUser['status']){
+		    	    	$dataInfo	 = $classObject->getData($this->_idUpdate);
+		    	    	$sTipoCliente= $dataInfo['TIPO_RAZON'];
+		    	    	$sEstatus	 = $dataInfo['ESTATUS'];
+		    	    	$sDirDif	 = $dataInfo['DIR_DIFERENTE'];
+		    	    	$sEstado 	 = $dataInfo['ID_ESTADO'];
+		    	    	$sEstadoF	 = $dataInfo['FIS_ID_ESTADO'];
+		    	    		    	    	
+						$dMunicipios = $cMunicipios->getCbo($sEstado);
+						$aMunicipios = $cFunctions->selectDb($dMunicipios,@$dataInfo['ID_MUNICIPIO']);
+						
+						$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
+						$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);						    	    	
+				 		$this->_resultOp = 'okRegister';		 							 				
+		 			}else{
+						$this->errors['status'] = 'no-insert';
+					}
 				}else{
 					$this->errors['status'] = 'no-insert';
 				}
