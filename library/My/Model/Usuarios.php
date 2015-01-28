@@ -168,6 +168,69 @@ class My_Model_Usuarios extends My_Db_Table
 		return $result;    	
     }    
       
+  	public function userExist($sMail){
+		$result= Array();
+    	$sql ="SELECT  *
+                FROM ".$this->_name." 
+                WHERE NICKNAME = '".$sMail."' LIMIT 1";			         	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0];			
+		}	
+        
+		return $result;			
+	}   
+	
+    public function setKeyRestore($data){
+        $result  = false;
+        
+        $sql="UPDATE $this->_name	
+        		SET CLAVE_RECUPERACION = '".$data['inputClave']."'
+        		WHERE $this->_primary  = ".$data['idUser']." LIMIT 1";			  
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }     
+
+  	public function validateKeyRecovery($sCodeRecovery){
+		$result= Array();
+    	$sql ="SELECT  *
+                FROM ".$this->_name." 
+                WHERE CLAVE_RECUPERACION = '".$sCodeRecovery."' LIMIT 1";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0];			
+		}	
+		return $result;	
+		
+	}      
+    	
+    public function updatePassword($data){
+        $result  = false;
+        
+        $sql="UPDATE $this->_name
+				SET PASSWORD	=  SHA1('".$data['inputPassword']."'), 
+				PASSWORD_TEXT	= '".$data['inputPassword']."'
+        		WHERE $this->_primary  = ".$data['idReset']." LIMIT 1";		  
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }   
+        
     /*
 	public function userExist($datauser){
 		$result= Array();

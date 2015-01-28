@@ -1,0 +1,51 @@
+<?php $this->headScript()->appendFile('/controllers/login/js/resetPass.js') ?>
+<div class="form-box" id="login-box">
+    <div class="header">
+        <a href="/">
+            <img src="/images/assets/icon-page.png" class="img-responsive center-block" alt="Logo">
+        </a>
+    </div>
+    <?php //Zend_Debug::dump($this);?>
+    <?php if(@$this->aErrors['errorConfig']):?>
+        <div class="alert alert-danger" style="display:block;">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <h4>Error</h4>
+          <div>Información recibida incorrecta, favor de contactar con su adminsitrador.</div>
+        </div>
+    <?php endif;?>    
+
+    <?php if($this->result=='updated'):?>
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa fa-check"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <b>!Atención¡</b> La contraseña se ha cambiado correctamente.<br/>
+            <a href="/login/main/index">Ingresar al sistema</a>
+        </div>
+    <?php elseif(!isset($this->aErrors['errorConfig'])):?>
+        <form role="form" method="POST" action="/login/main/recoverresq?keyResetToker=<?php echo ($this->dataIn['keyResetToker']);?>" id="FormData" >
+            <input type="hidden" name="idReset" value="<?php echo ($this->catId);?>" />
+            <input type="hidden" name="optReg"  value="reset" />
+
+            <div id="div-msg" class="alert alert-danger" style="display:none">
+                
+            </div>
+            <div class="body bg-gray">
+                <div class="form-group has-error">
+                    <label id="lbl_user" class="control-label" for="inputError" style="display:none"><i class="fa fa-times-circle-o"></i>Contraseña</label>
+                    <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Contraseña"/>
+                </div>
+
+                <div class="form-group has-error">
+                    <label id="lbl_pass" class="control-label" for="inputError" style="display:none"><i class="fa fa-times-circle-o"></i>Confirmar Contraseña</label>
+                    <input type="password" name="inputCpassword" id="inputCpassword" class="form-control" placeholder="Confirmar Contraseña"/>
+                </div>
+                <!--<div class="form-group">
+                    <a href="/login/main/recovery">Recuperar Contraseña</a>
+                </div>-->
+            </div>
+            <div class="footer">                                                               
+                <button type="submit" class="btn bg-black btn-block">Guardar</button>
+            </div>
+        </form>
+    <?php endif;?>
+</div>

@@ -54,6 +54,13 @@ class My_Controller_Functions
 		array("id"=>"1",'name'=>'Si' ),
 		array("id"=>"0",'name'=>'No' )    
     );    
+    
+	public $configMail = array(
+			'ssl'      => 'ssl',
+            'port'     => '465','auth' => 'login',
+			'urlSmtp'  => 'smtp.gmail.com',
+			'username' => 'tienda.ricom@gmail.com',			
+		    'password' => '7ienD4r1c0M.mX');    
 
     public function dateToText($fecha_db){
     	$fecha=explode("-",$fecha_db);
@@ -239,5 +246,31 @@ class My_Controller_Functions
 	    return substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1);
-	}    
+	}   
+
+	function sendMailSmtp($aMailer){
+		$sTransport = new Zend_Mail_Transport_Smtp($this->configMail['urlSmtp'], $this->configMail);
+		$mail = new Zend_Mail('UTF-8');
+		$mail->addHeader('Content-Type', 'text/plain; charset=utf-8');
+
+		$mail->setFrom('contacto@taccsi.com', 'Taccsi');
+		$mail->addTo($aMailer['emailTo'], $aMailer['nameTo']);	
+		$mail->setSubject(html_entity_decode($aMailer['subjectTo']));
+		$mail->setBodyHtml(html_entity_decode($aMailer['bodyTo']));
+		$enviado = $mail->send($sTransport);		
+	}
+	
+	function getRandomCodeReset(){
+	    $an = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!?$%&/Á";
+	    $su = strlen($an) - 1;
+	    return  substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1) .
+	            substr($an, rand(0, $su), 1);
+	} 	
 }

@@ -410,9 +410,9 @@ class Zend_Mail extends Zend_Mime_Message
         $mp->type = Zend_Mime::TYPE_HTML;
         $mp->disposition = Zend_Mime::DISPOSITION_INLINE;
         $mp->charset = $charset;
-
+		
         $this->_bodyHtml = $mp;
-
+		
         return $this;
     }
 

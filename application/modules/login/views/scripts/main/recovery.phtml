@@ -1,0 +1,38 @@
+<?php $this->headScript()->appendFile('/controllers/login/js/recovery.js') ?>
+<div class="form-box" id="login-box">
+    <div class="header">
+        <a href="/">
+            <img src="/images/assets/icon-page.png" class="img-responsive center-block" alt="Logo">
+        </a>
+    </div>
+    <?php if(@$this->aErrors['eUsuario']):?>
+        <div class="alert alert-danger" style="display:block;">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <h4>Error</h4>
+          <div>El usuario no se encuentra registrado, favor de contactar con su adminsitrador.</div>
+        </div>
+    <?php endif;?>
+
+    <?php if(@$this->resultOp=='okRegister'):?>
+        <div class="alert alert-success alert-dismissable">
+            <i class="fa fa-check"></i>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <b>!Atención¡</b> Se ha enviado un correo electrónico, favor de verificar su bandeja de entrada.<br/>
+            Tambien es recomendable verificar en la carpeta de Spam (Correo no deseado).
+        </div>
+    <?php endif;?>     
+
+    <form role="form" method="POST" action="/login/main/recovery" id="FormData" >
+        <input type="hidden" name="optReg" value="<?php echo ($this->optRegister>0) ? 'rememeber': '';?>" />
+        <div class="body bg-gray">
+            <span><b>Ingrese el nombre de usuario (E-mail)</b></span>
+            <div class="form-group has-error">
+                <label id="lbl_user"  class="control-label" for="inputError" style="display:none"><i class="fa fa-times-circle-o"></i>Usuario requerido</label>
+                <input id="txt-user" autocomplete="off"  type="text" name="inputUser" id="inputUser" class="form-control" placeholder="Usuario"/>
+            </div>
+        </div>    
+        <div class="footer">     
+            <button type="submit" class="btn bg-black btn-block">Recuperar</button>
+        </div>
+    </form>
+</div>
