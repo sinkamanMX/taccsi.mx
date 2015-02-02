@@ -160,7 +160,30 @@ class admin_CompaniesController extends My_Controller_Action
 						$aMunicipios = $cFunctions->selectDb($dMunicipios,@$dataInfo['ID_MUNICIPIO']);
 						
 						$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
-						$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);						    	    	
+						$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);
+												
+						$nameUserAdmin = $this->_dataIn['inputNombre']." ".$this->_dataIn['inputApaterno']."".$this->_dataIn['inputAmaterno'];
+						/*
+						 * Se envia la notificacion, que se creo una nueva empresa */
+						$bodymail   = '<h3>Estimado '.$nameUserAdmin.':</h3>'.
+									  'Se ha registrado en el sistema TACCSI, como proveedor del servicio<br/>'.
+									  'Para poder empezar a utilizar el sistema, es necesario ingresar al sistema de administraci&oacute;n Taccsi<br>'.
+									  '<a href="http://taccsi.com/login/main/index">Da Click Aqu&iacute;</a><br/>'.
+									  'o bien copia y pega en tu navegador el siguiente enlace<br>'.
+									  '<b> http://taccsi.com/login/main/index</b>'.									  
+									  'Los datos de acceso son los siguientes:'.
+									  '<table><tr><td>Clave Empresa: </td><td>'.$dataInfo['CODIGO_EMPRESA'].'</td></tr>'.
+									  '<tr><td>Usuario: </td><td>'.$this->_dataIn['inputnombre'].'</td></tr>'.
+									  '<tr><td>Contrase&ntilde;a: </td><td>'.$this->_dataIn['inputPassword'].'</td></tr>'.									  
+									  '</table><br/>';						
+						$aMailer    = Array(
+							'emailTo' 	=> $this->_dataIn['inputUsuario'],
+							'nameTo' 	=> $nameUserAdmin,
+							'subjectTo' => ('Taccsi - Acceso web'),
+							'bodyTo' 	=> $bodymail,
+						);	
+					 	$enviar = $cFunctions->sendMailSmtp($aMailer);												
+
 				 		$this->_resultOp = 'okRegister';		 							 				
 		 			}else{
 						$this->errors['status'] = 'no-insert';

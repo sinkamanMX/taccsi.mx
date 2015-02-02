@@ -311,5 +311,19 @@ class My_Model_Empresas extends My_Db_Table
 	    		substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1);
-	}       
+	}   
+
+	function validateCodeEmp($codeEmpresa){
+		$result=-1;		
+		$this->query("SET NAMES utf8",false);
+    	$sql ="SELECT $this->_primary
+	    		FROM $this->_name
+				WHERE CODIGO_EMPRESA = '$codeEmpresa' ";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0][$this->_primary];
+		}
+        
+		return $result;
+	}
 }

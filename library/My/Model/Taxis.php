@@ -181,11 +181,12 @@ class My_Model_Taxis extends My_Db_Table
         }                    
     }    
     
-    public function insertRow($data){
+    public function insertRow($data,$idTaccista=NULL){
         $result     = Array();
         $result['status']  = false;
         
-        $nameImage  = ($data['nameImagen']!="") ? ",IMAGEN			='".$data['nameImagen']."'": "";                
+        $nameImage  = ($data['nameImagen']!="") ? ",IMAGEN			='".$data['nameImagen']."'": "";
+        $iTaccista  = ($idTaccista!=NULL) ? "ADMIN_USUARIOS_ID_USUARIO =".$idTaccista."," : "" ;
         
         $sql="INSERT INTO $this->_name	
         		SET ID_EMPRESA		= ".$data['dataIdEmpresa'].",
@@ -196,6 +197,7 @@ class My_Model_Taxis extends My_Db_Table
 					PLACAS			='".$data['inputPlacas']."',
 					ECO				='".$data['inputEco']."',
 					ANIO			= ".$data['inputAno'].",
+					$iTaccista
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
 					USUARIO_REGISTRO= ".$data['userCreate']."
 					$nameImage";
