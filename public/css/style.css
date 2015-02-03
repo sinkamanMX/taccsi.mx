@@ -138,6 +138,11 @@
   margin-top: -10%;
   position: relative;
 }
+.countdownService{
+  margin-left: 0% !important;
+  margin-top: 0%!important;
+  position: relative;  
+}
 #ex1Slider .slider-selection {
   background: #BABABA;
 }
