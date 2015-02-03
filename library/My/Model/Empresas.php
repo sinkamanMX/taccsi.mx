@@ -326,4 +326,19 @@ class My_Model_Empresas extends My_Db_Table
         
 		return $result;
 	}
+	
+	
+	public function getCbo(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT $this->_primary AS ID, NOMBRE_EMPRESA AS NAME 
+    			FROM $this->_name 
+    			ORDER BY NOMBRE_EMPRESA ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}	
 }

@@ -216,4 +216,48 @@ class My_Model_Taxistas extends My_Db_Table
         
 		return $result;			
 	}		
+	    
+	public function getDataToValidate(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT   U.ID_USUARIO, 
+						U.TIPO_USUARIO,
+						P.DESCRIPCION AS PERFIL,
+						U.NICKNAME,
+						CONCAT(U.NOMBRE,' ',U.APATERNO,' ',U.AMATERNO) AS NOMBRE,
+						U.ACTIVO,
+						U.FECHA_REGISTRO,
+						U.TELEFONO
+				FROM ADMIN_USUARIOS U
+				INNER JOIN ADMIN_TIPO_USUARIOS   P ON U.TIPO_USUARIO   = P.ID_TIPO_USUARIO
+				WHERE (U.ID_EMPRESA    IS NULL OR U.ID_EMPRESA = -1) 
+				  AND U.TIPO_USUARIO  = 4 
+				ORDER BY NOMBRE ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	        
+		return $result;			
+	}  
+
+    
+    public function setActivation($iEmpresa,$iTaxista,$iActivo){
+       	$result     = Array();
+        $result['status']  = false;
+                 
+        $sql="UPDATE $this->_name	
+        		SET ID_EMPRESA      = $iEmpresa,
+        			ACTIVO          = $iActivo       				
+			  WHERE $this->_primary = ".$iTaxista." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }	
 }

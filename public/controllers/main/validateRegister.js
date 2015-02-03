@@ -63,21 +63,6 @@ $().ready(function() {
             form.submit();
         }
     });	
-
-    /*    
-    if($("#catId").val()>-1){
-        $("#inputPassword").rules("remove", "required");
-        $("#inputCpassword").rules("remove", "required");          
-    }
-
-    //$(".chosen-select").chosen();
-    $("#btnSearch").click(function() { openSearch(); return false; });
-    $("#btnDelRel").click(function() { deleteRowRel(); return false; });  
-
-    $('#iFrameSearch').on('load', function () {        
-        $('#loader1').hide();
-        $('#iFrameSearch').show();
-    }); */
 });
 
 function getoptionsCbo(idCboTo,classObject,idObject,chosen,options){  

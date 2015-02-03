@@ -65,9 +65,8 @@ class main_RegisterController extends My_Controller_Action
 											  '<table><tr><td>Nombre Completo: </td><td>'.$nameUsuario.'</td></tr>'.
 											  '<tr><td>Usuario: </td><td>'.$this->_dataIn['inputUsuario'].'</td></tr>'.
 											  '<tr><td>Tel&eacute;fono: </td><td>'.$this->_dataIn['inputPhone'].'</td></tr>'.
-								              '<tr><td>Nombre: </td><td>'.$nameUsuario.'</td></tr>'.
 											  '</table><br/>'.
-											  'Para obtener mas informaci—n es necesario ingresar al sistema de administraci&oacute;n Taccsi<br>'.
+											  'Para obtener mas informaci&oacute;n es necesario ingresar al sistema de administraci&oacute;n Taccsi<br>'.
 											  '<a href="http://taccsi.com/login/main/index">Da Click Aqu&iacute;</a><br/>'.
 											  'o bien copia y pega en tu navegador el siguiente enlace<br>'.
 											  '<b> http://taccsi.com/login/main/index</b>';

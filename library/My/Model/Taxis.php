@@ -163,7 +163,8 @@ class My_Model_Taxis extends My_Db_Table
     public function getDataByDriver($idObject){
 		try{
 			$result= Array();
-	    	$sql ="SELECT t.*,CONCAT(t.ECO,' ',t.PLACAS) AS N_TAXI, CONCAT(M.DESCRIPCION,'-',A.DESCRIPCION) AS N_MODELO
+	    	$sql ="SELECT t.*,CONCAT(t.ECO,' ',t.PLACAS) AS N_TAXI, CONCAT(M.DESCRIPCION,'-',A.DESCRIPCION) AS N_MODELO,A.ID_MARCA,
+	    		t.ID_MODELO,t.ID_COLOR
 				FROM ADMIN_TAXIS t
 				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
 				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
@@ -258,6 +259,25 @@ class My_Model_Taxis extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;    	
+    } 
+
+    public function updateEmpresa($idEmpresa,$idTaxi){
+       	$result     = Array();
+        $result['status']  = false;
+
+        $sql="UPDATE $this->_name	
+        		SET ID_EMPRESA      = $idEmpresa       			
+			  WHERE $this->_primary = ".$idTaxi." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
     }       
 	   
 }	

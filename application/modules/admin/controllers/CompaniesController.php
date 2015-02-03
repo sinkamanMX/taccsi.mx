@@ -141,7 +141,7 @@ class admin_CompaniesController extends My_Controller_Action
 		 			$this->_idUpdate = $insert['id'];
 		 			
 		 			$this->_dataIn['dataIdEmpresa']= $insert['id'];
-		 			$this->_dataIn['inputTipo'] 	= 1; 
+		 			$this->_dataIn['inputTipo'] 	= 3; 
 		 			$this->_dataIn['inputPhone'] 	= '';
 		 			$this->_dataIn['inputEstatus'] = 1;
 		 			
@@ -162,7 +162,7 @@ class admin_CompaniesController extends My_Controller_Action
 						$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
 						$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);
 												
-						$nameUserAdmin = $this->_dataIn['inputNombre']." ".$this->_dataIn['inputApaterno']."".$this->_dataIn['inputAmaterno'];
+						$nameUserAdmin = $this->_dataIn['inputNombre']." ".$this->_dataIn['inputApaterno']." ".$this->_dataIn['inputAmaterno'];
 						/*
 						 * Se envia la notificacion, que se creo una nueva empresa */
 						$bodymail   = '<h3>Estimado '.$nameUserAdmin.':</h3>'.
@@ -170,10 +170,10 @@ class admin_CompaniesController extends My_Controller_Action
 									  'Para poder empezar a utilizar el sistema, es necesario ingresar al sistema de administraci&oacute;n Taccsi<br>'.
 									  '<a href="http://taccsi.com/login/main/index">Da Click Aqu&iacute;</a><br/>'.
 									  'o bien copia y pega en tu navegador el siguiente enlace<br>'.
-									  '<b> http://taccsi.com/login/main/index</b>'.									  
-									  'Los datos de acceso son los siguientes:'.
+									  '<b> http://taccsi.com/login/main/index</b><br/>'.									  
+									  'Los datos de acceso son los siguientes:<br/>'.
 									  '<table><tr><td>Clave Empresa: </td><td>'.$dataInfo['CODIGO_EMPRESA'].'</td></tr>'.
-									  '<tr><td>Usuario: </td><td>'.$this->_dataIn['inputnombre'].'</td></tr>'.
+									  '<tr><td>Usuario: </td><td>'.$this->_dataIn['inputUsuario'].'</td></tr>'.
 									  '<tr><td>Contrase&ntilde;a: </td><td>'.$this->_dataIn['inputPassword'].'</td></tr>'.									  
 									  '</table><br/>';						
 						$aMailer    = Array(
@@ -182,6 +182,7 @@ class admin_CompaniesController extends My_Controller_Action
 							'subjectTo' => ('Taccsi - Acceso web'),
 							'bodyTo' 	=> $bodymail,
 						);	
+						Zend_Debug::dump($aMailer);
 					 	$enviar = $cFunctions->sendMailSmtp($aMailer);												
 
 				 		$this->_resultOp = 'okRegister';		 							 				
