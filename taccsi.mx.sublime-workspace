@@ -311,6 +311,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
+			"settings":
+			{
+				"buffer_size": 13147,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/css/style.css",
+			"settings":
+			{
+				"buffer_size": 2502,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -356,6 +372,21 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/register/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegister.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateAssign.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/RastreoController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/operator/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/register/regcompany.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/gralFunctions.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/MainController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/OperatorController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/resetPass.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recoverresq.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recovery.phtml",
@@ -366,16 +397,12 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/libs/phpmailer.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/clientinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateUsers.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateCompanies.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/MainController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/gralFunctions.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateDrivers.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
 		"/Applications/MAMP/conf/apache/extra/httpd-vhosts.conf",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
@@ -392,7 +419,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportInfoTravel.js",
@@ -473,17 +499,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/services/stepone.phtml",
 		"/Users/itecno2/Documents/workspace/ricom/firma/firma.html",
 		"/Users/itecno2/Documents/workspace/taccsi/public/modules/services/js/stepone.js",
-		"/Users/itecno2/Documents/workspace/taccsi/application/views/layouts/header_admin.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/admin/getmore.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/services/step_one.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi/public/modules/login/js/login.js",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/translations/mx/admin.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/translations/mx/errors.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/translations/mx/fields.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/translations/mx/pdf.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/modules/blockuserinfo/translations/mx.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/classes/Mail.php",
-		"/Users/itecno2/Documents/workspace/ricom/prestashop/translations/mx/tabs.php"
+		"/Users/itecno2/Documents/workspace/taccsi/application/views/layouts/header_admin.phtml"
 	],
 	"find":
 	{
@@ -504,6 +520,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"src=\"js/",
 			"PluginDir",
 			"mails",
 			"mail",
@@ -630,8 +647,7 @@
 			"bn",
 			"bnt",
 			"btn",
-			"uber-logo",
-			".png"
+			"uber-logo"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -639,6 +655,7 @@
 		"regex": true,
 		"replace_history":
 		[
+			"src=\"/branding/js/",
 			"',TELEFONO",
 			"NICKNAME='",
 			"',",
@@ -672,8 +689,66 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
+					"settings":
+					{
+						"buffer_size": 13147,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5115,
+								5131
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 575.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/css/style.css",
+					"settings":
+					{
+						"buffer_size": 2502,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2232,
+								2232
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

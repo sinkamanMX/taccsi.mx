@@ -1,245 +1,997 @@
 <!DOCTYPE html>
+<!--
+ * A Design by GraphBerry
+ * Author: GraphBerry
+ * Author URL: http://graphberry.com
+ * License: http://graphberry.com/pages/license
+-->
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Taccsi</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom Google Web Font -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
-
-    <!-- Add custom CSS here -->
-    <link href="css/landing-page.css" rel="stylesheet">
-<style type="text/css">
-.mg-t8{
-    padding-top:8px;
-}
-</style>
-</head>
-
-<body>
-
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only"> Taccsi  </span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/">
-                    <img src="/images/assets/icon-page.png" class="img-responsive" alt="Logo">
-                </a>
-                <!--<a class="navbar-brand" href="http://startbootstrap.com">Start Bootstrap</a>-->
+    
+    <head>
+        <meta charset=utf-8>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TACCSI</title>
+        <!-- Load Roboto font -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <!-- Load css styles -->
+        <link rel="stylesheet" type="text/css" href="/branding/css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="/branding/css/bootstrap-responsive.css" />
+        <link rel="stylesheet" type="text/css" href="/branding/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/branding/css/pluton.css" />
+        <!--[if IE 7]>
+            <link rel="stylesheet" type="text/css" href="/branding/css/pluton-ie7.css" />
+        <![endif]-->
+        <link rel="stylesheet" type="text/css" href="/branding/css/jquery.cslider.css" />
+        <link rel="stylesheet" type="text/css" href="/branding/css/jquery.bxslider.css" />
+        <link rel="stylesheet" type="text/css" href="/branding/css/animate.css" />
+        <!-- Fav and touch icons -->
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/branding/images/ico/apple-touch-icon-144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/branding/images/ico/apple-touch-icon-114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/branding/images/apple-touch-icon-72.png">
+        <link rel="apple-touch-icon-precomposed" href="/branding/images/ico/apple-touch-icon-57.png">
+        <link rel="shortcut icon" href="/branding/images/ico/favicon.ico">
+    </head>
+    
+    <body>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="#" class="brand">
+                        <img src="/branding/images/logo.png" width="240" height="70" alt="Logo" />
+                        <!-- This is website logo -->
+                    </a>
+                    <!-- Navigation button, visible on small resolution -->
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <i class="icon-menu"></i>
+                    </button>
+                    <!-- Main navigation -->
+                    <div class="nav-collapse collapse pull-right">
+                        <ul class="nav" id="top-navigation">
+                            <li class="active"><a href="#home">Inicio</a></li>
+                            <li><a href="#service">Acerca de Taccsi</a></li>
+                            <!--<li><a href="#portfolio">Portfolio</a></li>-->
+                            <!--<li><a href="#about">About</a></li>-->
+                            <li><a href="#clients">Clientes</a></li>
+                            <!--<li><a href="#price">Price</a></li> -->
+                            <li><a href="#custom">Quiero ser Taccista</a></li>
+                            <li><a href="#contact">Contáctanos</a></li>                            
+                        </ul>
+                    </div>
+                    <!-- End main navigation -->
+                </div>
             </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-right navbar-ex1-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="#about">¿Que és?</a>
-                    </li>
-                    <li><a href="#services">¿Como Funciona?</a>
-                    </li>
-                    <li><a href="#contact">Taxista</a>
-                    </li>                    
-                    <li><a href="#contact">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container -->
-    </nav>
-
-    <div class="intro-header">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1>Taccsi</h1>
-                        <h3>Tomar un taxi nunca fue tan fácil</h3>
-                        <hr class="intro-divider">
-
-                        <ul class="list-inline intro-social-buttons">
-                            <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-apple fa fa-fw"></i> <span class="network-name">Apple Store</span></a>
+        <!-- Start home section -->
+        <div id="home">
+            <!-- Start cSlider -->
+            <div id="da-slider" class="da-slider">
+                <div class="triangle"></div>
+                <!-- mask elemet use for masking background image -->
+                <div class="mask"></div>
+                <!-- All slides centred in container element -->
+                <div class="container">
+                    <!-- Start first slide -->
+                    <div class="da-slide">
+                        <h2 class="fittext2">La nueva era del TACCSI</h2>
+                        <h4>Lo principal son nuestros clientes</h4>
+                        <p>Somos una empresa que se preocupa por la experiencia del usuario. Nos preocupamos por ofrecer el mejor servicio del mercado. Aplicamos procesos de control a cada unos de nuestros taccsitas, y contamos con la mejor tecnología para que cada viaje sea una experiencia.</p>
+                        <!--<a href="#" class="da-link button">Read more</a>-->
+                        <div class="da-img">
+                            <img src="/branding/images/Slider01.jpg" alt="image01" width="320">
+                        </div>
+                    </div>
+                    <!-- End first slide -->
+                    <!-- Start second slide -->
+                    <div class="da-slide">
+                        <h2>Inovación y Tecnología</h2>
+                        <h4>Fácil de usar</h4>
+                        <p>Mediante la implementación de diversas tecnologías. Puedes solicitar un Taccsi, desde tu smartphone o a través de nuestro Callcenter. Asegurando que siempre tendras un taccsi disponible para tu translado.</p>
+                        <!--<a href="#" class="da-link button">Read more</a>-->
+                        <div class="da-img">
+                            <img src="/branding/images/Slider02.png" width="320" alt="image02">
+                        </div>
+                    </div>
+                    <!-- End second slide -->
+                    <!-- Start third slide -->
+                    <div class="da-slide">
+                        <h2>Control</h2>
+                        <h4>Administración de flota</h4>
+                        <p>Gracias a nuestra plataforma web. Como dueño de flota, podrá conocer la eficiencia de sus unidades, tener el control de sus viajes y medir el servicio que ofrece a nuestros usuarios. Obtenga el control de su negocio.</p>
+                        <!--a href="#" class="da-link button">Read more</a>-->
+                        <div class="da-img">
+                            <img src="/branding/images/Slider03.png" width="320" alt="image03">
+                        </div>
+                    </div>
+                    <!-- Start third slide -->
+                    <!-- Start cSlide navigation arrows -->
+                    <div class="da-arrows">
+                        <span class="da-arrows-prev"></span>
+                        <span class="da-arrows-next"></span>
+                    </div>
+                    <!-- End cSlide navigation arrows -->
+                </div>
+            </div>
+        </div>
+        <!-- End home section -->
+        <!-- Service section start -->
+        <div class="section primary-section" id="service">
+            <div class="container">
+                <!-- Start title section -->
+                <div class="title">
+                    <h1>Acerca de TACCSI</h1>
+                    <!-- Section's title goes here -->
+                    <p>TACCSI es una plataforma integral que utiliza lo último en tecnología con el objetivo de ofrecer un servicio de transporte seguro y a la vanguardia. Cuenta con la infraestructura necesaria para ofrecer el servicio desde la web, aplicaciones móviles iOS y Android y vía telefónica.</p>
+                    <!--Simple description for section goes here. -->
+                </div>
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="centered service">
+                            <div class="circle-border zoom-in">
+                                <img class="img-circle" src="/branding/images/Service1.png" alt="service 1">
+                            </div>
+                            <h3>Seguro</h3>
+                            <p>Viaja en taxis certificados rastreados via GPS.</p>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="centered service">
+                            <div class="circle-border zoom-in">
+                                <img class="img-circle" src="/branding/images/Service2.png" alt="service 2" />
+                            </div>
+                            <h3>Rápido</h3>
+                            <p>A cualquier hora y en toda la ciudad, hay un taxi cercano para ti.</p>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="centered service">
+                            <div class="circle-border zoom-in">
+                                <img class="img-circle" src="/branding/images/Service3.png" alt="service 3">
+                            </div>
+                            <h3>Fácil</h3>
+                            <p>Puedes pagar en efectivo, con tarjeta o PayPal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Service section end -->
+        <!-- Portfolio section start -->
+       <!-- <div class="section secondary-section " id="portfolio">
+            <div class="triangle"></div>
+            <div class="container">
+                <div class=" title">
+                    <h1>Have You Seen our Works?</h1>
+                    <p>Duis mollis placerat quam, eget laoreet tellus tempor eu. Quisque dapibus in purus in dignissim.</p>
+                </div>
+                <ul class="nav nav-pills">
+                    <li class="filter" data-filter="all">
+                        <a href="#noAction">All</a>
+                    </li>
+                    <li class="filter" data-filter="web">
+                        <a href="#noAction">Web</a>
+                    </li>
+                    <li class="filter" data-filter="photo">
+                        <a href="#noAction">Photo</a>
+                    </li>
+                    <li class="filter" data-filter="identity">
+                        <a href="#noAction">Identity</a>
+                    </li>
+                </ul>-->
+                <!-- Start details for portfolio project 1 -->
+                <!-- <div id="single-project">
+                    <div id="slidingDiv" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio01.png" alt="project 1" />
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>Believe in yourself! Have faith in your abilities! Without a humble but reasonable confidence in your own powers you cannot be successful or happy.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 1 -->
+                    <!-- Start details for portfolio project 2 -->
+                    <!--<div id="slidingDiv1" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio02.png" alt="project 2">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>Life is a song - sing it. Life is a game - play it. Life is a challenge - meet it. Life is a dream - realize it. Life is a sacrifice - offer it. Life is love - enjoy it.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 2 -->
+                    <!-- Start details for portfolio project 3 -->
+                   <!-- <div id="slidingDiv2" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio03.png" alt="project 3">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>How far you go in life depends on your being tender with the young, compassionate with the aged, sympathetic with the striving and tolerant of the weak and strong. Because someday in your life you will have been all of these.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 3 -->
+                    <!-- Start details for portfolio project 4 -->
+                   <!--<div id="slidingDiv3" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio04.png" alt="project 4">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Project for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>Life's but a walking shadow, a poor player, that struts and frets his hour upon the stage, and then is heard no more; it is a tale told by an idiot, full of sound and fury, signifying nothing.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 4 -->
+                    <!-- Start details for portfolio project 5 -->
+                    <!--<div id="slidingDiv4" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio05.png" alt="project 5">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>We need to give each other the space to grow, to be ourselves, to exercise our diversity. We need to give each other space so that we may both give and receive such beautiful things as ideas, openness, dignity, joy, healing, and inclusion.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 5 -->
+                    <!-- Start details for portfolio project 6 -->
+                    <!--<div id="slidingDiv5" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio06.png" alt="project 6">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 6 -->
+                    <!-- Start details for portfolio project 7 -->
+                    <!--<div id="slidingDiv6" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio07.png" alt="project 7">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>Always continue the climb. It is possible for you to do whatever you choose, if you first get to know who you are and are willing to work with a power that is greater than ourselves to do it.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 7 -->
+                    <!-- Start details for portfolio project 8 -->
+                    <!--<div id="slidingDiv7" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio08.png" alt="project 8">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>What if you gave someone a gift, and they neglected to thank you for it - would you be likely to give them another? Life is the same way. In order to attract more of the blessings that life has to offer, you must truly appreciate what you already have.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 8 -->
+                    <!-- Start details for portfolio project 9 -->
+                    <!--<div id="slidingDiv8" class="toggleDiv row-fluid single-project">
+                        <div class="span6">
+                            <img src="/branding/images/Portfolio09.png" alt="project 9">
+                        </div>
+                        <div class="span6">
+                            <div class="project-description">
+                                <div class="project-title clearfix">
+                                    <h3>Webste for Some Client</h3>
+                                    <span class="show_hide close">
+                                        <i class="icon-cancel"></i>
+                                    </span>
+                                </div>
+                                <div class="project-info">
+                                    <div>
+                                        <span>Client</span>Some Client Name</div>
+                                    <div>
+                                        <span>Date</span>July 2013</div>
+                                    <div>
+                                        <span>Skills</span>HTML5, CSS3, JavaScript</div>
+                                    <div>
+                                        <span>Link</span>http://examplecomp.com</div>
+                                </div>
+                                <p>I learned that we can do anything, but we can't do everything... at least not at the same time. So think of your priorities not in terms of what activities you do, but when you do them. Timing is everything.</p>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!-- End details for portfolio project 9 -->
+                    <!--<ul id="portfolio-grid" class="thumbnails row">
+                        <li class="span4 mix web">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio01.png" alt="project 1">
+                                <a href="#single-project" class="more show_hide" rel="#slidingDiv">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix photo">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio02.png" alt="project 2">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv1">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix identity">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio03.png" alt="project 3">
+                                <a href="#single-project" class="more show_hide" rel="#slidingDiv2">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix web">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio04.png" alt="project 4">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv3">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix photo">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio05.png" alt="project 5">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv4">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix identity">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio06.png" alt="project 6">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv5">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix web">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio07.png" alt="project 7" />
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv6">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix photo">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio08.png" alt="project 8">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv7">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                        <li class="span4 mix identity">
+                            <div class="thumbnail">
+                                <img src="/branding/images/Portfolio09.png" alt="project 9">
+                                <a href="#single-project" class="show_hide more" rel="#slidingDiv8">
+                                    <i class="icon-plus"></i>
+                                </a>
+                                <h3>Thumbnail label</h3>
+                                <p>Thumbnail caption...</p>
+                                <div class="mask"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>-->
+        <!-- Portfolio section end -->
+        <!-- About us section start -->
+        <!--<div class="section primary-section" id="about">
+            <div class="triangle"></div>
+            <div class="container">
+                <div class="title">
+                    <h1>Who We Are?</h1>
+                    <p>Duis mollis placerat quam, eget laoreet tellus tempor eu. Quisque dapibus in purus in dignissim.</p>
+                </div>
+                <div class="row-fluid team">
+                    <div class="span4" id="first-person">
+                        <div class="thumbnail">
+                            <img src="/branding/images/Team1.png" alt="team 1">
+                            <h3>John Doe</h3>
+                            <ul class="social">
+                                <li>
+                                    <a href="">
+                                        <span class="icon-facebook-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-twitter-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-linkedin-circled"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="mask">
+                                <h2>Copywriter</h2>
+                                <p>When you stop expecting people to be perfect, you can like them for who they are.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4" id="second-person">
+                        <div class="thumbnail">
+                            <img src="/branding/images/Team2.png" alt="team 1">
+                            <h3>John Doe</h3>
+                            <ul class="social">
+                                <li>
+                                    <a href="">
+                                        <span class="icon-facebook-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-twitter-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-linkedin-circled"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="mask">
+                                <h2>Designer</h2>
+                                <p>When you stop expecting people to be perfect, you can like them for who they are.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span4" id="third-person">
+                        <div class="thumbnail">
+                            <img src="/branding/images/Team3.png" alt="team 1">
+                            <h3>John Doe</h3>
+                            <ul class="social">
+                                <li>
+                                    <a href="">
+                                        <span class="icon-facebook-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-twitter-circled"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <span class="icon-linkedin-circled"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="mask">
+                                <h2>Photographer</h2>
+                                <p>When you stop expecting people to be perfect, you can like them for who they are.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-text centered">
+                    <h3>About Us</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+                </div>
+                <h3>Skills</h3>
+                <div class="row-fluid">
+                    <div class="span6">
+                        <ul class="skills">
+                            <li>
+                                <span class="bar" data-width="80%"></span>
+                                <h3>Graphic Design</h3>
                             </li>
-                            <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-android fa-fw"></i> <span class="network-name">Google Play</span></a>
+                            <li>
+                                <span class="bar" data-width="95%"></span>
+                                <h3>Html & Css</h3>
                             </li>
-
-                            <!--<li><a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
+                            <li>
+                                <span class="bar" data-width="68%"></span>
+                                <h3>jQuery</h3>
+                            </li>
+                            <li>
+                                <span class="bar" data-width="70%"></span>
+                                <h3>Wordpress</h3>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span6">
+                        <div class="highlighted-box center">
+                            <h1>We're Hiring</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, ullamcorper suscipit lobortis nisl ut aliquip consequat. I learned that we can do anything, but we can't do everything...</p>
+                            <button class="button button-sp">Join Us</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!-- About us section end -->
+        <div class="section secondary-section">
+            <div class="triangle"></div>
+            <div class="container centered">
+                <p class="large-text">Tomar un taxi, nunca fue tan fácil. Proximamente busca nuestra aplicación en:</p>
+                <a href="#" class="button">Apple Store</a>
+                <a href="#" class="button">Google Play</a>
+            </div>
+        </div>
+        <!-- Client section start -->
+        <!-- Client section start -->
+        <div id="clients">
+            <div class="section primary-section">
+                <div class="triangle"></div>
+                <div class="container">
+                    <div class="title">
+                        <h1>Nuestros clientes</h1>
+                        <p>Algunos de nuesros clientes satisfechos.</p>
+                    </div>
+                    <div class="row">
+                        <div class="span4">
+                            <div class="testimonial">
+                                <p>"Gracias a TACCSI, puedo saber los ingresos que genera cada una de mis unidades. y poder mejorar el servicio que ofrece cada uno de mis operadores."</p>
+                                <div class="whopic">
+                                    <div class="arrow"></div>
+                                    <!-- <img src="/branding/images/Client1.png" class="centered" alt="client 1">-->
+                                    <strong>Alfredo Ramírez
+                                        <small>Dueño de flota</small>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="testimonial">
+                                <p>"Desde que uso TACCSI, mis ingresos han aumentado. ya que puedo conseguir mas viajes utilizando la aplicación móvil."</p>
+                                <div class="whopic">
+                                    <div class="arrow"></div>
+                                    <!-- <img src="/branding/images/Client2.png" class="centered" alt="client 2">-->
+                                    <strong>Mario Hernández
+                                        <small>Taxista independiente</small>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="testimonial">
+                                <p>"Había usado otras plataformas móviles de taxis. Pero, solo con TACCSI he exprimentado un servicio de calidad y oportuno."</p>
+                                <div class="whopic">
+                                    <div class="arrow"></div>
+                                    <!--<img src="/branding/images/Client3.png" class="centered" alt="client 3">-->
+                                    <strong>Angel Rivas
+                                        <small>Usuario</small>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">
+                        "La Tranquilidad de usar una plataforma que te brinda Atención, Confort, Comodidad, Seguridad en cada uno de tus viajes, utilizando herramientas Inovadoras."
+                    </p>
+                </div>
+            </div>
+        </div>
+       <!-- <div class="section third-section">
+            <div class="container centered">
+                <div class="sub-section">
+                    <div class="title clearfix">
+                        <div class="pull-left">
+                            <h3>Our Clients</h3>
+                        </div>
+                        <ul class="client-nav pull-right">
+                            <li id="client-prev"></li>
+                            <li id="client-next"></li>
+                        </ul>
+                    </div>
+                    <ul class="row client-slider" id="clint-slider">
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo01.png" alt="client logo 1">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo02.png" alt="client logo 2">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo03.png" alt="client logo 3">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo04.png" alt="client logo 4">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo05.png" alt="client logo 5">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo02.png" alt="client logo 6">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <img src="/branding/images/clients/ClientLogo04.png" alt="client logo 7">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>-->
+        <!-- Price section start 
+        <div id="price" class="section secondary-section">
+            <div class="container">
+                <div class="title">
+                    <h1>Price</h1>
+                    <p>Duis mollis placerat quam, eget laoreet tellus tempor eu. Quisque dapibus in purus in dignissim.</p>
+                </div>
+                <div class="price-table row-fluid">
+                    <div class="span4 price-column">
+                        <h3>Basic</h3>
+                        <ul class="list">
+                            <li class="price">$19,99</li>
+                            <li><strong>Free</strong> Setup</li>
+                            <li><strong>24/7</strong> Support</li>
+                            <li><strong>5 GB</strong> File Storage</li>
+                        </ul>
+                        <a href="#" class="button button-ps">BUY</a>
+                    </div>
+                    <div class="span4 price-column">
+                        <h3>Pro</h3>
+                        <ul class="list">
+                            <li class="price">$39,99</li>
+                            <li><strong>Free</strong> Setup</li>
+                            <li><strong>24/7</strong> Support</li>
+                            <li><strong>25 GB</strong> File Storage</li>
+                        </ul>
+                        <a href="#" class="button button-ps">BUY</a>
+                    </div>
+                    <div class="span4 price-column">
+                        <h3>Premium</h3>
+                        <ul class="list">
+                            <li class="price">$79,99</li>
+                            <li><strong>Free</strong> Setup</li>
+                            <li><strong>24/7</strong> Support</li>
+                            <li><strong>50 GB</strong> File Storage</li>
+                        </ul>
+                        <a href="#" class="button button-ps">BUY</a>
+                    </div>
+                </div>
+                <div class="centered">
+                    <p class="price-text">We Offer Custom Plans. Contact Us For More Info.</p>
+                    <a href="#contact" class="button">Contact Us</a>
+                </div>
+            </div>
+        </div>-->
+        <!-- Price section end -->
+        <!-- Newsletter section start 
+        <div class="section third-section">
+            <div class="container newsletter">
+                <div class="sub-section">
+                    <div class="title clearfix">
+                        <div class="pull-left">
+                            <h3>Newsletter</h3>
+                        </div>
+                    </div>
+                </div>
+                <div id="success-subscribe" class="alert alert-success invisible">
+                    <strong>Well done!</strong>You successfully subscribet to our newsletter.</div>
+                <div class="row-fluid">
+                    <div class="span5">
+                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                    </div>
+                    <div class="span7">
+                        <form class="inline-form">
+                            <input type="email" name="email" id="nlmail" class="span8" placeholder="Enter your email" required />
+                            <button id="subscribe" class="button button-sp">Subscribe</button>
+                        </form>
+                        <div id="err-subscribe" class="error centered">Please provide valid email address.</div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!-- Newsletter section end -->
+        <div id="custom" class="custom">
+            <div class="section secondary-section">
+                <div class="container">
+                    <div class="title">
+                        <h1>Taxistas</h1>
+                        <p>Si te registras podrás recibir y atender viajes, para hacerlo solo debes de ingresar al siguiente enlace: <br/>
+                            <a href="/main/register/index">
+                                <p class="info-mail">Registrarte aqui</p>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <!-- Contact section start -->
+        <div id="contact" class="contact">
+            <div class="section secondary-section">
+                <div class="container">
+                    <div class="title">
+                        <h1>Contáctanos</h1>
+                        <p>Si deseas ponerte en contacto con nosotros, no dudes en escribirnos. Será un placer estar en contacto contigo.</p>
+                    </div>
+                </div>
+                <div class="map-wrapper">
+                    <div class="map-canvas" id="map-canvas">Cargando mapa...</div>
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="span5 contact-form centered">
+                                <h3>Escríbenos</h3>
+                                <div id="successSend" class="alert alert-success invisible">
+                                    <strong>Gracias!</strong>Tu mensaje ha sido recibido, pronto nos pondremos en contacto.</div>
+                                <div id="errorSend" class="alert alert-error invisible">Intenta de nuevo.</div>
+                                <form id="contact-form" action="/branding/php/mail.php">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <input class="span12" type="text" id="name" name="name" placeholder="* Nombre..." />
+                                            <div class="error left-align" id="err-name">Por favor, escriba su nombre.</div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <input class="span12" type="email" name="email" id="email" placeholder="* Correo electrónico..." />
+                                            <div class="error left-align" id="err-email">Escriba una dirección de correo válida.</div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <input class="span12" type="phone" name="phone" id="phone" placeholder="* Teléfono..." />
+                                            <div class="error left-align" id="err-phone">Escriba un número telefónico.</div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <textarea class="span12" name="comment" id="comment" placeholder="* Comentario..."></textarea>
+                                            <div class="error left-align" id="err-comment">Escriba su comentario.</div>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <button id="send-mail" class="message-btn">Enviar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="span9 center contact-info">
+                        <p>Carlos Arellano 14, Ciudad Satélite, Naucalpan</p>
+                        <p class="info-mail">contacto@taccsi.com</p>
+                        <p>01 800 TACCSI</p>
+                        <p>01 55 5555555555</p>
+                        <div class="title">
+                            <h3>Síguenos en nuestras redes sociales</h3>
+                        </div>
+                    </div>
+                    <div class="row-fluid centered">
+                        <ul class="social">
+                            <li>
+                                <a href="">
+                                    <span class="icon-facebook-circled"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-twitter-circled"></span>
+                                </a>
+                            </li>
+                           <!--  <li>
+                                <a href="">
+                                    <span class="icon-linkedin-circled"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-pinterest-circled"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-dribbble-circled"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="icon-gplus-circled"></span>
+                                </a>
                             </li>-->
                         </ul>
                     </div>
                 </div>
             </div>
-
         </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.intro-header -->
-
-    <div class="content-section-a">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Movilidad
-                        <!--<br>Special Thanks--></h2>
-                    <p class="lead">Solicite servicio de Taccsi desde su dispositivo móvil en donde quiera que se encuentre
-
-                        <!--<a target="_blank" href="http://join.deathtothestockphoto.com/">Visit their website</a> to become a member.</p>-->
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="img/phones2.png" alt="">
-                </div>
-            </div>
-
+        <!-- Contact section edn -->
+        <!-- Footer section start -->
+        <div class="footer">
+            <p>TACCSI&copy; 2015 Todos los derechos reservados</p>
         </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-a -->
-
-    <div class="content-section-b">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Eficiencia
-                        <!--<br>by PSDCovers-->
-                    </h2>
-                    <p class="lead">Asignación efectiva de Taccsis, visualización del tacci en el mapa desde el momento de la asignación.</p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="img/doge.jpg" alt="">
-                </div>
-            </div>
-
+        <!-- Footer section end -->
+        <!-- ScrollUp button start -->
+        <div class="scrollup">
+            <a href="#">
+                <i class="icon-up-open"></i>
+            </a>
         </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-b -->
-
-    <div class="content-section-a">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Seguridad y confiabilidad.
-                        <!--<br>Font Awesome Icons
-                    -->
-                    </h2>
-                    <p class="lead">Grupo UDA como líder experto en seguridad de automóviles con rastreo satelital aunado al estricto control para el registro de conductores y automóviles que podrán pertenecer a la red de Taccsis le brindarán la confiabilidad de tener un traslado seguro</p>
-                </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="img/seguridad-ios.jpg" alt="">
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-a -->
-    <div class="content-section-b">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">Rapidez
-                        <!--<br>by PSDCovers-->
-                    </h2>
-                    <p class="lead">Por medio de la App y página Web podrá solicitar el servicio el cual será atendido en el momento que lo necesita.</p>
-                </div>
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive" src="img/rapido.jpg" alt="">
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-b -->
-    <div class="banner">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2>Siguenos en:</h2>
-                </div>
-                <div class="col-lg-6">
-                    <ul class="list-inline banner-social-buttons">
-
-                        <li><a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg btn-lg-tw"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
-                        </li>
-                        <li><a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg btn-lg-fc"><i class="fa fa-facebook  fa-fw"></i> <span class="network-name">Facebook</span></a>
-                        </li>
-                        <li><a href="#" class="btn btn-default btn-lg"><i class="fa fa-youtube  btn-lg-yo fa-fw"></i> <span class="network-name">Youtube</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.banner -->
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <!--<ul class="list-inline">
-                        <li><a href="#home">Home</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li><a href="#about">About</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li><a href="#services">Services</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li><a href="#contact">Contact</a>
-                        </li>
-                    </ul>-->
-                    <p class="copyright text-muted small">Taccsi - Todos los derechos reservados.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
-
-</body>
-
+        <!-- ScrollUp button end -->
+        <!-- Include javascript -->
+        <script src="/branding/js/jquery.js"></script>
+        <script type="text/javascript" src="/branding/js/jquery.mixitup.js"></script>
+        <script type="text/javascript" src="/branding/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/branding/js/modernizr.custom.js"></script>
+        <script type="text/javascript" src="/branding/js/jquery.bxslider.js"></script>
+        <script type="text/javascript" src="/branding/js/jquery.cslider.js"></script>
+        <script type="text/javascript" src="/branding/js/jquery.placeholder.js"></script>
+        <script type="text/javascript" src="/branding/js/jquery.inview.js"></script>
+        <!-- Load google maps api and call initializeMap function defined in app.js -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&amp;callback=initializeMap"></script>
+        <!-- css3-mediaqueries.js for IE8 or older -->
+        <!--[if lt IE 9]>
+            <script src="/branding/js/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="/branding/js/app.js"></script>
+    </body>
 </html>
