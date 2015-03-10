@@ -34,7 +34,10 @@ class login_MainController extends My_Controller_Action
             $usuarios = new My_Model_Usuarios();
 			$validate = $usuarios->validateUser($data); //recogemos los valores y mandamos            
 			if($validate){
-				 $dataUser = $usuarios->getDataUser($validate['ID_USUARIO']);
+				 $dataUser = $usuarios->getDataUser($validate['ID_USUARIO']);	
+				 if($dataUser['TIPO_USUARIO']=='2'){
+				 	$activate = $usuarios->setActive($dataUser['ID_USUARIO'],$dataUser['EXTENSION']);	
+				 }	 				 
 			     $sessions = new My_Controller_Auth();
                  $sessions->setContentSession($dataUser);
                  $sessions->startSession();
@@ -50,7 +53,18 @@ class login_MainController extends My_Controller_Action
     
     public function logoutAction(){
 		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();        	
+		$this->_helper->viewRenderer->setNoRender();
+
+		$sessions = new My_Controller_Auth();
+		$perfiles = new My_Model_Perfiles();
+        if($sessions->validateSession()){
+	        $this->_dataUser   = $sessions->getContentSession();
+	        if($this->_dataUser['TIPO_USUARIO']=='2'){
+	        	$usuarios   = new My_Model_Usuarios();
+				$deleteUser = $usuarios->deleteExtension($this->_dataUser['ID_USUARIO']);	
+	        }
+		}		
+		
 		$mysession= new Zend_Session_Namespace('taccSession');
 		$mysession->unsetAll();
 		

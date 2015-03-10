@@ -72,5 +72,46 @@ class admin_JsonController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }    		
-    }      
+    }   
+
+    public function validatextAction(){
+    	try{
+    		$aResult  = Array('status'=> 0);
+    		$aDataExt = Array();
+    		$aDataClient= Array();
+    		$bUserExist = 0;
+    		
+    	    $sessions = new My_Controller_Auth();
+	        if($sessions->validateSession()){
+		        $this->_dataUser   = $sessions->getContentSession();   		
+			}else{
+				$this->_redirect("/login/main/index");
+			}  
+			
+			$this->_dataIn = $this->_request->getParams();
+					
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+			
+			if($this->_dataIn['typaction']=='validate'){
+				$cLlamadas = new My_Model_Llamadas();
+				$cClientes = new My_Model_Clientes();
+								
+				$aDataExt  = $cLlamadas->validateStatus($this->_dataUser['ID_USUARIO']);
+				if(count($aDataExt)>0){
+					$aDataClient = $cClientes->getDataByPhone($aDataExt['NO_LLAMADA']);
+					if(count($aDataClient)>0){
+						$bUserExist  = 1;	
+					}
+				}
+			}
+			 			
+    		echo Zend_Json::encode( $result = array('aData'		  => $aDataExt,
+    												'bUserExist'  => $bUserExist,
+    												'aDataClient' => $aDataClient) );
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        } 
+    }     
 }

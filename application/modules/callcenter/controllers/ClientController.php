@@ -43,7 +43,8 @@ class callcenter_ClientController extends My_Controller_Action
     			}
     		}
 			$this->view->errors 	= $this->_aErrors;	
-			$this->view->resultOp   = $this->_resultOp;   		
+			$this->view->resultOp   = $this->_resultOp;  
+			$this->view->data		= $this->_dataIn; 		
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

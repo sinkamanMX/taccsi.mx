@@ -125,4 +125,23 @@ class My_Model_Clientes extends My_Db_Table
         	echo "Message: " . $e->getMessage() . "\n";                
         }		
 	}
+	
+	public function getDataByPhone($sPhone){
+		try{
+			$result= Array();
+			$sql = "SELECT *
+					FROM ".$this->_name."
+					WHERE TELEFONO = '$sPhone'";
+			$query   = $this->query($sql);
+			if(count($query)>0){
+				$result	 = $query[0];			
+			}
+	        
+			return $result;	   			
+			
+        } catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }  		
+	}	
 }

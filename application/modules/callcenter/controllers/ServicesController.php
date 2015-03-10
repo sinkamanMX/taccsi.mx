@@ -250,7 +250,7 @@ class callcenter_ServicesController extends My_Controller_Action
     	    			$this->_aErrors['errorUpdate'] = 1;
     	    		}
     	    	} 
-    		}	    		
+    		}
     		
     		$this->view->resultOp	= $this->_resultOp;
     		$this->view->aTipos		= $cFunctions->selectDb($aTipos,$dTipo);
@@ -264,5 +264,5 @@ class callcenter_ServicesController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         } 	    	
-    }
+    }    
 }

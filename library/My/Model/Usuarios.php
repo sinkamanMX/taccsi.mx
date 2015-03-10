@@ -39,7 +39,7 @@ class My_Model_Usuarios extends My_Db_Table
 	                FROM ADMIN_USUARIOS u
 					INNER JOIN ADMIN_TIPO_USUARIOS tu ON u.TIPO_USUARIO = tu.ID_TIPO_USUARIO
 					INNER JOIN ADMIN_EMPRESAS    E  ON u.ID_EMPRESA    = E.ID_EMPRESA
-	                WHERE u.ID_USUARIO = $datauser";	    	
+	                WHERE u.ID_USUARIO = $datauser";	 	    	
 			$query   = $this->query($sql);
 			if(count($query)>0){
 				$result	 = $query[0];			
@@ -230,6 +230,84 @@ class My_Model_Usuarios extends My_Db_Table
         }
 		return $result;
     }   
+    
+    public function setActive($idUser,$userExtension){
+		$result= false;
+    	$sql ="SELECT  *
+                FROM OPERADORES_ACTIVOS
+                WHERE ID_USUARIO = ".$idUser." LIMIT 1";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0];			
+		}
+
+		if(isset($result['ID_USUARIO']) && $result['ID_USUARIO']!=""){
+			$this->updateExtension($idUser);			
+		}else{
+			$this->insertExtension($idUser,$userExtension);		
+		}
+
+		return $result;
+    }
+    
+    public function updateExtension($idUser){
+        $result  = false;
+        
+        $sql= "UPDATE  OPERADORES_ACTIVOS
+				SET FECHA_ACTIVO = CURRENT_TIMESTAMP,
+					NO_LLAMADA   = NULL,
+					ESTATUS 	 = -1
+					WHERE ID_USUARIO = ".$idUser;	  
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }   
+    
+    public function insertExtension($idUser,$userExtension){
+        $result  = false;
+        
+        $sql= "INSERT INTO  OPERADORES_ACTIVOS
+				SET FECHA_ACTIVO = CURRENT_TIMESTAMP,
+					NO_LLAMADA   = NULL,
+					ESTATUS 	 = -1,
+					EXTENSION    = '".$userExtension."', 
+					ID_USUARIO   = ".$idUser;	  
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }      
+    
+    public function deleteExtension($idUser){
+        $result  = false;
+        
+        $sql= "DELETE FROM OPERADORES_ACTIVOS				
+					WHERE ID_USUARIO = ".$idUser." LIMIT 1";	  
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }    
+    
         
     /*
 	public function userExist($datauser){

@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"aDA",
+				"aDataExt"
+			],
+			[
 				"inp",
 				"inputCheck"
 			],
@@ -311,22 +315,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-			"settings":
-			{
-				"buffer_size": 13147,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/css/style.css",
-			"settings":
-			{
-				"buffer_size": 2502,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -372,13 +360,35 @@
 	},
 	"file_history":
 	[
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/style.css",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/AdminLTE.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/register/index.phtml",
+		"/private/var/folders/xg/lt4w3ztj27l4zjhjht4rjhww0000gn/T/fz3temp-1/Functions.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/bootstrap.min.css",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/MainController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/waiting.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/monitorInfo.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recoverresq.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/RegisterController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/createservice.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/ValidationController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CompaniesController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/new.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/waiting/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/waiting.phtmñ",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegister.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateAssign.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/RastreoController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/operator/index.phtml",
@@ -388,24 +398,19 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/OperatorController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/resetPass.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recoverresq.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recovery.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/recovery.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/login.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/users/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/libs/phpmailer.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/clientinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateUsers.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateCompanies.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateDrivers.js",
 		"/Applications/MAMP/conf/apache/extra/httpd-vhosts.conf",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/reporte.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/reporteRastreo.js",
@@ -416,7 +421,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/AdminLTE/app.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freedrivers/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freedrivers/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
@@ -438,15 +442,12 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelon/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/jqueryKnob/jquery.knob.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/AdminLTE.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/daterangepicker/daterangepicker.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/reportTravelOn.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/users/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/tableCompanies.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateTaxi.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/tableTaxis.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/new.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/jasny-bootstrap.min.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/gralTables.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/searchtaxis.js",
@@ -455,10 +456,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/users/getingo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/reportincidencia.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/atencionInfo.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_blank.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/createservice.phtml",
 		"/Users/itecno2/Downloads/AdminLTE-master/pages/UI/general.html",
 		"/Users/itecno2/Documents/workspace/taccsi/public/controllers/callcenter/services/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi/application/modules/callcenter/views/scripts/main/index.phtml",
@@ -489,17 +487,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi/public/controllers/login/js/login.js",
 		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/login/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/admin/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/controllers/UsersController.php",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/controllers/ServicesController.php",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/controllers/LoginController.php",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/controllers/AdminController.php",
-		"/Users/itecno2/Documents/workspace/taccsi/taccsi.sublime-workspace",
-		"/Users/itecno2/Documents/workspace/taccsi/public/modules/services/js/scripts.js",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/services/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/views/scripts/services/stepone.phtml",
-		"/Users/itecno2/Documents/workspace/ricom/firma/firma.html",
-		"/Users/itecno2/Documents/workspace/taccsi/public/modules/services/js/stepone.js",
-		"/Users/itecno2/Documents/workspace/taccsi/application/views/layouts/header_admin.phtml"
+		"/Users/itecno2/Documents/workspace/taccsi/application/modules/admin/controllers/UsersController.php"
 	],
 	"find":
 	{
@@ -520,6 +508,20 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"h-40",
+			"offset",
+			"ooffset",
+			"color",
+			"307095",
+			"3c8dbc",
+			"428bca",
+			"content",
+			"toggleBounce",
+			"toogle",
+			"remove",
+			"removeMap",
+			"sendMailSmtp",
+			"td",
 			"src=\"js/",
 			"PluginDir",
 			"mails",
@@ -633,21 +635,7 @@
 			"class_exists",
 			"footer-admin.phtml",
 			"inside",
-			"BODY",
-			"global he",
-			"down",
-			"owl-ca",
-			"					<p id=\"requiredfieldsmsg\" class=\"sf_required_fields_msg\"><sup><span class=\"required\">*</span></sup> These fields are required.</p></div>\n					<p>&nbsp;</p>",
-			"uppercase",
-			"contact-p",
-			"h1",
-			"x2",
-			"../font/",
-			"uber-logo",
-			"bn",
-			"bnt",
-			"btn",
-			"uber-logo"
+			"BODY"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -655,6 +643,8 @@
 		"regex": true,
 		"replace_history":
 		[
+			"h-50",
+			"181a1c",
 			"src=\"/branding/js/",
 			"',TELEFONO",
 			"NICKNAME='",
@@ -689,66 +679,8 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-					"settings":
-					{
-						"buffer_size": 13147,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5115,
-								5131
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 575.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "public/css/style.css",
-					"settings":
-					{
-						"buffer_size": 2502,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2232,
-								2232
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],

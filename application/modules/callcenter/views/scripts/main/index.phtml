@@ -18,23 +18,26 @@
                     </div>                       
                 </div><!-- /.box-header -->
                 <!-- form start -->
-                <form role="form">                                  
+                <form role="form" method="POST" action="/callcenter/main/index" id="FormData">
+                    <input type="hidden" name="optReg" value="search" />
+                    <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+
                     <div class="box-body">                                          
                         <div class="form-group col-xs-3">
                             <label for="inputFindName">Nombre</label>
-                            <input type="text" class="form-control" id="inputFindName" placeholder="Nombre">
+                            <input type="text" class="form-control" name="namefilter" id="inputFindName" placeholder="Nombre" value="<?php echo @$this->aData['namefilter']; ;?>">
                         </div>
                         <div class="form-group col-xs-3">
                             <label for="inputFindApp">Apellido Paterno</label>
-                            <input type="text" class="form-control" id="inputFindApp" placeholder="Apellido Paterno">
+                            <input type="text" class="form-control" name="appfilter"  id="inputFindApp" placeholder="Apellido Paterno" value="<?php echo @$this->aData['appfilter']; ;?>">
                         </div>                                                                                                                                              
                         <div class="form-group col-xs-3">
                             <label for="inputFindApm">Appelido Materno</label>
-                            <input type="text" class="form-control" id="inputFindApm" placeholder="Appelido Materno">
+                            <input type="text" class="form-control" name="apmfilter"  id="inputFindApm" placeholder="Appelido Materno" value="<?php echo @$this->aData['apmfilter']; ;?>">
                         </div>
                         <div class="form-group col-xs-3">
                             <label for="inputFindNumber">Nùmero Telefónico</label>
-                            <input type="text" class="form-control" id="inputFindNumber" placeholder="Nùmero Telefónico">
+                            <input type="text" class="form-control" name="telfilter"  id="inputFindNumber" placeholder="Nùmero Telefónico" value="<?php echo @$this->aData['telfilter'];?>">
                         </div>
                     </div>
 
@@ -64,8 +67,17 @@
                                 <th> </th>
                             </tr>
                         </thead>
-                        <tbody>                               
-
+                        <tbody> 
+                            <?php foreach(@$this->aDataTable as $key => $items): ?>                              
+                                <tr>
+                                    <td><?php echo $items['NAME'];?></td>
+                                    <td><?php echo $items['APP'];?></td>
+                                    <td><?php echo $items['APM'];?></td>
+                                    <td><?php echo $items['TELEFONO'];?></td>
+                                    <td><button type="button" class="btn btn-primary" onClick="getToServicio(<?php echo $items['ID_SRV_USUARIO'];?>)"> 
+                                        <i class="fa fa-arrow-circle-right"></i> </button></td>
+                                </tr>                                
+                            <?php endforeach;?>
                         </tbody>
 
                         <tfoot></tfoot>
