@@ -1,5 +1,5 @@
 <?php $this->headScript()->appendFile('/controllers/reports/js/reportCompanies.js') ?>
-<aside class="right-side">
+
     <section class="content-header">
         <h1>
             Resumen de Empresas
@@ -85,7 +85,6 @@
             </div><!-- /.box -->                
         </div>           
     </section>
-</aside>
 <script>
     var aResumeTravels= [
         <?php foreach(@$this->aResumen as $key => $items):?>
@@ -100,7 +99,7 @@
     var dataCurso = [
         <?php foreach(@$this->aResumen as $key => $items):?>
             <?php if(isset($items['ESTATUS'][5])):?>
-                { "Empresa": "<?php echo $items['TITULO']; ?>", "Viajes": <?php echo $items['ESTATUS'][5]['TOTAL']; ?> }
+                { "Empresa": "<?php echo $items['TITULO']; ?>", "Viajes": <?php echo $items['ESTATUS'][5]['TOTAL']; ?> },
             <?php endif;?>
         <?php endforeach;?>
     ];    

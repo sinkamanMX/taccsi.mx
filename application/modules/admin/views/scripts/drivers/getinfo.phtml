@@ -4,7 +4,7 @@
 <?php $this->headScript()->appendFile('/controllers/admin/js/validateDrivers.js') ?>
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
 <input id="hRefLinkMain" type="hidden" value="/admin/drivers/index" />
-<aside class="right-side">
+
     <section class="content">
         <div id="divAlert" class="alert alert-danger alert-dismissable hide">
             <i class="fa fa-ban"></i>
@@ -156,7 +156,6 @@
             </div><!-- /.box -->
         </div>
     </section><!-- /.content -->
-</aside><!-- /.right-side --> 
 
 <div class="modal fade " id="MyModalSearch" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">

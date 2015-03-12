@@ -5,6 +5,7 @@ var chartCurso;
 var chartRatings;
 
 $( document ).ready(function() {    
+  /*
     $('.daterange').daterangepicker(
             {
                 ranges: {
@@ -20,7 +21,7 @@ $( document ).ready(function() {
             },
     function(start, end) {
         alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    });
+    });*/
 
     $('#tableData').dataTable({
       "bDestroy": true,
@@ -50,13 +51,13 @@ $( document ).ready(function() {
     });   
 
     //Make the dashboard widgets sortable Using jquery UI
-    $(".connectedSortable").sortable({
+    /*$(".connectedSortable").sortable({
         placeholder: "sort-highlight",
         connectWith: ".connectedSortable",
         handle: ".box-header, .nav-tabs",
         forcePlaceholderSize: true,
         zIndex: 999999
-    }).disableSelection(); 
+    }).disableSelection(); */
 
     chart1 = new cfx.Chart();
     chart1.setGallery(cfx.Gallery.Bar);  

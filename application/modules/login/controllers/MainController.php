@@ -4,7 +4,7 @@ class login_MainController extends My_Controller_Action
 {
     public function init()
     {
-		$this->view->layout()->setLayout('admin_layout');
+		$this->view->layout()->setLayout('layout_login');
     }
 
     public function indexAction()
@@ -16,7 +16,7 @@ class login_MainController extends My_Controller_Action
 			}    	
 			    	
 	    	$this->view->header = true;
-	    	$this->view->layout()->setLayout('admin_layout'); 
+	    	$this->view->layout()->setLayout('layout_login'); 
           
         } catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
@@ -76,7 +76,7 @@ class login_MainController extends My_Controller_Action
     public function recoveryAction(){
 		try{
 			$this->view->header = false;
-	    	$this->view->layout()->setLayout('admin_layout');
+	    	$this->view->layout()->setLayout('layout_register');
 	    	
 	    	$cUsuarios  = new My_Model_Usuarios();
 			$cFunctions = new My_Controller_Functions();
@@ -112,15 +112,7 @@ class login_MainController extends My_Controller_Action
 							'nameTo' 	=> $sNameuser,
 							'subjectTo' => ('Taccsi - Recuperaci&oacute;n de Contrase&ntilde;a'),
 							'bodyTo' 	=> $bodymail,
-						);					
-						
-					 	$configMail = array(
-							'ssl'      => 'ssl',
-				            'port'     => '465','auth' => 'login',
-							'urlSmtp'  => 'smtp.gmail.com',
-							'username' => 'tienda.ricom@gmail.com',			
-						    'password' => '7ienD4r1c0M.mX'); 
-						
+						);
 					 	$enviar = $cFunctions->sendMailSmtp($aMailer);
 					   	$sResult= 'okRegister';						
 					}									
@@ -141,7 +133,7 @@ class login_MainController extends My_Controller_Action
     public function recoverresqAction(){
     	try{
 			$this->view->header = false;
-	    	$this->view->layout()->setLayout('admin_layout');
+	    	$this->view->layout()->setLayout('layout_register');
 	    	
 	    	$cUsuarios  = new My_Model_Usuarios();
 			$cFunctions = new My_Controller_Functions();

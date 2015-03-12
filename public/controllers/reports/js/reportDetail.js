@@ -7,14 +7,14 @@ var chartRatings;
 
 $( document ).ready(function() {
       //Make the dashboard widgets sortable Using jquery UI
-    $(".connectedSortable").sortable({
+    /*$(".connectedSortable").sortable({
         placeholder: "sort-highlight",
         connectWith: ".connectedSortable",
         handle: ".box-header, .nav-tabs",
         forcePlaceholderSize: true,
         zIndex: 999999
     }).disableSelection(); 
-
+*/
     chart1 = new cfx.Chart();
     chart1.setGallery(cfx.Gallery.Pie);  
     chart1.setDataSource(aResumeTravels);

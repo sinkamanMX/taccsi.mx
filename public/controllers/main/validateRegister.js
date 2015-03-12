@@ -12,22 +12,7 @@ $().ready(function() {
                 maxlength: 10
             }, 
             inputPassword   : "required",
-            inputCpassword  : {
-                required: true,
-                equalTo: "#inputPassword",
-            },
-            inputTaxip      : "required",
-            inputMarca      : "required",
-            inputModelo     : "required",
-            inputColor      : "required",
-            inputPlacas     : "required",
-            inputEstatus    : "required",  
-            inputAno        : {
-                required: true,
-                number: true,
-                minlength: 4,
-                maxlength: 4
-            }            
+            inputRFC        : "required"
         },
         messages: {
             inputNombre     : "Campo Requerido",
@@ -36,28 +21,13 @@ $().ready(function() {
             inputUsuario    : "Campo Requerido",
             inputTipo       : "Campo Requerido",
             inputPassword   : "Campo Requerido",
-            inputCpassword  : {
-                required    : "Campo Requerido",
-                equalTo     : "La contraseña no coincide."
-            }, 
             inputPhone    : {
                 required  : "Campo Requerido",
                 number    : "Este campo acepta solo números",
                 minlength : "El Teléfono debe de ser de 10 dígitos",
                 maxlength : "El Teléfono debe de ser de 10 dígitos"
             },
-            inputTaxip      : "Campo Requerido",
-            inputMarca      : "Campo Requerido",
-            inputModelo     : "Campo Requerido",
-            inputColor      : "Campo Requerido",
-            inputPlacas     : "Campo Requerido",
-            inputEstatus    : "Campo Requerido",
-            inputAno        : {
-                required  : "Campo Requerido",
-                number    : "Este campo acepta solo números",
-                minlength : "El Año debe de ser de 4 dígitos",
-                maxlength : "El Año debe de ser de 4 dígitos",          
-            }              
+            inputRFC        : "Campo Requerido"    
         },
         submitHandler: function(form) {
             form.submit();

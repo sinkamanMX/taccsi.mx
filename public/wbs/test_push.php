@@ -1,39 +1,63 @@
 <?php
-    $url = "https://ws.pushapps.mobi/RemoteAPI/CreateNotification";
-    $token = 'APA91bH7pr2nY-vRK1aH5ySz77ZPEWsCCaMTZNQzNl8p3KQWRVAfnQrdIuE_YT8Kep5pNwZ9pcTBpvr3qMr7YUYmuouR9xXHbLdaZuxE2E_vitDwPI4Bk9qzmKXDR_8-ThsYe7SXM-pp9-5lOcTC43xW6KB70mYAEddJYLj29iE2SZvoUOQJBmI';
-    $data = array(
-                  'SecretToken'                     => '13695fb2-6fd8-4acc-981b-baedaf84a5e1', ## Your app secret token
-                  'Message' => 'Tu tacssii va en camino, tablet', ## The message you want to send
-                  'Platforms' => array(),## Optional, platforms to send to, if empty will send to all configured platforms, will be overridden if Devices is        specified
-                  'Devices' => array(array(
-                                           'PushToken' => $token, ## Device push token
-                                           'DeviceType' => 1
-                                           )) ## Optional, array of devices to send, if empty will send to all registered users, or by Platforms if specified
-                  );
-     
-    $content = json_encode($data);
-     
-    $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_HEADER, false);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_HTTPHEADER,
-                array("Content-type: application/json"));
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-     
-    $json_response = curl_exec($curl);
-     
-    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-     
-    if ( $status != 200 ) {
-        die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
-    }
-     
-    curl_close($curl);
-     
-   // echo "Response: " . $json_response . "\n";
-//	   var_dump(json_decode($json_response));
-	  // echo $x->{'code'};  
-$x =json_decode($json_response);
-echo $x->Code;   
+
+function envia_push_dev_taccista($mensaje,$device,$so){
+    $res = false;
+    define('APPKEY','nlum2ZrFQzuNmejH_fyZGA'); // Your App Key
+    define('PUSHSECRET', 'yDVzQnmPSyGd_nuI7Cf-_w'); // Your Master Secret
+    define('PUSHURL', 'https://go.urbanairship.com/api/push/');
+
+   $iosspecific = array();
+   $iosspecific['badge'] = "+1";
+   $iosspecific['sound'] = "1@qwerty@123";
+
+   $notification = array();
+   $notification['alert'] = $mensaje;
+   
+   $platform = array();
+   if ($so == 'I'){
+     $notification['ios'] = $iosspecific;
+     array_push($platform, "ios");
+     $token = array();
+     $token ['device_token'] = $device;
+   } else {
+     array_push($platform, "android");
+     $token = array();
+     $token ['apid'] = $device;
+   }
+   $push = array("audience"=>$token, "notification"=>$notification, "device_types"=>$platform);
+   //$json = json_encode_noescape_slashes_unicode ($push);
+   $json = json_encode($push);
+   $payload = $json;
+   //echo "Envio: " . $payload . "\n";
+   $session = curl_init(PUSHURL);
+     curl_setopt($session, CURLOPT_USERPWD, APPKEY . ':' . PUSHSECRET);
+     curl_setopt($session, CURLOPT_POST, True);
+     curl_setopt($session, CURLOPT_POSTFIELDS, $json);
+     curl_setopt($session, CURLOPT_HEADER, False);
+     curl_setopt($session, CURLOPT_RETURNTRANSFER, True);
+     curl_setopt($session, CURLOPT_HTTPHEADER, array('Content-Type:application/json', 'Accept: application/vnd.urbanairship+json; version=3;'));
+     $content = curl_exec($session);
+     //echo "Response: " . $content . "\n";
+     // Check if any error occured
+     $response = curl_getinfo($session);
+     if($response['http_code'] != 202) {
+       $result = "Fallo: " . $response['http_code'];
+     } else {
+       $result = "OK";
+       $res = true;
+     }
+     curl_close($session);
+     echo $result;
+     echo $content;
+     echo $payload;
+     //log_push($device,$payload,$content,$result);
+     return $res;
+   }
+
+$mensaje = 'Prueba';
+$so = 'I';
+$device = 'cccf0a6fe883177cb5b0bdfdb3ba10c71ae3425dfefd40a67d63d4a0616ab2d8';
+
+envia_push_dev_taccista($mensaje,$device,$so);
+
 ?>

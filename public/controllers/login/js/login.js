@@ -8,21 +8,27 @@ $( document ).ready(function() {
 });
 
 function validatelogin(){
+	$("#formg-user").removeClass("has-warning");
+	$("#formg-pass").removeClass("has-warning");
+
 	$("#lbl_user").hide();
 	$("#lbl_pass").hide();
-	$("#div-msg").hide();
-
+	$("#div-msg").html("");
+	$("#div-msgError").hide();
+	
 	var userLogin = $("#txt-user").val();
 	var passLogin = $("#txt-pass").val(); 
 
 	
 	if(userLogin=="" && userLogin.length==0){		
 		$("#lbl_user").show();
+		$("#formg-user").addClass("has-warning");
 		return false;
 	}
 
 	if(passLogin=="" && passLogin.length==0){		
 		$("#lbl_pass").show();
+		$("#formg-pass").addClass("has-warning");
 		return false;
 	}
 
@@ -41,11 +47,11 @@ function validatelogin(){
             if(result == 'logged'){
                 location.href='/admin/main/inicio';
             }else if(result == 'problem'){
-            	$("#div-msg").show();
-                $("#div-msg").html("Por cuestion de seguridad solo se puede ingresar una vez por usuario.");
+            	$("#div-msgError").show();            	
+				$("#div-msg").html("Por cuestion de seguridad solo se puede ingresar una vez por usuario.");
             }else{
-            	$("#div-msg").show();
-                $("#div-msg").html("Usuario y/o contraseña incorrectos");
+            	$("#div-msgError").show(); 
+				$("#div-msg").html("Usuario y/o contraseña incorrectos.");
             }	        
 	    }
 	});

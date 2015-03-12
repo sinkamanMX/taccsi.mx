@@ -1,115 +1,119 @@
 <?php $this->headScript()->appendFile('/controllers/admin/js/validateUsers.js') ?>
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
 <input id="hRefLinkMain" type="hidden" value="/admin/users/index" />
-<aside class="right-side">
-    <section class="content">
-        <div id="divAlert" class="alert alert-danger alert-dismissable hide">
-            <i class="fa fa-ban"></i>
-            <b>!Atención¡</b>
-            <div id="divErrorContent">                
+<section class="content">
+    <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+        <i class="fa fa-ban"></i>
+        <b>!Atención¡</b>
+        <div id="divErrorContent">                
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="box box-primary row-min-h450">
+            <div class="box-header">
+                <h3 class="box-title">Información del Usuario</h3>
             </div>
-        </div>
-
-        <div class="col-xs-12">
-          <div class="box box-primary row-min-h450">
-                <div class="box-header">
-                    <h3 class="box-title">Información del Usuario</h3>
+            <?php if(@$this->errors['eUsuario']):?>
+                <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <h4>Error</h4>
+                  <div>La Usuario no se encuentra disponible</div>
                 </div>
+            <?php endif;?>
 
-                <?php if(@$this->errors['eUsuario']):?>
-                    <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
-                      <button type="button" class="close" data-dismiss="alert">×</button>
-                      <h4>Error</h4>
-                      <div>La Usuario no se encuentra disponible</div>
-                    </div>
-                <?php endif;?>
+            <?php if(@$this->resultOp=='okRegister'):?>
+                <div class="alert alert-success alert-dismissable">
+                    <i class="fa fa-check"></i>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <b>!Atención¡</b> Los datos se han guardado correctamente.
+                </div>
+            <?php endif;?>                
 
-                <?php if(@$this->resultOp=='okRegister'):?>
-                    <div class="alert alert-success alert-dismissable">
-                        <i class="fa fa-check"></i>
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <b>!Atención¡</b> Los datos se han guardado correctamente.
-                    </div>
-                <?php endif;?>                
+            <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+                <div id="divAlert" class="alert alert-danger alert-dismissable">
+                    <i class="fa fa-ban"></i>
+                    <b>!Atención¡</b>
+                    <div>Usted no tiene permiso para ver esta información</div>
+                </div>                                      
+            <?php else:?>   
+            <form role="form" method="POST" action="/admin/users/getinfo" id="FormData" >
+                <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
 
-                <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
-                    <div id="divAlert" class="alert alert-danger alert-dismissable">
-                        <i class="fa fa-ban"></i>
-                        <b>!Atención¡</b>
-                        <div>Usted no tiene permiso para ver esta información</div>
-                    </div>                                      
-                <?php else:?>   
-                    <form role="form" method="POST" action="/admin/users/getinfo" id="FormData" >
-                        <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
-                        <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
 
-                        <div class="box-body">
-                            <div class="col-xs-12">
-                                <div class="form-group col-xs-4">
-                                    <label for="inputNombre">Nombre</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
-                                </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="inputApaterno">Ap. Paterno</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
-                                </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="inputAmaterno">Ap. Materno</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
-                                </div>
+                <div class="box-body">
+                       <div class="col-xs-12">
+                            <div class="form-group col-xs-4">
+                                <label for="inputNombre">Nombre</label>
+                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
                             </div>
-                            <div class="col-xs-12">
-                                <div class="form-group col-xs-4">
-                                    <label for="inputNombre">Usuario</label>
-                                    <input type="text" class="form-control" autocomplete="off" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['NICKNAME']; ?>">
-                                </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="inputApaterno">Contraseña</label>
-                                    <input type="password" class="form-control upperClass" autocomplete="off" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
-                                </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="inputAmaterno">Confirmar Contraseña</label>
-                                    <input type="password" class="form-control upperClass" autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
-                                </div>
+                            <div class="form-group col-xs-4">
+                                <label for="inputApaterno">Ap. Paterno</label>
+                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
                             </div>
-                            <div class="col-xs-12">
-                                <div class="form-group col-xs-4">
-                                    <label for="inputPhone">Perfil</label>
-                                    <div class="input-group col-xs-12">                     
-                                        <select class="form-control" id="inputTipo" name="inputTipo" >
-                                            <option value="">Seleccione una opción</option>
-                                            <?php echo $this->aPerfiles;?>                                
-                                        </select>
-                                    </div>
-                                </div>                      
-                                <div class="form-group col-xs-4">
-                                    <label for="inputPhone">Teléfono</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-phone"></i>
-                                        </div>                            
-                                        <input type="text" class="form-control upperClass col-xs-4" autocomplete="off" name="inputPhone" id="inputPhone" placeholder="Teléfono" value="<?php echo @$this->data['TELEFONO']; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group col-xs-4">
-                                    <label for="inputPhone">Estatus</label>
-                                    <div class="input-group col-xs-12">                     
-                                        <select class="form-control" id="inputEstatus" name="inputEstatus" >
-                                            <option value="">Seleccione una opción</option>
-                                            <?php echo $this->aStatus;?>                                
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>                                          
-                        </div><!-- /.box-body -->
-
-                        <div class="box-footer col-xs-12">                                                        
-                            <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
-                            <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                            <div class="form-group col-xs-4">
+                                <label for="inputAmaterno">Ap. Materno</label>
+                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
+                            </div>
                         </div>
-                    </form>
-                <?php endif;?>
-            </div><!-- /.box -->
-        </div>
-    </section><!-- /.content -->
-</aside><!-- /.right-side -->           
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-4">
+                                <label for="inputNombre">Usuario</label>
+                                <input type="text" class="form-control" autocomplete="off" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['NICKNAME']; ?>">
+                            </div>
+                            <div class="form-group col-xs-4">
+                                <label for="inputApaterno">Contraseña</label>
+                                <input type="password" class="form-control upperClass" autocomplete="off" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
+                            </div>
+                            <div class="form-group col-xs-4">
+                                <label for="inputAmaterno">Confirmar Contraseña</label>
+                                <input type="password" class="form-control upperClass" autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="form-group col-xs-4">
+                                <label for="inputPhone">Perfil</label>
+                                <div class="input-group col-xs-12">                     
+                                    <select class="form-control" id="inputTipo" name="inputTipo" >
+                                        <option value="">Seleccione una opción</option>
+                                        <?php echo $this->aPerfiles;?>                                
+                                    </select>
+                                </div>
+                            </div>                      
+                            <div class="form-group col-xs-4">
+                                <label for="inputPhone">Teléfono</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>                            
+                                    <input type="text" class="form-control upperClass col-xs-4" autocomplete="off" name="inputPhone" id="inputPhone" placeholder="Teléfono" value="<?php echo @$this->data['TELEFONO']; ?>">
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-4">
+                                <label for="inputPhone">Estatus</label>
+                                <div class="input-group col-xs-12">                     
+                                    <select class="form-control" id="inputEstatus" name="inputEstatus" >
+                                        <option value="">Seleccione una opción</option>
+                                        <?php echo $this->aStatus;?>                                
+                                    </select>
+                                </div>
+                            </div>
+                        </div>  
+
+                    <div class="form-group">
+                      
+                    </div>
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary margin-5">Guardar</button>
+                    </div>
+                  </div>
+                </form>  
+            <?php endif;?>
+        </div><!-- /.box -->
+    </div>
+</section><!-- /.content -->

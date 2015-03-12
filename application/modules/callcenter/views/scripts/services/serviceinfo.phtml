@@ -1,11 +1,10 @@
 <?php $this->headScript()->appendFile('/js/jquery.countdown360.js'); ?>
 <?php $this->headScript()->appendFile('/controllers/callcenter/services/js/serviceinfo.js') ?>
 
-<aside class="right-side">
     <section class="content-header no-margin">
         <h1 class="text-center">
             <a class="pull-left" href="/callcenter/client/clientinfo?strClient=<?php echo @$this->aDataViaje['ID_CLIENTE'];?>">
-                <i class="fa fa-arrow-circle-left"></i>
+                <i class="fa fa-arrow-circle-left"></i> Regresar
             </a>            
             Información del Viaje
             <medium>#<?php echo $this->idViaje;?></medium>
@@ -178,11 +177,10 @@
                 </div>
             </div>                        
         </div>
-        <div class="row">
+        <!--<div class="row">
             <button class="btn btn-primary btn-block" onClick="location.href='/callcenter/main/index'">Terminar</button>
-        </div>
+        </div>-->
     </section>
-</aside>
 
 <div class="modal fade" id="ModalConfirm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">

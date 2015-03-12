@@ -1,11 +1,18 @@
 <?php $this->headScript()->appendFile('/controllers/monitorInfo.js') ?>
 <div class="col-xs-12">
+	<div class="pull-right">
+		<a href="/callcenter/main/index">
+			Salir de Llamada en Espera
+		</a>		
+	</div>
+</div>
+<div class="col-xs-12">
 	<img class="col-xs-offset-5" src="/images/assets/icon-page.png" class="img-responsive center-block" alt="Logo">
 	<div id="callWait" class="col-xs-offset-4">
-		<h2>En espera de una Llamada</h2>
+		<h2 class="margin-l5">En espera de una Llamada</h2>
 	</div>
 	<div id="callIncoming" class="col-xs-offset-4">
-		<h2>Llamada Entrante, Contesta!</h2>
+		<h2 class="margin-l5">Llamada Entrante, Contesta!</h2>
 	</div>				
 	<img id="loader1" class="col-xs-offset-5" src="/images/assets/loading.gif" alt="loading gif"/>
 </div>

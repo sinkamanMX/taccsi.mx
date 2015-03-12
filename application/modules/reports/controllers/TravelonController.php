@@ -1,7 +1,7 @@
 <?php
 class reports_TravelonController extends My_Controller_Action
 {
-	protected $_clase = 'mtravelon';
+	protected $_clase = 'rtravelon';
 	
     public function init()
     {

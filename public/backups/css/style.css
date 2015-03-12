@@ -1,0 +1,158 @@
+.error{
+  color: #b94a48;
+  border-color: #b94a48 !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;  
+}
+
+.text-error {
+  color: #b94a48;
+}
+.control-group.error .checkbox, .control-group.error .radio, .control-group.error input, .control-group.error select, .control-group.error textarea {
+    color: #b94a48 !important;
+}
+.control-group.error input, .control-group.error select, .control-group.error textarea {
+    border-color: #b94a48 !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
+}
+
+.bg-white{
+  background-color: #FFFFFF;
+}
+.row-min-h30{
+  min-height: 30px;
+}
+.row-min-h{
+  min-height: 550px;
+}
+.row-min-h200{
+  min-height: 200px;
+}
+.row-min-h300{
+  min-height: 300px;
+}
+.row-min-h350{
+  min-height: 350px;
+}
+.row-min-h450{
+  min-height: 450px;
+}
+.row-min-h470{
+  min-height: 470px;
+}
+.row-min-h550{
+  min-height: 550px;
+}
+.row-min-h600{
+  min-height: 600px;
+}
+.row-min-h650{
+  min-height: 650px;
+}
+.row-min-h700{
+  min-height: 700px;
+}
+
+.row-min-h900{
+  min-height: 900px;
+}
+.row-min-h1200{
+  min-height: 1200px;
+}
+
+.cursor-hand{
+	cursor: pointer;	
+}
+.font-white{
+	color: #FFFFFF !important;
+}
+.p-10{
+	padding: 10px;
+}
+#countdown {
+  
+}
+.margin-r10{
+  margin-right: 10%;
+}
+.margin-t10{
+  margin-top: 10%;
+}
+.count-down-map {
+  height: 5px;
+  position: relative;
+  right: -85%;
+  top: -90px;
+  width: 15%;
+}
+.hmodal550 {
+  height: 550px;
+  width: 99.9%;
+}
+.margin-btn-bt {
+  bottom: -20px;
+  position: relative !important;
+}
+/*This will work for firefox*/
+@-moz-document url-prefix() {
+    .hmodal550{
+    height: 550px;
+    width: 99.9%;
+  }
+}
+
+.margin-l5{
+  margin-left: 5%;
+}
+
+.margin-5{
+  margin-left: 5px;
+}
+.modal-lg {
+ width: 80%;
+}
+
+.dl-horizontal dt {
+    clear: left;
+    float: left;
+    overflow: hidden;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 25% !important;
+}
+.p-botom-0{
+  padding-bottom: 0px !important;
+}
+.star-rating {
+    color: orange;
+    cursor: pointer;
+    font-size: 2.25em;
+}
+.star-no-rating {
+    color: gray;
+    cursor: pointer;
+    font-size: 2.25em;
+}
+#countdown {
+  margin-left: 90%;
+  margin-top: -10%;
+  position: relative;
+}
+.countdownService{
+  margin-left: 0% !important;
+  margin-top: 0%!important;
+  position: relative;  
+}
+#ex1Slider .slider-selection {
+  background: #BABABA;
+}
+.slider.slider-horizontal {
+    height: 20px;
+    width: 210px !important;
+}
+
+.subtittleForm{
+  font-size: 18px !important;
+  font-weight: 400;
+  padding: 10px 0 10px 10px;
+}

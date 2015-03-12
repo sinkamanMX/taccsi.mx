@@ -1,3 +1,36 @@
+.btn_yellow{
+  border: 1px solid #FECE1A;
+  color: #fff;
+  background-color: #181A1C;
+  transition: border-color 1s ease;
+}
+.btn_yellow:hover,
+.btn_yellow:active,
+.btn_yellow.hover {
+  background-color: #FECE1A;
+}
+.box_body_login{
+  background: none repeat scroll 0 0 #000000;
+  border: 1px solid #fece1a !important;
+  color: #ffffff;
+  padding: 20px;
+}
+.a_yellow{
+  color: #FECE1A !important;
+}
+.shadow_img{
+    box-shadow: 10px 10px 5px #888888;  
+}
+.set-opacity{
+ background: #fff;
+  padding: 20px;
+  color: #444;
+  border-top: 0;
+  color: #666;
+}
+
+
+
 .error{
   color: #b94a48;
   border-color: #b94a48 !important;
@@ -39,6 +72,9 @@
 .row-min-h470{
   min-height: 470px;
 }
+.row-min-h500{
+  min-height: 500px;
+}
 .row-min-h550{
   min-height: 550px;
 }
@@ -51,7 +87,12 @@
 .row-min-h700{
   min-height: 700px;
 }
-
+.row-min-h750{
+  min-height: 750px;
+}
+.row-min-h800{
+  min-height: 800px;
+}
 .row-min-h900{
   min-height: 900px;
 }
@@ -77,6 +118,9 @@
 .margin-t10{
   margin-top: 10%;
 }
+.margin-t10px{
+  margin-top: 10px;
+}
 .count-down-map {
   height: 5px;
   position: relative;
@@ -100,6 +144,9 @@
   }
 }
 
+.margin-l0{
+  margin-left: 0% !important;
+}
 .margin-l5{
   margin-left: 5%;
 }
@@ -155,4 +202,8 @@
   font-size: 18px !important;
   font-weight: 400;
   padding: 10px 0 10px 10px;
+}
+
+.margin-top-0{
+  top: 0px !important;
 }

@@ -2,7 +2,7 @@
 <?php $this->headScript()->appendFile('/controllers/admin/js/validateCompanies.js') ?>
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
 <input id="hRefLinkMain" type="hidden" value="/admin/companies/index" />
-<aside class="right-side">
+
     <section class="content">
         <div id="divAlert" class="alert alert-danger alert-dismissable hide">
             <i class="fa fa-ban"></i>
@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-xs-12">
-          <div class="box box-primary row-min-h1200">
+          <div class="box box-primary row-min-h750">
                 <div class="box-header">
                     <h3 class="box-title">Información de la Empresa</h3>                    
                     <?php if($this->idToUpdate>0):?>
@@ -239,16 +239,19 @@
                                         <label for="inputAmaterno">Confirmar Contraseña</label>
                                         <input type="password" class="form-control"  autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
                                     </div>
-                                </div>
+                                </div>                            
                             </div><!-- /.box-body -->
-                        </div>
+                        </div>                         
                         <div class="box-footer">
-                            <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
                             <button type="submit" class="btn btn-primary pull-right margin-5 ">Guardar</button>
+                            <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>                            
                         </div>
                     </form>
+                                <div class="form-group hide">
+                                        <label for="inputAmaterno"></label>
+                                        <input type="hide" class="form-control"  autocomplete="off" name="" id="" placeholder="">
+                                    </div>                       
                 <?php endif;?>
             </div><!-- /.box -->
         </div>
-    </section><!-- /.content -->
-</aside><!-- /.right-side -->           
+    </section><!-- /.content -->   

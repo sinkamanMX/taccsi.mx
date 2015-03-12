@@ -19,21 +19,39 @@
               INNER JOIN ADMIN_TAXIS C ON C.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO 
             WHERE CAST(A.FECHA_SERVER AS DATE) = CURRENT_DATE AND
                   B.DISPONIBLE = 0 AND 
-                  DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud.") < 5";
+                  DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud.") < 100
+            ORDER BY DIST
+            LIMIT 10";
     if ($qry = mysql_query($sql)){
       while ($row = mysql_fetch_object($qry)){
-        $res = $res."<taxi>
-                <id>".$row->ID_USUARIO."</id>
-                <conductor>".$row->NOMBRE." ".$row->APATERNO." ".$row->AMATERNO."</conductor>
-                <placas>".$row->PLACAS."</placas>
-                <estatus>".$row->ESTATUS."</estatus>
-                <latitud>".$row->LATITUD."</latitud>
-                <longitud>".$row->LONGITUD."</longitud>
-                <distancia>".$row->DIST."</distancia>
-                <foto>".$row->IMAGEN."</foto>
-                <puntos>".$row->RATING."</puntos>
-                <servicios>".$row->VIAJES."</servicios>
-              </taxi>"; 
+        if($row->IMAGEN=="" or $row->IMAGEN=="null"){
+           $res = $res."<taxi>
+                  <id>".$row->ID_USUARIO."</id>
+                  <conductor>".$row->NOMBRE." ".$row->APATERNO." ".$row->AMATERNO."</conductor>
+                  <placas>".$row->PLACAS."</placas>
+                  <estatus>".$row->ESTATUS."</estatus>
+                  <latitud>".$row->LATITUD."</latitud>
+                  <longitud>".$row->LONGITUD."</longitud>
+                  <distancia>".$row->DIST."</distancia>
+                  <foto>"."http://taccsi.com/images/taxis/no_disponible.jpg</foto>
+                  <puntos>".$row->RATING."</puntos>
+                  <servicios>".$row->VIAJES."</servicios>
+                </taxi>"; 
+        }else{
+          $res = $res."<taxi>
+                  <id>".$row->ID_USUARIO."</id>
+                  <conductor>".$row->NOMBRE." ".$row->APATERNO." ".$row->AMATERNO."</conductor>
+                  <placas>".$row->PLACAS."</placas>
+                  <estatus>".$row->ESTATUS."</estatus>
+                  <latitud>".$row->LATITUD."</latitud>
+                  <longitud>".$row->LONGITUD."</longitud>
+                  <distancia>".$row->DIST."</distancia>
+                  <foto>"."http://taccsi.com/images/taxis/".$row->IMAGEN."</foto>
+                  <puntos>".$row->RATING."</puntos>
+                  <servicios>".$row->VIAJES."</servicios>
+                </taxi>"; 
+
+        }
       }
       mysql_free_result($qry);
     } 
@@ -58,43 +76,7 @@
                      <code>2</code>
                      <msg>OK</msg>
                    </Status>
-                   <taxis>'.utf8_encode($dat).'<taxi>
-                       <id>2</id>
-                       <conductor>Pedro Ramírez</conductor>
-                       <placas>BCW3455</placas>
-                       <estatus>taxi_ocupado</estatus>
-                       <latitud>19.5076166667</latitud>
-                       <longitud>-99.2338333333</longitud>
-                       <distancia>2</distancia>
-                       <foto>http://www.motorspain.com/wp-content/uploads/2010/12/vw-up-taxi-concept-londres-2010-olgbn-5-400x300.jpg
-                       </foto>
-                       <puntos>4</puntos>
-                       <servicios></servicios>
-                     </taxi>
-                      <taxi>
-                      <id>3</id>
-                       <conductor>Pablo Cárdenas</conductor>
-                       <placas>XCW3455</placas>
-                       <estatus>taxi_ocupado</estatus>
-                       <latitud>19.6584333333</latitud>
-                       <longitud>-99.2046333333</longitud>
-                       <distancia>2</distancia>
-                       <foto>http://static3.absolutalemania.com/wp-content/uploads/2011/04/taxis-en-alemania.jpg</foto>
-                       <puntos>2</puntos>
-                       <servicios></servicios>
-                     </taxi>
-                     <taxi>
-                       <id>4</id>
-                       <conductor>Alfonso Escobar</conductor>
-                       <placas>ZCW3435</placas>
-                       <estatus>taxi_servicio</estatus>
-                       <latitud>19.4946166667</latitud>
-                       <longitud>-99.0563666667</longitud>
-                       <distancia>2</distancia>
-                       <foto>http://media.bestofmicro.com/mercedes-benz-nimbus-taxi-concept,3-4-267088-13.jpg</foto>
-                       <puntos>5</puntos>
-                       <servicios></servicios>
-                     </taxi>
+                   <taxis>'.utf8_encode($dat).'
                    </taxis>
                  </Response>
                </space>';

@@ -56,11 +56,11 @@ class My_Controller_Functions
     );    
     
 	public $configMail = array(
-			'ssl'      => 'ssl',
-            'port'     => '465','auth' => 'login',
-			'urlSmtp'  => 'smtp.gmail.com',
-			'username' => 'tienda.ricom@gmail.com',			
-		    'password' => 'ectskozgoxilqvin');  
+            'port'     => '587',
+            'auth' 	   => 'login',
+			'urlSmtp'  => 'smtp.tecnologiza.me',
+			'username' => 'no-reply@tecnologiza.me',			
+		    'password' => 'nOr3plym41l3r_');
 
     public function dateToText($fecha_db){
     	$fecha=explode("-",$fecha_db);
@@ -249,15 +249,20 @@ class My_Controller_Functions
 	}   
 
 	function sendMailSmtp($aMailer){
-		$sTransport = new Zend_Mail_Transport_Smtp($this->configMail['urlSmtp'], $this->configMail);
-		$mail = new Zend_Mail('UTF-8');
-		$mail->addHeader('Content-Type', 'text/plain; charset=utf-8');
-
-		$mail->setFrom('contacto@taccsi.com', 'Taccsi');
-		$mail->addTo($aMailer['emailTo'], $aMailer['nameTo']);	
-		$mail->setSubject(html_entity_decode($aMailer['subjectTo']));
-		$mail->setBodyHtml(html_entity_decode($aMailer['bodyTo']));
-		$enviado = $mail->send($sTransport);		
+		try{
+			$sTransport = new Zend_Mail_Transport_Smtp($this->configMail['urlSmtp'], $this->configMail);
+			$mail = new Zend_Mail('UTF-8');
+			$mail->addHeader('Content-Type', 'text/plain; charset=utf-8');
+	
+			$mail->setFrom('contacto@taccsi.com', 'Taccsi');
+			$mail->addTo($aMailer['emailTo'], $aMailer['nameTo']);	
+			$mail->setSubject(html_entity_decode($aMailer['subjectTo']));
+			$mail->setBodyHtml(html_entity_decode($aMailer['bodyTo']));
+			$enviado = $mail->send($sTransport);
+		}catch(Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";
+        } 				
 	}
 	
 	function getRandomCodeReset(){
