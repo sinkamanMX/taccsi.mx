@@ -148,7 +148,7 @@ class My_Model_Taxistas extends My_Db_Table
 					$sPassword
 					NICKNAME		= '".$data['inputUsuario']."',					
 					ACTIVO 			= ".$data['inputEstatus']."
-					$nameImage			
+					$nameImage
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            
     		$query   = $this->query($sql,false);

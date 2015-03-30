@@ -17,7 +17,8 @@ $().ready(function() {
             inputCpassword  : {
                 required: true,
                 equalTo: "#inputPassword",
-            }    
+            } ,
+            inputExtPhone   : "required"
         },
         messages: {
             inputTipo       : "Campo Requerido",
@@ -37,7 +38,8 @@ $().ready(function() {
                 number    : "Este campo acepta solo números",
                 minlength : "El Teléfono debe de ser de 10 dígitos",
                 maxlength : "El Teléfono debe de ser de 10 dígitos"
-            }                         
+            },
+            inputExtPhone : "Campo Requerido"             
         },
         submitHandler: function(form) {
             form.submit();
@@ -48,7 +50,21 @@ $().ready(function() {
         $("#inputPassword").rules("remove", "required");
         $("#inputCpassword").rules("remove", "required");          
     }
+
+    if($("#inputTipo").val()==""){
+        $("#inputExtPhone").rules("remove", "required");
+    }
 });
+
+function changeProfile(idValue){
+    if(idValue==2){
+        $("#inputExtPhone").rules("add",  {required:true});
+        $("#divExtension").show('slow');
+    }else{
+        $("#inputExtPhone").rules("remove", "required");
+        $("#divExtension").hide('slow');
+    }    
+}
 
 function addValidatePass(valueInput){
     if(valueInput!=""){

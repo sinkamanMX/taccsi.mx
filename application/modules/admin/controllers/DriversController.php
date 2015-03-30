@@ -87,8 +87,12 @@ class admin_DriversController extends My_Controller_Action
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;  	
 							  }else{
-							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
-							  	unlink($nameDelete);							  	
+							  	if(@$dataInfo['FOTO']!=""){
+								  	$nameDelete = "images/taxis/".$dataInfo['FOTO'];
+								  	if(file_exists($nameDelete)){
+								  		unlink($nameDelete);	
+								  	}							  		
+							  	}  	
 							  	$this->_dataIn['nameImagen'] = $sNameImage;							  	
 							  }				
 						  }
@@ -149,10 +153,12 @@ class admin_DriversController extends My_Controller_Action
 							  if(!$upload){
 								$this->_aErrors['errorImage'] = 1;
 							  }else{
-							  	$nameDelete = "images/taxis/".$dataInfo['IMAGEN'];
-							  	if(file_exists($nameDelete)){
-							  		unlink($nameDelete);	
-							  	}							  								  
+							  	if(@$dataInfo['FOTO']!=""){
+								  	$nameDelete = "images/taxis/".$dataInfo['FOTO'];
+								  	if(file_exists($nameDelete)){
+								  		unlink($nameDelete);	
+								  	}							  		
+							  	}  					  								  
 							  	$this->_dataIn['nameImagen'] = $sNameImage;
 							  }				
 						  }

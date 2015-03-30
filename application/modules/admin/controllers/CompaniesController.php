@@ -14,7 +14,8 @@ class admin_CompaniesController extends My_Controller_Action
 		        $this->_dataUser   = $sessions->getContentSession();   		
 			}else{
 				$this->_redirect("/login/main/index");
-			}    		
+			}
+			   		
 			$this->view->dataUser   = $this->_dataUser;
 			$this->view->modules    = $perfiles->getModules($this->_dataUser['TIPO_USUARIO']);
 			$this->view->moduleInfo = $perfiles->getDataModule($this->_clase);
@@ -83,7 +84,7 @@ class admin_CompaniesController extends My_Controller_Action
 				if($sEstadoF!="" && $sEstadoF!="NULL"){
 					$dMunicipiosF = $cMunicipios->getCbo($sEstadoF);
 					$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataInfo['FIS_ID_MUNICIPIO']);
-				}    	    	
+				}
 			}
 			
 			if(isset($this->_dataOp) && $this->_dataOp=="searchCP"){

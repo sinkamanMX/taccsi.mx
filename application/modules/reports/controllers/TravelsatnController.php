@@ -1,7 +1,7 @@
 <?php
-class reports_TravelsrepController extends My_Controller_Action
+class reports_TravelsatnController extends My_Controller_Action
 {
-	protected $_clase = 'travelrep';
+	protected $_clase = 'mtravelsatn';
 	public $realPath='/var/www/vhosts/taccsi.com/htdocs/public';	
 	//public $realPath='/Users/itecno2/Documents/workspace/taccsi.mx/public';
 	
@@ -54,26 +54,23 @@ class reports_TravelsrepController extends My_Controller_Action
     		$aFilters		= Array(
     							'FILTER_BY_USER'=> 	1,
     							'ID_EMPRESA'	=>  $idEmpresa,
-    							'ID_ESTATUS'	=>	(isset($this->_dataIn['inputEstatus']))  ? $this->_dataIn['inputEstatus']: -99,	
-    							'FECHA_IN'		=>	(isset($this->_dataIn['inputFechaIn']))  ? $this->_dataIn['inputFechaIn'] : Date("Y-m-d 00:00:00"),
-    							'FECHA_FIN'		=>	(isset($this->_dataIn['inputFechaFin'])) ? $this->_dataIn['inputFechaFin'] : Date("Y-m-d 23:59:59")    							
-    						); 			    									
+    							'ID_TAXISTA'	=>  $this->_dataUser['ID_USUARIO'],
+    							'ID_ESTATUS'	=>	-99,	
+    							'FECHA_IN'		=>	Date("Y-m-d 00:00:00"),
+    							'FECHA_FIN'		=>	Date("Y-m-d 23:59:39"),    							
+    						);    				
     		if(@$this->_dataOp == 'search'){
     			$aFilters['ID_ESTATUS']	= $this->_dataIn['inputEstatus'];
     			$aFilters['FECHA_IN']	= $this->_dataIn['inputFechaIn'];	
     			$aFilters['FECHA_FIN']	= $this->_dataIn['inputFechaFin'];
-    			$sEstatus				= $this->_dataIn['inputEstatus'];    			
+    			$sEstatus				= $this->_dataIn['inputEstatus'];
+    			$this->view->data		= $this->_dataIn;
     		}
     		
-			$this->_dataIn['inputEstatus'] 	= $aFilters['ID_ESTATUS'];
-			$this->_dataIn['inputFechaIn']  = $aFilters['FECHA_IN'];				   
-			$this->_dataIn['inputFechaFin'] = $aFilters['FECHA_FIN'];
-			    		
-			$aResume 	= $cViajes->getViajesResumeEmp($aFilters);
-			$totalResume= $cViajes->resumeTotalEmp($aFilters);
-    		$aTravels	= $cViajes->getTravelsResumeEmp($aFilters);
+			$aResume 	= $cViajes->getViajesByTaxi($aFilters);
+			$totalResume= $cViajes->resumeTotalByTaxi($aFilters);
+    		$aTravels	= $cViajes->getTravelsByTaxi($aFilters);
     			    		
-			$this->view->data		= $this->_dataIn;    		
     		$this->view->aResume  	= $aResume;
     		$this->view->aEstatus 	= $cFunctions->selectDb($aEstatus,$sEstatus);
     		$this->view->totalResume= $totalResume;
@@ -123,7 +120,6 @@ class reports_TravelsrepController extends My_Controller_Action
     			$this->_redirect('/callcenter/services/index');
     		}    		
     		
-    		$this->view->data			  = $this->_dataIn;    		
     		$this->view->dataOpr	  	  = $rDataOpr;		
 			$this->view->aDataViaje   	  = $aDataViaje; 
 			$this->view->aDataCliente 	  = $aDataClient;
@@ -248,11 +244,11 @@ class reports_TravelsrepController extends My_Controller_Action
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', 'Monto ($)');
 					$objPHPExcel->setActiveSheetIndex(0)->setSharedStyle($sHeaderBigblack, 'C5');					
 
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E5', "$ ". round($aDataViaje['MONTO'],2));
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E5', "$ ".$aDataViaje['MONTO']);
 					$objPHPExcel->setActiveSheetIndex(0)->setSharedStyle($sHeaderBigblack, 'E5');
 
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C7', 'Fecha Viaje');
-					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', $aDataViaje['FECHA_VIAJE']);	
+					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E7', "$ ".$aDataViaje['FECHA_VIAJE']);	
 					
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C8', 'No. personas');
 					$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E8', $aDataViaje['NO_PASAJEROS']." ");					

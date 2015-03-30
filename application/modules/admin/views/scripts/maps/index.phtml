@@ -1,0 +1,70 @@
+<?php $this->headScript()->appendFile('/js/markerwithlabel.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/MapFunctions.js') ?>
+ <style type="text/css">
+   .labels {
+      border: 1px solid #FECE1A;
+      color: #FECE1A;
+      background-color: #181A1C;
+     font-family: "Lucida Grande", "Arial", sans-serif;
+     font-size: 10px;
+     font-weight: bold;
+     text-align: center;
+     /*width: 40px;*/
+     white-space: nowrap;
+   }
+ </style>
+<section class="content">
+    <div class="col-xs-12">
+      <div class="box box-primary row-min-h450">
+        <div class="box-header">
+            <h3 class="box-title">Mapa en Directo</h3>
+        </div>
+
+        <div class="box-body">
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+              <li class="active"><a href="#table" data-toggle="tab" aria-expanded="true">Lista</a></li>
+              <li class=""><a href="#tabMap" data-toggle="tab" aria-expanded="false">Mapa</a></li>
+            </ul>            
+
+            <div class="tab-content">
+                <!-- Font Awesome icons -->
+                <div class="tab-pane active" id="table">                    
+                    <table id="dataTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>               
+                                <th>Conductor</th>                         
+                                <th>Taxi</th>                            
+                                <th>Estado</th>
+                                <th>Ult. Reporte</th>
+                                <th>Ubicación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $result = '';?>
+                            <?php foreach($this->datatTable as $key => $items): ?>  
+                                <tr class="odd gradeX">                     
+                                    <td class="col-md-3"><?php echo $items['CHOFER']; ?></td>                   
+                                    <td class="col-md-2"><?php echo $items['TAXI']; ?></td>
+                                    <td class="col-md-1"><?php echo $items['ESTADO']; ?></td>
+                                    <td class="col-md-2"><?php echo $items['FECHA_GPS']; ?></td>
+                                    <td><?php echo $items['UBICACION']; ?></td>
+                                </tr>    
+                                <?php $result .= ($result!="") ? "!" : "";?>
+                                <?php $result .= $items['LATITUD']."|".$items['LONGITUD']."|".$items['FECHA_GPS']."|".
+                                        $items['UBICACION']."|".round($items['VELOCIDAD'],2)."|".round($items['ANGULO'],2)."|".$items['CHOFER'];?>
+                            <?php  endforeach;?>                     
+                        </tbody>
+                    </table>
+                    <div id="positions" class="hide"><?php echo $result; ?></div> 
+                </div><!-- /#fa-icons -->
+                <!-- glyphicons-->
+                <div class="tab-pane" id="tabMap">
+                    <div id="map" style="width:98%;height:350px;">
+                        <img  class="col-xs-offset-4" src="/images/assets/loading.gif" alt="loading gif"/>
+                    </div>
+                </div>
+            </div><!-- /.box -->
+
+        </div>
+    </div>
+</section><!-- /.content -->

@@ -34,7 +34,7 @@ class login_MainController extends My_Controller_Action
             $usuarios = new My_Model_Usuarios();
 			$validate = $usuarios->validateUser($data); //recogemos los valores y mandamos            
 			if($validate){
-				 $dataUser = $usuarios->getDataUser($validate['ID_USUARIO']);	
+				 $dataUser = $usuarios->getDataUser($validate['ID_USUARIO']);
 				 if($dataUser['TIPO_USUARIO']=='2'){
 				 	$activate = $usuarios->setActive($dataUser['ID_USUARIO'],$dataUser['EXTENSION']);	
 				 }	 				 

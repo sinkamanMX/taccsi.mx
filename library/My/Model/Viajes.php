@@ -45,8 +45,9 @@ class My_Model_Viajes extends My_Db_Table
 	public function infoViaje($idviaje){
 		$result= Array();
     	$sql ="SELECT  ADMIN_VIAJES.*, CONCAT(ADMIN_USUARIOS.NOMBRE,' ',ADMIN_USUARIOS.APATERNO,' ',ADMIN_USUARIOS.AMATERNO) AS TAXISTA,
-				CONCAT('Marca :',A.DESCRIPCION,'<br/> Modelo :',M.DESCRIPCION,'<br/>Placas: ',ADMIN_TAXIS.PLACAS,'<br/> Eco.:',ADMIN_TAXIS.ECO) AS TAXI,
-				SRV_ESTATUS.ESTATUS, TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP,FECHA_VIAJE)) AS SEG_DIF , P.DESCRIPCION AS FPAGO
+				CONCAT('Marca :',A.DESCRIPCION,'<br/>Modelo :',M.DESCRIPCION,'<br/>Placas: ',ADMIN_TAXIS.PLACAS,'<br/>Eco.:',ADMIN_TAXIS.ECO) AS TAXI,
+				SRV_ESTATUS.ESTATUS, TIME_TO_SEC(TIMEDIFF(CURRENT_TIMESTAMP,FECHA_VIAJE)) AS SEG_DIF , P.DESCRIPCION AS FPAGO,
+				ADMIN_VIAJES.MONTO_TAXISTA AS MONTO,ADMIN_VIAJES.ID_SRV_ESTATUS
     			FROM ADMIN_VIAJES
     			INNER JOIN SRV_ESTATUS ON ADMIN_VIAJES.ID_SRV_ESTATUS  = SRV_ESTATUS.ID_ADMIN_ESTATUS
 				INNER JOIN ADMIN_FORMA_PAGO P ON ADMIN_VIAJES.ID_FORMA_PAGO = P.ID_FORMA_PAGO
@@ -242,7 +243,8 @@ class My_Model_Viajes extends My_Db_Table
 				INNER JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO				
 				WHERE U.ID_EMPRESA = ".$aFilter['ID_EMPRESA']."
 				$sFilter
-				AND FECHA_VIAJE BETWEEN '".$aFilter['FECHA_IN']."' AND '".$aFilter['FECHA_FIN']."'  				
+				AND FECHA_VIAJE BETWEEN '".$aFilter['FECHA_IN']."' AND '".$aFilter['FECHA_FIN']."'  
+				ORDER BY FECHA_VIAJE DESC				
 				LIMIT 1";		  	   			      	
 		$query   = $this->query($sql);
 		if(count($query)>0){
@@ -276,4 +278,118 @@ class My_Model_Viajes extends My_Db_Table
 		        
 		return $result;		    	
     }      
+    
+    public function getRecorrido($idViaje,$idEstatus=3){
+		$result		= Array();
+		$sFilter	= "";		
+		if($idEstatus==5){
+			$sFilter = "AND P.FECHA_GPS >=  (
+					SELECT V.FECHA_VIAJE
+					FROM ADMIN_VIAJES V
+					WHERE V.ID_VIAJES = $idViaje
+				)";	
+		}
+		if($idEstatus==3){
+			$sFilter = "AND P.FECHA_GPS BETWEEN  (
+					SELECT V.FECHA_VIAJE
+					FROM ADMIN_VIAJES V
+					WHERE V.ID_VIAJES = $idViaje
+				)
+				AND  (
+					SELECT V.FIN_VIAJE_TAXISTA
+					FROM ADMIN_VIAJES V
+					WHERE V.ID_VIAJES = $idViaje
+				)";				
+		}
+		
+    	$sql ="SELECT P.FECHA_GPS AS FECHA, P.*
+				FROM DISP_HISTORICO_POSICION P
+				WHERE P.IDENTIFICADOR = ( 
+					SELECT DISPOSITIVO
+					FROM ADMIN_VIAJES V
+					INNER JOIN ADMIN_USUARIOS U ON V.`ID_TAXISTA` = U.`ID_USUARIO`
+					WHERE V.ID_VIAJES = $idViaje
+				)
+				$sFilter				
+				ORDER BY P.FECHA_SERVER DESC";     	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query;			
+		}
+		        
+		return $result;	 		   	
+    }
+    
+    public function getViajesByTaxi($aFilter){
+		$result= Array();
+				
+		$sFilter = ($aFilter['ID_ESTATUS']!=-99) ? "AND V.ID_SRV_ESTATUS = ".$aFilter['ID_ESTATUS'] : "";
+		
+    	$sql ="SELECT COUNT(V.ID_VIAJES) AS TOTAL, E.ESTATUS , E.COLOR
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				INNER JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				INNER JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				INNER JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO				
+				WHERE V.ID_TAXISTA = ".$aFilter['ID_TAXISTA']."
+				$sFilter
+				AND V.FECHA_VIAJE BETWEEN '".$aFilter['FECHA_IN']."' AND '".$aFilter['FECHA_FIN']."'  
+				GROUP BY V.ID_SRV_ESTATUS";						         	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query;			
+		}
+		        
+		return $result;		    	
+    }    
+
+    public function getTravelsByTaxi($aFilter){
+		$result= Array();
+		
+		$sFilter = ($aFilter['ID_ESTATUS']!=-99) ? "AND V.ID_SRV_ESTATUS = ".$aFilter['ID_ESTATUS'] : "";
+		
+    	$sql ="SELECT *, E.ESTATUS AS N_ESTATUS, CONCAT(C.`NOMBRE`,' ',C.APATERNO,' ',C.AMATERNO) AS N_CLIENTE
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_CLIENTES C ON V.ID_CLIENTE 	  = C.ID_CLIENTE
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				INNER JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				INNER JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				INNER JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO				
+				WHERE V.ID_TAXISTA = ".$aFilter['ID_TAXISTA']."				
+				$sFilter
+				AND V.FECHA_VIAJE BETWEEN '".$aFilter['FECHA_IN']."' AND '".$aFilter['FECHA_FIN']."'				
+				ORDER BY V.FECHA_VIAJE DESC";     	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query;			
+		}
+		        
+		return $result;		    	
+    }   
+
+    public function resumeTotalByTaxi($aFilter){
+		$result= Array();
+		$sFilter = ($aFilter['ID_ESTATUS']!=-99) ? "AND ID_SRV_ESTATUS = ".$aFilter['ID_ESTATUS'] : "";
+		
+    	$sql ="SELECT COUNT(*) AS TOTAL
+				FROM ADMIN_VIAJES V
+				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			
+				INNER JOIN ADMIN_FORMA_PAGO P ON V.ID_FORMA_PAGO = P.ID_FORMA_PAGO
+				INNER JOIN ADMIN_USUARIOS U ON V.ID_TAXISTA 	= U.ID_USUARIO
+				INNER JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
+				INNER JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO				
+				WHERE V.ID_TAXISTA = ".$aFilter['ID_TAXISTA']."
+				$sFilter
+				AND FECHA_VIAJE BETWEEN '".$aFilter['FECHA_IN']."' AND '".$aFilter['FECHA_FIN']."'
+				ORDER BY V.FECHA_VIAJE DESC  				
+				LIMIT 1";		  	   			      	
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result	 = $query[0]['TOTAL'];			
+		}
+		        
+		return $result;		    	
+    }        
 }	

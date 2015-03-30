@@ -1,7 +1,7 @@
 <?php
 class reports_TraveldetController extends My_Controller_Action
 {
-	protected $_clase = 'rtravelon';
+	protected $_clase = 'rtraveldet';
 	
     public function init()
     {
@@ -66,12 +66,11 @@ class reports_TraveldetController extends My_Controller_Action
         try{
     		$dataResult  = Array();
     		$intRowCount = 0;
-			foreach($aData AS $key => $items){				
+			foreach($aData AS $key => $items){			
 				$dataResult[$items['ID_TAXISTA']]['NOMBRE'] = $items['N_TAXISTA'];
 				$dataResult[$items['ID_TAXISTA']]['TAXI'] 	= $items['N_TAXI'];
-				$dataResult[$items['ID_TAXISTA']]['PRECIO'] = 0.00;				
-				
-				if($items['ID_SRV_ESTATUS']==3){				
+
+				if($items['ID_SRV_ESTATUS']==3){
 					if(isset($dataResult[$items['ID_TAXISTA']]['PRECIO'])){
 						$costo = $dataResult[$items['ID_TAXISTA']]['PRECIO'];
 						$dataResult[$items['ID_TAXISTA']]['PRECIO'] = $costo+$items['PRECIO']; 

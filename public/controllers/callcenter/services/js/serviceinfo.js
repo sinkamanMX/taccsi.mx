@@ -1,11 +1,18 @@
 var iValCheck = 0;
 var mapGeo = null;
 var aMarkerTaxi=null;
+var infoLocation;
+var markers = [];
 var bounds;
+var arrayTravels=Array();
 var directionsDisplay;
+var markerOrigen  = null;
+var markerDestino = null;
+var bounds;
 var directionsService = new google.maps.DirectionsService();
 var bEstatus = false;
 var infoWindow;
+var bDrawTravel = false;
 
 $().ready(function() {
 	var taxiExist = $("#inputTaxi").val();
@@ -52,7 +59,8 @@ $().ready(function() {
 
     });	
 
-    bEstatus = ($("#inputEstatus").val()==5) ? true:false;
+    bEstatus 	= ($("#inputEstatus").val()==5) ? true:false;
+	bDrawTravel = ($("#inputEstatus").val()==6) ? true:false;
 
 	initMapToDraw();
 
@@ -128,8 +136,10 @@ function calcRoute() {
 		  directionsDisplay.setDirections(response);
 		}
 		});
-
-		startTrace();		
+		setMarker(0);
+		setMarker(1);
+		startTrace();
+		printTravelsMap();				
 	}
 }
 
@@ -168,7 +178,7 @@ function mapLoadData(){
 					if(arrayTravel[0]!=5){
 						bEstatus=false;	
 						location.reload();
-					}else{						
+					}else if(arrayTravel[0]==5){		
 						var latTaxi		= arrayTravel[1];
 						var lonTaxi		= arrayTravel[2];
 						var nameTaxi	= arrayTravel[3];
@@ -178,8 +188,6 @@ function mapLoadData(){
 				    			'<tr><td align="right"><b>Fecha</b></td><td align="left">'+descTaxi+' </td><tr>'+	    			
 				    			'<tr><td align="right"><b>Taxi</b></td><td align="left">'+fechaTaxi+' </td><tr>'+				    			
 				    			'</table>';	
-				    	var content = descTaxi;
-
 						aMarkerTaxi = new google.maps.Marker({
 							map: mapGeo,
 							position: new google.maps.LatLng(latTaxi,lonTaxi),
@@ -248,3 +256,102 @@ function addIncidencia(idIncidencia){
     $('#iFrameInc').attr('src','/callcenter/services/reportincidencia?strInc='+idIncidencia+'&idViaje='+idObject);
     $("#ModalIncidencia").modal("show");
 }
+
+function setMarker(optionMarker){
+	var latMarker = 0;
+	var lonMarker = 0;
+	var position  = null;
+	if(optionMarker==0){			
+		latMarker	= $("#inputLatOrigen").val();
+		lonMarker	= $("#inputLonOrigen").val();
+		position    = new google.maps.LatLng(latMarker, lonMarker);
+
+		markerOrigen = new google.maps.Marker({
+		    map: mapGeo,
+		    position: position,
+		    draggable:true,
+			animation: google.maps.Animation.DROP,
+		    title: 	"Origen",
+			icon: 	'/images/assets/origen.png'
+	    });		    
+	}else{
+		latMarker	= $("#inputLatDestino").val();
+		lonMarker	= $("#inputLonDestino").val();
+		position = new google.maps.LatLng(latMarker, lonMarker);
+
+		markerDestino = new google.maps.Marker({
+		    map: mapGeo,
+		    position: position,
+		    draggable:true,
+			animation: google.maps.Animation.DROP,
+		    title: 	"Origen",
+			icon: 	'/images/assets/destino.png'
+	    });	
+	}
+	
+	mapGeo.setZoom(18);
+	mapGeo.panTo(position);	
+}
+
+
+function printTravelsMap(){
+	var result = $("#positions").html();
+	  if(result!=""){
+
+	     	arrayTravels=new Array();
+	        arrayTravels=result.split('!');
+	    var content     = '';
+	    var markerTable = null;
+
+	    for(var i=0;i<arrayTravels.length;i++){    
+	      var travelInfo = arrayTravels[i].split('|');
+	        var markerTable = null;
+	        if(travelInfo[0]!="null" && travelInfo[1]!="null" ){
+	            content='<table width="350" class="table-striped" >'+  
+	                '<tr><td align="right"><b>Hora</b></td><td width="200" align="left">'+travelInfo[2]+'</td><tr>'+
+	                '<tr><td align="right"><b>Velocidad</b></td><td align="left">'+travelInfo[4]+' kms/h.</td><tr>'+
+	                '<tr><td align="right"><b>Angulo</b></td><td align="left">'+travelInfo[5]+'</td><tr>'+	                
+	                '<tr><td align="right"><b>Ubicación</b></td><td align="left">'+travelInfo[3]+'</td><tr>'+
+	                '</table>';
+	            var Latitud  = parseFloat(travelInfo[0])
+	            var Longitud = parseFloat(travelInfo[1])
+
+	            markerTable = new google.maps.Marker({
+	              map: mapGeo,
+	              position: new google.maps.LatLng(Latitud,Longitud),
+	              title:  travelInfo[0],
+	              icon:   '/images/carMarker.png'
+	            });
+	            markers.push(new google.maps.LatLng(Latitud,Longitud));
+	            infoMarkerTable(markerTable,content);   
+	            bounds.extend( markerTable.getPosition() );
+	        }   
+	      }
+
+	      var iconsetngs = {
+	          path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+	          strokeColor: '#155B90',
+	          fillColor: '#155B90',
+	          fillOpacity: 1,
+	          strokeWeight: 4        
+	      };
+
+	      var line = new google.maps.Polyline({
+	        map: mapGeo,
+	        path: markers,
+	        strokeColor: "#098EF3",
+	        strokeOpacity: 1.0,
+	        strokeWeight: 2,
+	          icons: [{
+	              icon: iconsetngs,
+	              repeat:'35px',         
+	              offset: '100%'}]
+	      });   
+	      if(arrayTravels.length>1){
+	        mapGeo.fitBounds(bounds);  
+	      }else if(arrayTravels.length==1){
+	        mapGeo.setZoom(13);
+	        mapGeo.panTo(markerTable.getPosition());  
+	      }
+		}		
+		}  

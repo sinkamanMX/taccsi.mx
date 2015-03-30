@@ -77,13 +77,16 @@ class callcenter_ServicesController extends My_Controller_Action
     		$aDataClient		= Array();
     		$aDataIncidencias 	= Array();
     		$rDataOpr			= false;
+    		$aRecorrido			= Array();
     			
     		if(isset($this->_dataIn['strViaje'])){
     			$idViaje	= $this->_dataIn['strViaje'];
     			$aDataViaje = $cViajes->infoViaje($idViaje);
     			$aDataClient= $cCliente->getDataClient($aDataViaje['ID_CLIENTE']);  
 				$aDataIncidencias = $cIncidencias->getIncidencias($idViaje);
-    			$idTaxista 	= $aDataViaje['ID_TAXISTA'];
+    			$idTaxista 	= $aDataViaje['ID_TAXISTA'];    			
+    			
+    			$aRecorrido = $cViajes->getRecorrido($idViaje,$aDataViaje['ID_SRV_ESTATUS']);
     			
     			if($this->_dataOp=='renew'){
     				if($idTaxista==NULL){
@@ -107,6 +110,7 @@ class callcenter_ServicesController extends My_Controller_Action
     		
     		$this->view->dataOpr	  	  = $rDataOpr;		
 			$this->view->aDataViaje   	  = $aDataViaje; 
+			$this->view->recorrido  	  = $aRecorrido;
 			$this->view->aDataCliente 	  = $aDataClient;
 			$this->view->aDataIncidencias = $aDataIncidencias;
     		$this->view->idViaje		  = $this->_dataIn['strViaje'];

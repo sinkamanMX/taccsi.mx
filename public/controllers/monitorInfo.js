@@ -17,9 +17,10 @@ function getStatusExt(){
 	    success: function(data) {
             var aDataExt = data.aData;
 
+            var lcaller  = aDataExt.NO_LLAMADA.length; 
             if(aDataExt.ESTATUS=='1'){
             	$("#callWait").show("slow");
-			}else if(aDataExt.ESTATUS=='2' || aDataExt.ESTATUS=='3'){
+			}else if(aDataExt.NO_LLAMADA!="" && lcaller > 8  && aDataExt.ESTATUS=='3'){
 				$("#callIncoming").show("slow");	
 				if(data.bUserExist==1){
 					var aDataClient = data.aDataClient;
@@ -29,7 +30,7 @@ function getStatusExt(){
 					var url = '/callcenter/client/clientinfo?strClient='+aDataClient.ID_SRV_USUARIO;
       				$( location ).attr("href", url);
             	}else{
-            		alert("el teléfono aun no esta registrado, favor de realizar el registro.");
+            		//alert("el teléfono aun no esta registrado, favor de realizar el registro.");
 					var url = '/callcenter/client/new?inputPhone='+aDataExt.NO_LLAMADA;
       				$( location ).attr("href", url);
             	}			

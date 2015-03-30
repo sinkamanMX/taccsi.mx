@@ -40,66 +40,84 @@
             <form role="form" method="POST" action="/admin/users/getinfo" id="FormData" >
                 <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
                 <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
-
+                <input type="hidden" id="iExtension" name="iExtension" value="<?php echo (@$this->data['EXTENSION']!="") ? $this->data['EXTENSION'] : ''; ?>" />
 
                 <div class="box-body">
-                       <div class="col-xs-12">
-                            <div class="form-group col-xs-4">
-                                <label for="inputNombre">Nombre</label>
-                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
+                   <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputNombre">Nombre</label>
+                            <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputApaterno">Ap. Paterno</label>
+                            <input type="text" class="form-control upperClass" autocomplete="off" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputAmaterno">Ap. Materno</label>
+                            <input type="text" class="form-control upperClass" autocomplete="off" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputNombre">Usuario</label>
+                            <input type="text" class="form-control" autocomplete="off" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['NICKNAME']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputApaterno">Contraseña</label>
+                            <input type="password" class="form-control upperClass" autocomplete="off" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputAmaterno">Confirmar Contraseña</label>
+                            <input type="password" class="form-control upperClass" autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputPhone">Perfil</label>
+                            <div class="input-group col-xs-12">                     
+                                <select class="form-control" id="inputTipo" name="inputTipo" onClick="changeProfile(this.value)">
+                                    <option value="">Seleccione una opción</option>
+                                    <?php echo $this->aPerfiles;?>                                
+                                </select>
                             </div>
-                            <div class="form-group col-xs-4">
-                                <label for="inputApaterno">Ap. Paterno</label>
-                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
-                            </div>
-                            <div class="form-group col-xs-4">
-                                <label for="inputAmaterno">Ap. Materno</label>
-                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
+                        </div>                      
+                        <div class="form-group col-xs-4">
+                            <label for="inputPhone">Teléfono</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>                            
+                                <input type="text" class="form-control upperClass col-xs-4" autocomplete="off" name="inputPhone" id="inputPhone" placeholder="Teléfono" value="<?php echo @$this->data['TELEFONO']; ?>">
                             </div>
                         </div>
-                        <div class="col-xs-12">
-                            <div class="form-group col-xs-4">
-                                <label for="inputNombre">Usuario</label>
-                                <input type="text" class="form-control" autocomplete="off" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['NICKNAME']; ?>">
-                            </div>
-                            <div class="form-group col-xs-4">
-                                <label for="inputApaterno">Contraseña</label>
-                                <input type="password" class="form-control upperClass" autocomplete="off" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
-                            </div>
-                            <div class="form-group col-xs-4">
-                                <label for="inputAmaterno">Confirmar Contraseña</label>
-                                <input type="password" class="form-control upperClass" autocomplete="off" name="inputCpassword" id="inputCpassword" placeholder="">
+                        <div class="form-group col-xs-4">
+                            <label for="inputPhone">Estatus</label>
+                            <div class="input-group col-xs-12">                     
+                                <select class="form-control" id="inputEstatus" name="inputEstatus" >
+                                    <option value="">Seleccione una opción</option>
+                                    <?php echo $this->aStatus;?>                                
+                                </select>
                             </div>
                         </div>
-                        <div class="col-xs-12">
-                            <div class="form-group col-xs-4">
-                                <label for="inputPhone">Perfil</label>
-                                <div class="input-group col-xs-12">                     
-                                    <select class="form-control" id="inputTipo" name="inputTipo" >
-                                        <option value="">Seleccione una opción</option>
-                                        <?php echo $this->aPerfiles;?>                                
-                                    </select>
-                                </div>
-                            </div>                      
-                            <div class="form-group col-xs-4">
-                                <label for="inputPhone">Teléfono</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-phone"></i>
-                                    </div>                            
-                                    <input type="text" class="form-control upperClass col-xs-4" autocomplete="off" name="inputPhone" id="inputPhone" placeholder="Teléfono" value="<?php echo @$this->data['TELEFONO']; ?>">
-                                </div>
+                    </div>  
+
+                    <div id="divExtension" class="col-xs-12" style="display:<?php echo (@$this->data['TIPO_USUARIO']=="2") ? 'block': 'none'; ?>">
+                        <div class="form-group col-xs-4">
+                            <label for="inputPhone">Extension</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>                            
+                                <input type="text" class="form-control upperClass col-xs-4" autocomplete="off" name="inputExtPhone" id="inputExtPhone" placeholder="Teléfono" value="<?php echo @$this->data['EXTENSION']; ?>">
                             </div>
-                            <div class="form-group col-xs-4">
-                                <label for="inputPhone">Estatus</label>
-                                <div class="input-group col-xs-12">                     
-                                    <select class="form-control" id="inputEstatus" name="inputEstatus" >
-                                        <option value="">Seleccione una opción</option>
-                                        <?php echo $this->aStatus;?>                                
-                                    </select>
-                                </div>
-                            </div>
-                        </div>  
+                        </div>
+                        <div class="form-group col-xs-4">
+
+                        </div>
+                        <div class="form-group col-xs-4">
+
+                        </div>                        
+                    </div>                      
 
                     <div class="form-group">
                       

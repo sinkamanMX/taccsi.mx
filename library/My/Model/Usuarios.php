@@ -35,7 +35,7 @@ class My_Model_Usuarios extends My_Db_Table
     public function getDataUser($datauser){
 		try{
 			$result= Array();
-	    	$sql ="SELECT u.*,tu.*,E.NOMBRE_EMPRESA AS N_EMPRESA
+	    	$sql ="SELECT u.*,tu.*,E.NOMBRE_EMPRESA AS N_EMPRESA, u.TELEFONO AS PHONE
 	                FROM ADMIN_USUARIOS u
 					INNER JOIN ADMIN_TIPO_USUARIOS tu ON u.TIPO_USUARIO = tu.ID_TIPO_USUARIO
 					INNER JOIN ADMIN_EMPRESAS    E  ON u.ID_EMPRESA    = E.ID_EMPRESA
@@ -101,6 +101,7 @@ class My_Model_Usuarios extends My_Db_Table
 					APATERNO		= '".$data['inputApaterno']."',
 					AMATERNO		= '".$data['inputAmaterno']."',
 					TELEFONO		= '".$data['inputPhone']."',
+					EXTENSION		= '".$data['inputExtPhone']."',
 					NICKNAME		= '".$data['inputUsuario']."',
 					PASSWORD		= SHA1('".$data['inputPassword']."'),
 					PASSWORD_TEXT	= '".$data['inputPassword']."',
@@ -308,31 +309,35 @@ class My_Model_Usuarios extends My_Db_Table
 		return $result;
     }    
     
+    public function updateProfile($data){
+       	$result     = Array();
+        $result['status']  = false;
         
-    /*
-	public function userExist($datauser){
-		$result= Array();
-    	$sql ="SELECT  *
-                FROM ".$this->_name." 
-                WHERE PASSWORD = SHA1('".$datauser['usuario']."') LIMIT 1";			         	
-		$query   = $this->query($sql);
-		if(count($query)>0){
-			$result	 = $query[0];			
-		}	
+        $sPassword = '';
+        if($data['inputPassword']!=""){
+        	$sPassword = " PASSWORD	=  SHA1('".$data['inputPassword']."'), PASSWORD_TEXT	= '".$data['inputPassword']."',";
+        }
         
-		return $result;			
-	} 
-    
-	public function getAllData($status=null){
-		$filter = ($status!=null) ? "WHERE ESTATUS=".$status: "";
-		$result= Array();
-    	$sql ="SELECT *
-                FROM ".$this->_name.$filter;			         	
-		$query   = $this->query($sql);
-		if(count($query)>0){
-			$result	 = $query;			
-		}
-		        
-		return $result;			
-	}   */ 
+        $nameImage  = (isset($data['nameImagen']) && $data['nameImagen']!="") ? ",FOTO			='".$data['nameImagen']."'": "";
+
+        $sql="UPDATE $this->_name	
+        		SET NOMBRE			= '".$data['inputNombre']."',
+					APATERNO		= '".$data['inputApaterno']."',
+					AMATERNO		= '".$data['inputAmaterno']."',
+					TELEFONO		= '".$data['inputPhone']."',
+					$sPassword
+					NICKNAME		= '".$data['inputUsuario']."'	
+					$nameImage				
+			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }                 
 }
