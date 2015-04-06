@@ -70,7 +70,7 @@ class login_MainController extends My_Controller_Action
 		
 		Zend_Session::namespaceUnset('taccSession');
 		Zend_Session::destroy();
-		$this->_redirect('/login/main/index');
+		$this->_redirect('/');
     }
     
     public function recoveryAction(){

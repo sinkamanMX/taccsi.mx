@@ -63,7 +63,7 @@ class external_LoginController extends My_Controller_Action
 		Zend_Session::namespaceUnset('contactSesson');
 		Zend_Session::destroy();
 		
-		$this->_redirect('/external/login/index');
+		$this->_redirect('/');
     }  
     
     public function inicioAction(){
