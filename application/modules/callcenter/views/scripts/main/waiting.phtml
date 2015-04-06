@@ -6,7 +6,7 @@
 		</a>		
 	</div>
 </div>
-<div class="col-xs-12">
+<div class="col-xs-12" id="divShowAll">
 	<img class="col-xs-offset-5" src="/images/assets/icon-page.png" class="img-responsive center-block" alt="Logo">
 	<div id="callWait" class="col-xs-offset-4">
 		<h2 class="margin-l5">En espera de una Llamada</h2>
@@ -16,3 +16,22 @@
 	</div>				
 	<img id="loader1" class="col-xs-offset-5" src="/images/assets/loading.gif" alt="loading gif"/>
 </div>
+
+<div class="modal-dialog"  id="MyModalSearch" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">¡Atencion!</h4>
+      </div>
+      <div class="modal-body">
+      	<p>Datos del Cliente registrado:<br/>
+      		<div id="infoCliente"></div>
+      	</p>        
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-success" onClick="registerNewCLient()">Registrar otro Cliente</button>
+        <button type="button" class="btn btn-primary" onClick="gotoClient()">Los datos son correctos</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>

@@ -6,6 +6,7 @@ var markers = [];
 var bounds;
 var arrayTravels=Array();
 var directionsDisplay;
+var directionsDisplayNone;
 var markerOrigen  = null;
 var markerDestino = null;
 var bounds;
@@ -72,7 +73,33 @@ $().ready(function() {
 	$('#ModalIncidencia').on('hidden.bs.modal', function () {
         location.reload();
     });    
+
+    if($("#inputEstatus").val()==2){
+		bEstatus=true;
+		mapLoadData()
+    }
 });
+
+function calcAndDraw(inputLatitud,inputLongitud){
+	if($("#inputLatOrigen").val()!="" && $("#inputLonOrigen").val()!="" && 
+		inputLatitud !="" && inputLongitud!=""){
+		var latsOrigen  = new google.maps.LatLng($("#inputLatOrigen").val(), $("#inputLonOrigen").val());
+		var lastDestino = new google.maps.LatLng(inputLatitud, inputLongitud);
+
+		var request = {
+		  origin: latsOrigen,
+		  destination: lastDestino,
+		  travelMode: google.maps.TravelMode.DRIVING
+		};
+
+		directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+			  directionsDisplayNone.setDirections(response);
+			}
+		});	
+
+	}
+}
 
 function waitService(){
 	var strViaje = $("#strViaje").val();
@@ -107,8 +134,13 @@ function cancelService(){
 }
 
 function initMapToDraw(){
-	infoWindow = new google.maps.InfoWindow;
-	directionsDisplay = new google.maps.DirectionsRenderer();
+	infoWindow 				= new google.maps.InfoWindow;
+	directionsDisplay 		= new google.maps.DirectionsRenderer({
+							    polylineOptions: {
+							      strokeColor: "green"
+							    }
+							  });
+	directionsDisplayNone	= new google.maps.DirectionsRenderer();
 	var mapOptions = {
 		zoom: 5,
 		center: new google.maps.LatLng(19.435113686545755,-99.13316173010253)
@@ -118,7 +150,12 @@ function initMapToDraw(){
 
 	bounds = new google.maps.LatLngBounds();
 	directionsDisplay.setMap(mapGeo);
+	directionsDisplayNone.setMap(mapGeo);
 	calcRoute();
+
+	google.maps.event.addListener(directionsDisplayNone, 'directions_changed', function() {
+		computeTotalDistance(directionsDisplayNone.directions);
+	});		
 }
 
 function calcRoute() {
@@ -162,7 +199,7 @@ function startTrace(){
 	}
 }
 
-function mapLoadData(){
+function mapLoadData(){	
 	removeMap(aMarkerTaxi);
 	if(bEstatus){
 		var idObject = $("#idViaje").val();		
@@ -174,16 +211,19 @@ function mapLoadData(){
 				var result = datos;
 				if(result!= ""){
 					arrayTravel = result.split('|');
-					
-					if(arrayTravel[0]!=5){
-						bEstatus=false;	
-						location.reload();
-					}else if(arrayTravel[0]==5){		
+					var iStatus = arrayTravel[0];
+
+					if(iStatus==5 || iStatus==2){
 						var latTaxi		= arrayTravel[1];
 						var lonTaxi		= arrayTravel[2];
 						var nameTaxi	= arrayTravel[3];
 						var descTaxi	= arrayTravel[4];
-						var fechaTaxi	= arrayTravel[5];
+						var fechaTaxi	= arrayTravel[5];						
+
+						if(iStatus==2){
+							calcAndDraw(latTaxi,lonTaxi);
+						}
+						
 				    	var content='<table width="350" class="table-striped" ><tr><td align="right"><b>Taxista</b></td><td width="200" align="left">'+nameTaxi+'</td><tr>'+
 				    			'<tr><td align="right"><b>Fecha</b></td><td align="left">'+descTaxi+' </td><tr>'+	    			
 				    			'<tr><td align="right"><b>Taxi</b></td><td align="left">'+fechaTaxi+' </td><tr>'+				    			
@@ -204,8 +244,11 @@ function mapLoadData(){
 						    onComplete: function () {
 						      mapLoadData()
 						    }		
-						}).addSeconds(20);						
-					}					
+						}).addSeconds(20);			
+					}else{
+						bEstatus=false;	
+						location.reload();
+					}			
 				}
 	        }
 		});
@@ -240,6 +283,7 @@ function infoMarkerTable(marker,content){
 }
 
 function removeMap(marker){
+	$("#spanCalcTime").html("Calculando...");	
 	if(marker!=null){		
 		marker.setMap(null);
 	}
@@ -355,3 +399,25 @@ function printTravelsMap(){
 	      }
 		}		
 		}  
+
+
+function computeTotalDistance(result) {
+  var total = 0;
+  var time= 0;
+  var from=0;
+  var to=0;
+  var myroute = result.routes[0];
+  for (var i = 0; i < myroute.legs.length; i++) {
+    total += myroute.legs[i].distance.value;
+    time +=myroute.legs[i].duration.text;
+    from =myroute.legs[i].start_address;
+    to =myroute.legs[i].end_address;
+
+
+  }
+  time = time.replace('hours','H');
+  time = time.replace('mins','M');
+  total = total / 1000.
+
+  $("#spanCalcTime").html(time+" ("+Math.round(total)+" kms.)");
+}		

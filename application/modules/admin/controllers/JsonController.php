@@ -76,6 +76,9 @@ class admin_JsonController extends My_Controller_Action
 
     public function validatextAction(){
     	try{
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+			    		
     		$aResult  = Array('status'=> 0);
     		$aDataExt = Array();
     		$aDataClient= Array();
@@ -89,20 +92,30 @@ class admin_JsonController extends My_Controller_Action
 			}  
 			
 			$this->_dataIn = $this->_request->getParams();
-					
-			$this->_helper->layout->disableLayout();
-			$this->_helper->viewRenderer->setNoRender();
-			
+
 			if($this->_dataIn['typaction']=='validate'){
 				$cLlamadas = new My_Model_Llamadas();
 				$cClientes = new My_Model_Clientes();
-								
+
 				$aDataExt  = $cLlamadas->validateStatus($this->_dataUser['ID_USUARIO']);
 				if(count($aDataExt)>0){
-					$aDataClient = $cClientes->getDataByPhone($aDataExt['NO_LLAMADA']);
-					if(count($aDataClient)>0){
-						$bUserExist  = 1;	
-					}
+					
+					
+					
+					$classObject = new My_Model_Clientes();
+	    			$aSearch = Array();
+	    			$aSearch['phoneFilter'] = $aDataExt['NO_LLAMADA'];
+	    			$aResultSearch 		  	= $classObject->getClients($aSearch);
+	    				    				    				    		
+	    			if(count($aResultSearch) > 1 ){
+	    				$bUserExist  = 2;	
+	    			}else if(count($aResultSearch) == 1 ){
+	    				$aDataClient = $cClientes->getDataByPhone($aDataExt['NO_LLAMADA']);						
+						$bUserExist  = 1;
+	    			}else{
+	    				$bUserExist  = 0;   				
+	    			}
+					
 				}
 			}
 			 			

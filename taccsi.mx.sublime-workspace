@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"aData",
+				"aDataExt"
+			],
+			[
 				"curre",
 				"currentTab"
 			],
@@ -316,34 +320,50 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
+			"file": "public/controllers/callcenter/services/js/createService.js",
 			"settings":
 			{
-				"buffer_size": 7571,
+				"buffer_size": 8496,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/modules/reports/views/scripts/travelsrep/index.phtml",
+			"file": "application/modules/callcenter/views/scripts/services/reportincidencia.phtml",
 			"settings":
 			{
-				"buffer_size": 7253,
+				"buffer_size": 8230,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "public/controllers/reports/js/reportInfoTravel.js",
+			"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
 			"settings":
 			{
-				"buffer_size": 5991,
+				"buffer_size": 21137,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "public/controllers/reports/js/reportTravelOn.js",
+			"file": "application/modules/callcenter/views/scripts/services/createservice.phtml",
 			"settings":
 			{
-				"buffer_size": 4582,
+				"buffer_size": 6479,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/modules/callcenter/controllers/ServicesController.php",
+			"settings":
+			{
+				"buffer_size": 10074,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "library/My/Model/Viajes.php",
+			"settings":
+			{
+				"buffer_size": 14088,
 				"line_ending": "Unix"
 			}
 		}
@@ -392,6 +412,14 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/traveldet/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportDetail.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/waiting.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/monitorInfo.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportInfoTravel.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportTravelOn.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/profile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
@@ -399,8 +427,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsatn/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/myprofile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/ export.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/PHPExcel/Classes/dompdf/include/image_cache.cls.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateProfile.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateCompanies.js",
@@ -421,11 +447,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recovery.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/login/views/scripts/main/recoverresq.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/waiting.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportDetail.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/traveldet/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelon/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportTravelOn.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/dist/css/skins/skin-yellow.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/datatables/dataTables.bootstrap.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelcomp/index.phtml",
@@ -456,7 +478,6 @@
 		"/private/var/folders/xg/lt4w3ztj27l4zjhjht4rjhww0000gn/T/fz3temp-1/Functions.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/bootstrap.min.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/MainController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/monitorInfo.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/RegisterController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/ValidationController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CompaniesController.php",
@@ -486,7 +507,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freedrivers/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/freecars/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportInfoTravel.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/Perfiles.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/controllers/TravelsrepController.php",
 		"/Users/itecno2/Library/Application Support/Sublime Text 2/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
@@ -714,81 +734,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
+					"file": "public/controllers/callcenter/services/js/createService.js",
 					"settings":
 					{
-						"buffer_size": 7571,
+						"buffer_size": 8496,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								322,
-								322
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/modules/reports/views/scripts/travelsrep/index.phtml",
-					"settings":
-					{
-						"buffer_size": 7253,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1066,
-								1066
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/controllers/reports/js/reportInfoTravel.js",
-					"settings":
-					{
-						"buffer_size": 5991,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								626,
+								626
 							]
 						],
 						"settings":
@@ -796,35 +758,148 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 2000.0,
+						"translation.y": 402.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "public/controllers/reports/js/reportTravelOn.js",
+					"buffer": 1,
+					"file": "application/modules/callcenter/views/scripts/services/reportincidencia.phtml",
 					"settings":
 					{
-						"buffer_size": 4582,
+						"buffer_size": 8230,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1418,
+								1418
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
+					"settings":
+					{
+						"buffer_size": 21137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1799,
+								1799
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 72.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "application/modules/callcenter/views/scripts/services/createservice.phtml",
+					"settings":
+					{
+						"buffer_size": 6479,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1766,
+								1456
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/modules/callcenter/controllers/ServicesController.php",
+					"settings":
+					{
+						"buffer_size": 10074,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3166,
+								3178
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1274.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "library/My/Model/Viajes.php",
+					"settings":
+					{
+						"buffer_size": 14088,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10267,
+								10267
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 12.0,
+						"translation.y": 4762.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -873,6 +948,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"",
+				"application/modules/callcenter/views/scripts/services/createservice.phtml"
+			]
 		],
 		"width": 0.0
 	},

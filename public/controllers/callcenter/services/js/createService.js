@@ -32,7 +32,8 @@ $( document ).ready(function() {
 			inputViajeP			: "required",
 			inputFechaViaje		: "required",
 			inputOrigen 		: "required",
-			inputDestino 		: "required"
+			inputDestino 		: "required",
+			inputRefsO			: "required",
         },
         messages: {
 			inputNoPasajeros	: "Campo requerido",
@@ -40,7 +41,8 @@ $( document ).ready(function() {
 			inputViajeP			: "Campo requerido",
 			inputFechaViaje		: "Campo requerido",
 			inputOrigen 		: "Campo requerido",
-			inputDestino 		: "Campo requerido"	
+			inputDestino 		: "Campo requerido",
+			inputRefsO			: "Campo requerido"
         },
         
         submitHandler: function(form) {
@@ -99,6 +101,9 @@ function initMapToDraw(){
 
 	bounds = new google.maps.LatLngBounds();	
 	directionsDisplay.setMap(mapGeo);
+	google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+		computeTotalDistance(directionsDisplay.directions);
+	});	
 }
 
 function setMarker(optionMarker){
@@ -183,13 +188,15 @@ function removeMap(optionMarker){
 function calcRoute() {
 	if($("#inputLatOrigen").val()!="" && $("#inputLonOrigen").val()!="" && 
 		$("#inputLatDestino").val()!="" && $("#inputLonDestino").val()!=""){
+		$("#divInformacion").hide('slow');
 		var latsOrigen  = new google.maps.LatLng($("#inputLatOrigen").val(), $("#inputLonOrigen").val());
 		var lastDestino = new google.maps.LatLng($("#inputLatDestino").val(), $("#inputLonDestino").val());
 		var request = {
 		  origin: latsOrigen,
 		  destination: lastDestino,
+		  provideRouteAlternatives: true,
 		  travelMode: google.maps.TravelMode.DRIVING
-		};
+		};		
 		directionsService.route(request, function(response, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 		  directionsDisplay.setDirections(response);
@@ -199,16 +206,20 @@ function calcRoute() {
 }
 
 function setOrigen(){
-	$("#spanOrigen").html("");
-	$("#spanOrigen").html('<i class="fa fa-check"></i>').removeClass("btn-warning").addClass("btn-success");
+	/*$("#spanOrigen").html("");
+	$("#spanOrigen").html('<i class="fa fa-check"></i>').removeClass("btn-warning").addClass("btn-success");*/
 	$("#inputDestino").removeAttr("disabled");
+	$("#inputDestino").focus();
 }
 
 function setDestino(){
+	/*
 	$("#spanDestino").html("");
 	$("#spanDestino").html('<i class="fa fa-check"></i>').removeClass("btn-warning").addClass("btn-success");
+	*/
 	calcRoute()
 	$("#divBtnSubmit").show('slow');
+	$("#divBtnSubmit").focus();
 }
 
 function codeLatLng(inputLat,inputLon,optionMarker) {
@@ -249,3 +260,35 @@ $('.noEnterSubmit').keypress(function(e){
     //or...
     if ( e.which == 13 ) e.preventDefault();
 });
+
+function computeTotalDistance(result) {
+	$("#divInformacion").show('slow');
+  var total = 0;
+  var time= 0;
+  var from=0;
+  var to=0;
+  var myroute = result.routes[0];
+  for (var i = 0; i < myroute.legs.length; i++) {
+    total += myroute.legs[i].distance.value;
+    time +=myroute.legs[i].duration.text;
+    from =myroute.legs[i].start_address;
+    to =myroute.legs[i].end_address;
+
+
+  }
+  time = time.replace('hours','H');
+  time = time.replace('mins','M');
+  total = total / 1000.
+
+  $("#inputDistancia").val(Math.round( total));
+  $("#inputTiempo").val(time);
+
+  $("#inputInfo").val(Math.round(total)+" kms./"+time);
+ /*
+  console.log(from + '-'+to);
+  console.log(time);
+  console.log(Math.round( total)+"KM");
+  document.getElementById('from').innerHTML = from + '-'+to;
+  document.getElementById('duration').innerHTML = time ;
+  document.getElementById('total').innerHTML =Math.round( total)+"KM" ;*/
+}

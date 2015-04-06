@@ -30,7 +30,16 @@
 			            	Ocurrio un error al insertar el cliente.
 			            </div>
 			        </div>					
-				<?php endif;?>                
+				<?php endif;?>  
+
+                
+                <?php if(@$this->resultOp=='more-contacts'):?>
+                    <div class="alert alert-warning alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-warning"></i> Alerta!</h4>
+                        Ya existe uno ó mas clientes con este número de teléfono.
+                      </div>                                 
+                <?php endif;?>                               
 				<form role="form" method="POST" action="/callcenter/client/new" id="FormData" >
                 	<input type="hidden" id="inputOpr"   name="optReg" value="new" />
                     <div class="box-body">

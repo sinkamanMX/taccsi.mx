@@ -78,15 +78,19 @@ class callcenter_ServicesController extends My_Controller_Action
     		$aDataIncidencias 	= Array();
     		$rDataOpr			= false;
     		$aRecorrido			= Array();
+    		$aPosition			= Array();
     			
     		if(isset($this->_dataIn['strViaje'])){
     			$idViaje	= $this->_dataIn['strViaje'];
     			$aDataViaje = $cViajes->infoViaje($idViaje);
     			$aDataClient= $cCliente->getDataClient($aDataViaje['ID_CLIENTE']);  
 				$aDataIncidencias = $cIncidencias->getIncidencias($idViaje);
-    			$idTaxista 	= $aDataViaje['ID_TAXISTA'];    			
-    			
+    			$idTaxista 	= $aDataViaje['ID_TAXISTA'];    			    			
     			$aRecorrido = $cViajes->getRecorrido($idViaje,$aDataViaje['ID_SRV_ESTATUS']);
+    			
+    			if($aDataViaje['ID_SRV_ESTATUS']==2){
+    				$aLastPosition = $cTaxis->getLastPositionByTaccsi($aDataViaje['ID_TAXISTA']);	
+    			}
     			
     			if($this->_dataOp=='renew'){
     				if($idTaxista==NULL){
@@ -114,6 +118,7 @@ class callcenter_ServicesController extends My_Controller_Action
 			$this->view->aDataCliente 	  = $aDataClient;
 			$this->view->aDataIncidencias = $aDataIncidencias;
     		$this->view->idViaje		  = $this->_dataIn['strViaje'];
+    		$this->view->aLastPosition	  = $aLastPosition;
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

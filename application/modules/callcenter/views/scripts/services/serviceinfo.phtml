@@ -17,7 +17,13 @@
     <input type="hidden" id="inputLatOrigen"    name="inputLatOrigen"  value="<?php echo @$this->aDataViaje['ORIGEN_LATITUD'];  ?>">
     <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->aDataViaje['ORIGEN_LONGITUD'];  ?>">
     <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->aDataViaje['DESTINO_LATITUD']; ?>">
-    <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->aDataViaje['DESTINO_LONGITUD']; ?>">                       
+    <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->aDataViaje['DESTINO_LONGITUD']; ?>">
+    <input type="hidden" id="inputDistancia" name="inputDistancia" value="<?php echo @$this->aDataViaje['DISTANCIA_VIAJE']; ?>">
+    <input type="hidden" id="inputTiempo"    name="inputTiempo"    value="<?php echo @$this->aDataViaje['TIEMPO_VIAJE']; ?>">   
+
+
+    <input type="hidden" id="inputULastLat" name="inputULastLat" value="<?php echo @$this->aLastPosition['LATITUD']; ?>">
+    <input type="hidden" id="inputULastLon" name="inputULastLon" value="<?php echo @$this->aLastPosition['LONGITUD']; ?>">                             
 
     <section class="content">
         <div class="row">
@@ -42,6 +48,15 @@
                                 <td>Fecha Viaje</td>
                                 <td><?php echo $this->aDataViaje['FECHA_VIAJE'];?></td>
                             </tr>
+
+                            <tr>
+                                <td>Distancia Aproximada</td>
+                                <td><?php echo $this->aDataViaje['DISTANCIA_VIAJE'];?> kms.</td>
+                            </tr>   
+                            <tr>
+                                <td>Tiempo Estimado del Viaje</td>
+                                <td><?php echo $this->aDataViaje['TIEMPO_VIAJE'];?></td>
+                            </tr>                            
                         </table>
                     </div>                
                 </div>    
@@ -87,10 +102,16 @@
                             <?php  endif;?> 
                         <?php else:?>
                             <table class="table table-bordered table-striped">
+                                <?php if($this->aDataViaje['ID_SRV_ESTATUS']==2):?>
+                                    <tr>
+                                        <td>Tiempo Estimado de arribo</td>
+                                        <td><span id="spanCalcTime">Calculando...</span></td>
+                                    </tr>                                    
+                                <?php endif;?>
                                 <tr>
                                     <td>Clave Viaje</td>
                                     <td><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['CLAVE_VIAJE'] : 'Sin Taxi Asignado';?></td>
-                                </tr>                             
+                                </tr>
                                 <tr>
                                     <td>Taxista</td>
                                     <td>
@@ -120,12 +141,25 @@
                                 <td>Origen</td>
                                 <td><?php echo $this->aDataViaje['ORIGEN'];?></td>
                             </tr> 
+                            <?php if(isset($this->aDataViaje['ORIGEN_REFERENCIAS']) && $this->aDataViaje['ORIGEN_REFERENCIAS']!=""):?>
+                                <tr>
+                                    <td colspan="2">Referencias</td>
+                                    <td><?php echo $this->aDataViaje['ORIGEN_REFERENCIAS'];?></td>
+                                </tr>
+                            <?php endif;?>                            
                             <tr>
                                 <td><img src="/images/assets/destino.png"  width="15px"/></td>
                                 <td>Destino</td>
                                 <td><?php echo $this->aDataViaje['DESTINO'];?></td>
                             </tr> 
+                             <?php if(isset($this->aDataViaje['DESTINO_REFERENCIAS']) && $this->aDataViaje['DESTINO_REFERENCIAS']!=""):?>
+                                <tr>
+                                    <td colspan="2">Referencias</td>
+                                    <td><?php echo $this->aDataViaje['DESTINO_REFERENCIAS'];?></td>
+                                </tr>
+                            <?php endif;?>                                                         
                         </table>
+                        <br/>
                         <div id="myMapDraw" style="width:100%;height:400px;">
 
                         </div>

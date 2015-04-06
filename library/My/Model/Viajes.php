@@ -95,11 +95,15 @@ class My_Model_Viajes extends My_Db_Table
               		FECHA_VIAJE		='".$data['inputFechaViaje']."',
               		NO_PASAJEROS	= ".$data['inputNoPasajeros'].",
               		ORIGEN			='".$data['inputOrigen']."',
+              		ORIGEN_REFERENCIAS='".$data['inputRefsO']."',
               		DESTINO			='".$data['inputDestino']."',
+              		DESTINO_REFERENCIAS='".$data['inputRefsD']."',
               		ORIGEN_LATITUD	= ".$data['inputLatOrigen'].",
               		ORIGEN_LONGITUD	= ".$data['inputLonOrigen'].",
               		DESTINO_LATITUD	= ".$data['inputLatDestino'].",
               		DESTINO_LONGITUD= ".$data['inputLonDestino'].",
+              		DISTANCIA_VIAJE = ".$data['inputDistancia'].",
+              		TIEMPO_VIAJE	='".$data['inputTiempo']."',
               		ID_CLIENTE		= ".$data['strClient'].",
               		USUARIO_REGISTRO= ".$data['userRegistro'].",
               		ID_SRV_ESTATUS  =1";
@@ -300,6 +304,8 @@ class My_Model_Viajes extends My_Db_Table
 					FROM ADMIN_VIAJES V
 					WHERE V.ID_VIAJES = $idViaje
 				)";				
+		}else{
+			$sFilter = "AND P.FECHA_GPS IS NULL";
 		}
 		
     	$sql ="SELECT P.FECHA_GPS AS FECHA, P.*
@@ -311,7 +317,7 @@ class My_Model_Viajes extends My_Db_Table
 					WHERE V.ID_VIAJES = $idViaje
 				)
 				$sFilter				
-				ORDER BY P.FECHA_SERVER DESC";     	
+				ORDER BY P.FECHA_SERVER DESC";  	
 		$query   = $this->query($sql);
 		if(count($query)>0){
 			$result	 = $query;			

@@ -31,8 +31,8 @@ class callcenter_ClientController extends My_Controller_Action
     
     public function newAction(){
     	try{
-    		if($this->_dataOp=='new'){    			
-				$classObject = new My_Model_Clientes();
+    		$classObject = new My_Model_Clientes();
+    		if($this->_dataOp=='new'){    							
     			$insert	= $classObject->insertRow($this->_dataIn);
     			if($insert['status']){
     				$idInsert = $insert['id'];
@@ -42,6 +42,16 @@ class callcenter_ClientController extends My_Controller_Action
     				$this->_aErrors['status'] = 'no-insert';
     			}
     		}
+    		
+    		if(isset($this->_dataIn['inputPhone']) && $this->_dataIn['inputPhone']!=''){
+    			$aSearch = Array();
+    			$aSearch['phoneFilter'] = $this->_dataIn['inputPhone'];
+    			$aResultSearch 		  = $classObject->getClients($aSearch);
+    			if(count($aResultSearch) > 0){
+    				$this->_resultOp = 'more-contacts';
+    			}    			
+    		}
+    		
 			$this->view->errors 	= $this->_aErrors;	
 			$this->view->resultOp   = $this->_resultOp;  
 			$this->view->data		= $this->_dataIn; 		
@@ -67,6 +77,31 @@ class callcenter_ClientController extends My_Controller_Action
     		$this->view->dataClient = $aDataClient;	
     		$this->view->dataViajes = $aDataViajes;
 		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }  	    	
+    }
+    
+    public function clientsbynumberAction(){
+    	try{
+    		$classObject = new My_Model_Clientes();
+    		
+    		if(isset($this->_dataIn['inputPhone']) && $this->_dataIn['inputPhone']!=''){
+    			$aSearch = Array();
+    			$aSearch['phoneFilter'] = $this->_dataIn['inputPhone'];
+    			$aResultSearch 		  = $classObject->getClients($aSearch);
+    			if(count($aResultSearch) < 1){
+    				$this->_redirect('/callcenter/client/new?inputPhone='.$this->_dataIn['inputPhone']);	
+    			}     				
+    		}else{
+    			$this->_redirect('/callcenter/main/waiting');
+    		}
+    		
+			$this->view->errors 	= $this->_aErrors;	
+			$this->view->resultOp   = $this->_resultOp;  
+			$this->view->data		= $this->_dataIn;
+			$this->view->aDataTable = $aResultSearch;			    	
+ 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }  	    	

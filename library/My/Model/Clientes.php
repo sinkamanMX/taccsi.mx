@@ -39,7 +39,12 @@ class My_Model_Clientes extends My_Db_Table
 		if(isset($data['telfilter']) && $data['telfilter']!=""){
 			$filter .= ($filter=="") ? " WHERE ": " OR ";
 			$filter .= "TELEFONO LIKE '%".$data['telfilter']."%'";		
-		} 		
+		} 
+
+		if(isset($data['phoneFilter']) && $data['phoneFilter']!=""){
+			$filter .= ($filter=="") ? " WHERE ": " OR ";
+			$filter .= "TELEFONO = '".$data['phoneFilter']."'";		
+		}		
 		
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 	

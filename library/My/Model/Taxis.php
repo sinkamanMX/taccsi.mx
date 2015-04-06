@@ -304,4 +304,30 @@ class My_Model_Taxis extends My_Db_Table
 		}	        
 		return $result;	    	
     }
+    
+    public function getLastPositionByTaccsi($idTaccista){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT CONCAT(U.NOMBRE,' ', U.APATERNO, ' ',U.AMATERNO) AS CHOFER, T.PLACAS AS TAXI, 
+    				P.UBICACION, P.FECHA_GPS, IF(V.ID_VIAJEs IS NULL,'Sin viaje','En Viaje')  AS ESTADO, P.LATITUD,
+    			 	P.LONGITUD, P.ANGULO, P.VELOCIDAD
+				FROM DISP_ULTIMA_POSICION P
+				INNER JOIN ADMIN_USUARIOS U ON P.IDENTIFICADOR = U.DISPOSITIVO
+				INNER JOIN ADMIN_TAXIS    T ON U.ID_USUARIO    = T.ADMIN_USUARIOS_ID_USUARIO
+				 LEFT JOIN ADMIN_VIAJES   V ON U.ID_USUARIO    = V.ID_TAXISTA AND V.ID_SRV_ESTATUS IN(2,5) 
+				WHERE P.IDENTIFICADOR IN (
+					SELECT DISPOSITIVO
+					FROM ADMIN_USUARIOS
+					WHERE ID_USUARIO = $idTaccista
+					  AND DISPOSITIVO IS NOT NULL
+				)
+				GROUP BY P.IDENTIFICADOR
+				ORDER BY P.FECHA_GPS
+				LIMIT 1";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query[0];			
+		}	        
+		return $result;	    	
+    }    
 }	

@@ -19,8 +19,11 @@
                     <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->data['inputLonOrigen'];  ?>">
                     <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->data['inputLatDestino']; ?>">
                     <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->data['inputLonDestino']; ?>">                    
+                    <input type="hidden" id="inputDistancia" name="inputDistancia" value="<?php echo @$this->aDataViaje['DISTANCIA_VIAJE']; ?>">
+                    <input type="hidden" id="inputTiempo"    name="inputTiempo"    value="<?php echo @$this->aDataViaje['TIEMPO_VIAJE']; ?>">                        
+
                     <div class="box-body">          
-                        <div class="">
+                        <div class="row">
                             <div class=" col-xs-3">
                                 <label for="inputNoPasajeros">No. Pasajeros</label>
                                 <select class="form-control" id="inputNoPasajeros" name="inputNoPasajeros">
@@ -39,12 +42,76 @@
                                 <label for="inputFechaViaje">Fecha/Hora del Viaje</label>
                                 <input readonly  id="inputFechaViaje" type="text" class="form-control noEnterSubmit" name="inputFechaViaje"  placeholder="">
                             </div>
+                            <div id="divInformacion" class="col-xs-3" style="display:none;">
+                                <label for="inputInfo">Distancia / Tiempo</label>
+                                <input readonly  id="inputInfo" type="text" class="form-control noEnterSubmit" name="" disabled value="">
+                            </div>                            
                             <br/>
                             <br/>
-                        </div>                                    
-                    </div>  
-                    <br/>
-                    <div class="box-body">
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span><b>Origen</b></span>
+                            </div>
+                            <div class="col-xs-6">
+                                <span><b>Destino</b></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
+                                    <span class="input-group-btn">
+                                      <button class="btn btn-success btn-flat" type="button" onClick="setOrigen()">OK</button>
+                                    </span>
+                                </div>                      
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group input-group-sm">
+                                    <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
+                                    <span class="input-group-btn">
+                                      <button id="spanOrigen" class="btn btn-success btn-flat" type="button" onClick="setDestino()">OK</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="">
+                                    <label for="inputNoPasajeros">Referencias</label>
+                                    <div class="input-group input-group-sm col-xs-12">
+                                        <input type="text" class="form-control noEnterSubmit" name="inputRefsO" id="inputRefsO" placeholder="Ej.Puerta de color rojo.">
+                                    </div> 
+                                </div>                                 
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="">
+                                    <label for="inputNoPasajeros">Referencias</label>
+                                    <div class="input-group input-group-sm col-xs-12">
+                                        <input type="text" class="form-control noEnterSubmit" name="inputRefsD" id="inputRefsD" placeholder="Ej.Puerta de color rojo.">
+                                    </div> 
+                                </div>                                  
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="input-group input-group-sm">
+                                    <label for="inputNoPasajeros">Origen</label>
+                                    <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
+                                    <span class="input-group-btn">
+                                        <span id="spanOrigen" class="input-group-addon cursor-hand btn btn-warning font-white" onClick="setOrigen()"><i id="iOrigen" class="fa fa-minus"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="input-group input-group-sm">
+                                    <label for="inputNoPasajeros">Referencias</label>
+                                    <input type="text" class="form-control noEnterSubmit" name="inputRefsO" id="inputRefsO" placeholder="Ej.Puerta de color rojo.">
+                                </div>    
+                            </div>
+                        </div> 
+
                         <span><b>Origen</b></span>
                         <div class="input-group input-group-sm">
                             <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
@@ -52,25 +119,37 @@
                                 <span id="spanOrigen" class="input-group-addon cursor-hand btn btn-warning font-white" onClick="setOrigen()"><i id="iOrigen" class="fa fa-minus"></i></span>
                             </span>
                         </div>
+                        <span><b>Referencias</b></span>
+                        <div class="input-group input-group-sm col-xs-12">
+                            <input type="text" class="form-control noEnterSubmit" name="inputRefsO" id="inputRefsO" placeholder="Ej.Puerta de color rojo.">
+                        </div>      <br/>                   
                         <span><b>Destino</b></span>
                         <div class="input-group input-group-sm">
                             <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
                             <span class="input-group-btn">
                                 <span id="spanDestino" class="input-group-addon cursor-hand btn btn-warning font-white" onClick="setDestino()"><i class="fa fa-minus"></i></span>
                             </span>
-                        </div><br/>                        
-                        <span class="box-title">Verifique que la ubicaciones sean correctas, puedes cambiar la ubicación con el ratón(dando click o arrastrando el icono).</span>
-                        <br/>
-                        <div id="myMapDraw" style="width:100%; height:350px;"> 
+                        </div><br/> 
+                        <span><b>Referencias</b></span>
+                        <div class="input-group input-group-sm col-xs-12">
+                            <input type="text" class="form-control noEnterSubmit" name="inputRefsD" id="inputRefsD" placeholder="Ej.Puerta de color rojo.">
+                        </div>                                                                        
+                        -->
 
-                        </div>
+                        <br/> 
+                            <span class="box-title">Verifique que la ubicaciones sean correctas, puedes cambiar la ubicación con el ratón(dando click o arrastrando el icono).</span>
                         <br/>
+                        <div id="myMapDraw" style="width:100%; height:350px;"></div>
+
+                        <br/>
+
                         <div id="divBtnSubmit" class="pull-right" style="display:none;">
                             <button id="btnSearch" type="submit" class="btn btn-primary">
                                 Continuar</button>
-                        </div>
-                    </form>
-                </div>
+                        </div>                        
+                    </div>                        
+                </form>
+                
             </div><!-- /.box -->
         </div>
     </section><!-- /.content -->
