@@ -1,0 +1,115 @@
+<?php $this->headScript()->appendFile('/js/jasny-bootstrap.min.js') ?>
+<?php echo $this->headLink()->appendStylesheet('/css/jasny-bootstrap.min.css'); ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/validateProfile.js') ?>
+<section class="content">
+    <div class="col-xs-12">
+      <div class="box box-primary row-min-h450">
+        <div class="box-header">
+            <h3 class="box-title">Mi Perfil</h3>
+        </div>
+
+
+        <div class="box-body col-md-12">
+            <?php if(count(@$this->errors)>0):?>
+                <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <h4>Error</h4>
+                  <div>Ocurrio un error.</div>
+                    <?php if(@$this->errors['errorImage']==1):?>
+                        <div>La imagen no fue posible guardarla, favor de verificar las especificaciones.</div>
+                    <?php endif; ?>
+                    <?php if(@$this->errors['eUsuario']==1):?>
+                          <div>El Usuario no se encuentra disponible</div>
+                    <?php endif;?>
+                </div>
+            <?php endif;?>
+
+            <?php if(@$this->resultOp=='okRegister'):?>
+                <div class="alert alert-success alert-dismissable">
+                    <i class="fa fa-check"></i>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <b>!Atención¡</b> Los datos se han guardado correctamente.
+                </div>
+            <?php endif;?>                         
+            <form role="form" method="POST" action="/external/profile/index" id="formProfile" enctype="multipart/form-data">
+                <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+
+                <div class="col-xs-3">              
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                      <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/taxis/<?php echo (isset($this->data['IMAGEN']) && $this->data['IMAGEN']!="") ? $this->data['IMAGEN']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                      </div>
+                      <div>
+                        <span class="btn btn-default btn-file">
+                        <span class="fileinput-new">Seleccionar Imagen</span>
+                        <span class="fileinput-exists">Cambiar</span>
+                        <input type="file" name="imageProfile"></span>
+                        <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                      </div>
+                    </div>
+
+                    <div class="<?php echo (isset($this->errors['errorImage'])) ? 'div-border-error': '';?>">
+                        <p class="">Formatos permitidos: .png .jpg .jpeg<br/>
+                            Tamaño máximo: 10MB
+                        </p>
+                    </div>
+                </div>
+                <div class="col-xs-9">                                
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputNombre">Nombre</label>
+                            <input type="text" class="form-control upperClass" name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['NOMBRE']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputApaterno">Ap. Paterno</label>
+                            <input type="text" class="form-control upperClass" name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['APATERNO']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputAmaterno">Ap. Materno</label>
+                            <input type="text" class="form-control upperClass" name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['AMATERNO']; ?>">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputNombre">Usuario</label>
+                            <input type="text" class="form-control upperClass" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['USUARIO']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputApaterno">Contraseña</label>
+                            <input type="password" class="form-control upperClass" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputAmaterno">Confirmar Contraseña</label>
+                            <input type="password" class="form-control upperClass" name="inputCpassword" id="inputCpassword" placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">                 
+                        <div class="form-group col-xs-4">
+                            <label for="inputPhone">Teléfono</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
+                                </div>                            
+                                <input type="text" class="form-control upperClass col-xs-4" name="inputPhone" id="inputPhone" placeholder="Teléfono" value="<?php echo @$this->data['TELEFONO']; ?>">
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+
+                        </div>
+
+                        <div class="form-group col-xs-4">
+
+                        </div>
+                    </div>                                          
+                </div>
+                <div class="box-footer col-xs-12">                                                        
+                    <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                </div>
+            </form>
+        </div>
+
+
+        </div>
+    </div>
+</section><!-- /.content -->

@@ -26,7 +26,13 @@
                     <img src="/images/assets/default-user-icon-profile.png" class="img-circle" alt="User Image" />
                     <p>
                       <?php echo $this->dataUser['NOMBRE'];?> 
-                         <small><?php echo $this->dataUser['DESCRIPCION'];?> </small>
+                         <small>
+                          <?php if(isset($this->dataUser['typeUser'])):?>
+                            Usuario
+                          <?php else:?>
+                            <?php echo $this->dataUser['DESCRIPCION'];?>
+                          <?php endif;?>
+                           </small>
                     </p>
                   </li>
                   <!-- Menu Body -->
@@ -47,7 +53,11 @@
                       <!--<a href="#" class="btn btn-default btn-flat">Profile</a>-->
                     </div>
                     <div class="pull-right">
-                      <a href="/login/main/logout" class="btn btn-default btn-flat">Salir</a>
+                      <?php if(isset($this->dataUser['typeUser'])):?>
+                            <a href="/external/login/logout" class="btn btn-default btn-flat">Salir</a>
+                          <?php else:?>
+                            <a href="/login/main/logout" class="btn btn-default btn-flat">Salir</a>
+                          <?php endif;?>
                     </div>
                   </li>
                 </ul>

@@ -1,0 +1,111 @@
+<?php $this->headScript()->appendFile('/js/jquery.countdown360.js'); ?>
+<?php $this->headScript()->appendFile('/controllers/reports/js/reportInfoTravel.js') ?>
+<aside class="">
+    <section class="content-header no-margin">
+        <h1 class="text-center">
+            <a class="pull-left" href="/external/reports/index">
+                <i class="fa fa-arrow-circle-left"></i>
+            </a>            
+            Información del Viaje
+            <medium>#<?php echo $this->idViaje;?></medium>
+            <small class="pull-right">Estatus: <?php echo $this->aDataViaje['ESTATUS'];?></small>
+        </h1>
+    </section> 
+
+    <input  type="hidden" id="idViaje" name="idViaje" value="<?php echo $this->aDataViaje['ID_VIAJES'];?>"/>
+    <input type="hidden" id="inputEstatus"      name="inputEstatus"    value="<?php echo @$this->aDataViaje['ID_SRV_ESTATUS'];  ?>">
+    <input type="hidden" id="inputLatOrigen"    name="inputLatOrigen"  value="<?php echo @$this->aDataViaje['ORIGEN_LATITUD'];  ?>">
+    <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->aDataViaje['ORIGEN_LONGITUD'];  ?>">
+    <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->aDataViaje['DESTINO_LATITUD']; ?>">
+    <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->aDataViaje['DESTINO_LONGITUD']; ?>">                       
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-7 col-md-offset-2">
+                <div class="box box-solid">
+                    <div class="box-body">
+                        <div class="box-header">
+                            <i class="fa fa-info-circle"></i>
+                            <h3 class="box-title">Detalle del Viaje</h3>
+                            <h3 class="box-title pull-right">
+                                <?php if(@$this->aDataViaje['ID_SRV_ESTATUS']==3):?>
+                                    <a href="/external/reports/export?strViaje=<?php echo @$this->aDataViaje['ID_VIAJES']; ?>"><i class="fa fa-print"></i> Imprimir</a></h3>
+                                <?php endif;?>
+                        </div>                        
+                        <dl class="dl-horizontal">
+                            <dt>Id del Viaje</dt>
+                            <dd><?php echo $this->aDataViaje['ID_VIAJES'];?></dd>
+                            <dt>Fecha Viaje</dt>
+                            <dd><?php echo $this->aDataViaje['FECHA_VIAJE'];?></dd>   
+                            <dt>No. Personas</dt>
+                            <dd><?php echo $this->aDataViaje['NO_PASAJEROS'];?></dd>
+                            <dt>Monto ($)</dt>
+                            <dd><?php echo "$ ".money_format(round($this->aDataViaje['MONTO'],2),2) ;?></dd>  
+                            <dt>Forma de Pago</dt>
+                            <dd><?php echo $this->aDataViaje['FPAGO'];?></dd>                            
+                            <dt>Origen</dt>
+                            <dd><?php echo $this->aDataViaje['ORIGEN'];?></dd>
+                            <dt>Destino</dt>
+                            <dd><?php echo $this->aDataViaje['DESTINO'];?></dd>
+                            <dt>Estatus</dt>
+                            <dd><?php echo $this->aDataViaje['ESTATUS'];?></dd>                            
+                        </dl>
+                        <div class="box-header p-botom-0">
+                            <i class="fa fa-user"></i>
+                            <h3 class="box-title">Cliente</h3>
+                        </div>
+
+                        <dl class="dl-horizontal">
+                            <dt>Nombre Completo</dt>
+                            <dd><?php echo $this->aDataCliente['NOMBRE']." ".$this->aDataCliente['APATERNO']." ".$this->aDataCliente['AMATERNO'];?></dd>
+                            <dt>Teléfono</dt>
+                            <dd><?php echo $this->aDataCliente['TELEFONO'];?></dd>                            
+                            <dt>E-mail</dt>
+                            <dd><?php echo $this->aDataCliente['EMAIL'];?></dd>                            
+                        </dl>
+
+                        <div class="box-header p-botom-0">
+                            <i class="fa fa-truck"></i>
+                            <h3 class="box-title">Taxi</h3>
+                        </div> 
+                        <?php if (!isset($this->aDataViaje['ID_TAXISTA'])):?>
+                            <h3>Sin taxi Asignado</h3>                                
+                        <?php else:?>
+                            <dl class="dl-horizontal">
+                                <dt>Clave Viaje</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['CLAVE_VIAJE'] : 'Sin Taxi Asignado';?></dd>                            
+                                <dt>Taxista</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['TAXISTA'] : 'Sin Taxi Asignado';?></dd>
+                                <dt>Taxi</dt>
+                                <dd><?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? $this->aDataViaje['TAXI'] : 'Sin Taxi Asignado';?></dd>
+                            </dl>
+                            <?php  endif;?> 
+                        <div class="box-header p-botom-0">                            
+                            <h3 class="box-title">Comentarios del Taxista</h3>
+                        </div>                            
+                        <p class="margin-l5"><?php echo (isset($this->aDataViaje['COMENTARIOS_TAXISTA'])) ? @$this->aDataViaje['COMENTARIOS_TAXISTA']: 'Ninguno';?></p>                                                    
+                        <div class="box-header">
+                            <i class="fa fa-info-circle"></i>
+                            <h3 class="box-title">Califiación</h3>
+                            <div class="pull-right">
+                                <?php $total = (isset($this->aDataViaje['RATING'])) ? $this->aDataViaje['RATING']: 0; ?>
+                                <div class=""> 
+                                    <?php for($i=0;$i<$total;$i++): ?>
+                                        <span class="fa fa-star-o star-rating" ></span>  
+                                    <?php endfor;?>
+                                    <?php for($i=0;$i<(5-$total);$i++): ?>
+                                        <span class="fa fa-star-o star-no-rating" ></span>  
+                                    <?php endfor;?>
+                                </div>                                                                     
+                            </div>
+                        </div>
+
+                        <div class="box-header p-botom-0">                            
+                            <h3 class="box-title">Comentarios del Usuario</h3>
+                        </div>                                                    
+                        <p class="margin-l5"><?php echo (isset($this->aDataViaje['COMENTARIOS'])) ? @$this->aDataViaje['COMENTARIOS']: 'Ninguno';  ?></p>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->                
+            </div>     
+    </section>
+</aside>

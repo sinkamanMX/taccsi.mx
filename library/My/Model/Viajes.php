@@ -106,7 +106,7 @@ class My_Model_Viajes extends My_Db_Table
               		TIEMPO_VIAJE	='".$data['inputTiempo']."',
               		ID_CLIENTE		= ".$data['strClient'].",
               		USUARIO_REGISTRO= ".$data['userRegistro'].",
-              		ID_SRV_ESTATUS  =1";
+              		ID_SRV_ESTATUS  = 1";
         try{            
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
