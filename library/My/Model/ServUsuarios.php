@@ -64,7 +64,7 @@ class My_Model_ServUsuarios extends My_Db_Table
 				LEFT JOIN ADMIN_EMPRESAS M ON U.ID_EMPRESA     = M.ID_EMPRESA
 				LEFT JOIN ADMIN_TAXIS    T ON V.ID_TAXISTA     = T.ADMIN_USUARIOS_ID_USUARIO  			
     			WHERE V.ID_CLIENTE = ".$idUsuario."
-    			ORDER BY V.FECHA_VIAJE DESC";
+    			ORDER BY V.ID_VIAJES DESC";
     	$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

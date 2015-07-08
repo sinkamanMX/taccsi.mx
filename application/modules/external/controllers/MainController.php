@@ -76,5 +76,135 @@ class external_MainController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }
-    }      
+    }   
+
+    public function serviceinfoAction(){
+    	try{
+    		$cTaxis				= new My_Model_Taxis();
+    		$cCliente   		= new My_Model_Clientes();  
+    		$cViajes			= new My_Model_Viajes();
+    		$cIncidencias		= new My_Model_Incidencias();
+			$aDataViaje 		= Array();
+    		$aDataClient		= Array();
+    		$aDataIncidencias 	= Array();
+    		$rDataOpr			= false;
+    		$aRecorrido			= Array();
+    		$aPosition			= Array();
+    		$aLastPosition		= Array();
+    			
+    		if(isset($this->_dataIn['strViaje'])){
+    			$idViaje	= $this->_dataIn['strViaje'];
+    			$aDataViaje = $cViajes->infoViaje($idViaje);
+    			$aDataClient= $cCliente->getDataClient($aDataViaje['ID_CLIENTE']);  
+				$aDataIncidencias = $cIncidencias->getIncidencias($idViaje);
+    			$idTaxista 	= $aDataViaje['ID_TAXISTA'];    			    			
+    			$aRecorrido = $cViajes->getRecorrido($idViaje,$aDataViaje['ID_SRV_ESTATUS']);
+    			
+    			if($aDataViaje['ID_SRV_ESTATUS']==2){
+    				$aLastPosition = $cTaxis->getLastPositionByTaccsi($aDataViaje['ID_TAXISTA']);	
+    			}
+    			
+    			if($this->_dataOp=='renew'){
+    				if($idTaxista==NULL){
+    					$delete = $cViajes->deleteAssign($idViaje);    					
+    					if($delete){	
+    						$updated = $cViajes->resetViaje($idViaje);
+    						if($updated['status']){
+								$aDataViaje['inputLatOrigen'] = $aDataViaje['ORIGEN_LATITUD'];
+	    						$aDataViaje['inputLonOrigen'] = $aDataViaje['ORIGEN_LONGITUD'];
+								$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
+								$this->addTaxis($aTaxis, $idViaje);
+								$this->_redirect('/external/main/serviceinfo?strViaje='.$idViaje);    						
+	    						$rDataOpr = true;	
+    						}    						
+    					}
+    				}
+    			}else if($this->_dataOp=='cancel'){
+    				$bCancelTravel = $cViajes->cancelViaje($idViaje);
+    				if($bCancelTravel['status']){
+    					$this->_redirect('/external/reports/index');
+    				}
+    			}
+    		}else{
+    			$this->_redirect('/external/login/inicio');
+    		}    		
+    		
+    		$this->view->dataOpr	  	  = $rDataOpr;		
+			$this->view->aDataViaje   	  = $aDataViaje; 
+			$this->view->recorrido  	  = $aRecorrido;
+			$this->view->aDataCliente 	  = $aDataClient;
+			$this->view->aDataIncidencias = $aDataIncidencias;
+    		$this->view->idViaje		  = $this->_dataIn['strViaje'];
+    		$this->view->aLastPosition	  = $aLastPosition;
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }  	    	
+    }
+    
+    public function addTaxis($data,$idViaje){
+    	$cTaxis	= new My_Model_Taxis();
+    	$aDatainsert = Array();
+    	foreach($data as $key  => $items){
+    		$aDatainsert['idViaje']  = $idViaje;
+    		$aDatainsert['idTaccsi'] = $items['ID_USUARIO'];
+    		$insertTaxis = $cTaxis->insertRelTaxis($aDatainsert);
+    	}
+    }   
+
+    public function getassignAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();    
+  	    $answer = Array('answer' => 'no-data');  	    
+  	    
+    	try{
+			$cViajes	= new My_Model_Viajes();
+	            		
+    		if(isset($this->_dataIn['strViaje'])){
+    			$idViaje	= $this->_dataIn['strViaje'];
+    			
+    			$aDataViaje = $cViajes->infoViaje($idViaje);
+    			if(isset($aDataViaje['ID_TAXISTA'])){
+    				$answer = Array('answer' => 'assign');
+    			}else{
+    				$answer = Array('answer' => 'problem');	
+    			} 			 	
+    		}else{
+    			$answer = Array('answer' => 'problem');	
+    		}
+    		echo Zend_Json::encode($answer);     
+    		
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }      	
+    }
+
+    public function getlastpAction(){
+    	$result = '';
+		try{  
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+    		$cViajes	= new My_Model_Viajes();
+    		$cTaxis		= new My_Model_Taxis();		
+    		
+			if(isset($this->_dataIn['strViaje']) && $this->_dataIn['strViaje']){
+    			$idViaje	= $this->_dataIn['strViaje'];
+    			$aDataViaje = $cViajes->infoViaje($idViaje);
+    			$aLastPos	= $cTaxis->getPositionTaxi($aDataViaje['ID_TAXISTA']);
+    			
+    			$result 	= $aDataViaje['ID_SRV_ESTATUS']."|".
+    						  $aLastPos['LATITUD']	."|".
+    						  $aLastPos['LONGITUD']	."|".
+    						  $aDataViaje['TAXISTA']."|".
+    						  $aDataViaje['TAXI']	."|".
+    						  $aLastPos['FECHA_GPS']."|".
+    						  $aLastPos['PROVEEDOR'];			  
+			}
+			echo $result;    	
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }   	    	
+    }    
 }

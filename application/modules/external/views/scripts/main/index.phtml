@@ -17,8 +17,8 @@
                     <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->data['inputLonOrigen'];  ?>">
                     <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->data['inputLatDestino']; ?>">
                     <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->data['inputLonDestino']; ?>">                    
-                    <input type="hidden" id="inputDistancia" name="inputDistancia" value="<?php echo @$this->aDataViaje['DISTANCIA_VIAJE']; ?>">
-                    <input type="hidden" id="inputTiempo"    name="inputTiempo"    value="<?php echo @$this->aDataViaje['TIEMPO_VIAJE']; ?>">                        
+                    <input type="hidden" id="inputDistancia" name="inputDistancia" value="<?php (isset($this->aDataViaje['DISTANCIA_VIAJE'])) ? $this->aDataViaje['DISTANCIA_VIAJE']: '0'; ?>">
+                    <input type="hidden" id="inputTiempo"    name="inputTiempo"    value="<?php (isset($this->aDataViaje['TIEMPO_VIAJE']))    ? $this->aDataViaje['TIEMPO_VIAJE']   : '0'; ?>">                    
 
                     <div class="box-body">          
                         <div class="row">

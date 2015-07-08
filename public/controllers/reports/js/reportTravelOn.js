@@ -101,7 +101,7 @@ $( document ).ready(function() {
       "bLengthChange": false,
       "bPaginate": true,
       "bFilter": true,
-      "bSort": true,
+      "bSort": false,
       "bJQueryUI": true,
       "iDisplayLength": 5,      
       "bProcessing": true,

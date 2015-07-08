@@ -34,7 +34,11 @@
                                     <td><?php echo $items['ORIGEN'];?></td>
                                     <td><?php echo $items['DESTINO'];?></td>
                                     <td> 
-                                        <a href="/external/reports/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>
+                                        <?php if($items['ID_SRV_ESTATUS']==1 || $items['ID_SRV_ESTATUS']==2 || $items['ID_SRV_ESTATUS']==5): ?>
+                                            <a href="/external/main/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-info"> <i class="fa fa-info-circle"></i></button></a>
+                                        <?php else:?>
+                                            <a href="/external/reports/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-success"> <i class="fa fa-ticket"></i></button></a>
+                                        <?php endif;?>                                          
                                     </td>
                                 </tr>
                             <?php endforeach;?>

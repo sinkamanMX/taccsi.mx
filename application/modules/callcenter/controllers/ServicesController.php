@@ -79,6 +79,7 @@ class callcenter_ServicesController extends My_Controller_Action
     		$rDataOpr			= false;
     		$aRecorrido			= Array();
     		$aPosition			= Array();
+    		$aLastPosition		= Array();
     			
     		if(isset($this->_dataIn['strViaje'])){
     			$idViaje	= $this->_dataIn['strViaje'];
