@@ -45,9 +45,12 @@ class callcenter_ServicesController extends My_Controller_Action
 					if($registerService['status']){
 						$idViaje = $registerService['id'];
 						
-						$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
-						$this->addTaxis($aTaxis, $idViaje);
-						$this->_redirect('/callcenter/services/serviceinfo?strViaje='.$idViaje);
+						$this->_redirect('/callcenter/services/listtaccis?strViaje='.$idViaje);
+						/*
+							$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
+							$this->addTaxis($aTaxis, $idViaje);
+							$this->_redirect('/callcenter/services/serviceinfo?strViaje='.$idViaje);
+						*/
 					}					
 	    		}
     		}else{
@@ -80,7 +83,7 @@ class callcenter_ServicesController extends My_Controller_Action
     		$aRecorrido			= Array();
     		$aPosition			= Array();
     		$aLastPosition		= Array();
-    			
+    			 
     		if(isset($this->_dataIn['strViaje'])){
     			$idViaje	= $this->_dataIn['strViaje'];
     			$aDataViaje = $cViajes->infoViaje($idViaje);
@@ -120,6 +123,7 @@ class callcenter_ServicesController extends My_Controller_Action
 			$this->view->aDataIncidencias = $aDataIncidencias;
     		$this->view->idViaje		  = $this->_dataIn['strViaje'];
     		$this->view->aLastPosition	  = $aLastPosition;
+    		$this->view->waiting		  = (isset($this->_dataIn['strOpt'])) ? '1': '0';
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
@@ -274,5 +278,41 @@ class callcenter_ServicesController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         } 	    	
-    }    
+    }  
+
+    public function listtaccisAction(){
+    	try{
+    		$cTaxis		= new My_Model_Taxis();
+    		$cViajes	= new My_Model_Viajes();
+    		$aDataViaje	= Array();
+    		
+    		if(isset($this->_dataIn['strViaje'])){
+    			$idViaje	= $this->_dataIn['strViaje'];
+    			$aDataViaje = $cViajes->infoViaje($idViaje);    			
+
+    			$aDataViaje['inputLatOrigen'] = $aDataViaje['ORIGEN_LATITUD']; 
+    			$aDataViaje['inputLonOrigen'] = $aDataViaje['ORIGEN_LONGITUD'];
+    			
+				$this->view->dataTable = $cTaxis->getTaxiService($aDataViaje,1);
+				
+				if($this->_dataOp=='assignDriver'){
+					if(isset($this->_dataIn['inputDriver'])){
+						$aDatainsert['idViaje']  = $idViaje;
+    					$aDatainsert['idTaccsi'] = $this->_dataIn['inputDriver'];
+    					$insertTaxis = $cTaxis->insertRelTaxis($aDatainsert);
+    					if($insertTaxis){
+    						$this->_redirect('/callcenter/services/serviceinfo?strViaje='.$idViaje.'&strOpt=WaitConfirm');
+    					}
+					}	
+				}
+    		}else{
+    			$this->_redirect('/callcenter/services/index');
+    		}
+    		
+    		$this->view->aData = $aDataViaje;
+    	}catch(Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        } 	
+    }
 }

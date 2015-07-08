@@ -1,0 +1,55 @@
+<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/jsValidateTaccsi.js') ?>
+<!-- Right side column. Contains the navbar and content of the page -->
+    <!-- Content Header (Page header) -->
+    <section class="content">
+        <!-- MAILBOX BEGIN -->
+        <div class="mailbox row">
+            <div class="col-xs-12">
+                <div class="box box-solid">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                    <h3 class="box-title">Seleccione el taccista que realizara el viaje.</h3>
+                                        <div class="box-body table-responsive">                                    
+                                            <table id="tableViajes" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre del Chofer</th>                                                        
+                                                        <th>Placas</th>
+                                                        <th>Distancia del origen</th>
+                                                        <th>Rating</th>
+                                                        <th>Total Viajes</th>
+                                                        <th>Estatus</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach($this->dataTable as $key => $items):?>
+                                                        <tr>
+                                                            <td><?php echo $items['NOMBRE']." ".$items['APATERNO']." ".$items['AMATERNO'] ; ?></td>
+                                                            <td><?php echo $items['PLACAS']; ?></td>
+                                                            <td><?php echo $items['DIST']; ?></td>
+                                                            <td><?php echo $items['RATING']; ?></td>
+                                                            <td><?php echo $items['VIAJES']; ?></td>
+                                                            <td>Sin Viaje</td>
+                                                            <td><button type="button" class="btn btn-primary" onClick="assignDriver('<?php echo $items['ID_USUARIO']; ?>')">
+                                                                <i class="fa fa-arrow-circle-right"></i> </button></td>
+                                                        </tr>
+                                                    <?php endforeach;?>
+                                                </tbody>
+                                                <tfoot></tfoot>
+                                            </table>
+                                        </div><!-- /.box-body -->
+                                     <form style="display:none;" role="form" id="FormData" class="row-min-h" method="POST" action="/callcenter/services/listtaccis">    
+                                        <input type="hidden" id="inputOpr"       name="optReg"         value="assignDriver" />
+                                        <input type="hidden" id="strViaje"       name="strViaje"       value="<?php echo $this->aData['ID_VIAJES'];?>" />
+                                        <input type="hidden" id="inputDriver"    name="inputDriver"    value="">
+                                    </form>
+                                </div><!-- /.tab-content -->
+                            </div>
+
+                            </div><!-- /.col (RIGHT) -->
+                        </div><!-- /.row -->
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+    </section><!-- /.content -->

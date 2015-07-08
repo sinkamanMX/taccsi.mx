@@ -25,7 +25,7 @@ function getStatusExt(){
 		    success: function(data) {
 	            var aDataExt = data.aData;
 
-	            var lcaller  = aDataExt.NO_LLAMADA.length; 
+	            var lcaller  = (aDataExt.NO_LLAMADA!=null) ? aDataExt.NO_LLAMADA.length : ''; 
 
 	            if(aDataExt.ESTATUS=='1'){
 	            	$("#callWait").show("slow");

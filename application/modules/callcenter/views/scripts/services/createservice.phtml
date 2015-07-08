@@ -35,7 +35,7 @@
                                 <label for="inputFormaPago">Forma de Pago</label>
                                 <select class="form-control" id="inputFormaPago" name="inputFormaPago">
                                     <option value="">Seleccionar una opción</option>  
-                                    <?php echo $this->formaPago;?>
+                                    <option value="1">EFECTIVO</option>  
                                 </select>
                             </div>
                             <div id="divFechaHora" class="col-xs-3">
@@ -62,7 +62,7 @@
                                 <div class="input-group input-group-sm">
                                     <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
                                     <span class="input-group-btn">
-                                      <button class="btn btn-success btn-flat" type="button" onClick="setOrigen()">OK</button>
+                                      <button class="btn btn-success btn-flat noEnterSubmit" type="button" onClick="setOrigen()">OK</button>
                                     </span>
                                 </div>                      
                             </div>
@@ -70,7 +70,7 @@
                                 <div class="input-group input-group-sm">
                                     <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
                                     <span class="input-group-btn">
-                                      <button id="spanOrigen" class="btn btn-success btn-flat" type="button" onClick="setDestino()">OK</button>
+                                      <button id="spanOrigen" class="btn btn-success btn-flat noEnterSubmit" type="button" onClick="setDestino()">OK</button>
                                     </span>
                                 </div>
                             </div>

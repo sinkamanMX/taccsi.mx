@@ -18,9 +18,10 @@ class My_Model_Taxis extends My_Db_Table
 	protected $_name 	= 'ADMIN_TAXIS';
 	protected $_primary = 'ID_TAXI';
 
-	public function getTaxiService($data){
+	public function getTaxiService($data,$iLimit=0){
 		$result= Array();
-		$this->query("SET NAMES utf8",false); 		
+		$this->query("SET NAMES utf8",false); 	
+		$sFilter = ($iLimit==0) ? ' LIMIT 5' : ' ';	
     	$sql ="SELECT B.ID_USUARIO,
                    B.NOMBRE,
                    B.APATERNO,
@@ -29,7 +30,8 @@ class My_Model_Taxis extends My_Db_Table
                    'taxi_libre' AS ESTATUS,
                    A.LATITUD,
                    A.LONGITUD,
-                   ROUND(DISTANCIA(A.LATITUD,A.LONGITUD,".$data['inputLatOrigen'].",".$data['inputLonOrigen']."),2) AS DIST,
+                   /*ROUND(DISTANCIA(A.LATITUD,A.LONGITUD,".$data['inputLatOrigen'].",".$data['inputLonOrigen']."),2) AS DIST,*/
+                   5 AS DIST,
                    C.IMAGEN,
                    IF(B.RATING IS NULL,0,B.RATING) AS RATING,
                    IF(B.VIAJES IS NULL,0,B.VIAJES) AS VIAJES
@@ -38,8 +40,7 @@ class My_Model_Taxis extends My_Db_Table
               INNER JOIN ADMIN_TAXIS C ON C.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO 
             WHERE CAST(A.FECHA_SERVER AS DATE) = CURRENT_DATE AND
 				B.DISPONIBLE = 0 
-            	ORDER BY DIST DESC LIMIT 5";
-
+            	ORDER BY DIST DESC ".$sFilter;
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query;			

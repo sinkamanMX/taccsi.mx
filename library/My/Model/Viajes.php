@@ -106,6 +106,7 @@ class My_Model_Viajes extends My_Db_Table
               		TIEMPO_VIAJE	='".$data['inputTiempo']."',
               		ID_CLIENTE		= ".$data['strClient'].",
               		USUARIO_REGISTRO= ".$data['userRegistro'].",
+              		SOLICITADO_DESDE= 'W',
               		ID_SRV_ESTATUS  = 1";
         try{            
     		$query   = $this->query($sql,false);
@@ -150,6 +151,23 @@ class My_Model_Viajes extends My_Db_Table
         }
 		return $result;	    	
     }
+    
+    public function cancelViaje($idViaje){
+        $result     = Array();
+        $result['status']  = false;
+                
+        $sql="UPDATE $this->_name		
+        		SET ID_SRV_ESTATUS  = 8
+        	WHERE 	ID_VIAJES 		= ".$idViaje." LIMIT 1"; 
+        try{            
+    		$query   = $this->query($sql,false);    					
+			$result['status']  = true;
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	    	
+    }    
     
     public function resumeTotal($aFilter){
 		$result= Array();

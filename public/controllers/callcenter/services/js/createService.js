@@ -10,6 +10,12 @@ var directionsService = new google.maps.DirectionsService();
 $( document ).ready(function() {
 	initMapToDraw();
 
+    $('.noEnterSubmit').keypress(function(e){
+        if ( e.which == 13 ) return false;
+        //or...
+        if ( e.which == 13 ) e.preventDefault();
+    });   	
+
     $('.upperClass').keyup(function()
     {
         $(this).val($(this).val().toUpperCase());
@@ -78,6 +84,8 @@ function initMapToDraw(){
 			$("#inputLonOrigen").val()!="" && $("#inputLonOrigen").val()!="0"
 			){
 			setMarker(0);	
+			setOrigen();
+			calcRoute() 
 		}
 	});
 
@@ -95,7 +103,8 @@ function initMapToDraw(){
 		if( $("#inputLatDestino").val()!="" && $("#inputLatDestino").val()!="0" &&
 			$("#inputLonDestino").val()!="" && $("#inputLonDestino").val()!="0"
 			){
-			setMarker(1);	
+			setMarker(1);
+			setDestino()
 		}
 	});
 

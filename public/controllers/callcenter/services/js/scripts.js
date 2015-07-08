@@ -8,6 +8,13 @@ $(document).ready(function() {
 		}		
 	});
 
+
+    $('.noEnterSubmit').keypress(function(e){
+        if ( e.which == 13 ) return false;
+        //or...
+        if ( e.which == 13 ) e.preventDefault();
+    });   		
+
 	$( "#btnSearch" ).click(function() {   
 		validateForm()
 	});	
