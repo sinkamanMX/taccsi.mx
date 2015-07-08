@@ -89,25 +89,17 @@
                                     <?php endif;?>
                                 
                             <?php else:?>
-                                <?php if($this->waiting=="1"):?>
-                                    <div style="text-align:center;">
-                                        <h3>Esperando respuesta del taccsi.</h3> 
-                                    </div>
-                                <?php else:?>
-                                    <div style="text-align:center;">
-                                        <h3>Sin Taxi Asignado</h3> 
-                                    </div>
-                                    <div id="divOptionsRenew" style="display:<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? 'none': 'block';?>; text-align:center;">
-                                        <form role="form" id="FormData" method="POST" action="/callcenter/services/serviceinfo">
-                                            <input  type="hidden" id="inputOpr" name="optReg" value="renew" />                        
-                                            <input  type="hidden" id="strViaje" name="strViaje" value="<?php echo $this->aDataViaje['ID_VIAJES'];?>"/>
-                                            <button type="submit" class="btn btn-primary" data-dismiss="modal">Volver a Solicitar</button>
-                                        </form>
-                                    </div>                                   
-                                <?php endif;?>
-                                <!--
                                 
-                                -->                             
+                                <div style="text-align:center;">
+                                    <h3>Sin Taxi Asignado</h3> 
+                                </div>
+                                <div id="divOptionsRenew" style="display:<?php echo (isset($this->aDataViaje['ID_TAXISTA'])) ? 'none': 'block';?>; text-align:center;">
+                                    <form role="form" id="FormData" method="POST" action="/callcenter/services/serviceinfo">
+                                        <input  type="hidden" id="inputOpr" name="optReg" value="renew" />                        
+                                        <input  type="hidden" id="strViaje" name="strViaje" value="<?php echo $this->aDataViaje['ID_VIAJES'];?>"/>
+                                        <button type="submit" class="btn btn-primary" data-dismiss="modal">Volver a Solicitar</button>
+                                    </form>
+                                </div>                                   
                             <?php  endif;?> 
                         <?php else:?>
                             <table class="table table-bordered table-striped">
