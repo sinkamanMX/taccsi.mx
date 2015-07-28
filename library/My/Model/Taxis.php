@@ -330,5 +330,25 @@ class My_Model_Taxis extends My_Db_Table
 			$result = $query[0];			
 		}	        
 		return $result;	    	
-    }    
+    }   
+
+	public function updateSolicitud($idTravel){
+        $result = false;
+        
+        $sql="UPDATE VIAJES_ASIGNACIONES 
+	        	SET FECHA			= CURRENT_DATE,
+              		HORA			= CURRENT_TIME,
+              		ACEPTO			= NULL
+              WHERE ID_VIAJE		= ".$idTravel." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+	}	    
 }	
