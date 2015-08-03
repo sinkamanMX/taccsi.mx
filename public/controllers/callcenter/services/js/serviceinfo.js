@@ -19,6 +19,7 @@ $().ready(function() {
 	var taxiExist = $("#inputTaxi").val();
 
 	if(taxiExist==0){
+		/*
 		$("#countdown").countdown360({
 		    radius: 40,
 		    seconds: 120,
@@ -28,7 +29,7 @@ $().ready(function() {
 		    onComplete: function () {		      
 		      cancelService();
 		    }		
-		});
+		});*/
 		setTimeout("waitService()",7000);
 	}
 
@@ -199,7 +200,9 @@ function startTrace(){
 	}
 }
 
-function mapLoadData(){	
+var lastIdStatus = 0;
+
+function mapLoadData(){
 	removeMap(aMarkerTaxi);
 	if(bEstatus){
 		var idObject = $("#idViaje").val();		
@@ -212,43 +215,48 @@ function mapLoadData(){
 				if(result!= ""){
 					arrayTravel = result.split('|');
 					var iStatus = arrayTravel[0];
+					if($("#inputEstatus").val() == iStatus){
+						if(iStatus==5 || iStatus==2){
+							lastIdStatus 	= iStatus;
+							var latTaxi		= arrayTravel[1];
+							var lonTaxi		= arrayTravel[2];
+							var nameTaxi	= arrayTravel[3];
+							var descTaxi	= arrayTravel[4];
+							var fechaTaxi	= arrayTravel[5];						
 
-					if(iStatus==5 || iStatus==2){
-						var latTaxi		= arrayTravel[1];
-						var lonTaxi		= arrayTravel[2];
-						var nameTaxi	= arrayTravel[3];
-						var descTaxi	= arrayTravel[4];
-						var fechaTaxi	= arrayTravel[5];						
-
-						if(iStatus==2){
-							calcAndDraw(latTaxi,lonTaxi);
-						}
-						
-				    	var content='<table width="350" class="table-striped" ><tr><td align="right"><b>Taxista</b></td><td width="200" align="left">'+nameTaxi+'</td><tr>'+
-				    			'<tr><td align="right"><b>Fecha</b></td><td align="left">'+descTaxi+' </td><tr>'+	    			
-				    			'<tr><td align="right"><b>Taxi</b></td><td align="left">'+fechaTaxi+' </td><tr>'+				    			
-				    			'</table>';	
-						aMarkerTaxi = new google.maps.Marker({
-							map: mapGeo,
-							position: new google.maps.LatLng(latTaxi,lonTaxi),
-							title: 	nameTaxi,
-							icon: 	'/images/assets/taxi.png'
-						});
-						infoMarkerTable(aMarkerTaxi,content);
-						$("#countdownTrace").countdown360({
-						    radius: 30,
-						    seconds: 20,
-						    label: ['seg', 'segs'],
-						    fontColor: '#FFFFFF',
-						    autostart: true,
-						    onComplete: function () {
-						      mapLoadData()
-						    }		
-						}).addSeconds(20);			
+							if(iStatus==2){
+								calcAndDraw(latTaxi,lonTaxi);
+							}
+							
+					    	var content='<table width="350" class="table-striped" ><tr><td align="right"><b>Taxista</b></td><td width="200" align="left">'+nameTaxi+'</td><tr>'+
+					    			'<tr><td align="right"><b>Fecha</b></td><td align="left">'+descTaxi+' </td><tr>'+	    			
+					    			'<tr><td align="right"><b>Taxi</b></td><td align="left">'+fechaTaxi+' </td><tr>'+				    			
+					    			'</table>';	
+							aMarkerTaxi = new google.maps.Marker({
+								map: mapGeo,
+								position: new google.maps.LatLng(latTaxi,lonTaxi),
+								title: 	nameTaxi,
+								icon: 	'/images/assets/taxi.png'
+							});
+							infoMarkerTable(aMarkerTaxi,content);
+							$("#countdownTrace").countdown360({
+							    radius: 30,
+							    seconds: 20,
+							    label: ['seg', 'segs'],
+							    fontColor: '#FFFFFF',
+							    autostart: true,
+							    onComplete: function () {
+							      mapLoadData()
+							    }		
+							}).addSeconds(20);			
+						}else{
+							bEstatus=false;	
+							location.reload();
+						}	
 					}else{
 						bEstatus=false;	
 						location.reload();
-					}			
+					}		
 				}
 	        }
 		});

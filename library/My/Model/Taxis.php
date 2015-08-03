@@ -60,7 +60,17 @@ class My_Model_Taxis extends My_Db_Table
         try{            
     		$query   = $this->query($sql,false);    	
 			if($query){
-				$result  = true;					
+				/*
+				$sqlUpdate = "UPDATE ADMIN_VIAJES 
+								SET ID_SRV_ESTATUS = 2,
+									ID_TAXISTA	   = ".$data['idTaccsi']."
+								WHERE ID_VIAJES    = ".$data['idViaje']."
+									LIMIT 1";
+				$queryUpdate   = $this->query($sqlUpdate,false);  
+				if($queryUpdate){
+					$result  = true;	
+				}  	*/
+				$result  = true;									
 			}	
         }catch(Exception $e) {
             echo $e->getMessage();
