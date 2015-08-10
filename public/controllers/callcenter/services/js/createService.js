@@ -52,11 +52,24 @@ $( document ).ready(function() {
         },
         
         submitHandler: function(form) {
-            form.submit();
+        	if( $("#inputLatOrigen").val()!="" && $("#inputLatOrigen").val()!="0" &&
+					$("#inputLonOrigen").val()!="" && $("#inputLonOrigen").val()!="0" &&
+					$("#inputLatDestino").val()!="" && $("#inputLatDestino").val()!="0" &&
+					$("#inputLonDestino").val()!="" && $("#inputLonDestino").val()!="0"
+					){
+					 form.submit();
+			}else{
+				alert("No se ha ingresado un lugar o un destino válido.");
+				return false;
+			}
+			 form.submit();
         }
     });	
 
-        	
+	$('.nopaste').bind("cut copy paste",function(e) {
+      e.preventDefault();
+      alert("La dirección se tiene que ingresar de manera manual.");
+    });    	
 });
 
 function initMapToDraw(){

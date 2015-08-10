@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"sele",
+				"select2"
+			],
+			[
 				"in",
 				"inputValue"
 			],
@@ -327,14 +331,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "application/modules/callcenter/views/scripts/services/createservice.phtml",
-			"settings":
-			{
-				"buffer_size": 8107,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -380,6 +376,9 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/createservice.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
@@ -389,8 +388,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/modules/admin/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/createservice.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/listtaccis.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/jsValidateTaccsi.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/JsonController.php",
@@ -437,7 +434,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/ export.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/PHPExcel/Classes/dompdf/include/image_cache.cls.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateCompanies.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/css/style.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/maps/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/users/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/MapFunctions.js",
@@ -702,38 +698,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/modules/callcenter/views/scripts/services/createservice.phtml",
-					"settings":
-					{
-						"buffer_size": 8107,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4111,
-								4111
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 593.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],

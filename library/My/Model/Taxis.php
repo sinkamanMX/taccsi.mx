@@ -350,10 +350,19 @@ class My_Model_Taxis extends My_Db_Table
               		HORA			= CURRENT_TIME,
               		ACEPTO			= NULL
               WHERE ID_VIAJE		= ".$idTravel." LIMIT 1";
+        
         try{            
     		$query   = $this->query($sql,false);
 			if($query){
-				$result['status']  = true;								
+				$sqlUpdate = "UPDATE ADMIN_VIAJES 
+								SET ID_SRV_ESTATUS = 1
+								WHERE ID_VIAJES    =   ".$idTravel." LIMIT 1";
+				$queryUpdate   = $this->query($sqlUpdate,false);  
+				if($queryUpdate){
+					$result['status']  = true;	
+				}else{
+					$result['status']  = false;
+				}								
 			}	
         }catch(Exception $e) {
             echo $e->getMessage();

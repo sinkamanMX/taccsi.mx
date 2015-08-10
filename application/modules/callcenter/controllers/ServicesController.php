@@ -34,36 +34,48 @@ class callcenter_ServicesController extends My_Controller_Action
     		$cFunctions = new My_Controller_Functions();
     		$cFormaPago = new My_Model_Formapago();
     		$cTaxis		= new My_Model_Taxis();  
-    		$cViajes	= new My_Model_Viajes();    				
-    		if(isset($this->_dataIn['strClient']) && $this->_dataIn['strClient']!=""){
-    			
-	    		if($this->_dataOp=='new'){
-	    			$aDataViaje		 = $this->_dataIn;
-					$aDataViaje['userRegistro'] = $this->_dataUser['ID_USUARIO'];
-					$registerService = $cViajes->insertRow($aDataViaje);
+    		$cViajes	= new My_Model_Viajes(); 
+    		$sClientes	= "";
+    		$sTipo 		= "";   				
+    		if(isset($this->_dataIn['strClient']) 		     && $this->_dataIn['strClient']!=""){
+				if($this->_dataOp=='new'){
 					
-					if($registerService['status']){
-						$idViaje = $registerService['id'];
-						
-						$this->_redirect('/callcenter/services/listtaccis?strViaje='.$idViaje);
-						/*
-							$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
-							$this->addTaxis($aTaxis, $idViaje);
-							$this->_redirect('/callcenter/services/serviceinfo?strViaje='.$idViaje);
-						*/
-					}					
-	    		}
+					if( isset($this->_dataIn['inputLatOrigen'])  && $this->_dataIn['inputLatOrigen']!="" &&
+	    		   		isset($this->_dataIn['inputLatDestino']) && $this->_dataIn['inputLatDestino']!="" &&
+	    		   		isset($this->_dataIn['inputLonOrigen'])  && $this->_dataIn['inputLonOrigen']!="" &&
+	    		   		isset($this->_dataIn['inputLonDestino']) && $this->_dataIn['inputLonDestino']!=""){
+
+			    		$aDataViaje		 = $this->_dataIn;
+						$aDataViaje['userRegistro'] = $this->_dataUser['ID_USUARIO'];
+						$registerService = $cViajes->insertRow($aDataViaje);
+							
+						if($registerService['status']){
+							$idViaje = $registerService['id'];
+							
+							$this->_redirect('/callcenter/services/listtaccis?strViaje='.$idViaje);
+							/*
+								$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
+								$this->addTaxis($aTaxis, $idViaje);
+								$this->_redirect('/callcenter/services/serviceinfo?strViaje='.$idViaje);
+							*/
+						}		    		   			
+	    		   	}else{
+	    		   		$sClientes = $this->_dataIn['inputNoPasajeros'];
+	    		   		$sTipo	   = $this->_dataIn['inputFormaPago'];
+	    		   		$this->_aErrors['position'] = 1;
+	    		   	}										
+		    	}
     		}else{
     			$this->_redirect('/callcenter/services/index');
     		}
     		
 			$aFpagos	= $cFormaPago->getCbo();
-			$this->view->totalClientes   = $cFunctions->cbo_number(6);	
+			$this->view->totalClientes   = $cFunctions->cbo_number(6,$sClientes);	
 			$this->view->viajeProgramado = $cFunctions->cboOptions(0);		   	
-			$this->view->formaPago		 = $cFunctions->selectDb($aFpagos);    		
-    		$this->view->data		= $this->_dataIn;
-			$this->view->errors 	= $this->_aErrors;	
-			$this->view->resultOp   = $this->_resultOp;   		
+			$this->view->formaPago		 = $cFunctions->selectDb($aFpagos,$sTipo);    		
+    		$this->view->data			 = $this->_dataIn;
+			$this->view->errors 		 = $this->_aErrors;	
+			$this->view->resultOp   	 = $this->_resultOp;   		
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

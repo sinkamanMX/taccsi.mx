@@ -1,7 +1,19 @@
-<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/createService.js') ?>
+<?php  $this->headScript()->appendFile('/controllers/callcenter/services/js/createService.js') ?>
 
 
     <section class="content">
+
+    <?php if(count(@$this->errors)>0):?>
+        <?php if(@$this->errors['position']=="1"):?>
+            <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
+              <button type="button" class="close" data-dismiss="alert">×</button>
+              <h4>Error</h4>
+              <div>Ocurrio un error.</div>
+                <div>No se ingreso una posicion válida, Favor de apoyarse en el mapa para mas presición</div>
+            </div>
+        <?php endif;?>        
+    <?php endif;?>
+
         <div id="divAlert" class="alert alert-danger alert-dismissable hide">
             <i class="fa fa-ban"></i>
             <b>!Atención¡</b>
@@ -60,7 +72,7 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
+                                    <input type="text" class="form-control noEnterSubmit nopaste" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio" value="">
                                     <span class="input-group-btn">
                                       <button class="btn btn-success btn-flat noEnterSubmit" type="button" onClick="setOrigen()">OK</button>
                                     </span>
@@ -68,7 +80,7 @@
                             </div>
                             <div class="col-xs-6">
                                 <div class="input-group input-group-sm">
-                                    <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
+                                    <input disabled type="text" class="form-control noEnterSubmit nopaste"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
                                     <span class="input-group-btn">
                                       <button id="spanOrigen" class="btn btn-success btn-flat noEnterSubmit" type="button" onClick="setDestino()">OK</button>
                                     </span>
