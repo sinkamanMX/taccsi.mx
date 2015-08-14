@@ -1,39 +1,66 @@
+var mouse_is_inside=false;
 $( document ).ready(function() {
 	$("input").keypress(function(event) {
 	    if (event.which == 13) {
 	        validatelogin()
 	    }
 	});
-  
+
+    $('#loginPanel').hover(function(){ 
+        mouse_is_inside=true; 
+    }, function(){ 
+        mouse_is_inside=false; 
+    });
+
+    $("body").mouseup(function(){ 
+        if(! mouse_is_inside) $('#loginPanel').fadeOut('slow','swing');
+    });
+
+	$("#txt-user").removeClass("c-control-e");
+	$("#txt-pass").removeClass("c-control-e");
+	$("#lbl_user").hide();
+	$("#lbl_pass").hide();  
 });
 
 function validatelogin(){
-	$("#formg-user").removeClass("has-warning");
-	$("#formg-pass").removeClass("has-warning");
-
+	$("#txt-user").removeClass("c-control-e");
+	$("#txt-pass").removeClass("c-control-e");
 	$("#lbl_user").hide();
 	$("#lbl_pass").hide();
 	$("#div-msg").html("");
 	$("#div-msgError").hide();
+
+	var bValidate = true;
 	
 	var userLogin = $("#txt-user").val();
 	var passLogin = $("#txt-pass").val(); 
 
-	
 	if(userLogin=="" && userLogin.length==0){		
 		$("#lbl_user").show();
-		$("#formg-user").addClass("has-warning");
-		return false;
+		$("#txt-user").addClass("c-control-e");
+		bValidate =  false;
 	}
 
 	if(passLogin=="" && passLogin.length==0){		
 		$("#lbl_pass").show();
-		$("#formg-pass").addClass("has-warning");
+		$("#txt-pass").addClass("c-control-e");
+		bValidate =  false;
+	}
+
+	if(!bValidate){
 		return false;
 	}
 
+	var option = $("#formLogin input[type='radio']:checked").val();
+	var myUrl  = '';
+	if(option=='passenger'){
+		myUrl  = '/login/main/login';
+	}else{
+		myUrl  = '/external/login/login';
+	}
+	
 	$.ajax({
-	    url: "/login/main/login",
+	    url: myUrl,
 	    type: "GET",
 	    dataType : 'json',
 	    data: { 
@@ -45,7 +72,11 @@ function validatelogin(){
             var result = data.answer; 
                 
             if(result == 'logged'){
-                location.href='/admin/main/inicio';
+            	if(option=='passenger'){
+            		location.href='/external/login/inicio';
+            	}else{					
+					location.href='/admin/main/inicio';	
+            	}
             }else if(result == 'problem'){
             	$("#div-msgError").show();            	
 				$("#div-msg").html("Por cuestion de seguridad solo se puede ingresar una vez por usuario.");
@@ -55,4 +86,8 @@ function validatelogin(){
             }	        
 	    }
 	});
+}
+
+function showPanelLogin(){
+	$("#loginPanel").fadeIn(1000);
 }

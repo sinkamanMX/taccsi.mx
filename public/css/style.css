@@ -1,19 +1,20 @@
 .btn_yellow{
-  border: 1px solid #FECE1A;
-  color: #fff;
-  background-color: #181A1C;
-  transition: border-color 1s ease;
+  border: 1px solid #FECE1A !important;;
+  color: #fff !important;;
+  background-color: #181A1C !important;;
+  transition: border-color 1s ease !important;;
 }
 .btn_yellow:hover,
 .btn_yellow:active,
 .btn_yellow.hover {
-  background-color: #FECE1A;
+  background-color: #FECE1A !important;
 }
 .box_body_login{
-  background: none repeat scroll 0 0 #000000;
+  background: none repeat scroll 0 0 #000000 !important;
   border: 1px solid #fece1a !important;
-  color: #ffffff;
-  padding: 20px;
+  color: #ffffff !important;
+  padding: 20px !important;
+  box-shadow: 5px 5px 25px #000000 !important;
 }
 .a_yellow{
   color: #FECE1A !important;
@@ -205,4 +206,18 @@
 
 .margin-top-0{
   top: 0px !important;
+}
+.custom-form-control{
+  border-color: #d2d6de;
+  border-radius: 0 !important;
+  box-shadow: none;
+  width: 100%;
+}
+
+.c-control-e{
+  border: 1px solid red !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+  color: red !important;
+  width: 100%;  
 }

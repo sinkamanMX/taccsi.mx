@@ -425,6 +425,7 @@ a:focus {
 }
 .sidebar {
   padding-bottom: 10px;
+  background: #181a1c none repeat scroll 0 0;
 }
 .fixed .sidebar {
   overflow: auto;
