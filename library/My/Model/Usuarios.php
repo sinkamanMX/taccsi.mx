@@ -319,7 +319,6 @@ class My_Model_Usuarios extends My_Db_Table
         }
         
         $nameImage  = (isset($data['nameImagen']) && $data['nameImagen']!="") ? ",FOTO			='".$data['nameImagen']."'": "";
-
         $sql="UPDATE $this->_name	
         		SET NOMBRE			= '".$data['inputNombre']."',
 					APATERNO		= '".$data['inputApaterno']."',

@@ -21,6 +21,9 @@
                     <?php if(@$this->errors['eUsuario']==1):?>
                           <div>El Usuario no se encuentra disponible</div>
                     <?php endif;?>
+                    <?php if(@$this->errors['ePassword']==1):?>
+                          <div>La contraseña actual no es correcta.</div>
+                    <?php endif;?>
                 </div>
             <?php endif;?>
 
@@ -76,16 +79,6 @@
                             <input type="text" class="form-control upperClass" name="inputUsuario" id="inputUsuario" placeholder="Usuario" value="<?php echo @$this->data['USUARIO']; ?>">
                         </div>
                         <div class="form-group col-xs-4">
-                            <label for="inputApaterno">Contraseña</label>
-                            <input type="password" class="form-control upperClass" name="inputPassword" id="inputPassword" placeholder="" onChange="addValidatePass(this.value)">
-                        </div>
-                        <div class="form-group col-xs-4">
-                            <label for="inputAmaterno">Confirmar Contraseña</label>
-                            <input type="password" class="form-control upperClass" name="inputCpassword" id="inputCpassword" placeholder="">
-                        </div>
-                    </div>
-                    <div class="col-xs-12">                 
-                        <div class="form-group col-xs-4">
                             <label for="inputPhone">Teléfono</label>
                             <div class="input-group">
                                 <div class="input-group-addon">
@@ -96,10 +89,24 @@
                         </div>
                         <div class="form-group col-xs-4">
 
-                        </div>
+                        </div>                        
 
+                    </div>
+                    <div class="col-xs-12">                 
                         <div class="form-group col-xs-4">
-
+                            <button id="bntChangePass" type="button" class="btn btn-primary margin" onClick="showChangePassword()">Cambiar Contraseña</button>       
+                            <div id="passActual" style="display:none;" class=" inputPass">
+                                <label for="inputPassnow">Contraseña Actual</label>
+                                <input type="password" class="form-control upperClass" name="inputPasswordNow" id="inputPasswordNow" placeholder="">
+                            </div>                            
+                        </div>
+                        <div class="form-group col-xs-4 inputPass" style="display:none;">
+                            <label for="inputApaterno">Contraseña Nueva</label>
+                            <input type="password" class="form-control upperClass" name="inputPassword" id="inputPassword" placeholder="" >
+                        </div>
+                        <div class="form-group col-xs-4 inputPass" style="display:none;">
+                            <label for="inputAmaterno">Confirmar Contraseña</label>
+                            <input type="password" class="form-control upperClass" name="inputCpassword" id="inputCpassword" placeholder="">
                         </div>
                     </div>                                          
                 </div>

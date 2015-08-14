@@ -32,7 +32,8 @@ $().ready(function() {
                 number    : "Este campo acepta solo números",
                 minlength : "El Teléfono debe de ser de 10 dígitos",
                 maxlength : "El Teléfono debe de ser de 10 dígitos"
-            }                         
+            },
+            inputPasswordNow: "Campo Requerido"                         
         },
         submitHandler: function(form) {
             form.submit();
@@ -43,6 +44,8 @@ $().ready(function() {
         $("#inputPassword").rules("remove", "required");
         $("#inputCpassword").rules("remove", "required");          
     }
+    
+    $("#inputPasswordNow").rules("remove", "required"); 
 
     $("#FormData").validate({
         rules: {
@@ -194,4 +197,12 @@ function searchCp(typeSearch){
     $("#inputSearch").val(cp);
     $("#typeSearch").val(typeSearch);
     $("#FormData").submit();
+}
+
+function showChangePassword(){
+    $("#bntChangePass").hide('slow');
+    $(".inputPass").show('slow');
+    $("#inputPasswordNow").rules("add",  {required:true});
+    $("#inputPassword").rules("add",  {required:true});
+    $("#inputCpassword").rules("add",  {required:true});
 }

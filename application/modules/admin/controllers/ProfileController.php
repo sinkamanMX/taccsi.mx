@@ -80,7 +80,6 @@ class admin_ProfileController extends My_Controller_Action
 				$aMunicipiosF = $cFunctions->selectDb($dMunicipios,@$dataCompany['FIS_ID_MUNICIPIO']);
 			}
 			
-			
 			if($this->_dataOp=="searchCP"){
 				$aDataRetrieve = Array();
 				if($this->_dataIn['inputSearch']!=""){
@@ -190,7 +189,7 @@ class admin_ProfileController extends My_Controller_Action
 					}else {
 					  $this->_aErrors['errorImage'] = 1;
 					}
-	            }
+	            }	           
 	            
 	            if(count($this->_aErrors)==0){
 	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';       	
@@ -203,10 +202,10 @@ class admin_ProfileController extends My_Controller_Action
 						 		$this->_resultOp = 'okRegister';
 							 }
 						 }else{
-						 	$this->errors['eUsuario'] = '1';
+						 	$this->_aErrors['eUsuario'] = '1';
 						 }
 					}else{
-						$this->errors['status'] = 'no-info';
+						$this->_aErrors['status'] = 'no-info';
 					}
 	            }
 			}

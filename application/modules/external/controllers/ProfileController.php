@@ -93,6 +93,10 @@ class external_ProfileController extends My_Controller_Action
 					}
 	            }
 	            
+	            if(isset($this->_dataIn['inputPasswordNow']) && ($this->_dataIn['inputPasswordNow']!=$dataInfo['PASSWORD'])){							
+					$this->_aErrors['ePassword'] = '1';
+	            }		            
+	            
 	            if(count($this->_aErrors)==0){
 	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';       	
 	            	if($this->_idUpdate>-1){
@@ -104,10 +108,10 @@ class external_ProfileController extends My_Controller_Action
 						 		$this->_resultOp = 'okRegister';
 							 }
 						 }else{
-						 	$this->errors['eUsuario'] = '1';
+						 	$this->_aErrors['eUsuario'] = '1';
 						 }
 					}else{
-						$this->errors['status'] = 'no-info';
+						$this->_aErrors['status'] = 'no-info';
 					}
 	            }				
 			}
