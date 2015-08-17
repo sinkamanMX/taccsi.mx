@@ -53,10 +53,10 @@ function validatelogin(){
 
 	var option = $("#formLogin input[type='radio']:checked").val();
 	var myUrl  = '';
-	if(option=='passenger'){
-		myUrl  = '/login/main/login';
-	}else{
+	if(option=='passenger'){		
 		myUrl  = '/external/login/login';
+	}else{
+		myUrl  = '/login/main/login';
 	}
 	
 	$.ajax({
