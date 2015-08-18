@@ -119,5 +119,35 @@ class My_Model_ServUsuarios extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;
+    }  
+
+    public function insertRow($data){
+        $result     = Array();
+        $result['status']  = false;
+
+        $sql="INSERT INTO $this->_name	
+        		SET	NOMBRE			= '".$data['inputNombre']."',
+					APATERNO		= '".$data['inputApaterno']."',
+					AMATERNO		= '".$data['inputAmaterno']."',        		
+					USUARIO			= '".$data['inputUsuario']."',
+					PASSWORD		= '".$data['inputPassword']."',
+					FECHA_CREADO	= CURRENT_TIMESTAMP,
+					ESTATUS			= 1,				
+					TELEFONO		= '".$data['inputPhone']."', 
+					EMAIL			= '".$data['inputUsuario']."',
+					DISPOSITIVO   	= NULL";
+        try{           
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']  = $query_id[0]['ID_LAST'];  			 	
+				$result['status']  = true;	
+			}
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
     }     
 }	

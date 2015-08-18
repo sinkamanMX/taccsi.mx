@@ -2738,13 +2738,13 @@ table.text-center th {
 }
 .login-page,
 .register-page {
-  background: none no-repeat scroll 0 0 #000000;
-  background-image: url("/images/background2.jpg");
+  background: none repeat scroll 0 0 #000000;
+  background-image: url("/branding/images/Slider.png");
 }
 .login-box,
 .register-box {
   width: 360px;
-  margin: 7% auto;
+  margin: 1% auto;
 }
 @media (max-width: 768px) {
   .login-box,
@@ -4066,4 +4066,14 @@ Gradient Background colors
   .table-responsive > .table tr td {
     white-space: normal!important;
   }
+}
+
+.mask-register{
+  background: #fece1a none repeat scroll 0 0;
+  height: 100%;
+  left: 0;
+  opacity: 0.85;
+  position: fixed;
+  top: 0;width: 100%;
+  z-index: -1;
 }

@@ -1,5 +1,4 @@
-<?php $this->headScript()->appendFile('/controllers/main/validateRegister.js') ?>    
-    
+<?php $this->headScript()->appendFile('/controllers/main/validateRegisterUser.js') ?>    
     <?php if(count(@$this->errors)>0):?>
         <?php if(@$this->errors['eUsuario']==1):?>
             <div id="divAlert" class="alert alert-danger alert-dismissable">
@@ -23,27 +22,40 @@
     <?php endif; ?>
     <?php if(@$this->resultOp=='okRegisterMail'):?>
         <div class="col-xs-10 col-xs-offset-1">
-            <!--<div class="login-logo">
+            <!--
+            <div class="login-logo">
               <a href="/">
                   <img alt="Logo" class="img-responsive center-block" src="/images/assets/icon-page.png">
               </a>
             </div>-->
             <div class="login-box-body box_body_login row-min-h500" style="text-align:center;">
-                <h2>Todo Listo</h2>
+                <h2>Bienvenido</h2>
                 <h3>
-                    Un miembro de nuestro equipo se pondra en contacto contigo para indicarte, lo que debes hacer a continuación.
+                    Gracias por registrarse en taccsi</span>
+                    
                 </h3>
                 <br/>
-                <div class="col-xs-12">
-                    <div class="col-xs-7">
+                <div class="col-xs-12">                    
+                    <!--<div class="col-xs-7">
                         <img src="/images/assets/page.png" class="col-xs-10">
-                    </div>
-                    <div class="col-xs-5">
-                        <h2>Panel de Control</h2>
-                        <h3>Ya puedes ingresar al panel de control.</h3>
+                    </div>-->
+                    <div class="col-xs-12" style="text-align:center;">
+                        <h2>Descarga la app</h2>
+                        <p> Desde ahora podra solicitar un taccsi donde se encuentre.</p>
                         <div class="col-xs-12">
-                          <a href="/login/main/index" type="button" class="btn btn-primary btn-block btn-flat btn_yellow">Ingresar</a>
+                            <a href="/login/main/index">
+                                <img src="/images/assets/esAppStore.png"/></a>
+                            </a>
+                            &nbsp;&nbsp;
+                            <a href="/login/main/index">
+                                <img src="/images/assets/esGooglePlay.png"/></a>
+                            </a>                            
                         </div>                        
+                    </div>
+                    <div class="col-xs-12" style="text-align:center;">
+                        <div class="col-xs-5" style="margin-left: 30%;margin-top: 5%;">
+                          <a href="/" type="button" class="btn btn-primary btn-block btn-flat btn_yellow">Continuar</a>
+                        </div>                       
                     </div>
                 </div>
             </div>
@@ -54,40 +66,39 @@
           <a href="/">
               <img src="/images/assets/icon-page.png" class="img-responsive center-block" alt="Logo">
           </a>
-        </div> -->   
+        </div>-->    
         <div class="login-box-body box_body_login">
-            <p class="login-box-msg">Registro</p>                     
-            <form role="form" method="POST" action="/main/register/index" id="FormData" enctype="multipart/form-data">
+            <p class="login-box-msg">Registrate para comenzar a viajar</p>               
+            <form role="form" method="POST" action="/main/registeruser/index" id="FormData" enctype="multipart/form-data">
                 <input type="hidden" name="optReg" value="opRegister" />
 
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Nombre</label>
+                    <!--<label for="inputNombre2">Nombre</label>-->
                     <input type="text" class="form-control upperClass h-50"  autocomplete="off"  name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['inputNombre']; ?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Apellido Paterno</label>
+                    <!--<label for="inputNombre2">Apellido Paterno</label>-->
                     <input type="text" class="form-control upperClass h-50" autocomplete="off"  name="inputApaterno" id="inputApaterno" placeholder="Apellido Paterno" value="<?php echo @$this->data['inputApaterno']; ?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Apellido Materno</label>
+                    <!--<label for="inputNombre2">Apellido Materno</label>-->
                     <input type="text" class="form-control upperClass h-50" autocomplete="off"  name="inputAmaterno" id="inputAmaterno" placeholder="Apellido Materno" value="<?php echo @$this->data['inputAmaterno']; ?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Usuario (E-mail)</label>
+                    <!--<label for="inputNombre2">Usuario (E-mail)</label>-->
                     <input type="text" class="form-control h-50" autocomplete="off"  name="inputUsuario" id="inputUsuario" placeholder="Usuario (E-mail)" value="<?php echo @$this->data['inputUsuario']; ?>">
                 </div>
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Contraseña</label>
-                    <input type="password" class="form-control h-50" autocomplete="off"  name="inputPassword" id="inputPassword" placeholder="Contraseña" value="<?php echo @$this->data['inputUsuario']; ?>">
-                </div>
-                <div class="form-group col-xs-12">
-                    <label for="inputNombre2">Movil</label>
+                    <!--<label for="inputNombre2">Movil</label>-->
                     <input type="text" class="form-control upperClass col-xs-4 h-50" autocomplete="off"  name="inputPhone" id="inputPhone" placeholder="Movil" value="<?php echo @$this->data['inputPhone']; ?>">
                 </div>     
-
                 <div class="form-group col-xs-12">
-                    <label for="inputNombre2">RFC</label>
-                    <input type="text" class="form-control upperClass col-xs-4 h-50" autocomplete="off"  name="inputRFC" id="inputRFC" placeholder="Direccion" value="<?php echo @$this->data['inputPhone']; ?>">
+                    <!--<label for="inputNombre2">RFC</label>-->
+                     <input type="password" class="form-control h-50" autocomplete="off"  name="inputPassword" id="inputPassword" placeholder="Contraseña" value="<?php echo @$this->data['inputPassword']; ?>">
+                </div>
+                <div class="form-group col-xs-12">
+                    <!--<label for="inputNombre2">Contraseña</label>-->                    
+                    <input type="password" class="form-control h-50" autocomplete="off"  name="inputCpassword" id="inputCpassword" placeholder="Confirmar Contraseña" value="<?php echo @$this->data['inputCpassword']; ?>">
                 </div>
                   <div class="row  p-10">
                     <div class="col-xs-12">
