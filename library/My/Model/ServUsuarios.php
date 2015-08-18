@@ -55,7 +55,7 @@ class My_Model_ServUsuarios extends My_Db_Table
     public function getTravelsByUser($idUsuario){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT *, E.ESTATUS AS N_ESTATUS, CONCAT(U.`NOMBRE`,' ',U.APATERNO,' ',U.AMATERNO) AS N_TACCISTA
+    	$sql ="SELECT *, E.ESTATUS AS N_ESTATUS, CONCAT(U.NOMBRE) AS N_TACCISTA,P.DESCRIPCION AS N_TPAGO, V.RATING AS N_RATING
 				FROM ADMIN_VIAJES V
 				INNER JOIN SRV_CLIENTES C ON V.ID_CLIENTE 	  = C.ID_CLIENTE
 				INNER JOIN SRV_ESTATUS E ON V.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS			

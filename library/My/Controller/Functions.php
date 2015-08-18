@@ -277,5 +277,15 @@ class My_Controller_Functions
 	            substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1) .
 	            substr($an, rand(0, $su), 1);
-	} 	
+	} 
+
+	public function cboNumberRange($nInit,$nEnd,$option=''){
+	  $select='';
+	  for($i=$nInit; $i<$nEnd; $i++){
+		  $h = ($i<=9)?"0".$i:$i;
+		  $current = ($h==$option) ? 'selected': '';
+		  $select .= '<option '.$current.' value="'.$h.'" >'.$h.'</option>';
+		  }
+	  return $select;  		    
+	}	
 }

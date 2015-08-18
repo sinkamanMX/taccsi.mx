@@ -11,40 +11,100 @@
                         <thead>
                             <tr>
                                 <th># Viaje</th>
-                                <th>Estatus</th>
+                                <th>Estatus</th>                                
                                 <th>Fecha</th>
-                                <th>Taccistas</th>
-                                <th>Origen</th>
-                                <th>Destino</th>
-                                <th></th>
+                                <th>Forma Pago</th>
+                                <th>Taccsi</th>
+                                <!--<th class="col-md-4">Origen</th>
+                                <th class="col-md-4">Destino</th>-->
+                                <th class="col-md-1"></th>
                             </tr>
                         </thead>
                         <tbody>   
+                            <?php $control=0;?>
                             <?php foreach(@$this->aTravels as $key => $items):?>
-                                <tr>
+                                <tr class="rowUpdate">
                                     <td><?php echo $items['ID_VIAJES'];?></td>
                                     <td><?php echo $items['N_ESTATUS'];?></td>
                                     <td><?php echo $items['FECHA_VIAJE'];?></td>
+                                    <td><?php echo $items['N_TPAGO'];?></td>
                                     <td><?php if(isset($items['ID_TAXISTA'])):?>
                                             <?php echo $items['N_TACCISTA'];?>
                                         <?php else:?>
-                                         Sin Taccsi Asignado
+                                         Sin Taccsi
                                         <?php endif;?>
                                          </td>
-                                    <td><?php echo $items['ORIGEN'];?></td>
-                                    <td><?php echo $items['DESTINO'];?></td>
                                     <td> 
                                         <?php if($items['ID_SRV_ESTATUS']==1 || $items['ID_SRV_ESTATUS']==2 || $items['ID_SRV_ESTATUS']==5): ?>
-                                            <a href="/external/main/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-info"> <i class="fa fa-info-circle"></i></button></a>
+                                            <a href="/external/main/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-info"> <i class="fa fa-info-circle"></i> Información </button></a>
                                         <?php else:?>
-                                            <a href="/external/reports/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-success"> <i class="fa fa-ticket"></i></button></a>
-                                        <?php endif;?>                                          
+                                            <button type="button" class="btn btn-default btn-icon" onClick="showCloseOptions(<?php echo $control;?>)"><i id="spanOptions<?php echo $control;?>" class="fa fa-fw fa-chevron-down"></i></button>                                                 
+                                        <?php endif;?>                                         
                                     </td>
                                 </tr>
+                                <tr id="iDivinfo<?php echo $control;?>" style="display:none;" class="divInfo">
+                                    <td colspan="2">
+                                        <div id="map<?php echo $control;?>" style="width:100%;height:150px;"></div>
+                                        <input type="hidden" id="iLatO<?php echo $control;?>" value="<?php echo $items['ORIGEN_LATITUD'];?>"/>
+                                        <input type="hidden" id="iLonO<?php echo $control;?>" value="<?php echo $items['ORIGEN_LONGITUD'];?>"/>
+                                        <input type="hidden" id="iLatD<?php echo $control;?>" value="<?php echo $items['DESTINO_LATITUD'];?>"/>
+                                        <input type="hidden" id="iLonD<?php echo $control;?>" value="<?php echo $items['DESTINO_LONGITUD'];?>"/>
+                                    </td>
+                                    <td colspan="3">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td><h4 class="col-md-6">Monto Total: <?php echo "$ ".money_format(round($items['MONTO_TOTAL'],2),2) ;?></h4>
+                                                    <div class="col-md-6 pull-right">
+                                                        <?php $total = (isset($items['N_RATING'])) ? $items['N_RATING']: 0; ?>
+                                                        <div class=""> 
+                                                            <?php for($i=0;$i<$total;$i++): ?>
+                                                                <span class="fa fa-star star-rating" ></span>  
+                                                            <?php endfor;?>
+                                                            <?php for($i=0;$i<(5-$total);$i++): ?>
+                                                                <span class="fa fa-star star-no-rating" ></span>  
+                                                            <?php endfor;?>
+                                                        </div>                                                                     
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>    
+                                                <td><h4><i class="fa fa-fw fa-map-marker"></i>Origen</h4><small><?php echo $items['ORIGEN'];?></small></td>
+                                            </tr>
+                                            <tr>    
+                                                <td><h4><i class="fa fa-fw fa-map-marker"></i>Destino</h4><small><?php echo $items['DESTINO'];?></small></td>
+                                            </tr>                                            
+                                        </table>
+                                    </td>
+                                    <td colspan="1">
+                                        <?php if($items['ID_SRV_ESTATUS']==1 || $items['ID_SRV_ESTATUS']==2 || $items['ID_SRV_ESTATUS']==5): ?>
+                                            <a href="/external/main/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-info" style="margin: 50% 0;position: relative;"> <i class="fa fa-info-circle"></i></button></a>
+                                        <?php else:?>
+                                            <a href="/external/reports/serviceinfo?strViaje=<?php echo $items['ID_VIAJES'];?>"><button class="btn btn-success" style="margin: 50% 0;position: relative;"> <i class="fa fa-fw fa-info-circle"></i> Ver Detalle</button></a>
+                                        <?php endif;?>
+                                    </td>
+                                </tr>                                
+                                <?php $control++;?>
                             <?php endforeach;?>
                         </tbody>
+                        <input type="hidden" id="totalRows" value="<?php echo $control-1;?>"/>
                         <tfoot></tfoot>
                     </table>
+                    <br/>
+                    <div class="col-md-12">
+                        <div class="btn-group pull-right">
+                          <button type="button" class="btn btn-sm btn-default btn-flat" onClick="pagination('ant',0)"></i> ← Anterior</button>                          
+                          <?php $totalPag = (count(@$this->aTravels) / 10);?>
+                          <?php if(count(@$this->aTravels)< 10){
+                            $total = 1;
+                          }else{
+                            $total = $totalPag;
+                          }?>
+                          <?php for($i=1;$i<=$total;$i++):?>
+                            <button id="btnP_<?php echo $i;?>" type="button" class="btn btn-sm <?php echo ($i==1) ? 'btn-warning': '';?> btn-flat btnPagination" onClick="pagination('op',<?php echo $i;?>)"><?php echo $i;?></button>
+                          <?php endfor;?>
+                          <button type="button" class="btn btn-sm btn-default btn-flat" onClick="pagination('next',0)">Siguiente → </button>
+                        </div>
+                    </div>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->         
         </div>

@@ -1,4 +1,16 @@
+var mapGeo = null;
+var bounds;
+var directionsDisplay;
+var directionsDisplayNone;
+var markerOrigen  = null;
+var markerDestino = null;
+var bounds;
+var directionsService = new google.maps.DirectionsService();
+var controlPagination = 1;
+var totalRows         = 0;
+
 $( document ).ready(function() {
+    totalRows   = $("#totalRows").val();
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
     var dateInter  = parseInt(nowTemp.getMonth())+1;  
@@ -94,8 +106,9 @@ $( document ).ready(function() {
                 return false;
             }
         }
-    });    
+    });
 
+  /*
     $('#tableCLients').dataTable({
       "bDestroy": true,
       "bLengthChange": false,
@@ -121,5 +134,128 @@ $( document ).ready(function() {
             "sNext": "Siguiente"
           }          
       },
-    });                	
+    });    */  
+    pagination('op',1);
 });
+
+function showCloseOptions(inputRow){
+    var open  = $("#spanOptions"+inputRow).hasClass('fa-chevron-down');
+    var close = $("#spanOptions"+inputRow).hasClass('fa-chevron-up');
+
+    if(open && close == false){
+        $("#spanOptions"+inputRow).removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        $("#iDivinfo"+inputRow).fadeIn(1000);    
+        printMap(inputRow);  
+    }
+    
+    if(close && open == false){
+        $("#spanOptions"+inputRow).removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        $("#iDivinfo"+inputRow).fadeOut('slow','swing');       
+    }
+}
+
+function printMap(inputRow){
+  directionsDisplay     = new google.maps.DirectionsRenderer({
+                  polylineOptions: {
+                    strokeColor: "green"
+                  }
+                });
+
+  directionsDisplayNone = new google.maps.DirectionsRenderer();
+
+  var mapOptions = {
+    zoom: 5,
+    center: new google.maps.LatLng(19.435113686545755,-99.13316173010253)
+  };
+
+  mapGeo = new google.maps.Map(document.getElementById('map'+inputRow),mapOptions);  
+
+  bounds = new google.maps.LatLngBounds();
+  directionsDisplay.setMap(mapGeo);
+  directionsDisplayNone.setMap(mapGeo);
+  calcRoute(inputRow);
+}
+
+function calcRoute(inputRow) {
+  if($("#iLatO"+inputRow).val()!="" && $("#iLonO"+inputRow).val()!="" && 
+    $("#iLatD"+inputRow).val()!="" && $("#iLonD"+inputRow).val()!=""){
+    var latsOrigen  = new google.maps.LatLng($("#iLatO"+inputRow).val(), $("#iLonO"+inputRow).val());
+    var lastDestino = new google.maps.LatLng($("#iLatD"+inputRow).val(), $("#iLonD"+inputRow).val());
+    var request = {
+      origin: latsOrigen,
+      destination: lastDestino,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+    });
+  }
+}
+
+function pagination(op,indexPagination){
+  if(totalRows>10){    
+    if(op=='ant'){
+      if((controlPagination-1) == 0){
+        controlPagination = 1;
+      }else{
+        controlPagination = controlPagination-1;  
+      }       
+    }else if(op=='op'){
+      controlPagination = indexPagination;
+    }else if(op=='next'){      
+      var tRowval = Math.round(totalRows / 10);
+      if((controlPagination+1) == tRowval){
+        controlPagination = controlPagination+1; 
+      }else{
+        controlPagination = tRowval;  
+      }
+    }
+
+    $(".btnPagination").removeClass("btn-warning");
+    $("#btnP_"+controlPagination).addClass("btn-warning");  
+
+    var indexInit = 0;
+    var indexEnd  = 0;
+
+  switch (controlPagination) { 
+    case 1: 
+        indexInit = 1
+        indexEnd  = 10
+        break 
+    case 2: 
+        indexInit = 11
+        indexEnd  = 20
+        break 
+    case 3: 
+        indexInit = 21
+        indexEnd  = 30
+        break 
+    case 4: 
+        indexInit = 31
+        indexEnd  = 40
+        break   
+    case 5: 
+        indexInit = 41
+        indexEnd  = 50
+        break   
+    case 6: 
+        indexInit = 51
+        indexEnd  = 60
+        break
+  }    
+
+  var controlInt = 1;
+    $(".divInfo").hide('fast');
+
+    $('#tableCLients tbody .rowUpdate').each(function (){
+      if(controlInt <=  indexEnd && controlInt >= indexInit){  
+        $(this).fadeIn(1000);   
+      }else{
+        $(this).hide('fast');
+      }
+      controlInt++;
+    });
+  }  
+}

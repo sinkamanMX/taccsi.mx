@@ -132,10 +132,9 @@ class external_ReportsController extends My_Controller_Action
 
 				/*$dataInfo    = $classObject->getDataExport($this->dataIn['travelID']);						
 				$aRecorrido  = $classObject->getRecorrido($this->dataIn['travelID']);	*/			
-				
-				$nameClient = $this->_dataUser['N_EMPRESA']; 
+				$nameClient = $this->_dataUser['NOMBRE']." ".$this->_dataUser['APATERNO']." ".$this->_dataUser['AMATERNO'];
 				$dateCreate = date("d-m-Y H:i");
-				$createdBy	= $this->_dataUser['NICKNAME'];     			
+				$createdBy	= $this->_dataUser['USUARIO'];     			
     				/** PHPExcel */ 
 					require_once 'PHPExcel.php';		
 											

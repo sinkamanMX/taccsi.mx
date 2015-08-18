@@ -35,6 +35,8 @@
                         <dl class="dl-horizontal">
                             <dt>Id del Viaje</dt>
                             <dd><?php echo $this->aDataViaje['ID_VIAJES'];?></dd>
+                            <dt>Estatus</dt>
+                            <dd><?php echo $this->aDataViaje['ESTATUS'];?></dd>                               
                             <dt>Fecha Viaje</dt>
                             <dd><?php echo $this->aDataViaje['FECHA_VIAJE'];?></dd>   
                             <dt>No. Personas</dt>
@@ -46,10 +48,9 @@
                             <dt>Origen</dt>
                             <dd><?php echo $this->aDataViaje['ORIGEN'];?></dd>
                             <dt>Destino</dt>
-                            <dd><?php echo $this->aDataViaje['DESTINO'];?></dd>
-                            <dt>Estatus</dt>
-                            <dd><?php echo $this->aDataViaje['ESTATUS'];?></dd>                            
+                            <dd><?php echo $this->aDataViaje['DESTINO'];?></dd>                         
                         </dl>
+                        <div id="myMapDraw" style="height: 200px;margin-left: 10%;padding: 25%;width: 80%;"></div>
                         <div class="box-header p-botom-0">
                             <i class="fa fa-user"></i>
                             <h3 class="box-title">Cliente</h3>
@@ -91,10 +92,10 @@
                                 <?php $total = (isset($this->aDataViaje['RATING'])) ? $this->aDataViaje['RATING']: 0; ?>
                                 <div class=""> 
                                     <?php for($i=0;$i<$total;$i++): ?>
-                                        <span class="fa fa-star-o star-rating" ></span>  
+                                        <span class="fa fa-star star-rating" ></span>  
                                     <?php endfor;?>
                                     <?php for($i=0;$i<(5-$total);$i++): ?>
-                                        <span class="fa fa-star-o star-no-rating" ></span>  
+                                        <span class="fa fa-star star-no-rating" ></span>  
                                     <?php endfor;?>
                                 </div>                                                                     
                             </div>

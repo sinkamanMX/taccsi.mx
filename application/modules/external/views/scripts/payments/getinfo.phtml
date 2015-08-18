@@ -1,0 +1,117 @@
+<?php $this->headScript()->appendFile('/controllers/external/js/jsValidateMedio.js') ?>
+<input id="hRefLinkMain" type="hidden" value="/external/payments/index" />
+
+<?php $this->headScript()->captureStart() ?>
+    <?php $sOptions = ''; ?>
+    <?php foreach($this->cboTipos as $key => $items):?> 
+        <?php $sOptions.= ($sOptions!="") ? ',' : ''; ?>
+        <?php $sOptions.= $items['ID'].":".$items['DIGITOS'];?>
+    <?php endforeach;?> 
+    var aOptions = {<?php echo $sOptions;?>}  
+<?php $this->headScript()->captureEnd(); ?>
+    <section class="content">
+        <div class="col-xs-12">
+          <div class="box box-primary row-min-h450">
+                <div class="box-header">
+                    <h3 class="box-title">Información del Medio de Pago</h3>
+                </div>
+            <form role="form" method="POST" action="/external/payments/getinfo" id="FormData" enctype="multipart/form-data">
+                <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+
+                <div class="col-xs-12">   
+                        <?php if(count(@$this->errors)>0):?>
+                         <div class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-ban"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b>
+                                <?php if(@$this->errors['errorImage']==1):?>
+                                    <div>La imagen no fue posible guardarla, favor de verificar las especificaciones.</div>
+                                <?php endif; ?>                                
+                            </div>
+                        <?php endif;?>
+
+                        <?php if(@$this->resultOp=='okRegister'):?>
+                            <div class="alert alert-success alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b> Los datos se han guardado correctamente.
+                            </div>
+                        <?php endif;?>                
+                                <div class="box-body">
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputNombre">Tipo Tarjeta</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputTipo" name="inputTipo" onChange="validateDigits(this.value);">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aTipos;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputApaterno">Nombre Cliente (como aparece en la tarjeta)</label>
+                                            <input type="text" class="form-control upperClass" name="inputNombreTdc" id="inputNombreTdc" placeholder="Ej: Juan Rodriguez" value="<?php echo @$this->data['NOMBRE_TARJETA']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Num. Tarjeta</label>
+                                            <input type="text" autocomplete="off" autocomplete="off" class="form-control upperClass" name="inputTdc" id="inputTdc" placeholder="EJ:4322098600782232" value="<?php echo @$this->data['NO_TARJETA']; ?>">
+                                        </div>          
+
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Año Vencimiento</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputAno" name="inputAno" >
+                                                    <?php echo $this->aAnio;?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Mes Vencimiento</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputMes" name="inputMes" >
+                                                    <?php echo $this->aMes;?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Cod. Seguridad</label>
+                                            <input type="text" autocomplete="off" class="form-control upperClass" name="inputCode" id="inputCode" placeholder="Ej: 123" value="<?php echo @$this->data['CODIGO_AUTORIZACION']; ?>">
+                                        </div>          
+
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Estatus</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputEstatus" name="inputEstatus" >
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aEstatus;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <label for="inputNombre">Usar Medio por Default</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control upperClass" id="inputDefault" name="inputDefault" >
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aDefault;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                             
+                                </div><!-- /.box-body -->
+
+                                <div class="box-footer col-xs-12">                                                        
+                                    <a href="/external/payments/index"><button type="button" class="btn pull-right margin-5">Cancelar</button></a>
+                                    <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                                </div>
+                            </form>
+                </div>             
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->         
