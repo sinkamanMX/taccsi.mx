@@ -1,8 +1,8 @@
 <?php
 class main_RegisteruserController extends My_Controller_Action
 {	
-	//public $_realPath='/var/www/vhosts/taccsi.com/htdocs/public';	
-	public $_realPath  ='/Users/itecno2/Documents/workspace/taccsi.mx/public';
+	public $_realPath='/var/www/vhosts/taccsi.com/htdocs/public';	
+	//public $_realPath  ='/Users/itecno2/Documents/workspace/taccsi.mx/public';
 	 
     public function init()
     {
@@ -43,7 +43,7 @@ class main_RegisteruserController extends My_Controller_Action
 						$aMailer    = Array(
 							'emailTo' 	=> $this->_dataIn['inputUsuario'],
 							'nameTo' 	=> $nameUsuario,
-							'subjectTo' => ('Taccsi - Activa tu cuenta!'),
+							'subjectTo' => ('Taccsi - Bienvenido!'),
 							'bodyTo' 	=> $lBody,
 						);										
 					 	$enviar = $cFunctions->sendMailSmtp($aMailer);		
