@@ -1,5 +1,6 @@
 <?php $this->headScript()->appendFile('/controllers/gralFunctions.js') ?>
 <?php $this->headScript()->appendFile('/js/jasny-bootstrap.min.js') ?>
+<?php $this->headScript()->appendFile('/js/plugins/daterangepicker/daterangepicker.js') ?>
 <?php echo $this->headLink()->appendStylesheet('/css/jasny-bootstrap.min.css'); ?>
 <?php $this->headScript()->appendFile('/controllers/admin/js/validateTaxi.js') ?>
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
@@ -14,7 +15,7 @@
         </div>
 
         <div class="col-xs-12">
-          <div class="box box-primary row-min-h450">
+          <div class="box box-primary row-min-h700">
                 <div class="box-header">
                     <h3 class="box-title">Nuevo Taxi</h3>
                 </div>
@@ -22,7 +23,7 @@
                 <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
                 <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
 
-                <div class="col-xs-3">              
+                <div class="col-xs-3">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
                       <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
                             <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/taxis/<?php echo (isset($this->data['IMAGEN']) && $this->data['IMAGEN']!="") ? $this->data['IMAGEN']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
@@ -134,16 +135,178 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>                                          
+                                    </div>     
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputVigencia">Vigencia Seguro</label>
+                                            <input type="text" class="form-control upperClass" name="inputVigencia" id="inputVigencia" placeholder="Inicio Vigencia" value="<?php echo @$this->data['VIGENCIA_SEGURO']; ?>" readonly>
+                                        </div>             
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputVin">VIN</label>
+                                            <input type="text" class="form-control upperClass" name="inputVin" id="inputVin" placeholder="VIN" value="<?php echo @$this->data['VIN']; ?>">
+                                        </div>                                                              
+                                    </div>
                                 </div><!-- /.box-body -->
 
-                                <div class="box-footer col-xs-12">                                                        
-                                    <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
-                                </div>
-                            </form>
                         <?php endif;?>
-                </div>             
+                </div>  
+                <div class="col-xs-12">
+                    <h4>Documentación</h4>
+                </div>
+                <div class="col-xs-12">
+
+                    <div class="col-md-3">
+                        <span><b>Tarjeta de Circulación (Frente)</b></span>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div style="height:40px;">
+                                <?php if(@$this->data['VAL_TCIRCULACION']==3 ):?>
+                                    <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                <?php elseif(@$this->data['VAL_TCIRCULACION']==2 ):?>
+                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                <?php elseif(@$this->data['VAL_TCIRCULACION']==1 ):?>
+                                    <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                <?php endif;?>      
+                            </div>                                        
+
+                            <?php if(@$this->data['VAL_TCIRCULACION']==1 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                              </div>
+                            <?php elseif(@$this->data['VAL_TCIRCULACION']==2 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="/images/documentacion/aprovado.png" class="">
+                              </div>
+                            <?php else:?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->data['IMAGEN_TCIRCULACION']) && $this->data['IMAGEN_TCIRCULACION']!="") ? $this->data['IMAGEN_TCIRCULACION']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                              </div>                                        
+                              <div>
+                                <span class="btn btn-default btn-file">
+                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                <span class="fileinput-exists">Cambiar</span>
+                                <input type="file" name="imageTcirculacion" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                              </div>
+                            <?php endif;?>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <span><b>Tarjeta de Circulación (Reverso)</b></span>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div style="height:40px;">
+                                <?php if(@$this->data['VAL_TCIRCULACION_2']==3 ):?>
+                                    <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                <?php elseif(@$this->data['VAL_TCIRCULACION_2']==2 ):?>
+                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                <?php elseif(@$this->data['VAL_TCIRCULACION_2']==1 ):?>
+                                    <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                <?php endif;?>      
+                            </div>                                        
+
+                            <?php if(@$this->data['VAL_TCIRCULACION_2']==1 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                              </div>
+                            <?php elseif(@$this->data['VAL_TCIRCULACION_2']==2 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="/images/documentacion/aprovado.png" class="">
+                              </div>
+                            <?php else:?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->data['IMAGEN_TCIRCULACION_2']) && $this->data['IMAGEN_TCIRCULACION_2']!="") ? $this->data['IMAGEN_TCIRCULACION_2']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                              </div>                                        
+                              <div>
+                                <span class="btn btn-default btn-file">
+                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                <span class="fileinput-exists">Cambiar</span>
+                                <input type="file" name="imageTbcirculacion" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                              </div>
+                            <?php endif;?>
+                        </div>
+                    </div>                    
+
+                    <div class="col-md-3">
+                        <span><b>Imagen Factura</b></span>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div style="height:40px;">
+                                <?php if(@$this->data['VAL_FACTURA']==3 ):?>
+                                    <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                <?php elseif(@$this->data['VAL_FACTURA']==2 ):?>
+                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                <?php elseif(@$this->data['VAL_FACTURA']==1 ):?>
+                                    <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                <?php endif;?>      
+                            </div>                                        
+
+                            <?php if(@$this->data['VAL_FACTURA']==1 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                              </div>
+                            <?php elseif(@$this->data['VAL_FACTURA']==2 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="/images/documentacion/aprovado.png" class="">
+                              </div>
+                            <?php else:?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->data['IMAGEN_FACTURA']) && $this->data['IMAGEN_FACTURA']!="") ? $this->data['IMAGEN_FACTURA']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                              </div>                                        
+                              <div>
+                                <span class="btn btn-default btn-file">
+                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                <span class="fileinput-exists">Cambiar</span>
+                                <input type="file" name="imageFactura" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                              </div>
+                            <?php endif;?>
+                        </div>
+                    </div> 
+       
+
+                    <div class="col-md-3">
+                        <span><b>Imagen Póliza de Seguro</b></span>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div style="height:40px;">
+                                <?php if(@$this->data['IMAGEN_POLIZA']==3 ):?>
+                                    <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                <?php elseif(@$this->data['IMAGEN_POLIZA']==2 ):?>
+                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                <?php elseif(@$this->data['IMAGEN_POLIZA']==1 ):?>
+                                    <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                <?php endif;?>      
+                            </div>                                        
+
+                            <?php if(@$this->data['IMAGEN_POLIZA']==1 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                              </div>
+                            <?php elseif(@$this->data['IMAGEN_POLIZA']==2 ):?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                    <img height="210" src="/images/documentacion/aprovado.png" class="">
+                              </div>
+                            <?php else:?>
+                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->data['IMAGEN_POLIZA']) && $this->data['IMAGEN_POLIZA']!="") ? $this->data['IMAGEN_POLIZA']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                              </div>                                        
+                              <div>
+                                <span class="btn btn-default btn-file">
+                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                <span class="fileinput-exists">Cambiar</span>
+                                <input type="file" name="imagepoliza" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                              </div>
+                            <?php endif;?>
+                        </div>
+                    </div>                                                          
+                </div>                
+
+                <div class="box-footer col-xs-12">                                                        
+                    <button type="button" class="btn pull-right margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                </div>
+
+                </form>
             </div><!-- /.box -->
         </div>
     </section><!-- /.content -->         

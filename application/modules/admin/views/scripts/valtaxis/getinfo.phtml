@@ -1,0 +1,174 @@
+<?php $this->headScript()->appendFile('/controllers/admin/js/jsValidateDocs.js') ?>
+<input id="hRefLinkMain" type="hidden" value="/admin/validation/index" />
+
+    <section class="content">
+        <div class="col-xs-12">
+          <div class="box box-primary row-min-h600">
+                <div class="box-header">
+                    <h3 class="box-title">Documentos del Taxi.</h3>
+                </div>
+                    <?php if(@$this->errors['update']==1):?>
+                        <div id="divAlert" class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-ban"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <b>!Atención Error¡</b>
+                            <div>                
+                                Ocurrio un error al actualizar la información.
+                            </div>
+                        </div>                      
+                    <?php endif;?>                  
+                    <?php if(@$this->resultOp=='okRegister'):?>
+                        <div class="alert alert-success alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <b>!Atención¡</b>Sus datos se han registrado correctamente.<br/>                           
+                        </div>
+                    <?php endif;?> 
+
+                    <form role="form" method="POST" action="/admin/valtaxis/getinfo" id="FormData" enctype="multipart/form-data">
+                        <input type="hidden" name="optReg"                      value="validateFields" />
+                        <input type="hidden" name="iRespuesta" id="iRespuesta"  value="1" />
+                        <input type="hidden" name="sOption"    id="sOption"  value="1" />
+                        <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+                    </form>
+
+                        <dv class="box-body col-md-12">
+                           <?php if(@$this->resultOp=='okRegisterDocs'):?>
+                                <div class="alert alert-success alert-dismissable">
+                                    <i class="fa fa-check"></i>
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <b>!Atención¡</b> Los datos se han guardado correctamente.
+                                </div>
+                            <?php endif;?>                        
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="col-md-3">
+                                         <span><b>Tarjeta de Circulación (Frente)</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataTaxi['VAL_TCIRCULACION']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataTaxi['VAL_TCIRCULACION']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataTaxi['IMAGEN_TCIRCULACION']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataTaxi['IMAGEN_TCIRCULACION']) && $this->aDataTaxi['IMAGEN_TCIRCULACION']!="") ? $this->aDataTaxi['IMAGEN_TCIRCULACION']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataTaxi['IMAGEN_TCIRCULACION'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=150&width=200&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div>
+                                            <?php if(isset($this->aDataTaxi['IMAGEN_TCIRCULACION']) && $this->aDataTaxi['IMAGEN_TCIRCULACION']!=""):?>
+                                                <?php if(@$this->aDataTaxi['VAL_TCIRCULACION']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'imgtcir')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'imgtcir')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                         
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                         <span><b>Tarjeta de Circulación (Reverso)</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataTaxi['VAL_TCIRCULACION_2']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataTaxi['VAL_TCIRCULACION_2']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataTaxi['IMAGEN_TCIRCULACION_2']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataTaxi['IMAGEN_TCIRCULACION_2']) && $this->aDataTaxi['IMAGEN_TCIRCULACION_2']!="") ? $this->aDataTaxi['IMAGEN_TCIRCULACION_2']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataTaxi['IMAGEN_TCIRCULACION_2'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=150&width=200&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div>
+                                            <?php if(isset($this->aDataTaxi['IMAGEN_TCIRCULACION_2']) && $this->aDataTaxi['IMAGEN_TCIRCULACION_2']!=""):?>
+                                                <?php if(@$this->aDataTaxi['VAL_TCIRCULACION_2']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'imgtback')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'imgtback')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                         
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span><b>Factura</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataTaxi['VAL_FACTURA']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataTaxi['VAL_FACTURA']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataTaxi['IMAGEN_FACTURA']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="150" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataTaxi['IMAGEN_FACTURA']) && $this->aDataTaxi['IMAGEN_FACTURA']!="") ? $this->aDataTaxi['IMAGEN_FACTURA']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataTaxi['IMAGEN_FACTURA'];?>">
+                                                        <img height="150" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=150&width=200&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div>
+                                            <?php if(isset($this->aDataTaxi['IMAGEN_FACTURA']) && $this->aDataTaxi['IMAGEN_FACTURA']!=""):?>
+                                                <?php if(@$this->aDataTaxi['VAL_FACTURA']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'imgfactura')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'imgfactura')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                         
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span><b>Póliza</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataTaxi['VAL_FACTURA']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataTaxi['VAL_FACTURA']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataTaxi['IMAGEN_POLIZA']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="150" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataTaxi['IMAGEN_POLIZA']) && $this->aDataTaxi['IMAGEN_POLIZA']!="") ? $this->aDataTaxi['IMAGEN_POLIZA']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataTaxi['IMAGEN_POLIZA'];?>">
+                                                        <img height="150" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=150&width=200&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div>
+                                            <?php if(isset($this->aDataTaxi['IMAGEN_POLIZA']) && $this->aDataTaxi['IMAGEN_POLIZA']!=""):?>
+                                                <?php if(@$this->aDataTaxi['VAL_FACTURA']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'imgpoliza')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'imgpoliza')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                         
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+
+                                    
+
+                                                                                                        
+
+                                </div>                      
+                        </div>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->

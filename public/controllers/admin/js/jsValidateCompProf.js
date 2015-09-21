@@ -42,11 +42,9 @@ $().ready(function() {
     
     if($("#catId").val()>-1){
         $("#inputPassword").rules("remove", "required");
-        $("#inputCpassword").rules("remove", "required");          
+        $("#inputCpassword").rules("remove", "required");           
     }
 
-    $("#inputPasswordNow").rules("remove", "required"); 
-    
     $("#FormData").validate({
         rules: {
             inputNameEmpresa: "required",
@@ -134,6 +132,19 @@ $().ready(function() {
         $("#inputCpF").rules("remove", "required");     
     }
 
+    $("#formBank").validate({
+        rules: {
+            inputbanco      : "required",
+            inputNoCuenta   : "required",
+        },
+        messages: {
+            inputbanco      : "Campo Requerido",
+            inputNoCuenta   : "Campo Requerido",
+        },
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });    
 });
 
 function directionDif(value){
@@ -198,6 +209,7 @@ function searchCp(typeSearch){
     $("#typeSearch").val(typeSearch);
     $("#FormData").submit();
 }
+
 function showChangePassword(){
     $("#bntChangePass").hide('slow');
     $(".inputPass").show('slow');

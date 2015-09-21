@@ -1,0 +1,266 @@
+<?php $this->headScript()->appendFile('/controllers/admin/js/jsValidateDocs.js') ?>
+<input id="hRefLinkMain" type="hidden" value="/admin/validation/index" />
+
+    <section class="content">
+        <div class="col-xs-12">
+          <div class="box box-primary row-min-h600">
+                <div class="box-header">
+                    <h3 class="box-title">Documentos del Usuario.</h3>
+                </div>
+                    <?php if(@$this->errors['update']==1):?>
+                        <div id="divAlert" class="alert alert-danger alert-dismissable">
+                            <i class="fa fa-ban"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <b>!Atención Error¡</b>
+                            <div>                
+                                Ocurrio un error al actualizar la información.
+                            </div>
+                        </div>                      
+                    <?php endif;?>                  
+                    <?php if(@$this->resultOp=='okRegister'):?>
+                        <div class="alert alert-success alert-dismissable">
+                            <i class="fa fa-check"></i>
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <b>!Atención¡</b>Sus datos se han registrado correctamente.<br/>                           
+                        </div>
+                    <?php endif;?> 
+
+                    <form role="form" method="POST" action="/admin/valdocs/getinfo" id="FormData" enctype="multipart/form-data">
+                        <input type="hidden" name="optReg"                      value="validateFields" />
+                        <input type="hidden" name="iRespuesta" id="iRespuesta"  value="1" />
+                        <input type="hidden" name="sOption"    id="sOption"  value="1" />
+                        <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+                    </form>
+
+                        <dv class="box-body col-md-12">
+                           <?php if(@$this->resultOp=='okRegisterDocs'):?>
+                                <div class="alert alert-success alert-dismissable">
+                                    <i class="fa fa-check"></i>
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <b>!Atención¡</b> Los datos se han guardado correctamente.
+                                </div>
+                            <?php endif;?>                        
+                                <div class="col-xs-12 col-md-12">
+
+                                    <div class="col-md-3">
+                                        <span><b>Licencia de Conducir (Frente)</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['LICENCIA_FRENTE']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['LICENCIA_FRENTE']) && $this->aDataKardex['LICENCIA_FRENTE']!="") ? $this->aDataKardex['LICENCIA_FRENTE']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['LICENCIA_FRENTE'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div>
+                                            <?php if(isset($this->aDataKardex['LICENCIA_FRENTE']) && $this->aDataKardex['LICENCIA_FRENTE']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'licencefront')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'licencefront')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                         
+                                            <?php endif;?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <span><b>Licencia de Conducir (Reverso)</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                              <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['LICENCIA_REVERSA']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['LICENCIA_REVERSA']) && $this->aDataKardex['LICENCIA_REVERSA']!="") ? $this->aDataKardex['LICENCIA_REVERSA']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['LICENCIA_REVERSA'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                              </div> 
+                                                <?php if(isset($this->aDataKardex['LICENCIA_REVERSA']) && $this->aDataKardex['LICENCIA_REVERSA']!=""):?>
+                                                    <?php if(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==1 ):?>
+                                                        <div class="box-footer col-xs-12">                                                                                    
+                                                            <button type="button" onClick="validateData(2,'licenceback')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                            <button type="button" onClick="validateData(3,'licenceback')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                        </div>                                            
+                                                    <?php endif;?>                                         
+                                                <?php endif;?>
+                                        </div>                                    
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span><b>IFE, Pasaporte o Cédula</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_IDENTIFICACION']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_IDENTIFICACION']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>    
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['IDENTIFICACION']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['IDENTIFICACION']) && $this->aDataKardex['IDENTIFICACION']!="") ? $this->aDataKardex['IDENTIFICACION']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['IDENTIFICACION'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                            </div>                                        
+                                            <?php if(isset($this->aDataKardex['IDENTIFICACION']) && $this->aDataKardex['IDENTIFICACION']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_IDENTIFICACION']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'identification')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'identification')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                          
+                                            <?php endif;?>                                            
+                                        </div>                                        
+                                    </div>                 
+                                    <div class="col-md-3">
+                                        <span><b>Comprobante de Domicilio</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_COMP_DOMICILIO']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_COMP_DOMICILIO']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>                                                  
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['COMPROBANTE_DOMICILIO']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['COMPROBANTE_DOMICILIO']) && $this->aDataKardex['COMPROBANTE_DOMICILIO']!="") ? $this->aDataKardex['COMPROBANTE_DOMICILIO']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['COMPROBANTE_DOMICILIO'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                            </div>                                                                                      
+                                            <?php if(isset($this->aDataKardex['COMPROBANTE_DOMICILIO']) && $this->aDataKardex['COMPROBANTE_DOMICILIO']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_COMP_DOMICILIO']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'comp_domicilio')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'comp_domicilio')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                                    
+                                            <?php endif;?>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-3">
+                                        <span><b>Cédula Fiscal SAT</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_CEDULA_FISCAL']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_CEDULA_FISCAL']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>    
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['CEDULA_FISCAL']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['CEDULA_FISCAL']) && $this->aDataKardex['CEDULA_FISCAL']!="") ? $this->aDataKardex['CEDULA_FISCAL']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['CEDULA_FISCAL'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                            </div>                                      
+                                            <?php if(isset($this->aDataKardex['CEDULA_FISCAL']) && $this->aDataKardex['CEDULA_FISCAL']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_CEDULA_FISCAL']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'ced_fiscal')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'ced_fiscal')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>                                                
+                                            <?php endif;?>                                              
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <span><b>Antecedentes no penales</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_ANTECEDENTES']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_ANTECEDENTES']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>                                                                               
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['ANTECEDENTES']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['ANTECEDENTES']) && $this->aDataKardex['ANTECEDENTES']!="") ? $this->aDataKardex['ANTECEDENTES']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['ANTECEDENTES'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                            </div>
+                                            <?php if(isset($this->aDataKardex['ANTECEDENTES']) && $this->aDataKardex['ANTECEDENTES']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_ANTECEDENTES']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'antecedentes')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'antecedentes')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>
+                                            <?php endif;?>                                              
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <span><b>Copia Edo. Cuenta (Bancario)</b></span>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div style="height:40px;width:100%;text-align:center;">
+                                                <?php if(@$this->aDataKardex['VAL_ESTADO_CUENTA']==3 ):?>
+                                                    <span style="color:red;"><small>El documento fue rechazado.</small></span>
+                                                <?php elseif(@$this->aDataKardex['VAL_ESTADO_CUENTA']==2 ):?>
+                                                    <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                                
+                                                <?php endif;?>                                              
+                                            </div>
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="height: 150px;">
+                                                <?php $trozos = explode(".", @$this->aDataKardex['ESTADO_CUENTA']);  $extension = end($trozos); ?>
+                                                <?php if( $extension!="pdf"):?>
+                                                    <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['ESTADO_CUENTA']) && $this->aDataKardex['ESTADO_CUENTA']!="") ? $this->aDataKardex['ESTADO_CUENTA']: "no_disponible.jpg"; ?>&height=150&width=200&relatio=false" class="">
+                                                <?php else:?>
+                                                    <a target="_blank" href="/images/documentacion/<?php echo @$this->aDataKardex['ESTADO_CUENTA'];?>">
+                                                        <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/logo_pdf.jpg&height=250&width=280&relatio=false" class="">
+                                                    </a>
+                                                <?php endif;?>                                                
+                                            </div>                                                                                  
+                                            <?php if(isset($this->aDataKardex['ESTADO_CUENTA']) && $this->aDataKardex['ESTADO_CUENTA']!=""):?>
+                                                <?php if(@$this->aDataKardex['VAL_ESTADO_CUENTA']==1 ):?>
+                                                    <div class="box-footer col-xs-12">                                                                                    
+                                                        <button type="button" onClick="validateData(2,'edocuenta')" class="btn btn-primary col-md-6">Aceptar</button>
+                                                        <button type="button" onClick="validateData(3,'edocuenta')" class="btn btn-warning  col-md-6">Rechazar</button>
+                                                    </div>                                            
+                                                <?php endif;?>
+                                            <?php endif;?>   
+                                        </div>                                        
+                                    </div>
+                                </div>                      
+                        </div>
+                </div>
+            </div><!-- /.box -->
+        </div>
+    </section><!-- /.content -->

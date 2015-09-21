@@ -1,6 +1,6 @@
-<?php $this->headScript()->appendFile('/js/jasny-bootstrap.min.js') ?>
+    <?php $this->headScript()->appendFile('/js/jasny-bootstrap.min.js') ?>
 <?php echo $this->headLink()->appendStylesheet('/css/jasny-bootstrap.min.css'); ?>
-<?php $this->headScript()->appendFile('/controllers/admin/js/validateProfile.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/jsValidateCompProf.js') ?>
 <section class="content">
     <div class="col-xs-12">
       <div class="box box-primary row-min-h800">
@@ -12,7 +12,9 @@
             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
               <li class="<?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>"><a href="#table" data-toggle="tab" aria-expanded="true">Mis Datos</a></li>
               <li class="<?php echo (isset($this->sOperation)  && $this->sOperation=="updateCompany" || $this->sOperation=="searchCP") ? 'active': ''; ?>"><a href="#tabMap" data-toggle="tab" aria-expanded="false">Datos de Facturación</a></li>
-            </ul>            
+              <li class="<?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterBank') ? 'active': ''; ?>"><a href="#bank" data-toggle="tab" aria-expanded="true">Datos Bancarios</a></li>
+              <li class="<?php echo (isset($this->sOperation) && @$this->resultOp=='okRegister') ? 'active': ''; ?>"><a href="#docs" data-toggle="tab" aria-expanded="true">Documentos</a></li>
+            </ul>
 
             <div class="tab-content">
                 <div class="tab-pane <?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>" id="table">                    
@@ -121,7 +123,7 @@
                     <div class="box-body col-md-12">
                         <form role="form" method="POST" action="/admin/profile/index" id="FormData" >
                             <input type="hidden" id="optRegCompany" name="optReg" value="updateCompany" />
-                            <input type="hidden" id="catId" name="catId" value="<?php echo $this->idCompany; ?>" />
+                            <input type="hidden" name="catId" value="<?php echo $this->idCompany; ?>" />
                             <input type="hidden" id="typeSearch"  name="typeSearch"  value="" />
                             <input type="hidden" id="inputSearch" name="inputSearch" value="" />                        
 
@@ -304,6 +306,333 @@
                             </div>
                         </form>
 
+                    </div>
+                </div>
+
+                <div class="tab-pane <?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterBank') ? 'active': ''; ?>" id="bank">
+                    <div class="box-body col-md-12">
+                        <?php if(@$this->resultOp=='okRegisterBank'):?>
+                            <div class="alert alert-success alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b> Los datos se han guardado correctamente.
+                            </div>
+                        <?php endif;?>
+
+                        <form role="form" method="POST" action="/admin/profile/index" id="formBank" enctype="multipart/form-data">
+                            <input type="hidden" name="optReg" value="<?php echo (@$this->aDataBanco['ID_FINANZAS']>0) ? 'updatebank': 'newBank';?>" />
+                            <input type="hidden" name="catId" value="<?php echo $this->idCompany; ?>" />                            
+                            <div class="col-xs-12 col-md-12">
+                                
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputbanco">Banco</label>
+                                        <select class="form-control" id="inputbanco" autocomplete="off" name="inputbanco">
+                                            <option value="">Seleccione una opción</option>
+                                            <?php echo $this->sBancos;?>                                
+                                        </select>
+                                    </div> 
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputSucursal">Sucursal</label>
+                                        <input type="text" class="form-control upperClass" name="inputSucursal" id="inputSucursal" placeholder="Sucursal" value="<?php echo @$this->aDataBanco['SUCURSAL']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputNoCuenta">No. de Cuenta</label>
+                                        <input type="text" class="form-control upperClass" name="inputNoCuenta" id="inputNoCuenta" placeholder="No. de cuenta" value="<?php echo @$this->aDataBanco['NO_CUENTA']; ?>">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group col-xs-4">
+                                        <label for="inputClabe">Clabe</label>
+                                        <input type="text" class="form-control upperClass" name="inputClabe" id="inputClabe" placeholder="Cuenta Clabe" value="<?php echo @$this->aDataBanco['CLABE']; ?>">
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        
+                                    </div>
+                                    <div class="form-group col-xs-4">
+                                        
+                                    </div>
+                                </div>                                     
+                            </div>
+                            <div class="box-footer col-xs-12">                                                        
+                                <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane <?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterDocs') ? 'active': ''; ?>" id="docs">
+                    <div class="box-body col-md-12">
+                       <?php if(@$this->resultOp=='okRegisterDocs'):?>
+                            <div class="alert alert-success alert-dismissable">
+                                <i class="fa fa-check"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b> Los datos se han guardado correctamente.
+                            </div>
+                        <?php endif;?>                        
+                        <form role="form" method="POST" action="/admin/profile/index" id="formBank" enctype="multipart/form-data">
+                            <input type="hidden" name="optReg" value="<?php echo (@$this->aDataKardex['ID_KARDEX']>0) ? 'updateDocs': 'updateDocs';?>" />
+                            <input type="hidden" name="catId" value="<?php echo $this->idCompany; ?>" />                            
+                            <div class="col-xs-12 col-md-12">
+
+                                <div class="col-md-3">
+                                    <span><b>Licencia de Conducir (Frente)</b></span>
+
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==3 ):?>                                        
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>
+                                        </div>
+                                        <?php if(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_LICENCIA_FRENTE']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['LICENCIA_FRENTE']) && $this->aDataKardex['LICENCIA_FRENTE']!="") ? $this->aDataKardex['LICENCIA_FRENTE']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageCondFront" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <span><b>Licencia de Conducir (Reverso)</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                            
+                                            <?php elseif(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>
+                                        </div>
+                                        <?php if(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_LICENCIA_REVERSA']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['LICENCIA_REVERSA']) && $this->aDataKardex['VAL_LICENCIA_REVERSA']!="") ? $this->aDataKardex['VAL_LICENCIA_REVERSA']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageCondBack" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>                                    
+                                </div>
+                                <div class="col-md-3">
+                                    <span><b>IFE, Pasaporte o Cédula</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_IDENTIFICACION']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_IDENTIFICACION']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                             
+                                            <?php elseif(@$this->aDataKardex['VAL_IDENTIFICACION']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>
+                                        </div>
+                                            
+                                        <?php if(@$this->aDataKardex['VAL_IDENTIFICACION']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_IDENTIFICACION']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['IDENTIFICACION']) && $this->aDataKardex['IDENTIFICACION']!="") ? $this->aDataKardex['IDENTIFICACION']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageIDE" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                    
+                                </div>                 
+                                <div class="col-md-3">
+                                    <span><b>Comprobante de Domicilio</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_COMP_DOMICILIO']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_COMP_DOMICILIO']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_COMP_DOMICILIO']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>       
+                                        </div>
+                                        
+                                        <?php if(@$this->aDataKardex['VAL_COMP_DOMICILIO']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_COMP_DOMICILIO']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['COMPROBANTE_DOMICILIO']) && $this->aDataKardex['COMPROBANTE_DOMICILIO']!="") ? $this->aDataKardex['COMPROBANTE_DOMICILIO']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageCoDom" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="col-md-3">
+                                    <span><b>Cédula Fiscal SAT</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_CEDULA_FISCAL']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_CEDULA_FISCAL']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>                                            
+                                            <?php elseif(@$this->aDataKardex['VAL_CEDULA_FISCAL']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>
+                                        </div>
+                                        <?php if(@$this->aDataKardex['VAL_CEDULA_FISCAL']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_CEDULA_FISCAL']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['CEDULA_FISCAL']) && $this->aDataKardex['CEDULA_FISCAL']!="") ? $this->aDataKardex['CEDULA_FISCAL']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageSat" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                    
+                                </div>
+                                <!--
+                                <div class="col-md-3">
+                                    <span><b>Antecedentes no penales</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_ANTECEDENTES']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_ANTECEDENTES']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_ANTECEDENTES']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>      
+                                        </div>                                        
+
+                                        <?php if(@$this->aDataKardex['VAL_ANTECEDENTES']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=250&width=280&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_ANTECEDENTES']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['ANTECEDENTES']) && $this->aDataKardex['ANTECEDENTES']!="") ? $this->aDataKardex['ANTECEDENTES']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageSat" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                </div>
+                            -->
+
+
+                                <div class="col-md-3">
+                                    <span><b>Copia Edo. Cuenta (Bancario)</b></span>
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div style="height:40px;">
+                                            <?php if(@$this->aDataKardex['VAL_ESTADO_CUENTA']==3 ):?>
+                                                <span style="color:red;"><small>El documento fue rechazado, favor de volverlo a enviar.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_ESTADO_CUENTA']==2 ):?>
+                                                <span style="color:green;"><small>El documento ha sido aceptado.</small></span>
+                                            <?php elseif(@$this->aDataKardex['VAL_ESTADO_CUENTA']==1 ):?>
+                                                <span style="color:gray;"><small>El documento se encuentra en proceso de validación.</small></span>
+                                            <?php endif;?>                                              
+                                        </div>
+                                          
+                                        <?php if(@$this->aDataKardex['VAL_ESTADO_CUENTA']==1 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/wait.gif&height=210&width=210&relatio=false" class="">
+                                          </div>
+                                        <?php elseif(@$this->aDataKardex['VAL_ESTADO_CUENTA']==2 ):?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                                <img height="210" src="/images/documentacion/aprovado.png" class="">
+                                          </div>
+                                        <?php else:?>
+                                          <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 165px; height: 150px;">
+                                            <img height="210" src="<?php echo $this->BaseUrl; ?>/main/image/index?img=./images/documentacion/<?php echo (isset($this->aDataKardex['ESTADO_CUENTA']) && $this->aDataKardex['ESTADO_CUENTA']!="") ? $this->aDataKardex['ESTADO_CUENTA']: "no_disponible.jpg"; ?>&height=250&width=280&relatio=false" class="">
+                                          </div>                                        
+                                          <div>
+                                            <span class="btn btn-default btn-file">
+                                            <span class="fileinput-new">Seleccionar Imagen</span>
+                                            <span class="fileinput-exists">Cambiar</span>
+                                            <input type="file" name="imageEdoCu" accept=".png,.jpg,jpeg,.pdf"  onchange="checkfileImages(this);" ></span>
+                                            <a href="#" class="btn btn-default fileinput-exists col-xs-12" data-dismiss="fileinput">Eliminar</a>
+                                          </div>
+                                        <?php endif;?>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            <div class="box-footer col-xs-12">                                                        
+                                <button type="submit" class="btn btn-primary pull-right margin-5">Guardar</button>
+                            </div>
+                        </form>                        
                     </div>
                 </div>
             </div><!-- /.box -->

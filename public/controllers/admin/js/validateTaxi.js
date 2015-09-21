@@ -12,6 +12,8 @@ $().ready(function() {
                 minlength: 4,
                 maxlength: 4
             }, 
+            inputVigencia: "required",  
+            inputVin: "required",  
         },
         messages: {
         	inputMarca		: "Campo Requerido",
@@ -24,15 +26,33 @@ $().ready(function() {
                 number    : "Este campo acepta solo números",
                 minlength : "El Año debe de ser de 4 dígitos",
                 maxlength : "El Año debe de ser de 4 dígitos",          
-            }                    
+            },
+            inputVigencia: "Campo Requerido",
+            inputVin     : "Campo Requerido",            
         },
         submitHandler: function(form) {
             form.submit();
         }
     });
+
+    $('#inputVigencia').daterangepicker();
 });
 
 function backToMain(){
   var mainPage = $("#hRefLinkMain").val();
   location.href= mainPage;
+}
+
+function checkfileImages(sender) {
+    var validExts = new Array(".png", ".jpeg",".jpg",".pdf");
+    var fileExt = sender.value;
+    fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+    if (validExts.indexOf(fileExt) < 0) {
+      alert("El archivo seleccionado debe de tener alguna de las siguientes extenciones: " +
+               validExts.toString());
+      return false;
+    }else{
+        return true;    
+        
+    } 
 }

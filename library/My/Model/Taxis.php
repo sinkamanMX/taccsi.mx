@@ -197,7 +197,13 @@ class My_Model_Taxis extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-        $nameImage  = ($data['nameImagen']!="") ? ",IMAGEN			='".$data['nameImagen']."'": "";
+        $nameImage1  = ($data['sImagenTcir']!="")  	? " ,IMAGEN_TCIRCULACION    ='".$data['sImagenTcir']."'": "";
+        $nameImage2  = ($data['sImagenTcir2']!="") 	? " ,IMAGEN_TCIRCULACION_2 	='".$data['sImagenTcir2']."'": "";
+        $nameImage3  = ($data['sImagenFact']!="") 	? " ,IMAGEN_FACTURA 		='".$data['sImagenFact']."'": "";
+        $nameImage4  = ($data['sImagenPol']!="") 	? " ,IMAGEN_POLIZA			='".$data['sImagenPol']."'": "";
+
+		$nameImage  = ($data['nameImagen']!="") ? ",IMAGEN			='".$data['nameImagen']."'": "";
+        
         $iTaccista  = ($idTaccista!=NULL) ? "ADMIN_USUARIOS_ID_USUARIO =".$idTaccista."," : "" ;
         
         $sql="INSERT INTO $this->_name	
@@ -211,8 +217,14 @@ class My_Model_Taxis extends My_Db_Table
 					ANIO			= ".$data['inputAno'].",
 					$iTaccista
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
+					VIN  			='".$data['inputVin']."',
+					VIGENCIA_SEGURO ='".$data['inputVigencia']."',
 					USUARIO_REGISTRO= ".$data['userCreate']."
-					$nameImage";
+					$nameImage 
+					$nameImage1
+					$nameImage2
+					$nameImage3
+					$nameImage4";
         try{            
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -231,7 +243,12 @@ class My_Model_Taxis extends My_Db_Table
     public function updateRow($data){
        	$result     = Array();
         $result['status']  = false;
-
+        
+        $nameImage1  = ($data['sImagenTcir']!="")  	? " ,IMAGEN_TCIRCULACION    ='".$data['sImagenTcir']."'": "";
+        $nameImage2  = ($data['sImagenTcir2']!="") 	? " ,IMAGEN_TCIRCULACION_2 	='".$data['sImagenTcir2']."'": "";
+        $nameImage3  = ($data['sImagenFact']!="") 	? " ,IMAGEN_FACTURA 		='".$data['sImagenFact']."'": "";
+        $nameImage4  = ($data['sImagenPol']!="") 	? " ,IMAGEN_POLIZA			='".$data['sImagenPol']."'": "";
+        
         $nameImage  = ($data['nameImagen']!="") ? ",IMAGEN			='".$data['nameImagen']."'": "";
 
         $sql="UPDATE $this->_name	
@@ -241,8 +258,14 @@ class My_Model_Taxis extends My_Db_Table
 					NOMBRE_CHOFER	='".$data['inputChofer']."',
 					PLACAS			='".$data['inputPlacas']."',
 					ECO				='".$data['inputEco']."',
-					ANIO			= ".$data['inputAno']."
-					$nameImage
+					ANIO			= ".$data['inputAno'].",
+					VIN  			='".$data['inputVin']."',
+					VIGENCIA_SEGURO ='".$data['inputVigencia']."'
+					$nameImage 
+					$nameImage1
+					$nameImage2
+					$nameImage3
+					$nameImage4
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            
     		$query   = $this->query($sql,false);
@@ -296,7 +319,7 @@ class My_Model_Taxis extends My_Db_Table
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT CONCAT(U.NOMBRE,' ', U.APATERNO, ' ',U.AMATERNO) AS CHOFER, T.PLACAS AS TAXI, 
     				P.UBICACION, P.FECHA_GPS, IF(V.ID_VIAJEs IS NULL,'Sin viaje','En Viaje')  AS ESTADO, P.LATITUD,
-    			 	P.LONGITUD, P.ANGULO, P.VELOCIDAD
+    			 	P.LONGITUD, P.ANGULO, P.VELOCIDAD, U.ID_USUARIO AS ID
 				FROM DISP_ULTIMA_POSICION P
 				INNER JOIN ADMIN_USUARIOS U ON P.IDENTIFICADOR = U.DISPOSITIVO
 				INNER JOIN ADMIN_TAXIS    T ON U.ID_USUARIO    = T.ADMIN_USUARIOS_ID_USUARIO
@@ -369,5 +392,71 @@ class My_Model_Taxis extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;
-	}	    
+	}
+	
+	
+    public function updateValidate($data){
+       	$result     = Array();
+        $result['status']  = false;
+        $sOption 	= "";
+        
+    	$aRespuesta  = $data['iRespuesta'];
+    	$countResult = 1;
+								
+		if($data['sOption']=='imgtcir'){
+			$sOption  = ", VAL_TCIRCULACION	= ".$aRespuesta;
+			$countResult = ($aRespuesta==2) ? $countResult++ : 1;
+		}
+		
+		if($data['sOption']=='imgtback'){
+			$sOption  = ", VAL_TCIRCULACION_2	= ".$aRespuesta;
+			$countResult = ($aRespuesta==2) ? $countResult++ : 1;
+		}
+						
+		if($data['sOption']=='imgfactura'){
+			$sOption  = ", VAL_FACTURA	= ".$aRespuesta;
+			$countResult = ($aRespuesta==2) ? $countResult++ : 1;
+		}
+
+		if($data['sOption']=='imgpoliza'){
+			$sOption  = ", VAL_POLIZA	= ".$aRespuesta;
+			$countResult = ($aRespuesta==2) ? $countResult++ : 1;
+		}
+		       
+        $sql="UPDATE ADMIN_TAXIS	
+        		SET	  ULT_ACTUALIZACION= CURRENT_TIMESTAMP
+        		$sOption
+			  WHERE ID_TAXI  = ".$data['catId']." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;
+    }	
+    
+    public function setCheckDocuments($idObject){
+       	$result     = Array();
+        $result['status']  = false;
+        $sOption 	= "";
+            	
+        $sql="UPDATE ADMIN_TAXIS	
+        		SET	ULT_ACTUALIZACION    = CURRENT_TIMESTAMP,
+        			DOCUMENTOS_VALIDADOS = 1
+			  WHERE ID_TAXI  = ".$idObject." LIMIT 1";
+        try{            
+    		$query   = $this->query($sql,false);
+			if($query){
+				$result['status']  = true;								
+			}
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;    	
+    }
 }	

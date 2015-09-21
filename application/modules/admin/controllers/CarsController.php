@@ -66,8 +66,10 @@ class admin_CarsController extends My_Controller_Action
     		$sColores	= '';
     		$sMarcas	= '';
     		$sModelos   = '';
-    		$sEstatus	= '';    		
+    		$sEstatus	= '';
     		
+			$sNameImage  = '';    		
+			    		    		
     	    if($this->_idUpdate >-1){
     	    	$dataInfo	= $classObject->getData($this->_idUpdate);
     	    	$sColores	= $dataInfo['ID_COLOR'];    	    	
@@ -79,8 +81,7 @@ class admin_CarsController extends My_Controller_Action
 				$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);    	    	
 			}
 			
-			if($this->_dataOp=='new'){
-				$sNameImage = '';				
+			if($this->_dataOp=='new'){			
 				if($_FILES['imageProfile']['name']!=""){
 		            $allowedExts = array("jpeg", "jpg", "png");
 					$temp = explode(".", $_FILES["imageProfile"]["name"]);
@@ -116,6 +117,11 @@ class admin_CarsController extends My_Controller_Action
 					}
 	            }
 	            
+	            $this->_dataIn['sImagenTcir']   = $this->validateFields('imageTcirculacion');
+	            $this->_dataIn['sImagenTcir2']  = $this->validateFields('imageTbcirculacion');
+	            $this->_dataIn['sImagenFact']   = $this->validateFields('imageFactura');
+	            $this->_dataIn['sImagenPol']    = $this->validateFields('imagepoliza');	            	            
+	            Zend_Debug::dump($this->_dataIn);
 	            if(count($this->_aErrors)==0){
 	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';
 	            	$insert = $classObject->insertRow($this->_dataIn);
@@ -126,6 +132,7 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sModelos	= $dataInfo['ID_MODELO'];
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
+		    	    	
 		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
 						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);    				 		
@@ -170,6 +177,11 @@ class admin_CarsController extends My_Controller_Action
 					  $this->_aErrors['errorImage'] = 1;
 					}
 	            }
+	            
+	            $this->_dataIn['sImagenTcir']   = $this->validateFields('imageTcirculacion');
+	            $this->_dataIn['sImagenTcir2']  = $this->validateFields('imageTbcirculacion');
+	            $this->_dataIn['sImagenFact']   = $this->validateFields('imageFactura');
+	            $this->_dataIn['sImagenPol']    = $this->validateFields('imagepoliza');	   	            
 	            
 				if(count($this->_aErrors)==0){	   
 					$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';         	
@@ -231,5 +243,31 @@ class admin_CarsController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         } 			
+    }
+    
+    public function validateFields($inputName){
+    	$targetFolder 	 = '/var/www/vhosts/taccsi.com/htdocs/public/images/documentacion';
+    	//$targetFolder 	 ='/Users/itecno2/Documents/workspace/taccsi.mx/public/images/documentacion';
+    	$sResult = '';
+		if(@$_FILES[$inputName]['name']!=""){
+			$tempFile   = $_FILES[$inputName]['tmp_name'];				
+			$targetFile = $targetFolder.'/'.$_FILES[$inputName]['name'];
+			
+			$fileTypes = array('png','jpg','jpeg','pdf');
+			$fileParts = pathinfo($_FILES[$inputName]['name']);
+								
+			if (in_array($fileParts['extension'],$fileTypes)) {
+				$nFile			= $inputName."_".date("YmdHis").'.'.$fileParts['extension'];
+				$nameFinalFile  = $targetFolder.'/'.$nFile;				
+				if(move_uploaded_file($tempFile,$nameFinalFile)){
+					$sResult = $nFile;											
+				}else{
+					$this->_aErrors['errorImage'] = 1;
+				}
+			}else{
+				$this->_aErrors['errorImage'] = 1;
+			}
+		}
+		return $sResult;    	
     }
 }
