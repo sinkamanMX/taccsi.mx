@@ -1,10 +1,22 @@
 $().ready(function() {
 	$("#FormData").validate({
         rules: {
-            inputNombre     : "required",
-            inputApaterno   : "required",
-            inputAmaterno   : "required",
-            inputUsuario    : "required",
+            inputNombre     : {
+                required: true,
+                minlength: 3,
+            }, 
+            inputApaterno   : {
+                required: true,
+                minlength: 3,
+            }, 
+            inputAmaterno   : {
+                required: true,
+                minlength: 3,
+            }, 
+            inputUsuario    : {
+                required: true,
+                email: true
+            },
             inputPhone      : {
                 required: true,
                 number: true,
@@ -18,10 +30,22 @@ $().ready(function() {
             },
         },
         messages: {
-            inputNombre     : "Campo Requerido",
-            inputApaterno   : "Campo Requerido",
-            inputAmaterno   : "Campo Requerido",
-            inputUsuario    : "Campo Requerido",
+            inputNombre     : {
+                required  : "Campo Requerido",
+                minlength : "Debe de ingresar un nombre válido",
+            }, 
+            inputApaterno   : {
+                required  : "Campo Requerido",
+                minlength : "Debe de ingresar un apellido paterno válido",
+            },
+            inputAmaterno   : {
+                required  : "Campo Requerido",
+                minlength : "Debe de ingresar un apellido materno válido",
+            },
+            inputUsuario    : {
+                required  : "Campo Requerido",
+                email     : "Debde ingresar un email válido."  
+            },
             inputTipo       : "Campo Requerido",
             inputPassword   : "Campo Requerido",
             inputPhone    : {
