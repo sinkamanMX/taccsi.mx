@@ -1,7 +1,9 @@
 <?php
-
+ini_set('mbstring.internal_encoding','UTF-8');
+$sAviso = 'Aviso: Este correo electrónico y sus archivos, pueden contener información de carácter confidencial y privado para uso exclusivo del destinatario. Si usted no es el destinatario a quien se dirige el presente correo electrónico, favor de contactar al remitente respondiendo al presente correo y eliminar el correo original incluyendo sus archivos, así como cualesquiera copia del mismo. A través de este correo se le notifica que está estrictamente prohibida su distribución, copia, o cualquier uso de este correo electrónico y sus archivos. Gracias.';
+//201.131.96.45
 include 'functions.php';
-$conexion = new mysqli('201.131.96.45','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
+$conexion = new mysqli('localhost','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
 
 if (!empty($_POST)){
 
@@ -9,16 +11,6 @@ if (!empty($_POST)){
   $_POST  = multiDimensionalArrayMap('cleanEvilTags', $_POST);
   $_POST  = multiDimensionalArrayMap('cleanData', $_POST);
 
-  /*
-  //your email adress 
-  $emailTo ="er.penagonzalez@gmail.com"; //"yourmail@yoursite.com";
-
-  //from email adress
-  $emailFrom ="contact@yoursite.com"; //"contact@yoursite.com";
-
-  //email subject
-  $emailSubject = "Mail from Porta";
-  */
   $name    = @$_POST["name"];
   $email   = @$_POST["email"];
   $comment = @$_POST["comment"];
@@ -41,12 +33,13 @@ if (!empty($_POST)){
 
     $lBodyUda = str_ireplace('@_mail_@',    $email  , $lBodyUda);
     $lBodyUda = str_ireplace('@_phone_@',   $phone  , $lBodyUda);
-    $lBodyUda = str_ireplace('@_name_@',    $name   , $lBodyUda);
-    $lBodyUda = str_ireplace('@_comment_@', $comment, $lBodyUda);
+    $lBodyUda = str_ireplace('@_name_@',    utf8_decode($name)   , $lBodyUda);
+    $lBodyUda = str_ireplace('@_comment_@', utf8_decode($comment), $lBodyUda);
+    $lBodyUda = str_ireplace('@_aviso_@',   utf8_decode($sAviso) , $lBodyUda);
     
       $aUDA    = Array(
-        'inputDestinatarios'=> 'Atenci&oacute;n a Clientes',
-        'inputEmails'       => 'er.penagonzalez@gmail.com',
+        'inputDestinatarios'=> utf8_decode('Atención a Clientes'),
+        'inputEmails'       => 'contacto@taccsi.com',
         'inputTittle'       => 'Formulario de Contacto',
         'inputBody'         => $lBodyUda,
         'inputFromName'     => 'contacto@taccsi.com',
