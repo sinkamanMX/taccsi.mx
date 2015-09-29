@@ -352,26 +352,42 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/admin/views/scripts/myprofile/index.phtml",
+			"file": "application/modules/main/views/scripts/registeruser/index.phtml",
 			"settings":
 			{
-				"buffer_size": 40109,
+				"buffer_size": 6837,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/modules/admin/views/scripts/profile/index.phtml",
+			"file": "public/controllers/main/validateRegisterUser.js",
 			"settings":
 			{
-				"buffer_size": 55750,
+				"buffer_size": 2275,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/views/layouts/layout.phtml",
+			"file": "public/controllers/main/validateRegister.js",
 			"settings":
 			{
-				"buffer_size": 22238,
+				"buffer_size": 3444,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/modules/main/controllers/RegisterController.php",
+			"settings":
+			{
+				"buffer_size": 7170,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/modules/main/views/scripts/register/index.phtml",
+			"settings":
+			{
+				"buffer_size": 6064,
 				"line_ending": "Unix"
 			}
 		}
@@ -420,21 +436,29 @@
 	},
 	"file_history":
 	[
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateDocs.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateProfile.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valtaxis/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/backups/wbs/cargar_imagen.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/ServUsuarios.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/myprofile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/profile/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valtaxis/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateTaxis.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CarsController.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateDocs.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateAssign.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getingo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateCompProf.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateProfile.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/maps/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/MapFunctions.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sCalculateDir.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateTaxi.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/daterangepicker/daterangepicker.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/registeruser/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegisterUser.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/dist/css/AdminLTE.css",
@@ -443,7 +467,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/registeruser.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/test.html",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/payments/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/external/js/jsTableMedios.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/payments/getinfo.phtml",
@@ -483,7 +506,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_options.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/options/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_header.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/myprofile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_contact.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/login/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/new.phtml",
@@ -541,13 +563,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/OperatorController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/resetPass.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/recovery.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/libs/phpmailer.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/MainController.php",
-		"/Applications/MAMP/conf/apache/extra/httpd-vhosts.conf",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/reporteRastreo.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/searchtaxis.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reporteRastreo.js"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/recovery.js"
 	],
 	"find":
 	{
@@ -555,7 +571,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 			"<open folders>",
@@ -568,6 +584,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"actualiza_usuario",
+			"SRV_USUARIOS",
+			"height=250&width=280",
+			"->data",
+			"aDataKardex",
 			"/admin/profile/index",
 			"tabMap",
 			"El documento fue rechazado, favor de volverlo a enviar.",
@@ -690,12 +711,7 @@
 			"cerrer",
 			"Cerrer",
 			"cerrer",
-			"categorySize",
-			"Todas los",
-			"nuevos",
-			"Todas",
-			"Todos'",
-			"Todos"
+			"categorySize"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -703,6 +719,10 @@
 		"regex": true,
 		"replace_history":
 		[
+			"height=150&width=200",
+			"->aDataTaxi",
+			"aDataTaxi",
+			"data",
 			"/admin/myprofile/index",
 			"El documento fue rechazado.",
 			"/images/",
@@ -745,81 +765,22 @@
 	"groups":
 	[
 		{
-			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/admin/views/scripts/myprofile/index.phtml",
+					"file": "application/modules/main/views/scripts/registeruser/index.phtml",
 					"settings":
 					{
-						"buffer_size": 40109,
+						"buffer_size": 6837,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14257,
-								14266
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 164.0,
-						"translation.y": 2196.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/modules/admin/views/scripts/profile/index.phtml",
-					"settings":
-					{
-						"buffer_size": 55750,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								55750
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 10202.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/views/layouts/layout.phtml",
-					"settings":
-					{
-						"buffer_size": 22238,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								17272,
-								17272
+								6582,
+								6582
 							]
 						],
 						"settings":
@@ -829,7 +790,117 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5122.0,
+						"translation.y": 1549.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/controllers/main/validateRegisterUser.js",
+					"settings":
+					{
+						"buffer_size": 2275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1525,
+								1525
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 512.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/controllers/main/validateRegister.js",
+					"settings":
+					{
+						"buffer_size": 3444,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1444,
+								1444
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "application/modules/main/controllers/RegisterController.php",
+					"settings":
+					{
+						"buffer_size": 7170,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2093.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "application/modules/main/views/scripts/register/index.phtml",
+					"settings":
+					{
+						"buffer_size": 6064,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5809,
+								5809
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1379.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
