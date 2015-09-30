@@ -120,8 +120,7 @@ class admin_CarsController extends My_Controller_Action
 	            $this->_dataIn['sImagenTcir']   = $this->validateFields('imageTcirculacion');
 	            $this->_dataIn['sImagenTcir2']  = $this->validateFields('imageTbcirculacion');
 	            $this->_dataIn['sImagenFact']   = $this->validateFields('imageFactura');
-	            $this->_dataIn['sImagenPol']    = $this->validateFields('imagepoliza');	            	            
-	            Zend_Debug::dump($this->_dataIn);
+	            $this->_dataIn['sImagenPol']    = $this->validateFields('imagepoliza');
 	            if(count($this->_aErrors)==0){
 	            	$this->_dataIn['nameImagen'] = ($sNameImage!="") ? $this->_dataIn['nameImagen'] : '';
 	            	$insert = $classObject->insertRow($this->_dataIn);
@@ -133,9 +132,16 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
 		    	    	
-		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
-						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);    				 		
+						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
+
+				 		if($dataInfo['IMAGEN_TCIRCULACION']   !="" && $dataInfo['IMAGEN_TCIRCULACION_2']!="" 
+					            && $dataInfo['IMAGEN_FACTURA']!="" && $dataInfo['IMAGEN_POLIZA']){
+							
+								$cHtmlMail = new My_Controller_Htmlmailing();							
+								$cHtmlMail->documentsCompleteCar($dataInfo);
+						}
+											
 				 		$this->_resultOp = 'okRegister';
 					}else{
 						$this->errors['status'] = 'no-insert';
@@ -194,7 +200,15 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
 		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
-						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);    				 		
+						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
+
+			 			if($dataInfo['IMAGEN_TCIRCULACION']   !="" && $dataInfo['IMAGEN_TCIRCULACION_2']!="" 
+					            && $dataInfo['IMAGEN_FACTURA']!="" && $dataInfo['IMAGEN_POLIZA']){
+							
+								$cHtmlMail = new My_Controller_Htmlmailing();							
+								$cHtmlMail->documentsCompleteCar($dataInfo);
+						}
+												
 				 		$this->_resultOp = 'okRegister';
 					}else{
 						$this->errors['status'] = 'no-insert';

@@ -51,17 +51,30 @@ class admin_ValdocsController extends My_Controller_Action
 
     public function getinfoAction(){
     	try{
-			$cKardex		= new My_Model_Kardex();			
+			$cKardex		= new My_Model_Kardex();
+			$cUsuario  		= new My_Model_Usuarios();			
 			$aDataKardex	= Array();
+			$dataInfo		= Array();
 			
 			if($this->_idUpdate >-1){
-				$aDataKardex = $cKardex->getData($this->_idUpdate);	
+				$aDataKardex = $cKardex->getData($this->_idUpdate);
+				$dataInfo  	 = $cUsuario->getDataUser($this->_idUpdate);	
 			}
 			
 			if($this->_dataOp=='validateFields'){
 				$update = $cKardex->updateValidate($this->_dataIn);
 				if($update['status']){
-					$aDataKardex = $cKardex->getData($this->_idUpdate);	
+					$aDataKardex = $cKardex->getData($this->_idUpdate);
+
+					if($aDataKardex['VAL_LICENCIA_FRENTE']   =="2" && $aDataKardex['VAL_LICENCIA_REVERSA']=="2" 
+						&& $aDataKardex['VAL_IDENTIFICACION']=="2" && $aDataKardex['VAL_COMP_DOMICILIO'] =="2"
+						&& $aDataKardex['VAL_CEDULA_FISCAL'] =="2" && $aDataKardex['VAL_ESTADO_CUENTA']  =="2"){
+							
+							$cHtmlMail = new My_Controller_Htmlmailing();							
+							$cHtmlMail->documentsValidate($dataInfo);
+					}
+					
+					$this->validateErrors($this->_dataIn,$dataInfo);
 				}
 			}
 			
@@ -74,5 +87,43 @@ class admin_ValdocsController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         } 
         
-    }    
+    } 
+
+    function validateErrors($data,$dataUser){
+    	$aRespuesta  = $data['iRespuesta'];
+    	$aCancel     = '';
+								
+		if($data['sOption']=='licencefront' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'La licencia (Frente) es inv&aacute;lida <br/>': '';
+		}
+		
+		if($data['sOption']=='licenceback' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'La licencia (Reversa) es inv&aacute;lida <br/>': '';
+		}
+						
+		if($data['sOption']=='identification' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'La identificaci&oacute;n es inv&aacute;lida <br/>': '';
+		}
+
+		if($data['sOption']=='comp_domicilio' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'El comprobante de domicilio es inv&aacute;lida <br/>': '';
+		}
+
+		if($data['sOption']=='ced_fiscal' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'La c&eacute;dula fiscal es inv&aacute;lida <br/>': '';
+		}
+						
+		if($data['sOption']=='antecedentes' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'El documento de Antecedentes es inv&aacute;lido <br/>': '';
+		}
+
+		if($data['sOption']=='edocuenta' && $aRespuesta==3){
+			$aCancel  .= ($aRespuesta==3) ? 'El estado de cuenta es inv&aacute;lido <br/>': '';
+		}
+		
+		if($aCancel!=""){
+			$cHtmlMail = new My_Controller_Htmlmailing();							
+			$cHtmlMail->documentsinValidate($dataUser,$aCancel);
+		}
+    }
 }

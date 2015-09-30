@@ -157,6 +157,7 @@ class My_Model_Taxis extends My_Db_Table
 				FROM ADMIN_TAXIS t
 				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
 				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
+				INNER JOIN ADMIN_EMPRESAS E ON t.ID_EMPRESA = E.ID_EMPRESA
 				WHERE t.ID_TAXI = $idObject
 				LIMIT 1";
 			$query   = $this->query($sql);

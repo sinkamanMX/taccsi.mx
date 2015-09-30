@@ -105,34 +105,42 @@ class My_Model_Kardex extends My_Db_Table
         $sOption 	= "";
         
     	$aRespuesta  = $data['iRespuesta'];
+    	$aCancel     = '';
 								
 		if($data['sOption']=='licencefront'){
 			$sOption  = ", VAL_LICENCIA_FRENTE	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'La licencia (Frente) es inválida <br/>': '';
 		}
 		
 		if($data['sOption']=='licenceback'){
 			$sOption  = ", VAL_LICENCIA_REVERSA	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'La licencia (Reversa) es inválida <br/>': '';
 		}
 						
 		if($data['sOption']=='identification'){
 			$sOption  = ", VAL_IDENTIFICACION	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'La identificación es inválida <br/>': '';
 		}
 
 		if($data['sOption']=='comp_domicilio'){
 			$sOption  = ", VAL_COMP_DOMICILIO	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'El comprobante de domicilio es inválida <br/>': '';
 		}
 
 		if($data['sOption']=='ced_fiscal'){
 			$sOption  = ", VAL_CEDULA_FISCAL	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'La cédula fiscal es inválida <br/>': '';
 		}
 						
 		if($data['sOption']=='antecedentes'){
 			$sOption  = ", VAL_ANTECEDENTES	= ".$aRespuesta;
+			$aCancel  .= ($aRespuesta==3) ? 'El documento de Antecedentes es inválido <br/>': '';
 		}
 
 		if($data['sOption']=='edocuenta'){
 			$sOption  = ", VAL_ESTADO_CUENTA	= ".$aRespuesta;
-		}        
+			$aCancel  .= ($aRespuesta==3) ? 'El estado de cuenta es inválido <br/>': '';
+		}
         
         $sql="UPDATE ADMIN_KARDEX	
         		SET	  ULT_ACTUALIZACION= CURRENT_TIMESTAMP
