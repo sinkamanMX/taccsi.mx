@@ -1,11 +1,67 @@
 <?php
   set_time_limit(60000);
   require_once('./lib/nusoap.php'); 
+  include 'lib/phpmailer.php';
   include('funciones_push.php');
+  $debug_ = true;
   $miURL = 'http://201.131.96.45/wbs_taccsi';
   $server = new soap_server(); 
   $server->configureWSDL('wbs_taccsi', $miURL); 
   $server->wsdl->schemaTargetNamespace=$miURL;
+  
+  $server->register('FijaTarjeta', // Nombre de la funcion 
+                   array('id_tarjeta'  => 'xsd:string',
+                         'id_usuario'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('InactivaTarjeta', // Nombre de la funcion 
+                   array('id_tarjeta'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('ActivaTarjeta', // Nombre de la funcion 
+                   array('id_tarjeta'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('DameTarjetas', // Nombre de la funcion 
+                   array('id_usuario'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('RegistraTDC', // Nombre de la funcion 
+                   array('id_usuario' => 'xsd:string',
+                         'tipo_tdc'  => 'xsd:string',
+                         'tdc' => 'xsd:string',
+                         'nombre'  => 'xsd:string',
+                         'month' => 'xsd:string',
+                         'year'  => 'xsd:string',
+                         'cod_aut'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('ActualizaTDC', // Nombre de la funcion 
+                   array('id_tarjeta' => 'xsd:string',
+                         'tipo_tdc'  => 'xsd:string',
+                         'tdc' => 'xsd:string',
+                         'nombre'  => 'xsd:string',
+                         'month' => 'xsd:string',
+                         'year'  => 'xsd:string',
+                         'cod_aut'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('DameTipoTarjeta', // Nombre de la funcion 
+                   array('id_usuario'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
+
+  $server->register('RecuperarPassword', // Nombre de la funcion 
+                   array('usName' => 'xsd:string',
+                         'llave'  => 'xsd:string'), // Parametros de entrada 
+                   array('return' => 'xsd:string'), // Parametros de salida 
+                   $miURL);
 
   $server->register('GetTaccsis', // Nombre de la funcion 
                     array('latitud'  => 'xsd:string',
@@ -41,7 +97,8 @@
                           'pago'         => 'xsd:string',
                           'descuento'    => 'xsd:string',
                           'id_conductor' => 'xsd:string',
-                          'so'           => 'xsd:string'), // Parametros de entrada 
+                          'so'           => 'xsd:string',
+                          'referencias'  => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL); 
   /*Metodo para login*/
@@ -87,7 +144,6 @@
                     array('id_usuario'      => 'xsd:string',
                           'id_viaje'        => 'xsd:string',
                           'comentarios'     => 'xsd:string',
-                          'puntos_servicio' => 'xsd:string',
                           'puntos_taxista'  => 'xsd:string',
                           'importe'         => 'xsd:string',
                           'distancia'       => 'xsd:string'), // Parametros de entrada 
@@ -140,7 +196,8 @@
                           'comentarios'     => 'xsd:string',
                           'puntos_usuario'  => 'xsd:string',
                           'importe'         => 'xsd:string',
-                          'distancia'       => 'xsd:string'), // Parametros de entrada 
+                          'distancia'       => 'xsd:string',
+                          'tiempo'          => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -218,10 +275,185 @@
                       array('id_usuario'  => 'xsd:string'), 
                       array('return' => 'xsd:string'),
                     $miURL);
- $server->register('opr_avisa_arribo',
+
+   $server->register('historico_taccsista',
+                      array('id_usuario'  => 'xsd:string'), 
+                      array('return' => 'xsd:string'),
+                    $miURL);
+
+   $server->register('opr_avisa_arribo',
                       array('id_viaje'  => 'xsd:string'), 
                       array('return' => 'xsd:string'),
                     $miURL);
+
+/****************/
+function envia_mail($archivo,$destinatarios, $asunto, $mensaje, $from, $FromName){
+    $mail  = new PHPMailer();
+    $mail->IsSMTP(); // set mailer to use SMTP
+    $mail->Host    = "192.168.6.184"; // specify main and backup server
+    $mail->SMTPAuth  = true; // turn on SMTP authentication
+    $mail->Username  = "avl.4togo"; // SMTP username
+    $mail->Password  = "qazwsx"; // SMTP password
+    $mail->From    = $from;
+    $mail->FromName  = $FromName;
+      $mail->Subject   = $asunto;
+      $mail->Body    = $mensaje;
+    $mail->AddAttachment($archivo,'');
+    $dest = explode(';',$destinatarios);
+    $n = count($dest);
+          for ($i=0; $i<$n; $i++){
+            $mail->AddAddress($dest[$i],$dest[$i]);
+    }
+
+    //$mail->AddAddress($destinatarios,'');
+    $mail->AddAttachment($archivo,'');
+    $exito = $mail->Send();
+          //Si el mensaje no ha podido ser enviado se realizaran 4 intentos mas como mucho 
+          //para intentar enviar el mensaje, cada intento se hara 5 segundos despues 
+          //del anterior, para ello se usa la funcion sleep 
+          $intentos=1; 
+          while ((!$exito) && ($intentos < 2)) {
+      sleep(5);
+      //este error deberia guardarlo en un log
+            //echo $mail->ErrorInfo."/n \n";
+            $exito = $mail->Send();
+            $intentos=$intentos+1;  
+          }
+    return $exito;
+    //return $mail-> send() ? true:false;
+  }
+
+
+function checkEmail($email) {  
+    $reg = "#^(((([a-z\d][\.\-\+_]?)*)[a-z0-9])+)\@(((([a-z\d][\.\-_]?){0,62})[a-z\d])+)\.([a-z\d]{2,6})$#i";  
+    return preg_match($reg, $email);  
+} 
+
+function RecuperaPass($usName){
+  global $base;
+    $result = 0;
+  //5d0952cc20a7a4a7b1446194a709cc6b83c63d72
+  //fb96549631c835eb239cd614cc6b5cb7d295121a
+  $sql = "SELECT PASSWORD AS EXISTE 
+          FROM SRV_USUARIOS 
+        WHERE EMAIL = '".$usName."'"; 
+  if ($qry = mysql_query($sql)){
+    if (mysql_num_rows($qry) > 0){
+      $row = mysql_fetch_object($qry);
+      $pass = $row->EXISTE;
+      if (checkEmail($usName)) {
+        $mensaje = "Buen día,
+
+Usted ha solicitado la recuperación de su password desde nuestra Aplicación Móvil.
+
+Su password es: ".$pass."
+
+En caso de que no haya solicitado su password, le recomendamos tome las medidas necesarias, realizando su cambio en http://www.taccsi.com.
+
+Atentamente 
+TACCSI";
+//(envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI'))
+        if (envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI')){
+          $result = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>1</code>
+                        <msg>'.utf8_decode('Su contraseña ha sido enviada al e-mail que proporciono para su registro.').'</msg>
+                      </Status>
+                    </Response>
+                  </space>'; 
+        } else {
+          $result = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>-1</code>
+                        <msg>No fue posible completar el proceso. Intente mas tarde.</msg>
+                      </Status>
+                    </Response>
+                  </space>'; 
+        }
+      } else {
+        $result = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>-2</code>
+                        <msg>'.utf8_decode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
+                      </Status>
+                    </Response>
+                  </space>';
+      }
+    } else {
+      $result = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>-3</code>
+                        <msg>El correo que propociono no esta registrado. Comuniquese al 01 800 444 82 94</msg>
+                      </Status>
+                    </Response>
+                  </space>';
+    }
+    mysql_free_result($qry);
+  }
+  return $result;
+  }
+
+  function RecuperarPassword($usName,$llave){
+    if ($llave == 't4ccs1'){
+      $con = mysql_connect("localhost","dba","t3cnod8A!");
+      if ($con){
+        $base = mysql_select_db("taccsi",$con);
+        $res = RecuperaPass($usName);
+      } else {
+        $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>-2</code>
+                        <msg>Sucedio un problema de comunicación</msg>
+                      </Status>
+                    </Response>
+                  </space>';  
+      }
+    } else {
+      $res = '<?xml version="1.0" encoding="UTF-8"?> 
+                  <space>
+                    <Response> 
+                      <Status>
+                        <code>-3</code>
+                        <msg>Llave incorrecta</msg>
+                      </Status>
+                    </Response>
+                  </space>';   
+    }
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+
+function InsertaLog($funcion,$descripcion,$push_token = ""){
+
+  $debug_ = true;
+  if($debug_==true){
+    $idx = -1;
+    $msg = 'Eror al conecctarse con el servicio';
+    $dat = "";
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $sql = 'INSERT INTO PROD_SOLICITUDES_LOG SET
+                FUNCION      = "'.$funcion.'",
+                DESCRIPCION  = "'.$descripcion.'",
+                PUSH_TOKEN   = "'.$push_token.'",
+                FECHA_CREADO = CURRENT_TIMESTAMP';
+
+      $qry = mysql_query($sql);
+    }
+  }
+}
+ /**************/
 
   function Dame_marca_modelo(){
 
@@ -284,6 +516,16 @@
 
   }
 
+  function marca_arribo($idViaje){
+    $res = false;
+    $sql = "UPDATE ADMIN_VIAJES
+            SET ARRIBO = CURRENT_TIMESTAMP,
+            WHERE ID_VIAJES = ".$idViaje;
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;
+  }
 
   function opr_avisa_arribo($id_viaje){
 
@@ -295,9 +537,13 @@
       $base = mysql_select_db("taccsi",$con);
       $push=dame_pushtoken_viaje($id_viaje,'U');
       $so = dame_so_pushtoken($push);
+      $str_inser_log = "id_viaje =".$id_viaje;
+      InsertaLog("opr_avisa_arribo",$str_inser_log,$push_token);
+      marca_arribo($id_viaje);
       envia_push('dev','usuario','Tu TACCSI ha llegado',$push,$so,'Tu TACCSI ha llegado');
       $idx = 0;
       $msg = 'OK';
+      mysql_close($con);
     }
     $res =  '<?xml version="1.0" encoding="UTF-8"?>
                  <space>
@@ -312,7 +558,7 @@
     return new soapval('return', 'xsd:string', $res);
   } 
 
-Function historico_usuario($id_usuario){
+function historico_usuario($id_usuario){
 
     $idx = -1;
     $msg = 'Eror al conecctarse con el servico';
@@ -324,16 +570,20 @@ Function historico_usuario($id_usuario){
 
       $sql = "SELECT ADMIN_VIAJES.ID_VIAJES,
                    CONCAT(ADMIN_USUARIOS.NOMBRE,' ',ADMIN_USUARIOS.APATERNO,' ' ,ADMIN_USUARIOS.AMATERNO) AS TACCSISTA,
+                   ADMIN_USUARIOS.FOTO,
                    ADMIN_VIAJES.FECHA_VIAJE,
                    ADMIN_MODELO.DESCRIPCION AS VEHICULO,
-                   ADMIN_VIAJES.MONTO_TOTAL,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
                    ADMIN_VIAJES.DESTINO,
                    ADMIN_VIAJES.DESTINO_LATITUD,
                    ADMIN_VIAJES.DESTINO_LONGITUD,
-                   ADMIN_VIAJES.RATING
+                   ADMIN_VIAJES.RATING_TAXISTA,
+                   ADMIN_VIAJES.DISTANCIA_TAXISTA,
+                   ADMIN_VIAJES.COMENTARIOS,
+                   ADMIN_VIAJES.TIEMPO_VIAJE
             FROM ADMIN_VIAJES
             INNER JOIN ADMIN_USUARIOS ON
                        ADMIN_USUARIOS.ID_USUARIO = ADMIN_VIAJES.ID_TAXISTA
@@ -341,26 +591,119 @@ Function historico_usuario($id_usuario){
                        ADMIN_TAXIS.ADMIN_USUARIOS_ID_USUARIO= ADMIN_VIAJES.ID_TAXISTA
             INNER JOIN ADMIN_MODELO ON
                        ADMIN_MODELO.ID_MODELO=ADMIN_TAXIS.ID_MODELO
-            WHERE ADMIN_VIAJES.ID_CLIENTE=".$id_usuario." AND ADMIN_VIAJES.ID_SRV_ESTATUS=3";
-    
+            WHERE ADMIN_VIAJES.ID_CLIENTE=".$id_usuario." 
+            ORDER BY ADMIN_VIAJES.ID_VIAJES DESC";
       if ($qry = mysql_query($sql)){
         if (mysql_num_rows($qry) > 0){
-          $row = mysql_fetch_object($qry);
           $dat.='<historico>';
           while ($row = mysql_fetch_object($qry)){
               $dat.= '<viaje>
                         <id_viaje>'.$row->ID_VIAJES.'</id_viaje>
                         <taccsista>'.$row->TACCSISTA.'</taccsista>
+                        <foto>'.$row->FOTO.'</foto>
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
-                        <monto>'.$row->MONTO_TOTAL.'</monto>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
                         <origen>'.$row->ORIGEN.'</origen>
                         <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
                         <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
                         <destino>'.$row->DESTINO.'</destino>
                         <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
                         <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
-                        <puntos>'.$row->RATING.'</puntos>
+                        <puntos>'.$row->RATING_TAXISTA.'</puntos>
+                        <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
+                        <comentarios>'.$row->COMENTARIOS.'</comentarios>
+                         <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
+                      </viaje>';
+          }
+          $dat.='</historico>';
+        }else{
+          $dat="";
+        }
+        mysql_free_result($qry);
+      }
+
+      if (strlen($dat) > 0){
+        $idx = 1;
+        $msg = 'OK';
+      } else {
+        $idx = -1;
+        $msg = 'No se pudo obtener la información';  
+      }
+
+
+    }
+
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                   '.utf8_encode($dat).'
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+
+  }
+
+
+  function historico_taccsista($id_usuario){
+    $idx = -1;
+    $msg = 'Eror al conecctarse con el servico';
+    $dat = "";
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+
+      $base = mysql_select_db("taccsi",$con);
+
+      $sql = "SELECT ADMIN_VIAJES.ID_VIAJES,
+                   CONCAT(SRV_USUARIOS.NOMBRE,' ',SRV_USUARIOS.APATERNO) AS USUARIO,
+                   SRV_USUARIOS.IMAGEN,
+                   ADMIN_VIAJES.FECHA_VIAJE,
+                   ADMIN_MODELO.DESCRIPCION AS VEHICULO,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
+                   ADMIN_VIAJES.ORIGEN,
+                   ADMIN_VIAJES.ORIGEN_LATITUD,
+                   ADMIN_VIAJES.ORIGEN_LONGITUD,
+                   ADMIN_VIAJES.DESTINO,
+                   ADMIN_VIAJES.DESTINO_LATITUD,
+                   ADMIN_VIAJES.DESTINO_LONGITUD,
+                   ADMIN_VIAJES.RATING_USUARIO,
+                   ADMIN_VIAJES.DISTANCIA_TAXISTA,
+                   ADMIN_VIAJES.COMENTARIOS,
+                   ADMIN_VIAJES.TIEMPO_VIAJE
+            FROM ADMIN_VIAJES
+            INNER JOIN SRV_USUARIOS ON
+                       SRV_USUARIOS.ID_SRV_USUARIO = ADMIN_VIAJES.ID_CLIENTE
+            INNER JOIN ADMIN_TAXIS ON
+                       ADMIN_TAXIS.ADMIN_USUARIOS_ID_USUARIO= ADMIN_VIAJES.ID_TAXISTA
+            INNER JOIN ADMIN_MODELO ON
+                       ADMIN_MODELO.ID_MODELO=ADMIN_TAXIS.ID_MODELO
+            WHERE ADMIN_VIAJES.ID_TAXISTA=".$id_usuario." 
+            ORDER BY ADMIN_VIAJES.ID_VIAJES DESC";
+      if ($qry = mysql_query($sql)){
+        if (mysql_num_rows($qry) > 0){
+          $dat.='<historico>';
+          while ($row = mysql_fetch_object($qry)){
+              $dat.= '<viaje>
+                        <id_viaje>'.$row->ID_VIAJES.'</id_viaje>
+                        <usuario>'.$row->USUARIO.'</usuario>
+                        <foto>'.$row->IMAGEN.'</foto>
+                        <fecha>'.$row->FECHA_VIAJE.'</fecha>
+                        <vehiculo>'.$row->VEHICULO.'</vehiculo>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
+                        <origen>'.$row->ORIGEN.'</origen>
+                        <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
+                        <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
+                        <destino>'.$row->DESTINO.'</destino>
+                        <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
+                        <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
+                        <puntos>'.$row->RATING_USUARIO.'</puntos>
+                        <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
+                        <comentarios>'.$row->COMENTARIOS.'</comentarios>
+                        <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
                       </viaje>';
           }
           $dat.='</historico>';
@@ -776,7 +1119,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
   function marca_inicio($idViaje){
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES
-            SET ID_SRV_ESTATUS = 5
+            SET ID_SRV_ESTATUS = 5,
+                INICIO = CURRENT_TIMESTAMP
             WHERE ID_VIAJES = ".$idViaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -794,21 +1138,29 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
       $base = mysql_select_db("taccsi",$con);
       //valida que la clave corresponda al viaje
       $push_token = dame_push_viaje($idViaje,$clave);
-      if (strlen($push_token) > 0){
-        if (marca_inicio($idViaje)){
+      $str_inser_log = "id_usuario =".$id_usuario.", idViaje = ".$idViaje.", clave = ".$clave;
+      InsertaLog("oprInicioViaje",$str_inser_log,$push_token);
 
-          if (strlen($push_token) > 1 && $push_token!="EXISTE" ){
+      if($idViaje>0){
+        if (strlen($push_token) > 0){
+          if (marca_inicio($idViaje)){
+
+            if (strlen($push_token) > 1 && $push_token!="EXISTE" ){
              $so = dame_so_pushtoken($push_token);
              //envia_push_dev('Su viaje ha iniciado',$push_token,$so);
              envia_push('dev','usuario','Su viaje ha iniciado.@'.$idViaje,$push_token,$so,'Inicio de viaje');
-          }
+            }
           //envia_push('Su viaje ha iniciado.',$push_token);
-          $idx = 0;
-          $msg = 'OK';
-        }  
-      } else {
-        $idx = -2;
-        $msg = 'Clave de viaje incorrecta';  
+            $idx = 0;
+            $msg = 'OK';
+          }  
+        } else {
+          $idx = -2;
+          $msg = 'Clave de viaje incorrecta';  
+        }
+      }else{
+        $idx = -1;
+        $msg = 'No se pudo recuperar la información del viaje';
       }
       mysql_close($con);
     }
@@ -842,11 +1194,13 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     if ($app == 'T'){
       $sql = "UPDATE ADMIN_VIAJES
               SET ID_SRV_ESTATUS = 4,
+                  CANCELADO = CURRENT_TIMESTAMP,
                   ID_RAZON_CANCELACION=".$razon."
               WHERE ID_VIAJES = ".$idViaje;
     } else {
       $sql = "UPDATE ADMIN_VIAJES
               SET ID_SRV_ESTATUS = 8,
+                  CANCELADO = CURRENT_TIMESTAMP,
                   ID_RAZON_CANCELACION=".$razon."
               WHERE ID_VIAJES = ".$idViaje;   
     }
@@ -978,9 +1332,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
                 FIN_VIAJE_USUARIO = CURRENT_TIMESTAMP,
-                RATING = ".$puntos_servicio.",
+                RATING_USUARIO = ".$puntos_servicio.",
                 COMENTARIOS = '".$comentarios."',
-                MONTO_TOTAL = ".$importe.",
                 DISTANCIA = ".$distancia."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
@@ -1014,18 +1367,24 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;
   }
 
-  function usrFinViaje($id_usuario,$id_viaje,$comentarios, $puntos_servicio, $puntos_taxista, $importe,$distancia,$so){
+  function usrFinViaje($id_usuario,$id_viaje,$comentarios,$puntos_taxista, $importe,$distancia){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
-      if (finaliza_viaje($id_viaje,$comentarios,$puntos_servicio,$importe,$distancia)){
+      $str_inser_log = "antes de las validaciones: id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+      InsertaLog("usrFinViaje",$str_inser_log,$push_token);
+      if (finaliza_viaje($id_viaje,$comentarios,$puntos_taxista,$importe,$distancia)){
         $id_taxista = dame_id_taxista($id_viaje);
         if ($id_taxista > -1){
           califica_taxista($id_taxista,$puntos_taxista);
           //Manda push al taxista
           $push_token = dame_pushtoken_viaje($id_viaje,'T');
+
+          $str_inser_log = "Todo salio OK : id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+          InsertaLog("usrFinViaje",$str_inser_log,$push_token);
+
           if (strlen($push_token) > 1){
             $so = dame_so_pushtoken($push_token);
             //envia_push_dev_taccista('El viaje ha sido finalizado por el cliente',$push_token,$so);
@@ -1063,6 +1422,10 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
+
+      $str_inser_log = "usuario =".$usuario.", password = ".$password.", idViaje = ".$idViaje;
+      InsertaLog("usrInicioViaje",$str_inser_log,$push_token);
+
       if (($usuario == 'demo') and ($password == 'demo')){
         $cod = 1;
         $msg = 'OK';    
@@ -1109,14 +1472,11 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               WHERE NICKNAME = '".$usuario."' AND
                     PASSWORD_TEXT = '".$password."'";
     }
-
-
-
     if ($qry = mysql_query($sql)){
       if (mysql_num_rows($qry) > 0){
         $row = mysql_fetch_object($qry);
         if($row->FOTO=="" or $row->FOTO=="null"){
-            $foto="http://taccsi.com/images/taxis/no_disponible.jpg";
+            $foto="http://taccsi.com/images/taxis/sin_foto_perfil.png";
         }else{
             $foto="http://taccsi.com/images/taxis/".$row->FOTO;
         }
@@ -1212,6 +1572,22 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;
   }
 
+  function taccsista_activo_octubre($usuario){
+    $res = '';  
+    $foto= "";
+    global $base;
+    $sql = "SELECT COUNT(*) AS ACTIVO
+            FROM   ADMIN_USUARIOS
+            WHERE  NICKNAME = '".$usuario."' AND
+                   DEMOS = 1";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->ACTIVO;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }
+
 
   function Login($usuario,$password,$tipo,$dispositivo,$push_token,$so){
     $idx = -1;
@@ -1226,6 +1602,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
         registra_token($dispositivo,$push_token,$so);
         $idx = 1;
         $msg = 'OK';
+        if ($tipo <> 'U'){
+          if (taccsista_activo_octubre($usuario) == 0){
+            $idx = 2;
+            $msg = 'Disponible apartir del 15 de Octubre de 2015';
+          }
+        }
       } else {
         $idx = -1;
         $msg = 'Usuario o Password incorrecto';  
@@ -1349,9 +1731,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $lon_destino, 
                          $personas,
                          $pago,
-                         $descuento){
+                         $descuento,
+                         $referencias){
+
     $res = false;
     global $base;
+
+    $codigo = rand(1,9999);
+
     $sql = "INSERT ADMIN_VIAJES(
               ID_VIAJES,
               ID_FORMA_PAGO,
@@ -1365,7 +1752,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               DESTINO_LONGITUD,
               ID_CLIENTE,
               DISPOSITIVO_ORIGEN,
-              ID_SRV_ESTATUS
+              ID_SRV_ESTATUS,
+              ORIGEN_REFERENCIAS,
+              CLAVE_VIAJE
             ) VALUES (
               ".$id_viaje.",
               ".$pago.",
@@ -1379,7 +1768,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               '".$lon_destino."',
               '".$id_usuario."',
               '".$dispositivo."',
-              1)";
+              1,
+              '".$referencias."',
+              ".$codigo.")";
     
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1405,7 +1796,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                    A.DESTINO_LONGITUD,
                    B.RATING,
                    C.DESCRIPCION AS FORMA_PAGO,
-                   B.IMAGEN AS FOTO
+                   B.IMAGEN AS FOTO,
+                   A.ORIGEN_REFERENCIAS,
+                   A.CLAVE_VIAJE
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -1417,7 +1810,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
 
 
         if($row->FOTO=="" or $row->FOTO=="null"){
-           $foto_="http://taccsi.com/images/taxis/no_disponible.jpg";
+           $foto_="http://taccsi.com/images/taxis/sin_foto_perfil.png";
         }else{
            $foto_="http://taccsi.com/images/taxis/".$row->FOTO;
         }
@@ -1435,6 +1828,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                <rating>".$row->RATING."</rating>
                <formapago>".$row->FORMA_PAGO."</formapago>
                <foto>".$foto_."</foto>
+               <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>
+               <clave>".$row->CLAVE_VIAJE."</clave>
+               <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
               </viaje>";
       }
       mysql_free_result($qry);
@@ -1583,6 +1979,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               INNER JOIN DISP_REGISTRO_TOKENS C ON DEVICE_ID = B.IDENTIFICADOR
 
             WHERE A.DISPONIBLE = 0 AND
+                  A.DEMOS = 1 AND
                   DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") < 400 AND
                   CAST(B.FECHA_GPS AS DATE)=CURRENT_DATE
             ORDER BY DIST
@@ -1607,6 +2004,24 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     }
   }
 
+  function usuario_activo_octubre($usuario){
+
+    //aquimequede
+    $res = '';  
+    $foto= "";
+    global $base;
+    $sql = "SELECT COUNT(*) AS ACTIVO
+            FROM   ADMIN_USUARIOS
+            WHERE  NICKNAME = '".$usuario."' AND
+                   DEMOS = 1";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->ACTIVO;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }
+
   function usrNuevoViaje($usuario,
                          $dispositivo, 
                          $push_token,
@@ -1620,18 +2035,36 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $pago,
                          $descuento,
                          $id_conductor,
-                         $so){
+                         $so,
+                         $referencias){
 
     $con = mysql_connect("localhost","dba","t3cnod8A!");
+
+    $str_inser_log = "usuario =".$usuario.
+                      ", dispositivo = ".$dispositivo.
+                      ", push_token = ".$push_token.
+                      ", origen = ".$origen.
+                      ", destino = ".$destino.
+                      ", lat_origen = ".$lat_origen.
+                      ", lon_origen = ".$lon_origen.
+                      ", lat_destino = ".$lat_destino.
+                      ", lon_destino = ".$lon_destino.
+                      ", personas = ".$personas.
+                      ", pago = ".$pago.
+                      ", descuento = ".$descuento.
+                      ", id_conductor = ".$id_conductor.
+                      ", so = ".$so.
+                      ", referencias = ".$referencias;
+
+    InsertaLog("usrNuevoViaje",$str_inser_log,$push_token);
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       $id_usuario = valida_usuario($usuario);
+     
       if ($id_usuario > 0){
         $id_viaje = 0;
         registra_token($dispositivo,$push_token,$so);
         $id_viaje = dame_id_viaje();
-
-
         if (registra_viaje($id_viaje,
                          $id_usuario,
                          $dispositivo, 
@@ -1643,7 +2076,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $lon_destino, 
                          $personas,
                          $pago,
-                         $descuento)){
+                         $descuento,
+                         $referencias)){
           //$id_viaje = dame_viaje($id_usuario,$dispositivo,$lat_origen,$lon_origen,$lat_destino,$lon_destino);
           //tiene que buscar el usuario
           $mensaje = "Se le ha asignado un viaje.@".$id_viaje;
@@ -1720,9 +2154,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $res = false;
     /*revisar*/
     $sql = 'UPDATE ADMIN_VIAJES 
-            SET CLAVE_VIAJE = '.$codigo_viaje.',
-                ID_TAXISTA = '.$id_usuario.',
-                ID_SRV_ESTATUS = 2 
+            SET ID_TAXISTA = '.$id_usuario.',
+                ID_SRV_ESTATUS = 2,
+                ASIGNADO = CURRENT_TIMESTAMP
             WHERE ID_VIAJES = '.$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1765,16 +2199,32 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
   }
 
 
+  function dame_codigo_viaje($id_viaje){
+    $res = '';
+    $sql = "SELECT CLAVE_VIAJE
+              FROM ADMIN_VIAJES
+              WHERE ID_VIAJES = ".$id_viaje;
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->CLAVE_VIAJE;
+      mysql_free_result($close);  
+    }
+    return $res;
+  }
+
 
   function oprTomarViaje ($id_usuario,$id_viaje,$dispositivo){
     /*Funccion para asignar el viaje a un taxista, cuando ya fue confirmado*/
     $idx = -1;
     $msg = '';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
+
+
+
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       if (valida_viaje_libre($id_viaje)){
-        $codigo = rand(1,9999);
+        $codigo = dame_codigo_viaje($id_viaje);
         //$x = tomar_viaje($id_usuario,$id_viaje,$codigo);
         if (tomar_viaje($id_usuario,$id_viaje,$codigo)){
           $token = dame_pushtoken_cliente($id_viaje);
@@ -1782,6 +2232,15 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           if (strlen($token) > 0){
             $so = dame_so_pushtoken($token);
             //envia_push_dev('Su TACCSI va en camino, Código de confirmación: '.$codigo.' .@'.$id_usuario,$pushkey_taccsista,$so);
+
+            $str_inser_log = "id_usuario =".$id_usuario.
+                      ", id_viaje = ".$id_viaje.
+                      ", dispositivo = ".$dispositivo.
+                      ", token_cliente = ".$token;
+
+            InsertaLog("oprTomarViaje",$str_inser_log,$push_token);
+
+
             envia_push('dev','usuario','Su TACCSI va en camino, Confirmación: '.$codigo.' @'.$id_usuario,$token,$so,'Su TACCSI va en camino, Confirmación: '.$codigo);
             
           }
@@ -1843,13 +2302,13 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
       $foto_taxi="";
 
       if($row->FOTO_TAXISTA=="" or $row->FOTO_TAXISTA=="null"){
-          $foto_taxista="http://taccsi.com/images/taxis/no_disponible.jpg";
+          $foto_taxista="http://taccsi.com/images/taxis/sin_foto_perfil.png";
       }else{
           $foto_taxista="http://taccsi.com/images/taxis/".$row->FOTO_TAXISTA;
       }
 
       if($row->FOTO_TAXI=="" or $row->FOTO_TAXI=="null"){
-          $foto_taxi="http://taccsi.com/images/taxis/no_disponible.jpg";
+          $foto_taxi="http://taccsi.com/images/taxis/sin_foto_perfil.png";
       }else{
           $foto_taxi="http://taccsi.com/images/taxis/".$row->FOTO_TAXI;
       }
@@ -1880,9 +2339,22 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       $dat = dame_viaje($id_viaje);
+
+        $str_inser_log = "id_viaje =".$id_viaje.
+                      ", dat = ".$dat;
+
+        InsertaLog("oprTomarViaje",$str_inser_log,$push_token);
+
       if (strlen($dat) > 0){
         $idx = 0;
         $msg = 'OK';
+
+
+        $str_inser_log = "id_viaje =".$id_viaje.
+                      ", dat = ".$dat;
+
+        InsertaLog("oprDameViaje",$str_inser_log,$push_token);
+
       } else {
         $idx = -2;
         $msg = 'El viaje ya no esta disponible.';   
@@ -1909,6 +2381,18 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       $dat = dame_taxista($id_taxista,$id_viaje);
+
+      $str_inser_log = "id_usuario =".$id_usuario.
+                      ", id_taxista = ".$id_taxista.
+                      ", id_viaje = ".$id_viaje.
+                      ", dat = ".$dat;
+
+
+      InsertaLog("usrDameInfoTaxista",$str_inser_log,$push_token);
+
+
+
+
       if (strlen($dat) == 0){
         $idx = -2;
         $msg = 'No se logro obtener la información del TACCSISTA, intente mas tarde';
@@ -1943,7 +2427,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $res = false;
     /*revisar*/
     $sql = 'UPDATE ADMIN_VIAJES 
-            SET ID_SRV_ESTATUS = 7 
+            SET ID_SRV_ESTATUS = 7,
+                RECHAZADO = CURRENT_TIMESTAMP
             WHERE ID_VIAJES = '.$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1983,7 +2468,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $msg = 'Servicio TACCSI no disponible, intente mas tarde.';  
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
+
       $base = mysql_select_db("taccsi",$con);
+
       //actualiza la tabla viajes asignacion
       //revisa la tabla del viaje
       if (marca_rechazo($id_viaje,$id_usuario)){
@@ -1993,6 +2480,10 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
         if ($rechazados == $asignados){
           marca_rechazo_viaje($id_viaje);
           $token = dame_pushtoken_cliente($id_viaje);
+
+          
+
+
           if (strlen($token) > 0){
             $so = dame_so_pushtoken($token);
             envia_push('dev',
@@ -2154,6 +2645,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               INNER JOIN ADMIN_MODELO M ON M.ID_MODELO = C.ID_MODELO
             WHERE CAST(A.FECHA_SERVER AS DATE) = CURRENT_DATE AND
                   B.DISPONIBLE = 0 AND 
+                  B.DEMOS = 1 AND
                   DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud.") < 400
             ORDER BY DIST
             LIMIT 10";
@@ -2161,7 +2653,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
       while ($row = mysql_fetch_object($qry)){
 
         if($row->FOTO_TAXISTA=="" or $row->FOTO_TAXISTA=="null"){
-           $foto_taxista="http://taccsi.com/images/taxis/no_disponible.jpg";
+           $foto_taxista="http://taccsi.com/images/taxis/sin_foto_perfil.png";
         }else{
            $foto_taxista="http://taccsi.com/images/taxis/".$row->FOTO_TAXISTA;
         }
@@ -2176,7 +2668,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                   <latitud>".$row->LATITUD."</latitud>
                   <longitud>".$row->LONGITUD."</longitud>
                   <distancia>".$row->DIST."</distancia>
-                  <foto>"."http://taccsi.com/images/taxis/no_disponible.jpg</foto>
+                  <foto>"."http://taccsi.com/images/taxis/sin_foto_perfil.png</foto>
                   <puntos>".$row->RATING."</puntos>
                   <foto_taxista>".$foto_taxista."</foto_taxista>
                   <servicios>".$row->VIAJES."</servicios>
@@ -2230,20 +2722,23 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return new soapval('return', 'xsd:string', $res);
   }
 
-  function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia){
+   function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario){
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
                 FIN_VIAJE_TAXISTA = CURRENT_TIMESTAMP,
                 COMENTARIOS_TAXISTA = '".$comentarios."',
                 MONTO_TAXISTA = ".$importe.",
-                DISTANCIA_TAXISTA = ".$distancia."
+                DISTANCIA_TAXISTA = ".$distancia.",
+                TIEMPO_VIAJE='".$tiempo."',
+                RATING_TAXISTA = ".$puntos_usuario."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
     }   
     return $res;  
   }
+
 
   function dame_id_usuario($id_viaje){
     $res = -1;
@@ -2283,7 +2778,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;  
   }
 
-  function oprFinViaje($id_usuario,$id_viaje,$comentarios,$puntos_usuario,$importe,$distancia){
+  function oprFinViaje($id_usuario,$id_viaje,$comentarios,$puntos_usuario,$importe,$distancia,$tiempo){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
@@ -2291,7 +2786,17 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
       
       $base = mysql_select_db("taccsi",$con);
 
-      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia);
+      $str_inser_log = "id_usuario =".$id_usuario.
+                      ", id_viaje = ".$id_viaje.
+                      ", comentarios = ".$comentarios.
+                      ", puntos_usuario = ".$puntos_usuario.
+                      ", importe = ".$importe.
+                      ", distancia = ".$distancia.
+                      ", tiempo = ".$tiempo;
+
+      InsertaLog("oprFinViaje",$str_inser_log,$token);
+
+      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario);
       if ($fin){
         $id_cliente = dame_id_usuario($id_viaje);
         if ($id_cliente > -1){
@@ -2307,7 +2812,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                        'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago.@'.$importe.'@'.$forma."@".$id_viaje,
                        $push_token,
                        $so,
-                       'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago');
+                       'Su viaje ha concluido. Fue un placer atenderlo.');
             //envia_push_dev('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token,$so);
           }
           $idx = 0;
@@ -2598,6 +3103,365 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;  
   }
 
+  function dame_tipo_tarjetas(){
+    $res = '';
+    $sql = "SELECT ID_TIPO_TARJETA,
+                   DESCRIPCION,
+                   DIGITOS,
+                   IMAGEN
+            FROM ADMIN_TIPO_TARJETAS
+            WHERE ESTATUS = 1";
+    if ($qry = mysql_query($sql)){
+      while ($row = mysql_fetch_object($qry)){
+        $res = $res.'<tipo_tarjeta>
+                       <id_tipo>'.$row->ID_TIPO_TARJETA.'</id_tipo>
+                       <descripcion>'.$row->DESCRIPCION.'</descripcion>
+                       <digitos>'.$row->DIGITOS.'</digitos>
+                       <icono>'.$row->IMAGEN.'</icono>
+                     </tipo_tarjeta>';
+      }
+      mysql_free_result($qry);
+    }        
+    return $res; 
+  }
+
+  function DameTipoTarjeta($id_usuario){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $tipo_tarjetas = dame_tipo_tarjetas();
+      if (strlen($tipo_tarjetas) > 0){
+        $res = $tipo_tarjetas ;
+      }
+       
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function dame_tarjetas($id_usuario){
+    $res = '';
+    $sql = "SELECT B.ID_TIPO_TARJETA,
+                   B.DESCRIPCION,
+                   B.IMAGEN,
+                   A.ID_FORMA_PAGO,
+                   A.NOMBRE_TARJETA,
+                   A.TARJETA_VIEW,
+                   A.ESTATUS,
+                   A.POR_DEFECTO,
+                   AES_DECRYPT(A.MES_VENCIMIENTO, 'myTa4ss1.c0m') as M_VENCE,
+                   AES_DECRYPT(A.ANO_VENCIMIENTO, 'myTa4ss1.c0m') AS A_VENCE
+            FROM SRV_FORMAS_PAGO A
+                 INNER JOIN ADMIN_TIPO_TARJETAS B ON B.ID_TIPO_TARJETA = A.ID_TIPO_TARJETA
+            WHERE A.ID_SRV_USUARIO = ".$id_usuario;
+    if ($qry = mysql_query($sql)){
+      while ($row = mysql_fetch_object($qry)){
+        $res = $res.'<tarjeta>
+                       <id_tarjeta>'.$row->ID_FORMA_PAGO.'</id_tarjeta>
+                       <id_tipo>'.$row->ID_TIPO_TARJETA.'</id_tipo>
+                       <descripcion>'.$row->DESCRIPCION.'</descripcion>
+                       <icono>'.$row->IMAGEN.'</icono>
+                       <nombre_tdc>'.$row->NOMBRE_TARJETA.'</nombre_tdc>
+                       <no_tdc>'.$row->TARJETA_VIEW.'</no_tdc>
+                       <estatus>'.$row->ESTATUS.'</estatus>
+                       <por_defecto>'.$row->POR_DEFECTO.'</por_defecto>
+                       <m_vence>'.$row->M_VENCE.'</m_vence>
+                       <a_vence>'.$row->A_VENCE.'</a_vence>
+                     </tarjeta>';
+      }
+      mysql_free_result($qry);
+    }        
+    return $res; 
+  }
+
+  function DameTarjetas($id_usuario){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $tarjetas = dame_tarjetas($id_usuario);
+      if (strlen($tarjetas) > 0){
+        $res = '<code>0</code>
+                <msg>OK</msg>';  
+      } else {
+        $res = '<code>-1</code>
+                <msg>No tiene tarjetas registradas</msg>';  
+      }
+       
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>'.utf8_encode($tarjetas).'
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function guarda_tdc($id_usuario,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut){
+    $res = '';
+    
+    $view = substr($tdc,-4);
+    if (strlen($tdc) == 16){
+      $view = "XXXX XXXX XXXX ".$view;
+    } else {
+      $view = "XXXX XXXXXX X".$view;  
+    }
+    $sql="INSERT INTO SRV_FORMAS_PAGO
+          SET  ID_SRV_USUARIO  = ".$id_usuario.",
+               ID_TIPO_TARJETA = '".$tipo_tdc."', 
+               NO_TARJETA = AES_ENCRYPT('".$tdc."', 'myTa4ss1.c0m'), 
+               TARJETA_VIEW = '".$view."', 
+               NOMBRE_TARJETA = '".$nombre."', 
+               MES_VENCIMIENTO = AES_ENCRYPT('".$month."', 'myTa4ss1.c0m'),  
+               ANO_VENCIMIENTO = AES_ENCRYPT('".$year."', 'myTa4ss1.c0m'),  
+               CODIGO_AUTORIZACION = AES_ENCRYPT('".$cod_aut."', 'myTa4ss1.c0m'), 
+               POR_DEFECTO = 0, 
+               ESTATUS     = 1,  
+               CREADO =  CURRENT_TIMESTAMP";
+    if ($qry = mysql_query($sql)){
+      $res = '<code>0</code>
+              <msg>Su tarjeta fue registrada correctamente</msg>';
+    } else {
+      $res = '<code>-2</code>
+            <msg>No fue posible registrar su Tarjeta</msg>';
+    }     
+    return $res; 
+  }
+
+  function RegistraTDC($id_usuario,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $res = guarda_tdc($id_usuario,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut);
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+
+  function actualiza_tdc($id_tarjeta,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut){
+    $res = '';
+    
+    $view = substr($tdc,-4);
+    if (strlen($tdc) == 16){
+      $view = "XXXX XXXX XXXX ".$view;
+    } else {
+      $view = "XXXX XXXXXX X".$view;  
+    }
+    $sql="UPDATE SRV_FORMAS_PAGO
+          SET  NO_TARJETA = AES_ENCRYPT('".$tdc."', 'myTa4ss1.c0m'), 
+               TARJETA_VIEW = '".$view."', 
+               NOMBRE_TARJETA = '".$nombre."', 
+               ID_TIPO_TARJETA = '".$tipo_tdc."',
+               MES_VENCIMIENTO = AES_ENCRYPT('".$month."', 'myTa4ss1.c0m'),  
+               ANO_VENCIMIENTO = AES_ENCRYPT('".$year."', 'myTa4ss1.c0m'),  
+               CODIGO_AUTORIZACION = AES_ENCRYPT('".$cod_aut."', 'myTa4ss1.c0m'), 
+               POR_DEFECTO = 0, 
+               ESTATUS     = 1,  
+               CREADO =  CURRENT_TIMESTAMP
+          WHERE ID_FORMA_PAGO = '".$id_tarjeta."'";
+    if ($qry = mysql_query($sql)){
+      $res = '<code>0</code>
+              <msg>Su tarjeta fue registrada correctamente</msg>';
+    } else {
+      $res = '<code>-2</code>
+            <msg>No fue posible registrar su Tarjeta</msg>';
+    }     
+    return $res; 
+  }
+
+  function ActualizaTDC($id_tarjeta,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $res = actualiza_tdc($id_tarjeta,$tipo_tdc,$tdc,$nombre,$month,$year,$cod_aut);
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+
+
+
+  function fija_tdc($id_tarjeta,$id_usuario){
+    $res = '<code>-1</code>
+            <msg>No fue posible registrar su cambio</msg>';
+    $sql="UPDATE SRV_FORMAS_PAGO
+          SET  POR_DEFECTO = 0
+          WHERE ID_SRV_USUARIO  = ".$id_usuario;
+    if ($qry = mysql_query($sql)){
+      $sql2="UPDATE SRV_FORMAS_PAGO
+          SET  POR_DEFECTO = 1
+          WHERE ID_FORMA_PAGO = ".$id_tarjeta." AND
+                ID_SRV_USUARIO  = ".$id_usuario;
+      if ($qry2 = mysql_query($sql2)){    
+        $res = '<code>0</code>
+              <msg>Su tarjeta fue registrada correctamente</msg>';
+      } else {
+        $res = '<code>-3</code>
+            <msg>No fue posible registrar su Tarjeta</msg>';  
+      }
+    } else {
+      $res = '<code>-2</code>
+            <msg>No fue posible registrar su Tarjeta</msg>';
+    }     
+    return $res; 
+  }
+
+
+  function FijaTarjeta($id_tarjeta,$id_usuario){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $res = fija_tdc($id_tarjeta,$id_usuario);
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function inactiva_tdc($id_tarjeta){
+    $res = '<code>-1</code>
+            <msg>No fue posible registrar su cambio</msg>';
+    $sql="UPDATE SRV_FORMAS_PAGO
+          SET  ESTATUS = 0,
+               POR_DEFECTO = 0
+          WHERE ID_FORMA_PAGO  = ".$id_tarjeta;
+    if ($qry = mysql_query($sql)){
+        
+        $res = '<code>0</code>
+              <msg>Su cambio se realizo correctamente</msg>';
+    } else {
+      $res = '<code>-2</code>
+            <msg>No fue posible registrar su cambio</msg>';
+    }     
+    return $res; 
+  }
+
+
+  function InactivaTarjeta($id_tarjeta){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $res = inactiva_tdc($id_tarjeta);
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function activa_tdc($id_tarjeta){
+    $res = '<code>-1</code>
+            <msg>No fue posible registrar su cambio</msg>';
+    $sql="UPDATE SRV_FORMAS_PAGO
+          SET  ESTATUS = 1,
+               POR_DEFECTO = 0
+          WHERE ID_FORMA_PAGO  = ".$id_tarjeta;
+    if ($qry = mysql_query($sql)){
+        
+        $res = '<code>0</code>
+              <msg>Su cambio se realizo correctamente</msg>';
+    } else {
+      $res = '<code>-2</code>
+            <msg>No fue posible registrar su cambio</msg>';
+    }     
+    return $res; 
+  }
+
+
+  function ActivaTarjeta($id_tarjeta){
+   // $idx = -10;
+   // $msg = 'El servicio TACCSI, no esta disponible';
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      $res = activa_tdc($id_tarjeta);
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
 
   $server->service($HTTP_RAW_POST_DATA); 
 ?>

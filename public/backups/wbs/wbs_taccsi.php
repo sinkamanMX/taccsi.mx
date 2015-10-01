@@ -571,8 +571,6 @@
     return new soapval('return', 'xsd:string', $res);
   }
 
-
-
   function dame_push_viaje($idViaje,$clave){
    global $base;  
     $res = '';

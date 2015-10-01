@@ -98,7 +98,12 @@
                           'descuento'    => 'xsd:string',
                           'id_conductor' => 'xsd:string',
                           'so'           => 'xsd:string',
-                          'referencias'  => 'xsd:string'), // Parametros de entrada 
+                          'referencias'  => 'xsd:string',
+                          'tipo'         => 'xsd:string',
+                          'iave'         => 'xsd:string',
+                          'ac'           => 'xsd:string',
+                          'conectores'   => 'xsd:string',
+                          'wifi'         => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL); 
   /*Metodo para login*/
@@ -144,7 +149,6 @@
                     array('id_usuario'      => 'xsd:string',
                           'id_viaje'        => 'xsd:string',
                           'comentarios'     => 'xsd:string',
-                          'puntos_servicio' => 'xsd:string',
                           'puntos_taxista'  => 'xsd:string',
                           'importe'         => 'xsd:string',
                           'distancia'       => 'xsd:string'), // Parametros de entrada 
@@ -574,14 +578,14 @@ function historico_usuario($id_usuario){
                    ADMIN_USUARIOS.FOTO,
                    ADMIN_VIAJES.FECHA_VIAJE,
                    ADMIN_MODELO.DESCRIPCION AS VEHICULO,
-                   ADMIN_VIAJES.MONTO_TOTAL,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
                    ADMIN_VIAJES.DESTINO,
                    ADMIN_VIAJES.DESTINO_LATITUD,
                    ADMIN_VIAJES.DESTINO_LONGITUD,
-                   ADMIN_VIAJES.RATING,
+                   ADMIN_VIAJES.RATING_TAXISTA,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS,
                    ADMIN_VIAJES.TIEMPO_VIAJE
@@ -604,14 +608,14 @@ function historico_usuario($id_usuario){
                         <foto>'.$row->FOTO.'</foto>
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
-                        <monto>'.$row->MONTO_TOTAL.'</monto>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
                         <origen>'.$row->ORIGEN.'</origen>
                         <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
                         <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
                         <destino>'.$row->DESTINO.'</destino>
                         <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
                         <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
-                        <puntos>'.$row->RATING.'</puntos>
+                        <puntos>'.$row->RATING_TAXISTA.'</puntos>
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS.'</comentarios>
                          <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
@@ -664,14 +668,14 @@ function historico_usuario($id_usuario){
                    SRV_USUARIOS.IMAGEN,
                    ADMIN_VIAJES.FECHA_VIAJE,
                    ADMIN_MODELO.DESCRIPCION AS VEHICULO,
-                   ADMIN_VIAJES.MONTO_TOTAL,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
                    ADMIN_VIAJES.DESTINO,
                    ADMIN_VIAJES.DESTINO_LATITUD,
                    ADMIN_VIAJES.DESTINO_LONGITUD,
-                   ADMIN_VIAJES.RATING,
+                   ADMIN_VIAJES.RATING_USUARIO,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS,
                    ADMIN_VIAJES.TIEMPO_VIAJE
@@ -694,14 +698,14 @@ function historico_usuario($id_usuario){
                         <foto>'.$row->IMAGEN.'</foto>
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
-                        <monto>'.$row->MONTO_TOTAL.'</monto>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
                         <origen>'.$row->ORIGEN.'</origen>
                         <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
                         <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
                         <destino>'.$row->DESTINO.'</destino>
                         <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
                         <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
-                        <puntos>'.$row->RATING.'</puntos>
+                        <puntos>'.$row->RATING_USUARIO.'</puntos>
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS.'</comentarios>
                         <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
@@ -1333,9 +1337,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
                 FIN_VIAJE_USUARIO = CURRENT_TIMESTAMP,
-                RATING = ".$puntos_servicio.",
+                RATING_USUARIO = ".$puntos_servicio.",
                 COMENTARIOS = '".$comentarios."',
-                MONTO_TOTAL = ".$importe.",
                 DISTANCIA = ".$distancia."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
@@ -1369,20 +1372,22 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;
   }
 
-  function usrFinViaje($id_usuario,$id_viaje,$comentarios, $puntos_servicio, $puntos_taxista, $importe,$distancia,$so){
+  function usrFinViaje($id_usuario,$id_viaje,$comentarios,$puntos_taxista, $importe,$distancia){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
-      if (finaliza_viaje($id_viaje,$comentarios,$puntos_servicio,$importe,$distancia)){
+      $str_inser_log = "antes de las validaciones: id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+      InsertaLog("usrFinViaje",$str_inser_log,$push_token);
+      if (finaliza_viaje($id_viaje,$comentarios,$puntos_taxista,$importe,$distancia)){
         $id_taxista = dame_id_taxista($id_viaje);
         if ($id_taxista > -1){
           califica_taxista($id_taxista,$puntos_taxista);
           //Manda push al taxista
           $push_token = dame_pushtoken_viaje($id_viaje,'T');
 
-          $str_inser_log = "id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+          $str_inser_log = "Todo salio OK : id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
           InsertaLog("usrFinViaje",$str_inser_log,$push_token);
 
           if (strlen($push_token) > 1){
@@ -1733,8 +1738,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $pago,
                          $descuento,
                          $referencias){
+
     $res = false;
     global $base;
+
+    $codigo = rand(1,9999);
+
     $sql = "INSERT ADMIN_VIAJES(
               ID_VIAJES,
               ID_FORMA_PAGO,
@@ -1749,7 +1758,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               ID_CLIENTE,
               DISPOSITIVO_ORIGEN,
               ID_SRV_ESTATUS,
-              ORIGEN_REFERENCIAS
+              ORIGEN_REFERENCIAS,
+              CLAVE_VIAJE
             ) VALUES (
               ".$id_viaje.",
               ".$pago.",
@@ -1764,7 +1774,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               '".$id_usuario."',
               '".$dispositivo."',
               1,
-              '".$referencias."')";
+              '".$referencias."',
+              ".$codigo.")";
     
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1791,7 +1802,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                    B.RATING,
                    C.DESCRIPCION AS FORMA_PAGO,
                    B.IMAGEN AS FOTO,
-                   A.ORIGEN_REFERENCIAS
+                   A.ORIGEN_REFERENCIAS,
+                   A.CLAVE_VIAJE
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -1822,6 +1834,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                <formapago>".$row->FORMA_PAGO."</formapago>
                <foto>".$foto_."</foto>
                <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>
+               <clave>".$row->CLAVE_VIAJE."</clave>
                <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
               </viaje>";
       }
@@ -1961,7 +1974,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $qry = mysql_query($sql);
   }
 
-  function manda_viaje_taxistas($id_viaje,$latitud,$longitud){
+  function manda_viaje_taxistas($id_viaje,$latitud,$longitud,$tipo,$iave,$ac,$conector,$wifi){
     $sql = "SELECT A.ID_USUARIO, 
                    C.PUSH_TOKEN, 
                    C.SO,
@@ -1969,8 +1982,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
             FROM ADMIN_USUARIOS A
               INNER JOIN DISP_ULTIMA_POSICION B ON B.IDENTIFICADOR = A.DISPOSITIVO
               INNER JOIN DISP_REGISTRO_TOKENS C ON DEVICE_ID = B.IDENTIFICADOR
-
+              INNER JOIN ADMIN_TAXIS T ON T.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO
             WHERE A.DISPONIBLE = 0 AND
+                  A.DEMOS = 1 AND
+                  T.AC = ".$ac." AND
+                  T.IAVE = ".$iave." AND
+                  T.CONECTOR_CELULAR = ".$conector." AND
+                  T.WIFI = ".$wifi." AND
+                  T.ID_TIPO_TAXI = ".$tipo." AND
                   DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") < 400 AND
                   CAST(B.FECHA_GPS AS DATE)=CURRENT_DATE
             ORDER BY DIST
@@ -1995,6 +2014,24 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     }
   }
 
+  function usuario_activo_octubre($usuario){
+
+    //aquimequede
+    $res = '';  
+    $foto= "";
+    global $base;
+    $sql = "SELECT COUNT(*) AS ACTIVO
+            FROM   ADMIN_USUARIOS
+            WHERE  NICKNAME = '".$usuario."' AND
+                   DEMOS = 1";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->ACTIVO;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }
+
   function usrNuevoViaje($usuario,
                          $dispositivo, 
                          $push_token,
@@ -2009,7 +2046,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $descuento,
                          $id_conductor,
                          $so,
-                         $referencias){
+                         $referencias,
+                         $tipo,
+                         $iave,
+                         $ac,
+                         $conectores,
+                         $wifi){
 
     $con = mysql_connect("localhost","dba","t3cnod8A!");
 
@@ -2030,16 +2072,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                       ", referencias = ".$referencias;
 
     InsertaLog("usrNuevoViaje",$str_inser_log,$push_token);
-
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       $id_usuario = valida_usuario($usuario);
+     
       if ($id_usuario > 0){
         $id_viaje = 0;
         registra_token($dispositivo,$push_token,$so);
         $id_viaje = dame_id_viaje();
-
-
         if (registra_viaje($id_viaje,
                          $id_usuario,
                          $dispositivo, 
@@ -2065,7 +2105,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
             registra_asignacion($id_viaje,$id_conductor);
             //$res = envia_push($mensaje,$dispositivo);*/
             //manda la notifiacion  a los  mas cercanos al origen
-            manda_viaje_taxistas($id_viaje,$lat_origen,$lon_origen);
+            manda_viaje_taxistas($id_viaje,$lat_origen,$lon_origen,$tipo,$iave,$ac,$conectores,$wifi);
           } else {
             //obtiene el push key del id del taxista
             $pushkey_taccsista = dame_pushkey_taccsista($id_conductor);
@@ -2129,8 +2169,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $res = false;
     /*revisar*/
     $sql = 'UPDATE ADMIN_VIAJES 
-            SET CLAVE_VIAJE = '.$codigo_viaje.',
-                ID_TAXISTA = '.$id_usuario.',
+            SET ID_TAXISTA = '.$id_usuario.',
                 ID_SRV_ESTATUS = 2,
                 ASIGNADO = CURRENT_TIMESTAMP
             WHERE ID_VIAJES = '.$id_viaje;
@@ -2175,6 +2214,19 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
   }
 
 
+  function dame_codigo_viaje($id_viaje){
+    $res = '';
+    $sql = "SELECT CLAVE_VIAJE
+              FROM ADMIN_VIAJES
+              WHERE ID_VIAJES = ".$id_viaje;
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->CLAVE_VIAJE;
+      mysql_free_result($close);  
+    }
+    return $res;
+  }
+
 
   function oprTomarViaje ($id_usuario,$id_viaje,$dispositivo){
     /*Funccion para asignar el viaje a un taxista, cuando ya fue confirmado*/
@@ -2187,7 +2239,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       if (valida_viaje_libre($id_viaje)){
-        $codigo = rand(1,9999);
+        $codigo = dame_codigo_viaje($id_viaje);
         //$x = tomar_viaje($id_usuario,$id_viaje,$codigo);
         if (tomar_viaje($id_usuario,$id_viaje,$codigo)){
           $token = dame_pushtoken_cliente($id_viaje);
@@ -2243,22 +2295,29 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                    A.TELEFONO,
                    MA.DESCRIPCION AS MARCA,
                    MO.DESCRIPCION AS MODELO,
+                   TT.DESCRIPCION AS TIPO,
                    B.PLACAS,
                    B.ECO,
                    B.IMAGEN AS FOTO_TAXI,
                    C.LATITUD,
                    C.LONGITUD,
-                   C.FECHA_SERVER
+                   C.FECHA_SERVER,
+                   IF(B.AC IS NULL,0,B.AC) AS AC,
+                   IF(B.IAVE IS NULL,0,B.IAVE) AS IAVE,
+                   IF(B.CONECTOR_CELULAR IS NULL,0,B.CONECTOR_CELULAR) AS CONECTOR_CELULAR,
+                   IF(B.WIFI IS NULL,0,B.WIFI) AS WIFI
             FROM ADMIN_USUARIOS A,
                  ADMIN_TAXIS B, 
                  DISP_ULTIMA_POSICION C,
                  ADMIN_MARCA MA,
-                 ADMIN_MODELO MO
+                 ADMIN_MODELO MO,
+                 ADMIN_TIPO_TAXIS TT
             WHERE A.ID_USUARIO =  ".$id_taxista." AND
                   MO.ID_MODELO =B.ID_MODELO AND 
                   MA.ID_MARCA= MO.ID_MARCA AND
                   B.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO AND
-                  A.ID_USUARIO = C.ID_USUARIO";
+                  A.ID_USUARIO = C.ID_USUARIO AND
+                  B.ID_TIPO_TAXI = TT.ID_TIPO_TAXI";
     if ($qry = mysql_query($sql)){
       $row = mysql_fetch_object($qry);
       $foto_taxista="";
@@ -2283,12 +2342,17 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                 <telefono>".$row->TELEFONO."</telefono>
                 <marca>".$row->MARCA."</marca>
                 <modelo>".$row->MODELO."</modelo>
+                <tipo>".$row->TIPO."</tipo>
                 <placas>".$row->PLACAS."</placas>
                 <eco>".$row->ECO."</eco>
                 <foto_taxi>".$foto_taxi."</foto_taxi>
                 <latitud>".$row->LATITUD."</latitud>
                 <longitud>".$row->LONGITUD."</longitud>
                 <fecha_gps>".$row->FECHA_SERVER."</fecha_gps>
+                <ac>".$row->AC."</ac>
+                <iave>".$row->IAVE."</iave>
+                <conector>".$row->CONECTOR_CELULAR."</conector>
+                <wifi>".$row->WIFI."</wifi>
               </taxista>"; 
       mysql_free_result($qry);
     } 
@@ -2431,7 +2495,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $msg = 'Servicio TACCSI no disponible, intente mas tarde.';  
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
+
       $base = mysql_select_db("taccsi",$con);
+
       //actualiza la tabla viajes asignacion
       //revisa la tabla del viaje
       if (marca_rechazo($id_viaje,$id_usuario)){
@@ -2442,11 +2508,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           marca_rechazo_viaje($id_viaje);
           $token = dame_pushtoken_cliente($id_viaje);
 
-          $str_inser_log = "id_viaje =".$id_viaje.
-                      ", id_usuario = ".$id_usuario;
-
-
-      InsertaLog("oprRechazarViaje",$str_inser_log,$token);
+          
 
 
           if (strlen($token) > 0){
@@ -2598,18 +2660,25 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                    C.PLACAS,
                    M.DESCRIPCION AS MODELO,
                    'taxi_libre' AS ESTATUS,
+                   TT.DESCRIPCION AS TIPO,
                    A.LATITUD,
                    A.LONGITUD,
                    ROUND(DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud."),2) AS DIST,
                    C.IMAGEN,
                    IF(B.RATING IS NULL,0,(B.RATING/VIAJES)) AS RATING,
-                   IF(B.VIAJES IS NULL,0,B.VIAJES) AS VIAJES
+                   IF(B.VIAJES IS NULL,0,B.VIAJES) AS VIAJES,
+                   IF(C.AC IS NULL,0,C.AC) AS AC,
+                   IF(C.IAVE IS NULL,0,C.IAVE) AS IAVE,
+                   IF(C.CONECTOR_CELULAR IS NULL,0,C.CONECTOR_CELULAR) AS CONECTOR_CELULAR,
+                   IF(C.WIFI IS NULL,0,C.WIFI) AS WIFI
             FROM DISP_ULTIMA_POSICION A
               INNER JOIN ADMIN_USUARIOS B ON B.ID_USUARIO = A.ID_USUARIO
               INNER JOIN ADMIN_TAXIS C ON C.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO 
               INNER JOIN ADMIN_MODELO M ON M.ID_MODELO = C.ID_MODELO
+              INNER JOIN ADMIN_TIPO_TAXIS TT ON C.ID_TIPO_TAXI = TT.ID_TIPO_TAXI
             WHERE CAST(A.FECHA_SERVER AS DATE) = CURRENT_DATE AND
                   B.DISPONIBLE = 0 AND 
+                  B.DEMOS = 1 AND
                   DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud.") < 400
             ORDER BY DIST
             LIMIT 10";
@@ -2629,6 +2698,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                   <placas>".$row->PLACAS."</placas>
                   <modelo>".$row->MODELO."</modelo>
                   <estatus>".$row->ESTATUS."</estatus>
+                  <estatus>".$row->TIPO."</estatus>
                   <latitud>".$row->LATITUD."</latitud>
                   <longitud>".$row->LONGITUD."</longitud>
                   <distancia>".$row->DIST."</distancia>
@@ -2636,6 +2706,10 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                   <puntos>".$row->RATING."</puntos>
                   <foto_taxista>".$foto_taxista."</foto_taxista>
                   <servicios>".$row->VIAJES."</servicios>
+                  <ac>".$row->AC."</ac>
+                  <iave>".$row->IAVE."</iave>
+                  <conector>".$row->CONECTOR_CELULAR."</conector>
+                  <wifi>".$row->WIFI."</wifi>
                 </taxi>"; 
         }else{
           $res = $res."<taxi>
@@ -2651,8 +2725,11 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                   <puntos>".$row->RATING."</puntos>
                   <foto_taxista>".$foto_taxista."</foto_taxista>
                   <servicios>".$row->VIAJES."</servicios>
+                  <ac>".$row->AC."</ac>
+                  <iave>".$row->IAVE."</iave>
+                  <conector>".$row->CONECTOR_CELULAR."</conector>
+                  <wifi>".$row->WIFI."</wifi>
                 </taxi>"; 
-
         }
       }
       mysql_free_result($qry);
@@ -2686,7 +2763,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return new soapval('return', 'xsd:string', $res);
   }
 
-   function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo){
+   function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario){
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
@@ -2694,7 +2771,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                 COMENTARIOS_TAXISTA = '".$comentarios."',
                 MONTO_TAXISTA = ".$importe.",
                 DISTANCIA_TAXISTA = ".$distancia.",
-                TIEMPO_VIAJE='".$tiempo."'
+                TIEMPO_VIAJE='".$tiempo."',
+                RATING_TAXISTA = ".$puntos_usuario."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -2759,7 +2837,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
 
       InsertaLog("oprFinViaje",$str_inser_log,$token);
 
-      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo);
+      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario);
       if ($fin){
         $id_cliente = dame_id_usuario($id_viaje);
         if ($id_cliente > -1){
@@ -2775,7 +2853,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                        'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago.@'.$importe.'@'.$forma."@".$id_viaje,
                        $push_token,
                        $so,
-                       'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago');
+                       'Su viaje ha concluido. Fue un placer atenderlo.');
             //envia_push_dev('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token,$so);
           }
           $idx = 0;
@@ -3249,13 +3327,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           SET  NO_TARJETA = AES_ENCRYPT('".$tdc."', 'myTa4ss1.c0m'), 
                TARJETA_VIEW = '".$view."', 
                NOMBRE_TARJETA = '".$nombre."', 
+               ID_TIPO_TARJETA = '".$tipo_tdc."',
                MES_VENCIMIENTO = AES_ENCRYPT('".$month."', 'myTa4ss1.c0m'),  
                ANO_VENCIMIENTO = AES_ENCRYPT('".$year."', 'myTa4ss1.c0m'),  
                CODIGO_AUTORIZACION = AES_ENCRYPT('".$cod_aut."', 'myTa4ss1.c0m'), 
                POR_DEFECTO = 0, 
                ESTATUS     = 1,  
                CREADO =  CURRENT_TIMESTAMP
-          WHERE ID_TIPO_TARJETA = '".$tipo_tdc."'";
+          WHERE ID_FORMA_PAGO = '".$id_tarjeta."'";
     if ($qry = mysql_query($sql)){
       $res = '<code>0</code>
               <msg>Su tarjeta fue registrada correctamente</msg>';

@@ -79,7 +79,7 @@ class main_RegisterController extends My_Controller_Action
 						$insert = $classObject->insertRow($this->_dataIn);
 						if($insert['status']){
 							$idUsuario = $insert['id'];
-					
+						/*
 							$bodymail   = 	'<table><tr><td><h3>COMIENZA A GANAR DINERO YA!</h3></td></tr>'.
 												'<tr><td><span>Hola '.$nameUsuario.' <br/>'.
 													'No esperes mas para activarte. Estas son los requisitos que te hacen falta para activarte.</span></td></tr><br/>'.
@@ -119,7 +119,8 @@ class main_RegisterController extends My_Controller_Action
 								'bodyTo' 	=> $bodymail2,
 							);	
 						 	$enviar = $cFunctions->sendMailSmtp($aMailer2);						 	
-						   	$this->_resultOp= 'okRegisterMail';														
+						   	$this->_resultOp= 'okRegisterMail';		
+						   	*/												
 						}else{
 							$this->_aErrors['status'] = 'no-insert';
 						}

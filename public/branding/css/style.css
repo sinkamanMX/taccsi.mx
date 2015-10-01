@@ -894,3 +894,14 @@ p {
         margin-top:30px;
     }
 }
+
+.info-mail:hover, .info-mail:active{
+    background-color:#181A1C !important;
+    color:#fff !important;
+    cursor: hand;
+}
+
+.service .iconscustom {
+    height: 100px;
+    width: 100px;
+}

@@ -10,7 +10,7 @@
   function recorre_viajes(){
   	$sql = "SELECT  ID_VIAJES
 			FROM ADMIN_VIAJES
-			WHERE CURRENT_TIMESTAMP > DATE_ADD(FECHA_VIAJE,INTERVAL 100 SECOND)   AND
+			WHERE CURRENT_TIMESTAMP > DATE_ADD(FECHA_VIAJE,INTERVAL 60 SECOND)   AND
 			      ID_SRV_ESTATUS  IN (1,6)";
     if ($qry = mysql_query($sql)){
       while ($row = mysql_fetch_object($qry)){

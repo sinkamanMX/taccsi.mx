@@ -1,5 +1,6 @@
 'use strict';
 
+
 /*
  * A Design by GraphBerry
  * Author: GraphBerry
@@ -371,9 +372,10 @@ Sand mail
 });
 
 //Initialize google map for contact setion with your location.
-
+var infoWindow;
+var map;
 function initializeMap() {
-
+    infoWindow = new google.maps.InfoWindow;
     var lat = '19.5080822'; //Set your latitude.
     var lon = '-99.2348254'; //Set your longitude.
 
@@ -389,17 +391,27 @@ function initializeMap() {
     };
 
     //Bind map to elemet with id map-canvas
-    var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+    var  map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+
     var marker = new google.maps.Marker({
         map: map,
+        icon: 'images/assets/taxi_green.png',
         position: new google.maps.LatLng(lat, lon),
     });
 
+    var content='<table width="350" class="table-striped" >'+  
+          '<tr><td align="right">Carlos Arellano 14, Ciudad Satélite, Naucalpan</td><tr>'+
+          '</table>';
+
     var infowindow = new google.maps.InfoWindow();
-
+        infoWindow.setContent(content);
+        //infoWindow.setPosition(new google.maps.LatLng(lat, lon));
+        infoWindow.open(map,marker);
+    
     google.maps.event.addListener(marker, 'click', function () {
-        infowindow.open(map, marker);
+        var infowindow = new google.maps.InfoWindow();
+            infoWindow.setContent(content);
+            //infoWindow.setPosition(new google.maps.LatLng(lat, lon));
+            infoWindow.open(map,marker);
     });
-
-    infowindow.open(map, marker);
 }

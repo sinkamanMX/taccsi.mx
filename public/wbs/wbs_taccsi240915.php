@@ -144,7 +144,6 @@
                     array('id_usuario'      => 'xsd:string',
                           'id_viaje'        => 'xsd:string',
                           'comentarios'     => 'xsd:string',
-                          'puntos_servicio' => 'xsd:string',
                           'puntos_taxista'  => 'xsd:string',
                           'importe'         => 'xsd:string',
                           'distancia'       => 'xsd:string'), // Parametros de entrada 
@@ -574,14 +573,14 @@ function historico_usuario($id_usuario){
                    ADMIN_USUARIOS.FOTO,
                    ADMIN_VIAJES.FECHA_VIAJE,
                    ADMIN_MODELO.DESCRIPCION AS VEHICULO,
-                   ADMIN_VIAJES.MONTO_TOTAL,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
                    ADMIN_VIAJES.DESTINO,
                    ADMIN_VIAJES.DESTINO_LATITUD,
                    ADMIN_VIAJES.DESTINO_LONGITUD,
-                   ADMIN_VIAJES.RATING,
+                   ADMIN_VIAJES.RATING_TAXISTA,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS,
                    ADMIN_VIAJES.TIEMPO_VIAJE
@@ -604,14 +603,14 @@ function historico_usuario($id_usuario){
                         <foto>'.$row->FOTO.'</foto>
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
-                        <monto>'.$row->MONTO_TOTAL.'</monto>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
                         <origen>'.$row->ORIGEN.'</origen>
                         <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
                         <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
                         <destino>'.$row->DESTINO.'</destino>
                         <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
                         <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
-                        <puntos>'.$row->RATING.'</puntos>
+                        <puntos>'.$row->RATING_TAXISTA.'</puntos>
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS.'</comentarios>
                          <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
@@ -664,14 +663,14 @@ function historico_usuario($id_usuario){
                    SRV_USUARIOS.IMAGEN,
                    ADMIN_VIAJES.FECHA_VIAJE,
                    ADMIN_MODELO.DESCRIPCION AS VEHICULO,
-                   ADMIN_VIAJES.MONTO_TOTAL,
+                   ADMIN_VIAJES.MONTO_TAXISTA,
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
                    ADMIN_VIAJES.DESTINO,
                    ADMIN_VIAJES.DESTINO_LATITUD,
                    ADMIN_VIAJES.DESTINO_LONGITUD,
-                   ADMIN_VIAJES.RATING,
+                   ADMIN_VIAJES.RATING_USUARIO,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS,
                    ADMIN_VIAJES.TIEMPO_VIAJE
@@ -694,14 +693,14 @@ function historico_usuario($id_usuario){
                         <foto>'.$row->IMAGEN.'</foto>
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
-                        <monto>'.$row->MONTO_TOTAL.'</monto>
+                        <monto>'.$row->MONTO_TAXISTA.'</monto>
                         <origen>'.$row->ORIGEN.'</origen>
                         <lat_origen>'.$row->ORIGEN_LATITUD.'</lat_origen>
                         <lon_origen>'.$row->ORIGEN_LONGITUD.'</lon_origen>
                         <destino>'.$row->DESTINO.'</destino>
                         <lat_destino>'.$row->DESTINO_LATITUD.'</lat_destino>
                         <lon_destino>'.$row->DESTINO_LONGITUD.'</lon_destino>
-                        <puntos>'.$row->RATING.'</puntos>
+                        <puntos>'.$row->RATING_USUARIO.'</puntos>
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS.'</comentarios>
                         <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
@@ -1333,7 +1332,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
                 FIN_VIAJE_USUARIO = CURRENT_TIMESTAMP,
-                RATING = ".$puntos_servicio.",
+                RATING_USUARIO = ".$puntos_servicio.",
                 COMENTARIOS = '".$comentarios."',
                 MONTO_TOTAL = ".$importe.",
                 DISTANCIA = ".$distancia."
@@ -1369,13 +1368,13 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return $res;
   }
 
-  function usrFinViaje($id_usuario,$id_viaje,$comentarios, $puntos_servicio, $puntos_taxista, $importe,$distancia,$so){
+  function usrFinViaje($id_usuario,$id_viaje,$comentarios,$puntos_taxista, $importe,$distancia){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
-      if (finaliza_viaje($id_viaje,$comentarios,$puntos_servicio,$importe,$distancia)){
+      if (finaliza_viaje($id_viaje,$comentarios,$puntos_taxista,$importe,$distancia)){
         $id_taxista = dame_id_taxista($id_viaje);
         if ($id_taxista > -1){
           califica_taxista($id_taxista,$puntos_taxista);
@@ -1791,7 +1790,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                    B.RATING,
                    C.DESCRIPCION AS FORMA_PAGO,
                    B.IMAGEN AS FOTO,
-                   A.ORIGEN_REFERENCIAS
+                   A.ORIGEN_REFERENCIAS,
+                   A.CLAVE_VIAJE
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -1822,6 +1822,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                <formapago>".$row->FORMA_PAGO."</formapago>
                <foto>".$foto_."</foto>
                <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>
+               <clave>".$row->CLAVE_VIAJE."</clave>
                <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
               </viaje>";
       }
@@ -1995,6 +1996,24 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     }
   }
 
+  function usuario_activo_octubre($usuario){
+
+    //aquimequede
+    $res = '';  
+    $foto= "";
+    global $base;
+    $sql = "SELECT COUNT(*) AS ACTIVO
+            FROM   ADMIN_USUARIOS
+            WHERE  NICKNAME = '".$usuario."' AND
+                   DEMOS = 1";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->ACTIVO;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }
+
   function usrNuevoViaje($usuario,
                          $dispositivo, 
                          $push_token,
@@ -2030,16 +2049,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                       ", referencias = ".$referencias;
 
     InsertaLog("usrNuevoViaje",$str_inser_log,$push_token);
-
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       $id_usuario = valida_usuario($usuario);
+     
       if ($id_usuario > 0){
         $id_viaje = 0;
         registra_token($dispositivo,$push_token,$so);
         $id_viaje = dame_id_viaje();
-
-
         if (registra_viaje($id_viaje,
                          $id_usuario,
                          $dispositivo, 
@@ -2686,7 +2703,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     return new soapval('return', 'xsd:string', $res);
   }
 
-   function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo){
+   function finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario){
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
@@ -2694,7 +2711,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                 COMENTARIOS_TAXISTA = '".$comentarios."',
                 MONTO_TAXISTA = ".$importe.",
                 DISTANCIA_TAXISTA = ".$distancia.",
-                TIEMPO_VIAJE='".$tiempo."'
+                TIEMPO_VIAJE='".$tiempo."',
+                RATING_TAXISTA = ".$puntos_usuario."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -2759,7 +2777,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
 
       InsertaLog("oprFinViaje",$str_inser_log,$token);
 
-      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo);
+      $fin = finaliza_viaje_operador($id_viaje,$comentarios,$importe,$distancia,$tiempo,$puntos_usuario);
       if ($fin){
         $id_cliente = dame_id_usuario($id_viaje);
         if ($id_cliente > -1){

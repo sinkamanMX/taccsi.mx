@@ -88,6 +88,7 @@ class My_Model_Viajes extends My_Db_Table
         $result['status']  = false;
         
         $idToInsert = $this->insertGenId();
+        $codigo 	= rand(1,9999);
         
         $sql="INSERT INTO $this->_name			 
 				SET ID_VIAJES 		= ".$idToInsert.",
@@ -106,6 +107,7 @@ class My_Model_Viajes extends My_Db_Table
               		TIEMPO_VIAJE	='".$data['inputTiempo']."',
               		ID_CLIENTE		= ".$data['strClient'].",
               		USUARIO_REGISTRO= ".$data['userRegistro'].",
+              		CLAVE_VIAJE    = '".$codigo."',
               		SOLICITADO_DESDE= 'W',
               		ID_SRV_ESTATUS  = 1";
         try{            
