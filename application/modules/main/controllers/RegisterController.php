@@ -79,48 +79,11 @@ class main_RegisterController extends My_Controller_Action
 						$insert = $classObject->insertRow($this->_dataIn);
 						if($insert['status']){
 							$idUsuario = $insert['id'];
-						/*
-							$bodymail   = 	'<table><tr><td><h3>COMIENZA A GANAR DINERO YA!</h3></td></tr>'.
-												'<tr><td><span>Hola '.$nameUsuario.' <br/>'.
-													'No esperes mas para activarte. Estas son los requisitos que te hacen falta para activarte.</span></td></tr><br/>'.
-												'<tr><td><span>Envianos los siguientes documentos:</span><br/><br/>'.
-														'- Licencia de conducir.<br/>'.
-														'- Comprobante de domicilio fiscal.<br/>'.
-														'- RFC o alta en hacienda.<br/>'.
-														'- Comprobante de domicilio.</td>'.
-												'</tr><tr><td><h3>Tu Auto</h3><br/>Te hace falta dar de alta tu vehiculo. </td></tr></table>'.
-										  'Para acceder al portal es necesario ingresar al sistema de Taccsi<br>'.
-										  '<a href="http://taccsi.com/login/main/index">Da Click Aqu&iacute;</a><br/>'.
-										  'o bien copia y pega en tu navegador el siguiente enlace<br>'.
-										  '<b> http://taccsi.com/login/main/index</b>';							
-							$aMailer    = Array(
-								'emailTo' 	=> $this->_dataIn['inputUsuario'],
-								'nameTo' 	=> $nameUsuario,
-								'subjectTo' => ('Taccsi - Activa tu cuenta!'),
-								'bodyTo' 	=> $bodymail,
-							);	
-						 	$enviar = $cFunctions->sendMailSmtp($aMailer);
-						 	
-							$bodymail2   = '<h3>Estimado '.$aDataAdmin['name'].':</h3>'.
-										  'Se ha enviado una solicitud para formar parte de Taccsi.com<br/>'.
-										  'Los datos del solicitante son los siguientes:</br>'.
-										  '<table><tr><td>Nombre Completo: </td><td>'.$nameUsuario.'</td></tr>'.
-										  '<tr><td>Usuario: </td><td>'.$this->_dataIn['inputUsuario'].'</td></tr>'.
-										  '<tr><td>Tel&eacute;fono: </td><td>'.$this->_dataIn['inputPhone'].'</td></tr>'.
-										  '</table><br/>'.
-										  'Para obtener mas informaci&oacute;n es necesario ingresar al sistema de administraci&oacute;n Taccsi<br>'.
-										  '<a href="http://taccsi.com/login/main/index">Da Click Aqu&iacute;</a><br/>'.
-										  'o bien copia y pega en tu navegador el siguiente enlace<br>'.
-										  '<b> http://taccsi.com/login/main/index</b>';
-							$aMailer2    = Array(
-								'emailTo' 	=> $aDataAdmin['mail'],
-								'nameTo' 	=> $aDataAdmin['name'],
-								'subjectTo' => ('Taccsi - Registro Nuevo Taccista - Web'),
-								'bodyTo' 	=> $bodymail2,
-							);	
-						 	$enviar = $cFunctions->sendMailSmtp($aMailer2);						 	
-						   	$this->_resultOp= 'okRegisterMail';		
-						   	*/												
+
+							$cHtmlMail = new My_Controller_Htmlmailing();							
+							$cHtmlMail->newUserTaxi($this->_dataIn);							
+	
+						 	$this->_resultOp= 'okRegisterMail';
 						}else{
 							$this->_aErrors['status'] = 'no-insert';
 						}
