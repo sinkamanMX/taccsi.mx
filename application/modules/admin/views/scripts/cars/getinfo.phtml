@@ -42,6 +42,21 @@
                             Tamaño máximo: 10MB
                         </p>
                     </div>
+                    <div class="form-group col-xs-12">
+                        <label for="inputVin">El Vehículo cuenta con:</label>
+                        <div class="controls">
+                            <input type="checkbox" onClick="optionAll(this.checked);" <?php echo (@$this->data['AC']==1 && @$this->data['IAVE']==1 && @$this->data['CONECTOR_CELULAR']==1 && @$this->data['WIFI']==1) ? 'checked':'';?>>&nbsp;Todas 
+                            <br/>
+                            <input name="inputac" class="chkOn" type="checkbox" <?php echo (@$this->data['AC']==1) ? 'checked':'';?>>&nbsp;Aire Acondicionado 
+                            <br/>
+                            <input name="inputiave"    class="chkOn" type="checkbox" <?php echo (@$this->data['IAVE']==1)? 'checked':'';?>>&nbsp;Tarjeta IAVE
+                            <br/>
+                            <input name="inputconnect"  class="chkOn" type="checkbox" <?php echo (@$this->data['CONECTOR_CELULAR']==1)? 'checked':'';?>>&nbsp;Cargador Celular
+                            <br/>
+                            <input name="inputwifi"  class="chkOn" type="checkbox" <?php echo (@$this->data['WIFI']==1)? 'checked':'';?>>&nbsp;Wifi                                 
+                        </div>
+                    </div>                                                              
+
                 </div>
                 <div class="col-xs-9">   
                         <?php if(count(@$this->errors)>0):?>
@@ -73,6 +88,22 @@
 
 
                                 <div class="box-body">
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputSize">Tipo Taxi</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control" id="inputSize" name="inputSize" >
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aTIpo;?>                                
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputAmaterno">Nombre Chofer</label>
+                                            <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
+                                        </div> 
+
+                                    </div>
                                     <div class="col-xs-12">
                                         <div class="form-group col-xs-6">
                                             <label for="inputNombre">Marca</label>
@@ -123,9 +154,15 @@
                                     </div>
                                     <div class="col-xs-12">
                                         <div class="form-group col-xs-6">
-                                            <label for="inputAmaterno">Nombre Chofer</label>
-                                            <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
-                                        </div>                                            
+                                            <label for="inputVigencia">Vigencia Seguro</label>
+                                            <input type="text" class="form-control upperClass" name="inputVigencia" id="inputVigencia" placeholder="Inicio Vigencia" value="<?php echo @$this->data['VIGENCIA_SEGURO']; ?>" readonly>
+                                        </div>             
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputVin">VIN</label>
+                                            <input type="text" class="form-control upperClass" name="inputVin" id="inputVin" placeholder="VIN" value="<?php echo @$this->data['VIN']; ?>">
+                                        </div>                                                              
+                                    </div>
+                                    <div class="col-xs-12">                                       
                                         <div class="form-group col-xs-6">
                                             <label for="inputPhone">Estatus</label>
                                             <div class="input-group col-xs-12">                     
@@ -135,17 +172,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>     
-                                    <div class="col-xs-12">
-                                        <div class="form-group col-xs-6">
-                                            <label for="inputVigencia">Vigencia Seguro</label>
-                                            <input type="text" class="form-control upperClass" name="inputVigencia" id="inputVigencia" placeholder="Inicio Vigencia" value="<?php echo @$this->data['VIGENCIA_SEGURO']; ?>" readonly>
-                                        </div>             
-                                        <div class="form-group col-xs-6">
-                                            <label for="inputVin">VIN</label>
-                                            <input type="text" class="form-control upperClass" name="inputVin" id="inputVin" placeholder="VIN" value="<?php echo @$this->data['VIN']; ?>">
-                                        </div>                                                              
-                                    </div>
+                                    </div>                                                             
                                 </div><!-- /.box-body -->
 
                         <?php endif;?>

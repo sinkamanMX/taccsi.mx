@@ -150,8 +150,9 @@ class My_Model_Taxis extends My_Db_Table
 	}  
 
     
-    public function getData($idObject){
+    public function getData($idObject,$idCompay=-1){
 		try{
+			$iCompany = ($idCompay!=-1) ? 'AND t.ID_EMPRESA = '.$idCompay:'';
 			$result= Array();
 	    	$sql ="SELECT *
 				FROM ADMIN_TAXIS t
@@ -159,6 +160,7 @@ class My_Model_Taxis extends My_Db_Table
 				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
 				INNER JOIN ADMIN_EMPRESAS E ON t.ID_EMPRESA = E.ID_EMPRESA
 				WHERE t.ID_TAXI = $idObject
+				$iCompany
 				LIMIT 1";
 			$query   = $this->query($sql);
 			if(count($query)>0){
@@ -198,6 +200,11 @@ class My_Model_Taxis extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
+        $sAC  	= (isset($data['inputac'])		&& $data['inputac']		=='on') ? "1": "0";
+        $sIave  = (isset($data['inputiave'])  	&& $data['inputiave'] 	=='on') ? "1": "0";
+        $sCon	= (isset($data['inputconnect']) && $data['inputconnect']=='on') ? "1": "0";
+        $sWifi  = (isset($data['inputwifi'])    && $data['inputwifi']   =='on') ? "1": "0";        
+        
         $nameImage1  = ($data['sImagenTcir']!="")  	? " ,IMAGEN_TCIRCULACION    ='".$data['sImagenTcir']."'": "";
         $nameImage2  = ($data['sImagenTcir2']!="") 	? " ,IMAGEN_TCIRCULACION_2 	='".$data['sImagenTcir2']."'": "";
         $nameImage3  = ($data['sImagenFact']!="") 	? " ,IMAGEN_FACTURA 		='".$data['sImagenFact']."'": "";
@@ -220,7 +227,11 @@ class My_Model_Taxis extends My_Db_Table
 					FECHA_REGISTRO	= CURRENT_TIMESTAMP,
 					VIN  			='".$data['inputVin']."',
 					VIGENCIA_SEGURO ='".$data['inputVigencia']."',
-					USUARIO_REGISTRO= ".$data['userCreate']."
+					USUARIO_REGISTRO= ".$data['userCreate'].",
+					AC				= ".$sAC  .",
+					IAVE			= ".$sIave.",
+					CONECTOR_CELULAR= ".$sCon .",
+					WIFI			= ".$sWifi."
 					$nameImage 
 					$nameImage1
 					$nameImage2
@@ -245,6 +256,11 @@ class My_Model_Taxis extends My_Db_Table
        	$result     = Array();
         $result['status']  = false;
         
+        $sAC  	= (isset($data['inputac'])		&& $data['inputac']		=='on') ? "1": "0";
+        $sIave  = (isset($data['inputiave'])  	&& $data['inputiave'] 	=='on') ? "1": "0";
+        $sCon	= (isset($data['inputconnect']) && $data['inputconnect']=='on') ? "1": "0";
+        $sWifi  = (isset($data['inputwifi'])    && $data['inputwifi']   =='on') ? "1": "0";
+        
         $nameImage1  = ($data['sImagenTcir']!="")  	? " ,IMAGEN_TCIRCULACION    ='".$data['sImagenTcir']."'": "";
         $nameImage2  = ($data['sImagenTcir2']!="") 	? " ,IMAGEN_TCIRCULACION_2 	='".$data['sImagenTcir2']."'": "";
         $nameImage3  = ($data['sImagenFact']!="") 	? " ,IMAGEN_FACTURA 		='".$data['sImagenFact']."'": "";
@@ -261,7 +277,11 @@ class My_Model_Taxis extends My_Db_Table
 					ECO				='".$data['inputEco']."',
 					ANIO			= ".$data['inputAno'].",
 					VIN  			='".$data['inputVin']."',
-					VIGENCIA_SEGURO ='".$data['inputVigencia']."'
+					VIGENCIA_SEGURO ='".$data['inputVigencia']."',
+					AC				= ".$sAC  .",
+					IAVE			= ".$sIave.",
+					CONECTOR_CELULAR= ".$sCon .",
+					WIFI			= ".$sWifi."					
 					$nameImage 
 					$nameImage1
 					$nameImage2
@@ -460,4 +480,18 @@ class My_Model_Taxis extends My_Db_Table
         }
 		return $result;    	
     }
+    
+	public function getCboTipoTaxi(){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_TIPO_TAXI AS ID, CONCAT(DESCRIPCION,' (',PASAJEROS_MAX,' pasajeros)')  AS NAME
+				FROM ADMIN_TIPO_TAXIS
+				ORDER BY PASAJEROS_MAX ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}	
+        
+		return $result;			
+	}    
 }	

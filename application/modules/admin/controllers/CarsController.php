@@ -62,23 +62,30 @@ class admin_CarsController extends My_Controller_Action
     		$aColores	= $cColores->getCbo();
     		$aMarcas	= $cMarcas->getCbo();
     		$aEstatus	= $cEstatus->getCbo();
+    		$aTipoTaxi  = $classObject->getCboTipoTaxi();
     		$aModelos   = Array();
     		$sColores	= '';
     		$sMarcas	= '';
     		$sModelos   = '';
     		$sEstatus	= '';
+    		$sTipoTaxi  = '';
     		
 			$sNameImage  = '';    		
 			    		    		
     	    if($this->_idUpdate >-1){
-    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
-    	    	$sColores	= $dataInfo['ID_COLOR'];    	    	
-    	    	$sModelos	= $dataInfo['ID_MODELO'];
-    	    	$sMarcas	= $dataInfo['ID_MARCA'];
-    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
-    	    	
-				$aModelos	= $cModelos->getCbo($sMarcas);
-				$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);    	    	
+    	    	$dataInfo	= $classObject->getData($this->_idUpdate,$this->_dataUser['ID_EMPRESA']);
+    	    	if(count($dataInfo)>0){
+    	    		$sColores	= $dataInfo['ID_COLOR'];    	    	
+	    	    	$sModelos	= $dataInfo['ID_MODELO'];
+	    	    	$sMarcas	= $dataInfo['ID_MARCA'];
+	    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
+	    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
+	    	    	
+					$aModelos	= $cModelos->getCbo($sMarcas);
+					$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
+    	    	}else{
+    	    		$this->_redirect("/admin/cars/index");
+    	    	}
 			}
 			
 			if($this->_dataOp=='new'){			
@@ -131,6 +138,7 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sModelos	= $dataInfo['ID_MODELO'];
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
+		    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
 		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
 						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
@@ -198,6 +206,7 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sModelos	= $dataInfo['ID_MODELO'];
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
+		    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
 		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
 						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
@@ -239,6 +248,7 @@ class admin_CarsController extends My_Controller_Action
     	    	$sModelos	= $this->_dataIn['inputModelo'];		
     	    	$sMarcas	= $this->_dataIn['inputMarca'];
     	    	$sEstatus	= $this->_dataIn['inputEstatus'];
+    	    	$sTipoTaxi  = $this->_dataIn['inputSize'];
     	    	
 				$aModelos	= $cModelos->getCbo($sMarcas);
 				$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
@@ -247,6 +257,7 @@ class admin_CarsController extends My_Controller_Action
 			$this->view->aStatus  	= $cFunctions->selectDb($aEstatus,$sEstatus);
 			$this->view->aMarcas	= $cFunctions->selectDb($aMarcas,$sMarcas);
 			$this->view->aColores	= $cFunctions->selectDb($aColores,$sColores);
+			$this->view->aTIpo		= $cFunctions->selectDb($aTipoTaxi,$sTipoTaxi);
 			
 			$this->view->data 		= $dataInfo; 
 			$this->view->errors 	= $this->_aErrors;	

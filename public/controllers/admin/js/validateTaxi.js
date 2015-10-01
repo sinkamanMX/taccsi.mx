@@ -14,6 +14,7 @@ $().ready(function() {
             }, 
             inputVigencia: "required",  
             inputVin: "required",  
+            inputSize:"required",  
         },
         messages: {
         	inputMarca		: "Campo Requerido",
@@ -21,6 +22,7 @@ $().ready(function() {
         	inputColor		: "Campo Requerido",
         	inputPlacas		: "Campo Requerido",
         	inputEstatus	: "Campo Requerido",
+            inputSize       : "Campo Requerido",
             inputAno        : {
                 required  : "Campo Requerido",
                 number    : "Este campo acepta solo números",
@@ -56,3 +58,13 @@ function checkfileImages(sender) {
         
     } 
 }
+
+
+function optionAll(inputCheck){
+    if(inputCheck){
+        $('.chkOn').prop('checked', true);         
+    }else{
+        $('.chkOn').prop('checked', false);
+    }
+}
+
