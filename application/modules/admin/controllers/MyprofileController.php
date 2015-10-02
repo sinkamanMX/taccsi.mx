@@ -264,6 +264,14 @@ class admin_MyprofileController extends My_Controller_Action
 				$updated = $cKardex->updateRow($this->_dataIn);
 				if($updated['status']){
 					$aDataKardex = $cKardex->getData($this->_dataUser['ID_USUARIO']);
+				
+					if($aDataKardex['LICENCIA_FRENTE']   !="" && $aDataKardex['LICENCIA_REVERSA']!="" 
+						&& $aDataKardex['IDENTIFICACION']!="" && $aDataKardex['COMPROBANTE_DOMICILIO']!=""
+						&& $aDataKardex['CEDULA_FISCAL'] !="" && $aDataKardex['ESTADO_CUENTA']!=""){
+						
+							$cHtmlMail = new My_Controller_Htmlmailing();							
+							$cHtmlMail->documentsComplete($dataInfo);
+					}					
 					$this->_resultOp = 'okRegisterDocs';
 				}
 			}

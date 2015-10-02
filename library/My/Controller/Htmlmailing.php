@@ -41,7 +41,7 @@ class My_Controller_Htmlmailing
 		$aMailerUda    = Array(
 			'inputDestinatarios' => $sName,
 			'inputEmails' 		 => @$data['NICKNAME'],
-			'inputTittle' 		 => 'Problemas con los documentos',
+			'inputTittle' 		 => 'Documentacion Completa',
 			'inputBody' 		 => $lBody,
 			'inputFromName' 	 => 'contacto@taccsi.com',
 			'inputFromEmail' 	 => 'Taccsi'
@@ -64,7 +64,7 @@ class My_Controller_Htmlmailing
 		$aMailerUda    = Array(
 			'inputDestinatarios' => $sName,
 			'inputEmails' 		 => @$data['NICKNAME'],
-			'inputTittle' 		 => 'Documentacion Completa',
+			'inputTittle' 		 => 'Problemas con los documentos',
 			'inputBody' 		 => $lBody,
 			'inputFromName' 	 => 'contacto@taccsi.com',
 			'inputFromEmail' 	 => 'Taccsi'
