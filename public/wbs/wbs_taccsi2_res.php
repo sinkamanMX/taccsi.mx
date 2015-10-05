@@ -103,8 +103,7 @@
                           'iave'         => 'xsd:string',
                           'ac'           => 'xsd:string',
                           'conectores'   => 'xsd:string',
-                          'wifi'         => 'xsd:string',
-                          'id_tarjeta'   => 'xsd:string'), // Parametros de entrada 
+                          'wifi'         => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL); 
   /*Metodo para login*/
@@ -546,15 +545,16 @@ function InsertaLog($funcion,$descripcion,$push_token = ""){
               FROM ADMIN_TIPO_TAXIS";
       if ($qry = mysql_query($sql)){
         if (mysql_num_rows($qry) > 0){
-          $dat='<tipo_taxis>';
+          $row = mysql_fetch_object($qry);
+          $dat.='<tipo_taxis>';
           while ($row = mysql_fetch_object($qry)){
-              $dat= $dat.'<tipo>
-                        <id_tipo>'.$row->ID_TIPO_TAXI.'</id_tipo>
-                        <descripcion>'.$row->DESCRIPCION.'</descripcion>
-                        <max_pasajeros>'.$row->PASAJEROS_MAX.'</max_pasajeros>
+              $dat.= '<tipo>
+                        <id_tipo>'.$row->MARCA.'</id_tipo>
+                        <descripcion>'.$row->MODELO.'</descripcion>
+                        <max_pasajeros>'.$row->ID_MODELO.'</id_modelo>
                       </tipo>';
           }
-          $dat=$dat.'</tipo_taxis>';
+          $dat.='</tipo_taxis>';
         }else{
           $dat="";
         }
@@ -1812,13 +1812,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                          $personas,
                          $pago,
                          $descuento,
-                         $referencias,
-                         $id_tarjeta,
-                         $tipo,
-                         $iave,
-                         $ac,
-                         $conectores,
-                         $wifi){
+                         $referencias){
+
     $res = false;
     global $base;
 
@@ -1839,13 +1834,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
               DISPOSITIVO_ORIGEN,
               ID_SRV_ESTATUS,
               ORIGEN_REFERENCIAS,
-              CLAVE_VIAJE,
-              ID_TARJETA,
-              ID_TIPO_TAXI,
-              CARGADOR,
-              AC,
-              WIFI,
-              IAVE
+              CLAVE_VIAJE
             ) VALUES (
               ".$id_viaje.",
               ".$pago.",
@@ -1861,13 +1850,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
               '".$dispositivo."',
               1,
               '".$referencias."',
-              ".$codigo.",
-              ".$id_tarjeta.",
-              ".$tipo.",
-              ".$conectores.",
-              ".$ac.",
-              ".$wifi.",
-              ".$iave.")";
+              ".$codigo.")";
     
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1895,11 +1878,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                    C.DESCRIPCION AS FORMA_PAGO,
                    B.IMAGEN AS FOTO,
                    A.ORIGEN_REFERENCIAS,
-                   A.CLAVE_VIAJE,
-                   A.IAVE,
-                   A.WIFI,
-                   A.AC,
-                   A.CARGADOR
+                   A.CLAVE_VIAJE
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -1932,10 +1911,6 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>
                <clave>".$row->CLAVE_VIAJE."</clave>
                <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
-               <ac>".$row->AC."</ac>
-               <iave>".$row->IAVE."</iave>
-               <wifi>".$row->WIFI."</wifi>
-               <cargador>".$row->CARGADOR."</cargador>
               </viaje>";
       }
       mysql_free_result($qry);
@@ -2151,8 +2126,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                          $iave,
                          $ac,
                          $conectores,
-                         $wifi,
-                         $id_tarjeta){
+                         $wifi){
 
     $con = mysql_connect("localhost","dba","t3cnod8A!");
 
@@ -2193,13 +2167,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                          $personas,
                          $pago,
                          $descuento,
-                         $referencias,
-                         $id_tarjeta,
-                         $tipo,
-                         $iave,
-                         $ac,
-                         $conectores,
-                         $wifi)){
+                         $referencias)){
           //$id_viaje = dame_viaje($id_usuario,$dispositivo,$lat_origen,$lon_origen,$lat_destino,$lon_destino);
           //tiene que buscar el usuario
           $mensaje = "Se le ha asignado un viaje.@".$id_viaje;
@@ -2958,18 +2926,10 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
             //envia_push('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token);
             envia_push('dev',
                        'usuario',
-                       'Su viaje ha concluido. Fue un placer atenderlo.',
-                       $push_token,
-                       $so,
-                       'Su viaje ha concluido. Fue un placer atenderlo.');
-
-            /*envia_push('dev',
-                       'usuario',
                        'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago.@'.$importe.'@'.$forma."@".$id_viaje,
                        $push_token,
                        $so,
-                       'Su viaje ha concluido. Fue un placer atenderlo.');*/
-
+                       'Su viaje ha concluido. Fue un placer atenderlo.');
             //envia_push_dev('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token,$so);
           }
           $idx = 0;
@@ -3149,11 +3109,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
           $res = '<code>'.$row->ID_ESTATUS.'</code>
                   <msg>'.$row->ESTATUS.'@'.$row->TAXISTA.'@'.$row->CLAVE_VIAJE.'</msg>';
         } elseif ($row->ID_ESTATUS == 3) {
-          /*$res = '<code>'.$row->ID_ESTATUS.'</code>
-                  <msg>'.$row->ESTATUS.'@'.$row->TAXISTA.'@'.$row->MONTO_TAXISTA.'@'.$row->ID_FORMA_PAGO.'</msg>'; */
-
-          $res = '<code>'.$row->ID_ESTATUS.'</code> <msg>Su viaje ha concluido. Fue un placer atenderlo.</msg>';
-
+          $res = '<code>'.$row->ID_ESTATUS.'</code>
+                  <msg>'.$row->ESTATUS.'@'.$row->TAXISTA.'@'.$row->MONTO_TAXISTA.'@'.$row->ID_FORMA_PAGO.'</msg>'; 
         } elseif ($row->ID_ESTATUS == 4) {
           $res = '<code>'.$row->ID_ESTATUS.'</code>
                   <msg>'.$row->ESTATUS.'@'.$row->TAXISTA.'@'.$msg .'</msg>'; 
