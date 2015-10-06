@@ -1,4 +1,4 @@
-<?php
+<?php  
   set_time_limit(60000);
   require_once('./lib/nusoap.php'); 
   include 'lib/phpmailer.php';
@@ -2647,6 +2647,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
  
   function registra_usuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo){
     $res = false;
+    $codeActivacion = getRandomCode();
     $sql = "INSERT INTO SRV_USUARIOS (
               NOMBRE,
               USUARIO,
@@ -2659,7 +2660,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
               EMAIL,
               DISPOSITIVO,
               RATING,
-              VIAJES
+              VIAJES,
+              COD_CONFIRMACION
             ) VALUES (
               '".$nombre."',
               '".$email."',
@@ -2672,7 +2674,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
               '".$email."',
               '".$dispositivo."',
               0,
-              0
+              0,
+              '".$codeActivacion."'
             )";
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -3623,5 +3626,44 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return new soapval('return', 'xsd:string', $res);
   }
 
-  $server->service($HTTP_RAW_POST_DATA); 
+  function getRandomCode(){
+    $an = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    $su = strlen($an) - 1;
+    $resultado = '';
+    $codigo = substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1); 
+    if(validateCodigo($codigo)){
+      $resultado = $codigo;
+    }else{
+      $codigo = substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1) .
+              substr($an, rand(0, $su), 1);       
+      $resultado = $codigo;
+    }
+
+    return $resultado;
+  } 
+
+  function validateCodigo($codeActivacion){
+    global $base;;
+    $res = false; 
+    $sql = "SELECT COUNT(USUARIO) AS EXISTE
+              FROM SRV_USUARIOS
+              WHERE COD_CONFIRMACION = '".$codeActivacion."'";
+    if ($qry=mysql_query($sql)){      
+      $row = mysql_fetch_object($qry);
+      if ($row->EXISTE == 0){
+        $res = true;
+      }
+      mysql_free_result($qry);
+    }       
+    return $res;
+  }
+  
+  $server->service($HTTP_RAW_POST_DATA);   
 ?>
