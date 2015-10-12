@@ -1,0 +1,42 @@
+<?php $this->headScript()->appendFile('/controllers/gralTables.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/tableTaxis.js') ?>
+<input id="hRefLinkEdit" type="hidden" value="/finances/regions/7getinfo?idRow=" />
+
+	<section class="content">
+        <div class="box">
+            <div class="box-header">                
+                <h3 class="box-title">Regiones</h3>  
+                <div class="pull-right p-10">
+                    <?php if($this->dataUser['INSERTAR']==1): ?>
+                        <a href="/finances/regions/getinfo?catId=-1"><button class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button></a>
+                    <?php endif;?>                       
+                </div>                                  
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>               
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($this->datatTable as $key => $items): ?>  
+                        <tr class="odd gradeX">                     
+                            <td><?php echo $items['DESCRIPCION']; ?></td>                   
+                            <td><?php echo $items['ESTADO']; ?></td>
+                            <td><?php echo $items['ESTATUS']; ?></td>
+                            <td class="text-center" style="width:100px;">
+                                <?php if($this->dataUser['LECTURA']==1): ?>
+                                    <a href="/finances/regions/getinfo?catId=<?php echo $items['ID']; ?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>   
+                                <?php endif;?> 
+                            </td>
+                        </tr>    
+                        <?php endforeach;?>                        
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->       
+    </section><!-- /.content -->

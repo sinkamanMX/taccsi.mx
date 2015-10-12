@@ -1,0 +1,85 @@
+<?php $this->headScript()->appendFile('/controllers/admin/js/jsValidateClases.js') ?>
+<?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
+<input id="hRefLinkMain" type="hidden" value="/finances/regions/index" />
+<section class="content">
+    <div id="divAlert" class="alert alert-danger alert-dismissable hide">
+        <i class="fa fa-ban"></i>
+        <b>!Atención¡</b>
+        <div id="divErrorContent">                
+        </div>
+    </div>
+
+    <div class="col-xs-12">
+        <div class="box box-primary row-min-h450">
+            <div class="box-header">
+                <h3 class="box-title">Información de la Región</h3>
+            </div>
+            <?php if(@$this->errors['status']):?>
+                <div id="divpErrorLogin" class="alert alert-error" style="display:block;">
+                  <button type="button" class="close" data-dismiss="alert">×</button>
+                  <h4>Error</h4>
+                  <div>La Usuario no se encuentra disponible</div>
+                </div>
+            <?php endif;?>
+
+            <?php if(@$this->resultOp=='okRegister'):?>
+                <div class="alert alert-success alert-dismissable">
+                    <i class="fa fa-check"></i>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <b>!Atención¡</b> Los datos se han guardado correctamente.
+                </div>
+            <?php endif;?>                
+
+            <?php if($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==0): ?>
+                <div id="divAlert" class="alert alert-danger alert-dismissable">
+                    <i class="fa fa-ban"></i>
+                    <b>!Atención¡</b>
+                    <div>Usted no tiene permiso para ver esta información</div>
+                </div>                                      
+            <?php else:?>   
+            <form role="form" method="POST" action="/finances/regions/getinfo" id="FormData" >
+                <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
+                <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
+
+                <div class="box-body">
+                   <div class="col-xs-12">
+                        <div class="form-group col-xs-4">
+                            <label for="inputNombre">Descripción</label>
+                            <input type="text" class="form-control upperClass" autocomplete="off" name="inputNombre" id="inputNombre" placeholder="Descripción" value="<?php echo @$this->data['DESCRIPCION']; ?>">
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="inputEstado">Relacionado con</label>
+                            <div class="input-group col-xs-12">                     
+                                <select class="form-control" id="inputEstado" name="inputEstado" >
+                                    <option value="">Seleccione una opción</option>
+                                    <?php echo $this->aEstados;?>                                
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-xs-4">
+                            <label for="input">Estatus</label>
+                            <div class="input-group col-xs-12">                     
+                                <select class="form-control" id="inputEstatus" name="inputEstatus" >
+                                    <option value="">Seleccione una opción</option>
+                                    <?php echo $this->aStatus;?>                                
+                                </select>
+                            </div>
+                        </div>
+                    </div>                                    
+
+                    <div class="form-group">
+                      
+                    </div>
+                  </div><!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                        <button type="submit" class="btn btn-primary margin-5">Guardar</button>
+                    </div>
+                  </div>
+                </form>  
+            <?php endif;?>
+        </div><!-- /.box -->
+    </div>
+</section><!-- /.content -->

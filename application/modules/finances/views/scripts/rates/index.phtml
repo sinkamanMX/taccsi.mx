@@ -1,0 +1,69 @@
+<?php $this->headScript()->appendFile('/controllers/gralTables.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/tableTaxis.js') ?>
+<input id="hRefLinkEdit" type="hidden" value="/admin/cars/getinfo?idRow=" />
+
+	<section class="content">
+        <div class="box">
+            <div class="box-header">                
+                <h3 class="box-title">Vehículos</h3>  
+                <div class="pull-right p-10">
+                    <?php if($this->dataUser['INSERTAR']==1): ?>
+                        <a href="/admin/cars/getinfo?catId=-1"><button class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button></a>
+                    <?php endif;?>                       
+                </div>                                  
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>               
+                            <th>Marca</th>
+                            <th>Modelo</th>                            
+                            <th>Placas</th>
+                            <th>ECO</th>
+                            <th>Chofer</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($this->datatTable as $key => $items): ?>  
+                        <tr class="odd gradeX">                     
+                            <td><?php echo $items['MARCA_NAME']; ?></td>                   
+                            <td><?php echo $items['MODELO_NAME']; ?></td>
+                            <td><?php echo $items['PLACAS']; ?></td>
+                            <td><?php echo $items['ECO']; ?></td>
+                            <td><?php echo $items['NOMBRE_CHOFER']; ?></td>
+                            <td class="text-center" style="width:100px;">
+                                <?php if($this->dataUser['LECTURA']==1): ?>
+                                    <a href="/admin/cars/getinfo?catId=<?php echo $items['ID_TAXI']; ?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>   
+                                <?php endif;?> 
+                                <?php if($this->dataUser['ELIMINAR']==1): ?>
+                                    <a href="javascript:confirmDelete('<?php echo $items['ID_TAXI']; ?>')"><button class="btn btn-danger"> <i class="fa fa-trash-o"></i></button></a>
+                                <?php endif;?>
+                            </td>
+                        </tr>    
+                        <?php endforeach;?>                        
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->       
+    </section><!-- /.content -->
+
+<div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Atención!</h4>
+            </div>
+                <div class="modal-body">
+                    <p>¿Realmente desea eliminar este registro?</p>
+                </div>
+
+                <div class="modal-footer clearfix">   
+                    <input type="hidden" id="inputDelete" value="-1"/>    
+                    <a class="btn btn-primary pull-left" href="javascript:deleteRow();">Eliminar</a>              
+                    <button type="button" class="btn pull-left" data-dismiss="modal">Cancelar</button>
+                </div>
+        </div>
+    </div>
+</div>
