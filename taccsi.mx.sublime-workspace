@@ -372,10 +372,18 @@
 	"buffers":
 	[
 		{
-			"file": "public/controllers/callcenter/services/js/serviceinfo.js",
+			"file": "application/modules/finances/views/scripts/rates/index.phtml",
 			"settings":
 			{
-				"buffer_size": 12069,
+				"buffer_size": 2394,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
+			"settings":
+			{
+				"buffer_size": 9693,
 				"line_ending": "Unix"
 			}
 		}
@@ -424,6 +432,13 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/regions/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/regions/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/clases/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsTableTaxis.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/clases/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateClases.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/serviceinfo.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/tBienvenida.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sWelcome.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
@@ -496,7 +511,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/serviceinfo.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/rastreoTaxis.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/modules/admin/views/scripts/main/index.phtml",
@@ -545,13 +559,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/clientinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/validation/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/reporte.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/companies/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_blank.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/dist/js/app.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_footer.phtml"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/reporte.phtml"
 	],
 	"find":
 	{
@@ -572,6 +580,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"/admin/cars/",
+			"/finances/clases/",
+			"/admin/cars/",
 			"Calculate",
 			"_aviso_",
 			"registra_usuario",
@@ -696,10 +707,7 @@
 			"model",
 			"open",
 			"sSucursal",
-			"color",
-			"value",
-			"input",
-			"knob"
+			"color"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -707,6 +715,8 @@
 		"regex": true,
 		"replace_history":
 		[
+			"/finances/rates/",
+			"/finances/regions/",
 			"height=150&width=200",
 			"->aDataTaxi",
 			"aDataTaxi",
@@ -753,32 +763,63 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/controllers/callcenter/services/js/serviceinfo.js",
+					"file": "application/modules/finances/views/scripts/rates/index.phtml",
 					"settings":
 					{
-						"buffer_size": 12069,
+						"buffer_size": 2394,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5242,
-								5242
+								1967,
+								1967
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2700.0,
+						"translation.y": 18.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
+					"settings":
+					{
+						"buffer_size": 9693,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8665,
+								8665
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1675.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
