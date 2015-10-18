@@ -4,21 +4,24 @@
  * @author epena
  * @package library.My.Models
  */
-class My_Model_Clases extends My_Db_Table
+class My_Model_Tarifas extends My_Db_Table
 {
 	protected $_schema 	= 'TACCSI';
-	protected $_name 	= 'ADMIN_CLASE_TAXIS';
-	protected $_primary = 'ID_CLASE';
+	protected $_name 	= 'ADMIN_TARIFAS';
+	protected $_primary = 'ID_TARIFA';
 	
 	public function getDataTables(){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT ID_CLASE AS ID, DESCRIPCION, IF(ESTATUS=1,'Activo','Inactivo') AS ESTATUS
-				FROM ADMIN_CLASE_TAXIS
-				ORDER BY DESCRIPCION ASC";
+    	$sql ="SELECT T.DESCRIPCION, C.DESCRIPCION AS N_CLASE, E.NOM_ENT, IF(USA_TAXIMETRO=0,'No','Si') AS N_TAXIMETRO,
+    			T.BANDERAZO , IF(T.ESTATUS=0,'Inactivo','Activo') AS N_ESTATUS,T.HORARIO_INICIO, T.HORARIO_FIN, T.COSTO_KILOMETRO ,T.COSTO_MINUTOS
+				FROM ADMIN_TARIFAS T
+				INNER JOIN ADMIN_CLASE_TAXIS C ON T.ID_CLASE  = C.ID_CLASE
+				INNER JOIN SP_ESTADOS        E ON T.ID_ESTADO = E.ID
+				ORDER BY T.DESCRIPCION  ASC";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
-			$result = $query;			
+			$result = $query;
 		}	
         
 		return $result;			
@@ -28,8 +31,8 @@ class My_Model_Clases extends My_Db_Table
 		try{
 			$result= Array();
 	    	$sql ="SELECT *
-				FROM ADMIN_CLASE_TAXIS
-				WHERE ID_CLASE = $idObject
+				FROM ADMIN_TARIFAS
+				WHERE ID_TARIFA = $idObject
 				LIMIT 1";
 			$query   = $this->query($sql);
 			if(count($query)>0){
@@ -83,23 +86,5 @@ class My_Model_Clases extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;
-    }
-    
-	public function getCbo(){
-		try{
-			$result= Array();
-			$this->query("SET NAMES utf8",false); 		
-	    	$sql ="SELECT $this->_primary AS ID, DESCRIPCION AS NAME 
-	    			FROM $this->_name ORDER BY NAME ASC";
-			$query   = $this->query($sql);
-			if(count($query)>0){		  
-				$result = $query;			
-			}
-		}catch(Exception $e) {
-            echo $e->getMessage();
-            echo $e->getErrorMessage();
-        }
-        
-		return $result;			
-	}    
+    }      
 }

@@ -12,6 +12,7 @@ $().ready(function() {
             form.submit();
         }
     });	
+    initMapToDraw();
 });
 
 function backToMain(){

@@ -13,9 +13,9 @@ class My_Model_Regions extends My_Db_Table
 	public function getDataTables(){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT R.ID_REGION AS ID,R.DESCRIPCION, IF(E.ID_ESTADO IS NULL,'-', E.NOMBRE) AS ESTADO, IF(R.ESTATUS=1,'Activo','Inactivo') AS ESTATUS
+    	$sql ="SELECT R.ID_REGION AS ID,R.DESCRIPCION, IF(E.ID_SP_ESTADOS IS NULL,'-', E.NAME) AS ESTADO, IF(R.ESTATUS=1,'Activo','Inactivo') AS ESTATUS
 				FROM ADMIN_REGIONES R
-				INNER JOIN ZZ_SPM_ENTIDADES E ON R.ID_ESTADO = E.ID_ESTADO
+				INNER JOIN SP_ESTADOS E ON R.ID_ESTADO = E.ID_SP_ESTADOS
 				ORDER BY R.DESCRIPCION ASC";
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
@@ -28,7 +28,7 @@ class My_Model_Regions extends My_Db_Table
     public function getData($idObject){
 		try{
 			$result= Array();
-	    	$sql ="SELECT *
+	    	$sql ="SELECT ID_REGION,ID_ESTADO,DESCRIPCION,ESTATUS, ASTEXT(MAP_OBJECT) AS MAP_OBJECT2
 					FROM ADMIN_REGIONES
 					WHERE ID_REGION = $idObject
 					LIMIT 1";
@@ -48,11 +48,13 @@ class My_Model_Regions extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-        $idEstado = (isset($data['inputEstado'])) ? $data['inputEstado'] : 'NULL' ; 
+        $idEstado = (isset($data['inputEstado']))  ? $data['inputEstado'] : 'NULL' ;
+        $sPolygono= (isset($data['inputPolygon'])) ? "MAP_OBJECT = GEOMFROMTEXT('".$data['inputPolygon']."')," : "" ;  
         
         $sql="INSERT INTO ADMIN_REGIONES	
         		SET DESCRIPCION     ='".$data['inputNombre']."',
         			ID_ESTADO		= ".$idEstado.",
+        			$sPolygono
         			ESTATUS			= ".$data['inputEstatus']." ";
         try{
     		$query   = $this->query($sql,false);
@@ -74,10 +76,12 @@ class My_Model_Regions extends My_Db_Table
         $result['status']  = false;
         
         $idEstado = (isset($data['inputEstado'])) ? $data['inputEstado'] : 'NULL' ;
-
+        $sPolygono= (isset($data['inputPolygon'])) ? "MAP_OBJECT = GEOMFROMTEXT('".$data['inputPolygon']."')," : "" ;
+        
         $sql="UPDATE ADMIN_REGIONES	
 				SET DESCRIPCION     ='".$data['inputNombre']."',
 					ID_ESTADO		= ".$idEstado.",
+					$sPolygono
         			ESTATUS			= ".$data['inputEstatus']."         		
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            

@@ -41,11 +41,91 @@ class finances_RatesController extends My_Controller_Action
     
     public function indexAction(){
     	try{
-			$classObject = new My_Model_Taxis();
-			$this->view->datatTable = $classObject->getDataTables($this->_dataUser['ID_EMPRESA']);
+			$classObject = new My_Model_Tarifas();
+			$this->view->datatTable = $classObject->getDataTables();
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }  
     }    
+    
+
+    public function getinfoAction(){
+    	try{
+    		$dataInfo 	= Array();
+    		$cFunctions	= new My_Controller_Functions();    		
+    		$classObject= new My_Model_Tarifas();
+    		$cClases	= new My_Model_Clases();
+    		$sEstatus	= '';
+    		$sClase		= '';
+    		$aClase		= $cClases->getCbo();
+    		
+    	    if($this->_idUpdate >-1){
+    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
+    	    	$sEstatus	= $dataInfo['ESTATUS'];
+    	    	$sClase		= $dataInfo['ID_CLASE'];
+			}
+			
+			
+			
+			
+			/*
+    		if($this->_dataOp=='new'){
+				 	$insert = $classObject->insertRow($this->_dataIn);
+			 		if($insert['status']){
+			 			$this->_idUpdate = $insert['id'];
+		    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
+		    	    	$sEstatus	= $dataInfo['ESTATUS'];
+				 		$this->_resultOp = 'okRegister';
+					}else{
+						$this->errors['status'] = 'no-insert';
+					}				 
+			}else if($this->_dataOp=='update'){	  		
+				if($this->_idUpdate>-1){
+					$updated = $classObject->updateRow($this->_dataIn);
+					if($updated['status']){	
+		    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
+		    	    	$sEstatus	= $dataInfo['ESTATUS'];
+				 		$this->_resultOp = 'okRegister';
+					}else{
+				 		$this->errors['eUsuario'] = '1';
+				 	}
+				}else{
+					$this->errors['status'] = 'no-info';
+				}
+			}
+	
+			if(count($this->_aErrors)>0 && $this->_dataOp!=""){
+				
+				$dataInfo['ID_PERFIL'] 		= $this->dataIn['inputPerfil'];
+				$dataInfo['ID_SUCURSAL'] 	= $this->dataIn['inputSucursal'];
+				$dataInfo['USUARIO'] 		= $this->dataIn['inputUsuario'];
+				$dataInfo['NOMBRE'] 		= $this->dataIn['inputNombre'];
+				$dataInfo['APELLIDOS'] 		= $this->dataIn['inputApps'];
+				$dataInfo['EMAIL'] 			= $this->dataIn['inputEmail'];
+				$dataInfo['TEL_MOVIL'] 		= $this->dataIn['inputMovil'];
+				$dataInfo['TEL_FIJO'] 		= $this->dataIn['inputTelFijo'];
+				$dataInfo['ACTIVO'] 		= $this->dataIn['inputEstatus'];
+				$dataInfo['FLAG_OPERACIONES']= $this->dataIn['inputOperaciones'];
+				
+    	    	$sPerfil	 = $dataInfo['ID_PERFIL'];
+    	    	$sEstatus	 = $dataInfo['ACTIVO'];
+				$sOperaciones= $dataInfo['FLAG_OPERACIONES'];
+				$sSucursales =$dataInfo['ID_SUCURSAL'];	
+				
+			}	
+			*/	
+			
+    		$this->view->aStatus  	= $cFunctions->cboStatus($sEstatus);
+			$this->view->aClases  	= $cFunctions->selectDb($aClase,$sClase);    			
+			$this->view->data 		= $dataInfo; 
+			$this->view->errors 	= $this->_aErrors;	
+			$this->view->resultOp   = $this->_resultOp;
+			$this->view->catId		= $this->_idUpdate;
+			$this->view->idToUpdate = $this->_idUpdate;
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }
+    }     
 }

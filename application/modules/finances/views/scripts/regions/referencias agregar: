@@ -1,0 +1,23 @@
+referencias agregar:
+-Negocio en lugar de nombre de empresa.
+-Agregar multiusuarios (clientes).
+*Bug -> Cuando el usuario se logea y la clave es incorrecta, no deja pasar, se queda en esperando.
+-Que se pueda logear con cuenta de facebook.
+-Cambiar las fotos que aparecen por default.
+-En la ayuda agregar video de taccsi.
+-El menu de Acerca de... se debe de visualizar aun cuando no estes logeado.
+
+<------ Ayuda ------>
+** -> La aplicacion ubicara automaticamente tu ubicacion usando el gps con el que cuenta tu teléfono.
+** Verificar la redaccion por parte de UDA.
+** Poner mensaje que consumira datos.
+*Agregar metodo de pago  
+	*Efectivo-> Descripción.
+*Cuando ingresen a la ayuda por default muestre el menu.
+*Agrear la opción de eliminar en Mis lugares *Ayuda.
+*Mis viajes redaccion moddificar:
+	*Que se han solicitado.
+	*En la imagen de viajes poner un ejemplo de cancelado.
+*listadao. Modificar.
+*Dejar las pantallas sin menu de android.
+
