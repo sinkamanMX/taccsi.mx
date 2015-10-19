@@ -56,36 +56,45 @@ class finances_RatesController extends My_Controller_Action
     		$cFunctions	= new My_Controller_Functions();    		
     		$classObject= new My_Model_Tarifas();
     		$cClases	= new My_Model_Clases();
+			$cEstados   = new My_Model_Spestados();
+			
+			$sEstado	= '';
     		$sEstatus	= '';
     		$sClase		= '';
+    		$sbTaximetro= '';
     		$aClase		= $cClases->getCbo();
+    		$aEstados   = $cEstados->getCbo();
     		
     	    if($this->_idUpdate >-1){
     	    	$dataInfo	= $classObject->getData($this->_idUpdate);
     	    	$sEstatus	= $dataInfo['ESTATUS'];
     	    	$sClase		= $dataInfo['ID_CLASE'];
+    	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
+    	    	$sEstado	= $dataInfo['ID_ESTADO'];
 			}
 			
-			
-			
-			
-			/*
     		if($this->_dataOp=='new'){
-				 	$insert = $classObject->insertRow($this->_dataIn);
-			 		if($insert['status']){
-			 			$this->_idUpdate = $insert['id'];
-		    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
-		    	    	$sEstatus	= $dataInfo['ESTATUS'];
-				 		$this->_resultOp = 'okRegister';
-					}else{
-						$this->errors['status'] = 'no-insert';
-					}				 
-			}else if($this->_dataOp=='update'){	  		
+			 	$insert = $classObject->insertRow($this->_dataIn);
+		 		if($insert['status']){
+		 			$this->_idUpdate = $insert['id'];
+	    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
+	    	    	$sEstatus	= $dataInfo['ESTATUS'];
+	    	    	$sClase		= $dataInfo['ID_CLASE'];
+	    	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
+	    	    	$sEstado	= $dataInfo['ID_ESTADO'];
+			 		$this->_resultOp = 'okRegister';
+				}else{
+					$this->errors['status'] = 'no-insert';
+				}				 
+    		}else if($this->_dataOp=='update'){
 				if($this->_idUpdate>-1){
 					$updated = $classObject->updateRow($this->_dataIn);
 					if($updated['status']){	
 		    	    	$dataInfo	= $classObject->getData($this->_idUpdate);
 		    	    	$sEstatus	= $dataInfo['ESTATUS'];
+		    	    	$sClase		= $dataInfo['ID_CLASE'];
+		    	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
+		    	    	$sEstado	= $dataInfo['ID_ESTADO'];
 				 		$this->_resultOp = 'okRegister';
 					}else{
 				 		$this->errors['eUsuario'] = '1';
@@ -94,8 +103,8 @@ class finances_RatesController extends My_Controller_Action
 					$this->errors['status'] = 'no-info';
 				}
 			}
-	
-			if(count($this->_aErrors)>0 && $this->_dataOp!=""){
+			
+			/*if(count($this->_aErrors)>0 && $this->_dataOp!=""){
 				
 				$dataInfo['ID_PERFIL'] 		= $this->dataIn['inputPerfil'];
 				$dataInfo['ID_SUCURSAL'] 	= $this->dataIn['inputSucursal'];
@@ -112,10 +121,11 @@ class finances_RatesController extends My_Controller_Action
     	    	$sEstatus	 = $dataInfo['ACTIVO'];
 				$sOperaciones= $dataInfo['FLAG_OPERACIONES'];
 				$sSucursales =$dataInfo['ID_SUCURSAL'];	
-				
 			}	
 			*/	
 			
+			$this->view->aTaximetro = $cFunctions->cboOptions($sbTaximetro);
+			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
     		$this->view->aStatus  	= $cFunctions->cboStatus($sEstatus);
 			$this->view->aClases  	= $cFunctions->selectDb($aClase,$sClase);    			
 			$this->view->data 		= $dataInfo; 

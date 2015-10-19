@@ -15,9 +15,8 @@ class My_Model_Spestados extends My_Db_Table
 		try{
 			$result= Array();
 			$this->query("SET NAMES utf8",false); 		
-	    	$sql ="SELECT ID_SP_ESTADOS AS ID, NAME
+	    	$sql ="SELECT ID, NOM_ENT AS NAME
 					FROM SP_ESTADOS
-					GROUP BY NAME
 					ORDER BY NAME ASC";
 			$query   = $this->query($sql);
 			if(count($query)>0){		  
@@ -36,8 +35,7 @@ class My_Model_Spestados extends My_Db_Table
 		$this->query("SET NAMES utf8",false); 
     	$sql ="SELECT ASTEXT(ogc_geom) AS GEO
 				FROM SP_ESTADOS
-				WHERE ID_SP_ESTADOS = $idObject LIMIT 1";	
-    	Zend_Debug::dump($sql);
+				WHERE ID = $idObject LIMIT 1";	
 		$query   = $this->query($sql);
 		if(count($query)>0){		  
 			$result = $query[0];			

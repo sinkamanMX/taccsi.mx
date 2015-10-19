@@ -13,7 +13,7 @@ class My_Model_Tarifas extends My_Db_Table
 	public function getDataTables(){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT T.DESCRIPCION, C.DESCRIPCION AS N_CLASE, E.NOM_ENT, IF(USA_TAXIMETRO=0,'No','Si') AS N_TAXIMETRO,
+    	$sql ="SELECT T.ID_TARIFA,T.DESCRIPCION, C.DESCRIPCION AS N_CLASE, E.NOM_ENT, IF(USA_TAXIMETRO=0,'No','Si') AS N_TAXIMETRO,
     			T.BANDERAZO , IF(T.ESTATUS=0,'Inactivo','Activo') AS N_ESTATUS,T.HORARIO_INICIO, T.HORARIO_FIN, T.COSTO_KILOMETRO ,T.COSTO_MINUTOS
 				FROM ADMIN_TARIFAS T
 				INNER JOIN ADMIN_CLASE_TAXIS C ON T.ID_CLASE  = C.ID_CLASE
@@ -50,9 +50,23 @@ class My_Model_Tarifas extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-        $sql="INSERT INTO ADMIN_CLASE_TAXIS	
-        		SET DESCRIPCION     ='".$data['inputNombre']."',
-        			ESTATUS			= ".$data['inputEstatus']." ";
+        $sql="INSERT INTO ADMIN_TARIFAS
+			SET   ID_CLASE				= ".$data['inputClase'].",
+				  ID_ESTADO				= ".$data['inputEstado'].",
+				  DESCRIPCION			='".$data['inputNombre']."',
+				  USA_TAXIMETRO			= ".$data['inputuTaximetro'].",
+				  BANDERAZO				= ".$data['inputBanderazo'].",
+				  COSTO_KILOMETRO		= ".((!isset($data['inputKmsCobro'])  || $data['inputKmsCobro'] =="") ? 'NULL': $data['inputKmsCobro']).",
+				  COSTO_MINUTOS			= ".((!isset($data['inputMinsCobro']) || $data['inputMinsCobro']=="") ? 'NULL': $data['inputMinsCobro']).",
+				  HORARIO_INICIO		='".$data['inputHinicio']."',
+				  HORARIO_FIN			='".$data['inputHfin']."',
+				  KM_FUERA_HORARIO		= ".((!isset($data['inputKmsFhor'])   || $data['inputKmsFhor']  =="") ? 'NULL': $data['inputKmsFhor']).",
+				  MIN_FUERA_HORARIO		= ".((!isset($data['inputMinsFhor'])  || $data['inputMinsFhor'] =="") ? 'NULL': $data['inputMinsFhor']).",
+				  KM_FUERA_ZONA			= ".((!isset($data['inputKmsFzona'])  || $data['inputKmsFzona'] =="") ? 'NULL': $data['inputKmsFzona']).",
+				  MIN_FUERA_ZONA		= ".((!isset($data['inputMinsFzona']) || $data['inputMinsFzona']=="") ? 'NULL': $data['inputMinsFzona']).",
+				  COSTO_FUERA_HORARIO	= ".((!isset($data['inputCobroFhor']) || $data['inputCobroFhor']=="") ? 'NULL': $data['inputCobroFhor']).",
+				  ESTATUS				= ".$data['inputEstatus'].",
+				  CREADO			 	= CURRENT_TIMESTAMP";       
         try{            
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -72,9 +86,22 @@ class My_Model_Tarifas extends My_Db_Table
        	$result     = Array();
         $result['status']  = false;
 
-        $sql="UPDATE ADMIN_CLASE_TAXIS	
-				SET DESCRIPCION     ='".$data['inputNombre']."',
-        			ESTATUS			= ".$data['inputEstatus']."         		
+        $sql="UPDATE ADMIN_TARIFAS	
+			SET   ID_CLASE				= ".$data['inputClase'].",
+				  ID_ESTADO				= ".$data['inputEstado'].",
+				  DESCRIPCION			='".$data['inputNombre']."',
+				  USA_TAXIMETRO			= ".$data['inputuTaximetro'].",
+				  BANDERAZO				= ".$data['inputBanderazo'].",
+				  COSTO_KILOMETRO		= ".((!isset($data['inputKmsCobro'])  || $data['inputKmsCobro'] =="") ? 'NULL': $data['inputKmsCobro']).",
+				  COSTO_MINUTOS			= ".((!isset($data['inputMinsCobro']) || $data['inputMinsCobro']=="") ? 'NULL': $data['inputMinsCobro']).",
+				  HORARIO_INICIO		='".$data['inputHinicio']."',
+				  HORARIO_FIN			='".$data['inputHfin']."',
+				  KM_FUERA_HORARIO		= ".((!isset($data['inputKmsFhor'])   || $data['inputKmsFhor']  =="") ? 'NULL': $data['inputKmsFhor']).",
+				  MIN_FUERA_HORARIO		= ".((!isset($data['inputMinsFhor'])  || $data['inputMinsFhor'] =="") ? 'NULL': $data['inputMinsFhor']).",
+				  KM_FUERA_ZONA			= ".((!isset($data['inputKmsFzona'])  || $data['inputKmsFzona'] =="") ? 'NULL': $data['inputKmsFzona']).",
+				  MIN_FUERA_ZONA		= ".((!isset($data['inputMinsFzona']) || $data['inputMinsFzona']=="") ? 'NULL': $data['inputMinsFzona']).",
+				  COSTO_FUERA_HORARIO	= ".((!isset($data['inputCobroFhor']) || $data['inputCobroFhor']=="") ? 'NULL': $data['inputCobroFhor']).",
+				  ESTATUS				= ".$data['inputEstatus']."       		
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
         try{            
     		$query   = $this->query($sql,false);
