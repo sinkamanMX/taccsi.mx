@@ -12,7 +12,11 @@
     <div class="col-xs-12">
         <div class="box box-primary row-min-h550">
             <div class="box-header">
-                <h3 class="box-title">Información de la Tarifa</h3>
+                <h3 class="box-title">
+                    <a class="pull-left" href="/finances/rates/index">
+                        <i class="fa fa-arrow-circle-left"></i> Regresar
+                    </a> &nbsp;&nbsp;&nbsp;
+                    Información de la Tarifa</h3>
             </div>
 
             <div class="box-body">
@@ -158,7 +162,7 @@
                         <table id="dataTableTar" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Por Default</th>           
+                                    <!--<th>Por Default</th>    -->       
                                     <th>Descripción</th>
                                     <th>Costo</th>                                    
                                     <th>Costo Acumulable</th>
@@ -168,7 +172,7 @@
                             <tbody>
                                 <?php foreach($this->aTableZonas as $key => $items): ?>  
                                 <tr class="odd gradeX">   
-                                    <td></td>
+                                    <!--<th>Por Default</th>    -->       
                                     <td><?php echo $items['DESCRIPCION']; ?></td>
                                     <td><?php echo "$ ".number_format($items['COSTO']); ?></td>                                    
                                     <td><?php echo $items['N_ACUM']; ?></td>                                    
