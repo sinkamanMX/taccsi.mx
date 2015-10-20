@@ -16,7 +16,7 @@ $().ready(function() {
             inputCpassword  : {
                 required: true,
                 equalTo: "#inputPassword",
-            }    
+            }
         },
         messages: {
             inputNombre     : "Campo Requerido",

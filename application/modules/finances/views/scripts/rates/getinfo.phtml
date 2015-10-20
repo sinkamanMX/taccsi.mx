@@ -18,7 +18,7 @@
             <div class="box-body">
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                     <li class="<?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>"><a href="#table" data-toggle="tab" aria-expanded="true">Información General</a></li>
-                    <li class="<?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterTarifas') ? 'active': ''; ?>"><a href="#tarifas" data-toggle="tab" aria-expanded="true">Zonas</a></li>
+                    <li class="<?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterTarifas') ? 'active': ''; ?>" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>"><a href="#tarifas" data-toggle="tab" aria-expanded="true">Zonas</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane <?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>" id="table">
@@ -30,7 +30,7 @@
                                 <b>!Atención¡</b> Los datos se han guardado correctamente.
                             </div>
                         <?php endif;?>         
-                        
+
                         <form role="form" method="POST" action="/finances/rates/getinfo" id="FormData" >
                             <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
                             <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />               
@@ -150,19 +150,40 @@
                         </form>                           
                     </div>
                     <div class="tab-pane <?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterTarifas') ? 'active': ''; ?>" id="tarifas" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>">
-
-
-
+                        <?php //if(@$this->data['USA_TAXIMETRO']==1 && count($this->aTableZonas)==0):?>
+                            <div class="pull-right p-10">
+                                <a href="/finances/zones/getinfo?catIdtar=<?php echo @$this->catId;?>&catId=-1"><button class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button></a>            
+                            </div>
+                        <?php //endif;?>                        
+                        <table id="dataTableTar" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Por Default</th>           
+                                    <th>Descripción</th>
+                                    <th>Costo</th>                                    
+                                    <th>Costo Acumulable</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($this->aTableZonas as $key => $items): ?>  
+                                <tr class="odd gradeX">   
+                                    <td></td>
+                                    <td><?php echo $items['DESCRIPCION']; ?></td>
+                                    <td><?php echo "$ ".number_format($items['COSTO']); ?></td>                                    
+                                    <td><?php echo $items['N_ACUM']; ?></td>                                    
+                                    <td class="text-center" style="width:100px;">
+                                        <?php if($this->dataUser['LECTURA']==1): ?>
+                                            <a href="/finances/zones/getinfo?catIdtar=<?php echo @$this->catId;?>&catId=<?php echo $items['ID_ZONA']; ?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>   
+                                        <?php endif;?> 
+                                    </td>
+                                </tr>    
+                                <?php endforeach;?>                        
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
-
-     <!--
-    
- 
-                  -->
-
         </div><!-- /.box -->
     </div>
 </section><!-- /.content -->

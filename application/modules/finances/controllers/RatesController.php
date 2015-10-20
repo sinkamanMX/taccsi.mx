@@ -57,6 +57,7 @@ class finances_RatesController extends My_Controller_Action
     		$classObject= new My_Model_Tarifas();
     		$cClases	= new My_Model_Clases();
 			$cEstados   = new My_Model_Spestados();
+			$cZonas		= new My_Model_Zonas();
 			
 			$sEstado	= '';
     		$sEstatus	= '';
@@ -64,6 +65,7 @@ class finances_RatesController extends My_Controller_Action
     		$sbTaximetro= '';
     		$aClase		= $cClases->getCbo();
     		$aEstados   = $cEstados->getCbo();
+    		$aTableZonas= Array();
     		
     	    if($this->_idUpdate >-1){
     	    	$dataInfo	= $classObject->getData($this->_idUpdate);
@@ -71,6 +73,7 @@ class finances_RatesController extends My_Controller_Action
     	    	$sClase		= $dataInfo['ID_CLASE'];
     	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
     	    	$sEstado	= $dataInfo['ID_ESTADO'];
+    	    	$aTableZonas= $cZonas->getDataTables($dataInfo['ID_TARIFA']);
 			}
 			
     		if($this->_dataOp=='new'){
@@ -124,6 +127,7 @@ class finances_RatesController extends My_Controller_Action
 			}	
 			*/	
 			
+			$this->view->aTableZonas= $aTableZonas;
 			$this->view->aTaximetro = $cFunctions->cboOptions($sbTaximetro);
 			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
     		$this->view->aStatus  	= $cFunctions->cboStatus($sEstatus);

@@ -1,4 +1,6 @@
 $().ready(function() {
+    $("[data-toggle='offcanvas']").click();
+    
 	$("#FormData").validate({
         rules: {
             inputNombre     : "required",
@@ -85,7 +87,9 @@ $().ready(function() {
         var idTaximetro = $("#inputuTaximetro").val();
         onChangeTaximetro(idTaximetro)
     }else{
-        onChangeTaximetro('')
+        onChangeTaximetro('');
+        $("#inputHinicio").val('00:00:00');
+        $("#inputHfin").val('23:59:59');
     }
 
     var nowTemp = new Date();
@@ -105,7 +109,36 @@ $().ready(function() {
         showSeconds: true,
         showMeridian: false,
         defaultTime: false
-    });    
+    });   
+
+  $('.table').dataTable( {
+    "sDom": "<'row'<'col-md-3'l><'col-md-9'f>r>t<'row'<'col-md-3'i><'col-md-9'p>>",
+    "sPaginationType": "bootstrap",
+    "bDestroy": true,
+    "bLengthChange": false,
+    "bPaginate": true,
+    "bFilter": true,
+    "bSort": true,
+    "bJQueryUI": true,
+    "iDisplayLength": 10,      
+    "bProcessing": false,
+    "bAutoWidth": true,
+    "bSortClasses": false,
+        "oLanguage": {
+            "sInfo": "Mostrando _TOTAL_ registros (_START_ a _END_)",
+            "sEmptyTable": "Sin registros.",
+            "sInfoEmpty" : "Sin registros.",
+            "sInfoFiltered": " - Filtrado de un total de  _MAX_ registros",
+            "sLoadingRecords": "Leyendo información",
+            "sProcessing": "Procesando",
+            "sSearch": "Buscar:",
+            "sZeroRecords": "Sin registros",
+            "oPaginate": {
+              "sPrevious": "Anterior",
+              "sNext": "Siguiente"
+            }          
+        }
+  } );       
 });
 
 function onChangeTaximetro(inputValue){
