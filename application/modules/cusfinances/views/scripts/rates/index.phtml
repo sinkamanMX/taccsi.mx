@@ -1,0 +1,60 @@
+<?php $this->headScript()->appendFile('/controllers/gralTables.js') ?>
+<?php $this->headScript()->appendFile('/controllers/admin/js/tableTaxis.js') ?>
+<input id="hRefLinkEdit" type="hidden" value="/cusfinances/rates/getinfo?idRow=" />
+<?php $this->headScript()->captureStart() ?>
+    $().ready(function() {
+        $("[data-toggle='offcanvas']").click();
+    });
+<?php $this->headScript()->captureEnd(); ?>
+	<section class="content">
+        <div class="box">
+            <div class="box-header">                
+                <h3 class="box-title">Tarifas</h3>  
+                <div class="pull-right p-10">
+                    <?php if($this->dataUser['INSERTAR']==1): ?>
+                        <a href="/cusfinances/rates/getinfo?catId=-1"><button class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button></a>
+                    <?php endif;?>                       
+                </div>                                  
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>                            
+                            <th>Descripión</th>
+                            <th>Clase de Taxi</th>
+                            <th>Estado</th>
+                            <th>Usa Taxímetro</th>
+                            <th>Banderazo ($)</th>
+                            <th>Costo por Km.</th>
+                            <th>Costo por Min.</th>
+                            <th>Horario</th>
+                            <th>Estatus</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($this->datatTable as $key => $items): ?>  
+                        <tr class="odd gradeX">
+                            <td><?php echo $items['N_TIPO']; ?></td>
+                            <td><?php echo $items['DESCRIPCION']; ?></td>
+                            <td><?php echo $items['N_CLASE']; ?></td>
+                            <td><?php echo $items['NOM_ENT']; ?></td>
+                            <td><?php echo $items['N_TAXIMETRO']; ?></td>
+                            <td><?php echo '$'.$items['BANDERAZO']; ?></td>
+                            <td><?php echo (isset($items['COSTO_KILOMETRO']) && $items['COSTO_KILOMETRO']!="") ? '$'.$items['COSTO_KILOMETRO'] : '-'; ?></td>
+                            <td><?php echo (isset($items['COSTO_MINUTOS'])   && $items['COSTO_MINUTOS']  !="") ? '$'.$items['COSTO_MINUTOS']   : '-'; ?></td>
+                            <td><?php echo $items['HORARIO_INICIO'].'-'.$items['HORARIO_FIN']; ?></td>
+                            <td><?php echo $items['N_ESTATUS']; ?></td>
+                            <td class="text-center" style="width:100px;">
+                                <?php if($this->dataUser['LECTURA']==1): ?>
+                                    <a href="/cusfinances/rates/getinfo?catId=<?php echo $items['ID_TARIFA']; ?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>   
+                                <?php endif;?> 
+                            </td>
+                        </tr>    
+                        <?php endforeach;?>                        
+                    </tbody>
+                </table>
+            </div><!-- /.box-body -->
+        </div><!-- /.box -->       
+    </section><!-- /.content -->
