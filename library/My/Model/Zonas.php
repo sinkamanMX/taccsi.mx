@@ -65,9 +65,8 @@ class My_Model_Zonas extends My_Db_Table
 					  $sPolygono
 					  LATITUD			= ".$sLatitud.",
 					  LONGITUD			= ".$sLongitud.",
-					  RADIO				= ".$sRadio.",		
-					  CREADO			= CURRENT_TIMESTAMP ";
-		Zend_Debug::dump($sql);					  
+					  RADIO				= ".$sRadio.",						  	
+					  CREADO			= CURRENT_TIMESTAMP ";					  
         try{
     		$query   = $this->query($sql,false);
     		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
@@ -106,7 +105,6 @@ class My_Model_Zonas extends My_Db_Table
 					  LONGITUD			= ".$sLongitud.",
 					  RADIO				= ".$sRadio."					          		
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
-		Zend_Debug::dump($sql);
         try{            
     		$query   = $this->query($sql,false);
 			if($query){

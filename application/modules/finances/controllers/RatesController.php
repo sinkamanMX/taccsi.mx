@@ -63,9 +63,14 @@ class finances_RatesController extends My_Controller_Action
     		$sEstatus	= '';
     		$sClase		= '';
     		$sbTaximetro= '';
+    		$sHinicio	= '00:00:00';
+    		$sFin 		= '23:59:00';
     		$aClase		= $cClases->getCbo();
     		$aEstados   = $cEstados->getCbo();
     		$aTableZonas= Array();
+    		
+    		$tabSelected  = (isset($this->_dataIn['strTabSelected']) &&
+    						    $this->_dataIn['strTabSelected'] !="") ? $this->_dataIn['strTabSelected'] : 1;    		
     		
     	    if($this->_idUpdate >-1){
     	    	$dataInfo	= $classObject->getData($this->_idUpdate);
@@ -73,7 +78,9 @@ class finances_RatesController extends My_Controller_Action
     	    	$sClase		= $dataInfo['ID_CLASE'];
     	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
     	    	$sEstado	= $dataInfo['ID_ESTADO'];
-    	    	$aTableZonas= $cZonas->getDataTables($dataInfo['ID_TARIFA']);
+    	    	$sHinicio	= $dataInfo['HORARIO_INICIO'];
+    	    	$sFin 		= $dataInfo['HORARIO_FIN'];
+    	    	$aTableZonas=  $cZonas->getDataTables($dataInfo['ID_TARIFA']);
 			}
 			
     		if($this->_dataOp=='new'){
@@ -85,6 +92,8 @@ class finances_RatesController extends My_Controller_Action
 	    	    	$sClase		= $dataInfo['ID_CLASE'];
 	    	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
 	    	    	$sEstado	= $dataInfo['ID_ESTADO'];
+	    	    	$sHinicio	= $dataInfo['HORARIO_INICIO'];
+	    	    	$sFin 		= $dataInfo['HORARIO_FIN'];	    	    	
 			 		$this->_resultOp = 'okRegister';
 				}else{
 					$this->errors['status'] = 'no-insert';
@@ -98,6 +107,8 @@ class finances_RatesController extends My_Controller_Action
 		    	    	$sClase		= $dataInfo['ID_CLASE'];
 		    	    	$sbTaximetro= $dataInfo['USA_TAXIMETRO'];
 		    	    	$sEstado	= $dataInfo['ID_ESTADO'];
+		    	    	$sHinicio	= $dataInfo['HORARIO_INICIO'];
+		    	    	$sFin 		= $dataInfo['HORARIO_FIN'];		    	    	
 				 		$this->_resultOp = 'okRegister';
 					}else{
 				 		$this->errors['eUsuario'] = '1';
@@ -131,12 +142,17 @@ class finances_RatesController extends My_Controller_Action
 			$this->view->aTaximetro = $cFunctions->cboOptions($sbTaximetro);
 			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
     		$this->view->aStatus  	= $cFunctions->cboStatus($sEstatus);
-			$this->view->aClases  	= $cFunctions->selectDb($aClase,$sClase);    			
+			$this->view->aClases  	= $cFunctions->selectDb($aClase,$sClase);
+
+			$this->view->aHin		= $cFunctions->getCboHoursDate($sHinicio); 
+			$this->view->aHfin 		= $cFunctions->getCboHoursDate($sFin);
+			
 			$this->view->data 		= $dataInfo; 
 			$this->view->errors 	= $this->_aErrors;	
 			$this->view->resultOp   = $this->_resultOp;
 			$this->view->catId		= $this->_idUpdate;
 			$this->view->idToUpdate = $this->_idUpdate;
+			$this->view->tabSelected= $tabSelected;
 		} catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                

@@ -31,6 +31,7 @@
                     <input type="hidden" id="catId"       name="catId" value="<?php echo $this->catId; ?>" />
                     <input type="hidden" id="catIdtar"    name="catIdtar" value="<?php echo $this->catIdtar; ?>" />
                     <input type="hidden" id="usTaximetro" name="usTaximetro" value="<?php echo @$this->dataRate['USA_TAXIMETRO']; ?>" />
+                    <input type="hidden" id="strTabSelected" name="strTabSelected" value="<?php echo $this->tabSelected;?>" />
                     <textarea style="display:none;" id="inputPoints"     name="inputPoints"  ></textarea>
                     <div class="box-body">
                         <?php if(@$this->resultOp=='okRegister'):?>
@@ -57,36 +58,32 @@
                             </div>
                             <div class="form-group col-xs-3" style="display:<?php echo (@$this->dataRate['USA_TAXIMETRO']==0) ? 'block': 'none'; ?>">
                                 <label for="inputCosto">Costo</label>
-                                <input type="text" class="form-control upperClass" autocomplete="off" name="inputCosto" id="inputCosto" placeholder="Descripción" value="<?php echo @$this->data['COSTO']; ?>">
+                                <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputCosto" id="inputCosto" placeholder="Descripción" value="<?php echo @$this->data['COSTO']; ?>">
                             </div>
                             <div class="form-group col-xs-3" style="display:<?php echo (@$this->dataRate['USA_TAXIMETRO']==0) ? 'block': 'none'; ?>">
                                 <label for="inputAcumulable">Costo Acumulable</label>
                                 <div class="input-group col-xs-12">
                                     <select class="form-control" id="inputAcumulable" name="inputAcumulable" >
                                         <option value="">Seleccione una opción</option>
-                                        <?php echo $this->aStatus;?>
+                                        <?php echo $this->aAcum;?>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-xs-12" id="divSearch">  
-                            <div class="col-xs-3 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
-                                <div class="form-group">
-                                    <label for="inputLatOrigen">Latitud</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputLatOrigen" id="inputLatOrigen" placeholder="Latitud" value="<?php echo @$this->data['LATITUD']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
+                        <div class="col-xs-12">  
+                            <div id="isearchRegion" class="col-xs-9"  style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
+                                <label for="inputEstado">Buscar Region,Municipio, Colonia,etc..</label>
+                                <div class="input-group col-xs-12">                     
+                                    <input type="text" class="form-control noEnterSubmit nopaste" name="inputOrigen" id="inputOrigen" placeholder="Colonia, Delefación o Municipio" value="">
                                 </div>
-                            </div>
-                            <div class="col-xs-3 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
-                                <div class="form-group">
-                                    <label for="inputLonOrigen">Longitud</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputLonOrigen" id="inputLonOrigen" placeholder="Longitud" value="<?php echo @$this->data['LONGITUD']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
-                                </div>
-                            </div>                            
+                                
+                            </div> 
+                          
                             <div class="col-xs-3 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
                                 <div class="form-group">
                                     <label for="inputRadio">Radio (kms)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputRadio" id="inputRadio" placeholder="Radio (Kms)" value="<?php echo @$this->data['RADIO']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputRadio" id="inputRadio" placeholder="Radio (Kms)" value="<?php echo @$this->data['RADIO']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
                                 </div>
                             </div> 
                             <div id="divEstado" class="form-group col-xs-3" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==1) ? 'block':'none'; ?>;">
@@ -98,23 +95,30 @@
                                     </select>
                                 </div>
                             </div>                        
-                        </div>                        
-
-                        <div class="col-xs-12" id="divSearch">   
-                            <div id="isearchRegion" class="col-xs-12"  style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
-                                <label for="inputEstado">Buscar Region,Municipio, Colonia,etc..</label>
-                                <div class="input-group col-xs-12">                     
-                                    <input type="text" class="form-control noEnterSubmit nopaste" name="inputOrigen" id="inputOrigen" placeholder="Colonia, Delefación o Municipio" value="">
-                                </div>
-                                <br/>
-                            </div>                    
-                        </div>                        
-
+                        </div>                                               
                         <br/>
                         <br/>
                         <div id="myMapDraw" style="width:100%; height:350px;"></div>
 
                         <br/>
+                        <div class="col-xs-12" id="divSearch">   
+                            <div class="col-xs-3">
+                                
+                            </div>
+                            <div class="col-xs-3 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
+                                <div class="form-group">                                    
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputLatOrigen" id="inputLatOrigen" placeholder="Latitud" value="<?php echo @$this->data['LATITUD']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
+                                </div>
+                            </div>
+                            <div class="col-xs-3 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
+                                <div class="form-group">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputLonOrigen" id="inputLonOrigen" placeholder="Longitud" value="<?php echo @$this->data['LONGITUD']; ?>" onChange="printCircle();" onKeyUp="printCircle();">
+                                </div>
+                            </div>               
+                            <div class="col-xs-1 optsCircle" style="display:<?php echo (isset($this->data['TIPO_ZONA']) && @$this->data['TIPO_ZONA']==0) ? 'block':'none'; ?>;">
+                                <a href=""><button onClick="printCircle()" class="btn btn-info"><i class="fa fa-map-pin"></i> Centrar</button></a>
+                            </div>                                  
+                        </div> 
 
                         <div class="form-group">
                           
@@ -123,7 +127,9 @@
 
                       <div class="box-footer">
                         <div class="pull-right">
-                            <button type="button" class="btn margin-5" onClick="javascript:backToMain()">Cancelar</button>
+                            <a href="/finances/rates/getinfo?catId=<?php echo $this->catIdtar; ?>">
+                                <button type="button" class="btn margin-5" >Cancelar</button>
+                            </a>                            
                             <button type="submit" class="btn btn-primary margin-5">Guardar</button>
                         </div>
                         </div>

@@ -287,5 +287,20 @@ class My_Controller_Functions
 		  $select .= '<option '.$current.' value="'.$h.'" >'.$h.'</option>';
 		  }
 	  return $select;  		    
+	}
+	
+	public function getCboHoursDate($option){
+		$select='';
+		for($i=0; $i<=23; $i++){
+			$h = ($i<=9)?"0".$i:$i;
+			for($x=0;$x<=59;){
+				$m = ($x<=9) ? "0".$x:$x;
+				$valueHour = $h.":".$m;
+				$current = ($valueHour.":00"==$option) ? 'selected': '';
+				$select .= '<option '.$current.' value="'.$valueHour.':00" >'.$valueHour.'</option>';
+				$x += 60;	
+			}
+		}
+	  	return $select;  		    		
 	}	
 }

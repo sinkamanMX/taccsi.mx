@@ -50,9 +50,13 @@ class My_Model_Tarifas extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
+        $idEmpresa= (isset($data['inputEmpresa'])    && $data['inputEmpresa']   !="")   ? $data['inputEstado']     : 'NULL' ;
+        $iTipo 	  = (isset($data['inputTipo'])       && $data['inputTipo']      !="")   ? $data['inputTipo']       : '0' ;        
+        
         $sql="INSERT INTO ADMIN_TARIFAS
 			SET   ID_CLASE				= ".$data['inputClase'].",
 				  ID_ESTADO				= ".$data['inputEstado'].",
+				  ID_EMPRESA			= ".$idEmpresa.",
 				  DESCRIPCION			='".$data['inputNombre']."',
 				  USA_TAXIMETRO			= ".$data['inputuTaximetro'].",
 				  BANDERAZO				= ".$data['inputBanderazo'].",
@@ -65,6 +69,7 @@ class My_Model_Tarifas extends My_Db_Table
 				  KM_FUERA_ZONA			= ".((!isset($data['inputKmsFzona'])  || $data['inputKmsFzona'] =="") ? 'NULL': $data['inputKmsFzona']).",
 				  MIN_FUERA_ZONA		= ".((!isset($data['inputMinsFzona']) || $data['inputMinsFzona']=="") ? 'NULL': $data['inputMinsFzona']).",
 				  COSTO_FUERA_HORARIO	= ".((!isset($data['inputCobroFhor']) || $data['inputCobroFhor']=="") ? 'NULL': $data['inputCobroFhor']).",
+				  TIPO_TARIFA			= ".$iTipo.",				  
 				  ESTATUS				= ".$data['inputEstatus'].",
 				  CREADO			 	= CURRENT_TIMESTAMP";       
         try{            

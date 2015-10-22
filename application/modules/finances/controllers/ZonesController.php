@@ -66,7 +66,7 @@ class finances_ZonesController extends My_Controller_Action
     		$sTipoa		= '';
     		$sEstado	= '';
     		$sAcumulado = '';
-    		$sPositions	= '';
+    		$sPositions	= '';    		
     		$aEstados   = $cEstados->getCbo();
     		
     		if(isset($this->_dataIn['catIdtar']) && $this->_dataIn['catIdtar']!="" ){
@@ -88,13 +88,17 @@ class finances_ZonesController extends My_Controller_Action
 			 	$insert = $cZona->insertRow($this->_dataIn);
 		 		if($insert['status']){	
 	 				$this->_idUpdate = $insert['id'];
+	 				/*
 					$dataInfo	= $cZona->getData($this->_idUpdate);
 					$sEstado	= $dataInfo['ID_ESTADO'];
 					$sAcumulado = $dataInfo['COSTO_ACUMULABLE'];
 					$sTipoa 	= $dataInfo['TIPO_ZONA'];
-					$aResultado = $cEstados->getData($dataInfo['ID_ESTADO']);
-					$sPositions = $this->processAreaSpatial($aResultado['GEO']);
-										
+					if($dataInfo['TIPO_ZONA']==1){
+						$aResultado = $cEstados->getData($dataInfo['ID_ESTADO']);					
+						$sPositions = $this->processAreaSpatial($aResultado['GEO']);	
+					}*/
+				
+					$this->redirect('/finances/rates/getinfo?catId='.$this->_dataIn['catIdtar'].'&strTabSelected=2');
 					$this->_resultOp = 'okRegister';
 				}else{
 					$this->errors['status'] = 'no-insert';
@@ -135,6 +139,7 @@ class finances_ZonesController extends My_Controller_Action
 			}			
 			
 			$this->view->catIdtar   = $this->_dataIn['catIdtar'];
+			$this->view->aAcum	    = $cFunctions->cboOptions($sAcumulado);
 			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
 			$this->view->aTipos     = $cFunctions->cbo_from_array($aOptions,$sTipoa);
 			$this->view->aPositions = $sPositions;	

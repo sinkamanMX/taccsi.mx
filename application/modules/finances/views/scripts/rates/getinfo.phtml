@@ -1,6 +1,6 @@
 <?php $this->headScript()->appendFile('/controllers/admin/js/jsValidateRates.js') ?>
 <?php $disabled = ($this->dataUser['EDITAR']==0 && $this->dataUser['LECTURA']==1) ? 'disabled':'';?>
-<input id="hRefLinkMain" type="hidden" value="/finances/clases/index" />
+<input id="hRefLinkMain" type="hidden" value="/finances/rates/index" />
 <section class="content">
     <div id="divAlert" class="alert alert-danger alert-dismissable hide">
         <i class="fa fa-ban"></i>
@@ -21,11 +21,11 @@
 
             <div class="box-body">
                 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-                    <li class="<?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>"><a href="#table" data-toggle="tab" aria-expanded="true">Información General</a></li>
-                    <li class="<?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterTarifas') ? 'active': ''; ?>" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>"><a href="#tarifas" data-toggle="tab" aria-expanded="true">Zonas</a></li>
+                    <li class="<?php echo ($this->tabSelected==1 || !isset($this->tabSelected)) ? 'active':'';?>"><a href="#table" data-toggle="tab" aria-expanded="true">Información General</a></li>
+                    <li class="<?php echo ($this->tabSelected==2 && isset($this->tabSelected)) ? 'active':' ';?>" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>"><a href="#tarifas" data-toggle="tab" aria-expanded="true">Zonas</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane <?php echo (!isset($this->sOperation) || @$this->resultOp=='okRegister') ? 'active': ''; ?>" id="table">
+                    <div class="tab-pane <?php echo ((!isset($this->sOperation) || @$this->resultOp=='okRegister' ) && $this->tabSelected==1 ) ? 'active': ''; ?>" id="table">
 
                         <?php if(@$this->resultOp=='okRegister'):?>
                             <div class="alert alert-success alert-dismissable">
@@ -84,16 +84,24 @@
                                 </div>
                                 <div class="form-group col-xs-3">
                                    <label for="inputBanderazo">Costo Banderazo ($)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputBanderazo" id="inputBanderazo" placeholder="Costo Banderazo" value="<?php echo @$this->data['BANDERAZO']; ?>">                           
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputBanderazo" id="inputBanderazo" placeholder="Costo Banderazo" value="<?php echo @$this->data['BANDERAZO']; ?>">                           
                                 </div>
                                 <div class="form-group col-xs-3">
-                                   <label for="inputHinicio">Horario Inicio</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputHinicio" id="inputHinicio" placeholder="Inicio de Horario" value="<?php echo @$this->data['HORARIO_INICIO']; ?>">
+                                    <label for="inputHinicio">Horario Inicio</label>
+                                    <div class="input-group col-xs-12">                     
+                                        <select class="form-control" id="inputHinicio" name="inputHinicio" >
+                                            <?php echo $this->aHin;?>                                
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-xs-3">
-                                   <label for="inputHfin">Horario Fin</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputHfin" id="inputHfin" placeholder="Fin de Horario" value="<?php echo @$this->data['HORARIO_FIN']; ?>">                           
+                                    <label for="inputHfin">Horario Fin</label>
+                                    <div class="input-group col-xs-12">                     
+                                        <select class="form-control" id="inputHfin" name="inputHfin" >
+                                            <?php echo $this->aHfin;?>                                
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 
@@ -101,11 +109,11 @@
                             <div class="col-xs-12 optTaximetro">
                                 <div class="form-group col-xs-4">
                                    <label for="inputMinsCobro">Cobrar cada (mins)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputMinsCobro" id="inputMinsCobro" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['COSTO_MINUTOS']; ?>">                           
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsCobro" id="inputMinsCobro" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['COSTO_MINUTOS']; ?>">                           
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="inputKmsCobro">Cobrar cada (kms)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputKmsCobro" id="inputKmsCobro" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['COSTO_KILOMETRO']; ?>">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsCobro" id="inputKmsCobro" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['COSTO_KILOMETRO']; ?>">
                                 </div>                        
                             </div>                         
 
@@ -113,11 +121,11 @@
                             <div class="col-xs-12 optTaximetro">
                                 <div class="form-group col-xs-4">
                                    <label for="inputMinsFhor">Cobrar cada (mins)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputMinsFhor" id="inputMinsFhor" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_HORARIO']; ?>">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsFhor" id="inputMinsFhor" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_HORARIO']; ?>">
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="inputKmsFhor">Cobrar cada (kms)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputKmsFhor" id="inputKmsFhor" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['KM_FUERA_HORARIO']; ?>">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsFhor" id="inputKmsFhor" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['KM_FUERA_HORARIO']; ?>">
                                 </div>                        
                             </div>
 
@@ -125,11 +133,11 @@
                             <div class="col-xs-12 optTaximetro">
                                 <div class="form-group col-xs-4">
                                    <label for="inputMinsFzona">Cobrar cada (mins)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputMinsFzona" id="inputMinsFzona" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_ZONA']; ?>">                           
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsFzona" id="inputMinsFzona" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_ZONA']; ?>">                           
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="inputKmsFzona">Cobrar cada (kms)</label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputKmsFzona" id="inputKmsFzona" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['KM_FUERA_ZONA']; ?>">
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsFzona" id="inputKmsFzona" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['KM_FUERA_ZONA']; ?>">
                                 </div>                        
                             </div>  
 
@@ -138,7 +146,7 @@
                             <div class="col-xs-12 optNotaximetro">
                                 <div class="form-group col-xs-4">
                                    <label for="inputCobroFhor">Costo </label>
-                                    <input type="text" class="form-control upperClass" autocomplete="off" name="inputCobroFhor" id="inputCobroFhor" placeholder="Costo Fuera de Horario" value="<?php echo @$this->data['COSTO_FUERA_HORARIO']; ?>">                           
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputCobroFhor" id="inputCobroFhor" placeholder="Costo Fuera de Horario" value="<?php echo @$this->data['COSTO_FUERA_HORARIO']; ?>">                           
                                 </div>                                                   
                             </div>    
 
@@ -153,7 +161,7 @@
                               </div>
                         </form>                           
                     </div>
-                    <div class="tab-pane <?php echo (isset($this->sOperation) && @$this->resultOp=='okRegisterTarifas') ? 'active': ''; ?>" id="tarifas" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>">
+                    <div class="tab-pane <?php echo ($this->tabSelected==2 && isset($this->tabSelected)) ? 'active':' ';?>" id="tarifas" style="display:<?php echo (@$this->catId==-1) ? 'none':'block';?>">
                         <?php //if(@$this->data['USA_TAXIMETRO']==1 && count($this->aTableZonas)==0):?>
                             <div class="pull-right p-10">
                                 <a href="/finances/zones/getinfo?catIdtar=<?php echo @$this->catId;?>&catId=-1"><button class="btn btn-success"><i class="fa fa-plus"></i> Agregar</button></a>            
