@@ -58,19 +58,27 @@ class admin_CarsController extends My_Controller_Action
     		$cModelos	= new My_Model_Modelos();
     		$cMarcas	= new My_Model_Marcas();
     		$cEstatus	= new My_Model_Estatustaxi();
+    		$cTarifas	= new My_Model_Tarifas();
+    		$cEstados	= new My_Model_Spestados();
+    		$cTypes		= new My_Model_Clases();
     		
     		$aColores	= $cColores->getCbo();
     		$aMarcas	= $cMarcas->getCbo();
     		$aEstatus	= $cEstatus->getCbo();
     		$aTipoTaxi  = $classObject->getCboTipoTaxi();
+    		$aEstados   = $cEstados->getCbo();
+    		$aClases	= $cTypes->getCbo();
+    		$aTarifas	= Array();
     		$aModelos   = Array();
     		$sColores	= '';
     		$sMarcas	= '';
     		$sModelos   = '';
     		$sEstatus	= '';
     		$sTipoTaxi  = '';
-    		
-			$sNameImage  = '';    		
+    		$sTarifas	= '';    		
+			$sNameImage = '';    	
+			$sEstado    = '';	
+			$sClase		= '';
 			    		    		
     	    if($this->_idUpdate >-1){
     	    	$dataInfo	= $classObject->getData($this->_idUpdate,$this->_dataUser['ID_EMPRESA']);
@@ -80,8 +88,14 @@ class admin_CarsController extends My_Controller_Action
 	    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 	    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
 	    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
-	    	    	
+	    			$sTarifas	= $dataInfo['ID_TARIFA'];
+	    			$sEstado	= $dataInfo['ID_ESTADO'];
+	    			$sClase		= $dataInfo['ID_CLASE'];
 					$aModelos	= $cModelos->getCbo($sMarcas);
+					if($sClase!="" && $sEstado!=""){
+						$aTarifas	= $cTarifas->getCboSelect($this->_dataUser['ID_EMPRESA'], $sEstado,$sClase);	
+					}
+													  
 					$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
     	    	}else{
     	    		$this->_redirect("/admin/cars/index");
@@ -139,7 +153,12 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
 		    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
-		    	    	
+		    	    	$sTarifas	= $dataInfo['ID_TARIFA'];
+		    	    	$sEstado	= $dataInfo['ID_ESTADO'];
+		    	    	$sClase		= $dataInfo['ID_CLASE'];
+			 			if($sClase!="" && $sEstado!=""){
+							$aTarifas	= $cTarifas->getCboSelect($this->_dataUser['ID_EMPRESA'], $sEstado,$sClase);	
+						}
 						$aModelos	= $cModelos->getCbo($sMarcas);
 						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
 
@@ -207,6 +226,12 @@ class admin_CarsController extends My_Controller_Action
 		    	    	$sMarcas	= $dataInfo['ID_MARCA'];
 		    	    	$sEstatus	= $dataInfo['ID_ESTATUS_TAXI'];
 		    	    	$sTipoTaxi  = $dataInfo['ID_TIPO_TAXI'];
+		    	    	$sTarifas	= $dataInfo['ID_TARIFA'];
+		    	    	$sEstado	= $dataInfo['ID_ESTADO'];
+		    	    	$sClase		= $dataInfo['ID_CLASE'];
+		    	    	if($sClase!="" && $sEstado!=""){
+							$aTarifas	= $cTarifas->getCboSelect($this->_dataUser['ID_EMPRESA'], $sEstado,$sClase);	
+						}
 		    	    	
 						$aModelos	= $cModelos->getCbo($sMarcas);
 						$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
@@ -254,11 +279,13 @@ class admin_CarsController extends My_Controller_Action
 				$this->view->aModelos   = $cFunctions->selectDb($aModelos,$sModelos);
 			}
 			
+			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
 			$this->view->aStatus  	= $cFunctions->selectDb($aEstatus,$sEstatus);
 			$this->view->aMarcas	= $cFunctions->selectDb($aMarcas,$sMarcas);
 			$this->view->aColores	= $cFunctions->selectDb($aColores,$sColores);
 			$this->view->aTIpo		= $cFunctions->selectDb($aTipoTaxi,$sTipoTaxi);
-			
+			$this->view->aTarifas	= $cFunctions->selectDb($aTarifas,$sTarifas);
+			$this->view->aTypes		= $cFunctions->selectDb($aClases,$sClase);   
 			$this->view->data 		= $dataInfo; 
 			$this->view->errors 	= $this->_aErrors;	
 			$this->view->resultOp   = $this->_resultOp;
@@ -268,6 +295,31 @@ class admin_CarsController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         } 			
+    }
+    
+    public function gettarifasAction(){
+    	try{
+			$this->_helper->layout->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();    
+			    	
+	    	$result = 'no-info';
+			$this->dataIn = $this->_request->getParams();
+			$functions = new My_Controller_Functions();				
+			$validateNumbers = new Zend_Validate_Digits();
+			$validateAlpha   = new Zend_Validate_Alnum(array('allowWhiteSpace' => true));
+					
+			if($validateNumbers->isValid($this->dataIn['catId']) && $validateNumbers->isValid($this->dataIn['classObject'])){
+				$cTarifas	= new My_Model_Tarifas();
+				$cboValues  = $cTarifas->getCboSelect($this->_dataUser['ID_EMPRESA'],$this->dataIn['catId'],$this->dataIn['classObject']);
+				$result      = $functions->selectDb($cboValues);
+			}
+			
+			echo $result;
+		
+		} catch (Zend_Exception $e) {
+            echo "Caught exception: " . get_class($e) . "\n";
+        	echo "Message: " . $e->getMessage() . "\n";                
+        }
     }
     
     public function validateFields($inputName){

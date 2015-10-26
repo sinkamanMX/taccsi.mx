@@ -5,7 +5,10 @@ $().ready(function() {
         	inputModelo		: "required",
         	inputColor		: "required",
         	inputPlacas		: "required",
-        	inputEstatus	: "required",  
+        	inputEstatus	: "required",
+            inputEstado     : "required",
+            inputTarifa     : "required",
+            inputTipo       : "required",
             inputAno        : {
                 required: true,
                 number: true,
@@ -17,12 +20,15 @@ $().ready(function() {
             inputSize:"required",  
         },
         messages: {
+            inputEstado     : "Campo Requerido",
+            inputTarifa     : "Campo Requerido",
         	inputMarca		: "Campo Requerido",
         	inputModelo		: "Campo Requerido",
         	inputColor		: "Campo Requerido",
         	inputPlacas		: "Campo Requerido",
         	inputEstatus	: "Campo Requerido",
             inputSize       : "Campo Requerido",
+            inputTipo       : "Campo Requerido",     
             inputAno        : {
                 required  : "Campo Requerido",
                 number    : "Este campo acepta solo números",
@@ -54,11 +60,33 @@ function checkfileImages(sender) {
                validExts.toString());
       return false;
     }else{
-        return true;    
-        
+        return true;        
     } 
 }
 
+function getTarifas(){
+    var iEstado = $("#inputEstado").val();
+    var iClase  = $("#inputTipo").val();
+    if(iEstado>-1 && iClase>-1){
+        $("#divTarifa").html('<img id="loader1" class="col-xs-offset-4" src="/images/assets/loading.gif" alt="loading gif"/>');
+        $.ajax({
+            url: "/admin/cars/gettarifas",
+            type: "GET",
+            data: { catId : iEstado, 
+                    classObject : iClase },
+            success: function(data) { 
+                var dataCbo = '<select class="form-control" id="inputTarifa" name="inputTarifa" >';
+                $("#divTarifa").html("");
+                if(data!="no-info"){
+                    dataCbo += '<option value="">Seleccionar una opción</option>'+data+'</select>';
+                }else{
+                    dataCbo += '<option value="">Sin Información</option>';
+                }
+                $("#divTarifa").html(dataCbo);
+            }
+        });
+    }
+}
 
 function optionAll(inputCheck){
     if(inputCheck){

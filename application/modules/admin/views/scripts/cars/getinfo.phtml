@@ -15,10 +15,10 @@
         </div>
 
         <div class="col-xs-12">
-          <div class="box box-primary row-min-h700">
-                <div class="box-header">
-                    <h3 class="box-title">Nuevo Taxi</h3>
-                </div>
+          <div class="box box-primary row-min-h800">
+            <div class="box-header">
+                <h3 class="box-title">Nuevo Taxi</h3>
+            </div>
             <form role="form" method="POST" action="/admin/cars/getinfo" id="FormData" enctype="multipart/form-data">
                 <input type="hidden" name="optReg" value="<?php echo ($this->idToUpdate>0) ? 'update': 'new';?>" />
                 <input type="hidden" id="catId" name="catId" value="<?php echo $this->catId; ?>" />
@@ -85,24 +85,48 @@
                                 <div>Usted no tiene permiso para ver esta información</div>
                             </div>                                      
                         <?php else:?>   
-
-
                                 <div class="box-body">
                                     <div class="col-xs-12">
                                         <div class="form-group col-xs-6">
-                                            <label for="inputSize">Tipo Taxi</label>
+                                            <label for="inputSize">Tamaño</label>
                                             <div class="input-group col-xs-12">                     
-                                                <select class="form-control" id="inputSize" name="inputSize" >
+                                                <select class="form-control" id="inputSize" name="inputSize">
                                                     <option value="">Seleccione una opción</option>
                                                     <?php echo $this->aTIpo;?>                                
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group col-xs-6">
-                                            <label for="inputAmaterno">Nombre Chofer</label>
-                                            <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
-                                        </div> 
-
+                                            <label for="inputTipo">Tipo</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control" id="inputTipo" name="inputTipo" onChange="getTarifas();">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aTypes;?>                                
+                                                </select>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputEstado">Estado</label>
+                                            <div class="input-group col-xs-12">                     
+                                                <select class="form-control" id="inputEstado" name="inputEstado" onChange="getTarifas();">
+                                                    <option value="">Seleccione una opción</option>
+                                                    <?php echo $this->aEstados;?>                                
+                                                </select>
+                                            </div>
+                                        </div>                                        
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputTarifa">Tarifa</label>
+                                            <div class="input-group col-xs-12"> 
+                                                <div id="divTarifa">
+                                                    <select class="form-control" id="inputTarifa" name="inputTarifa" >
+                                                        <option value="">Seleccione una opción</option>
+                                                        <?php echo $this->aTarifas;?>                                
+                                                    </select>    
+                                                </div>                                                
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-xs-12">
                                         <div class="form-group col-xs-6">
@@ -160,7 +184,7 @@
                                         <div class="form-group col-xs-6">
                                             <label for="inputVin">VIN</label>
                                             <input type="text" class="form-control upperClass" name="inputVin" id="inputVin" placeholder="VIN" value="<?php echo @$this->data['VIN']; ?>">
-                                        </div>                                                              
+                                        </div>
                                     </div>
                                     <div class="col-xs-12">                                       
                                         <div class="form-group col-xs-6">
@@ -172,6 +196,10 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="form-group col-xs-6">
+                                            <label for="inputAmaterno">Nombre Chofer</label>
+                                            <input type="text" class="form-control upperClass" name="inputChofer" id="inputChofer" placeholder="Nombre del Chofer" value="<?php echo @$this->data['NOMBRE_CHOFER']; ?>">
+                                        </div>                                                                                                                       
                                     </div>                                                             
                                 </div><!-- /.box-body -->
 

@@ -8,7 +8,7 @@ function getoptionsCbo(idCboTo,classObject,idObject,chosen,options){
         url: "/admin/main/getselect",
         type: "GET",
         data: { catId : idObject, 
-            oprDb : classObject },
+                oprDb : classObject },
         success: function(data) { 
           $("#div"+idCboTo).html("");
           var dataCbo = '<select class=" form-control'+classChosen+'" id="input'+idCboTo+'" name="input'+idCboTo+'" onChange=\''+optionSelect+' '+optsCP+'\'>';

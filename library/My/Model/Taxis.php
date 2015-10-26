@@ -135,11 +135,12 @@ class My_Model_Taxis extends My_Db_Table
 	public function getDataTables($idEmpresa){
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
-    	$sql ="SELECT t.*, M.DESCRIPCION AS MODELO_NAME, A.DESCRIPCION AS MARCA_NAME
+    	$sql ="SELECT t.*, M.DESCRIPCION AS MODELO_NAME, A.DESCRIPCION AS MARCA_NAME, R.DESCRIPCION AS N_TARIFA
 				FROM ADMIN_TAXIS t
 				LEFT JOIN ADMIN_USUARIOS U ON t.ADMIN_USUARIOS_ID_USUARIO = U.ID_USUARIO
 				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
 				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
+				LEFT JOIN ADMIN_TARIFAS  R ON t.ID_TARIFA  = R.ID_TARIFA 
 				WHERE t.ID_EMPRESA = $idEmpresa
 				ORDER BY PLACAS ASC";
 		$query   = $this->query($sql);
@@ -154,7 +155,7 @@ class My_Model_Taxis extends My_Db_Table
 		try{
 			$iCompany = ($idCompay!=-1) ? 'AND t.ID_EMPRESA = '.$idCompay:'';
 			$result= Array();
-	    	$sql ="SELECT *
+	    	$sql ="SELECT *, t.ID_ESTADO
 				FROM ADMIN_TAXIS t
 				INNER JOIN ADMIN_MODELO  M ON t.ID_MODELO  = M.ID_MODELO
 				INNER JOIN ADMIN_MARCA   A ON M.ID_MARCA   = A.ID_MARCA
@@ -219,6 +220,9 @@ class My_Model_Taxis extends My_Db_Table
 					ID_MODELO		= ".$data['inputModelo'].",
 					ID_ESTATUS_TAXI	= ".$data['inputEstatus'].",
 					ID_COLOR		= ".$data['inputColor'].",
+					ID_ESTADO		= ".$data['inputEstado'].",
+					ID_TARIFA		= ".$data['inputTarifa'].",
+					ID_CLASE		= ".$data['inputTipo'].",
 					NOMBRE_CHOFER	='".$data['inputChofer']."',
 					PLACAS			='".$data['inputPlacas']."',
 					ECO				='".$data['inputEco']."',
@@ -272,6 +276,9 @@ class My_Model_Taxis extends My_Db_Table
         		SET ID_MODELO		= ".$data['inputModelo'].",
 					ID_ESTATUS_TAXI	= ".$data['inputEstatus'].",
 					ID_COLOR		= ".$data['inputColor'].",
+					ID_ESTADO		= ".$data['inputEstado'].",
+					ID_TARIFA		= ".$data['inputTarifa'].",
+					ID_CLASE		= ".$data['inputTipo'].",
 					NOMBRE_CHOFER	='".$data['inputChofer']."',
 					PLACAS			='".$data['inputPlacas']."',
 					ECO				='".$data['inputEco']."',
@@ -288,6 +295,7 @@ class My_Model_Taxis extends My_Db_Table
 					$nameImage3
 					$nameImage4
 			  WHERE $this->_primary = ".$data['catId']." LIMIT 1";
+		Zend_Debug::dump($sql);
         try{            
     		$query   = $this->query($sql,false);
 			if($query){

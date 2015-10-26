@@ -21,7 +21,7 @@ class My_Model_Tarifas extends My_Db_Table
 				INNER JOIN SP_ESTADOS        E ON T.ID_ESTADO = E.ID
 				ORDER BY T.DESCRIPCION  ASC";
 		$query   = $this->query($sql);
-		if(count($query)>0){		  
+		if(count($query)>0){
 			$result = $query;
 		}	
         
@@ -119,5 +119,40 @@ class My_Model_Tarifas extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;
-    }      
+    }     
+
+	
+	public function getCbo($idEmpresa,$idClase){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_TARIFA AS ID, DESCRIPCION AS NAME
+				FROM ADMIN_TARIFAS
+				WHERE (TIPO_TARIFA = 0 
+				   OR ID_EMPRESA   = $idEmpresa) AND 
+				   	  ID_CLASE     = $idClase
+				  ORDER BY NAME ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;
+		}	
+        
+		return $result;			
+	}    
+	
+	public function getCboSelect($idEmpresa,$iEstado,$idClase){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT ID_TARIFA AS ID, DESCRIPCION AS NAME
+				FROM ADMIN_TARIFAS
+				WHERE ID_CLASE     = $idClase
+				  AND ID_ESTADO    = $iEstado
+				  AND ((TIPO_TARIFA=0) OR (ID_EMPRESA=$idEmpresa))
+				  ORDER BY NAME ASC";
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;
+		}	
+        
+		return $result;			
+	}   	
 }
