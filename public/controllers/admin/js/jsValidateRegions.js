@@ -10,6 +10,7 @@ var countryRestrict = {'country': 'mx'};
 var LatLngBounds    = null;
 var geos_poins_polygon = [];
 var geos_polygon    = null;
+var markersGeo  = [];
 
 $().ready(function() {
   $("[data-toggle='offcanvas']").click();
@@ -77,9 +78,9 @@ $().ready(function() {
           if($("#optReg").val()=='searchState'){
             form.submit();
           }else if(getPositionsGeo()){
-              form.submit();
-              return false;
+             form.submit();            
           }
+           return false;
         }
     });
 
@@ -94,7 +95,13 @@ $().ready(function() {
       $("#inputRadio").rules("remove", "required");
       $("#inputLatOrigen").rules("remove", "required");    
       $("#inputLonOrigen").rules("remove", "required");  
-    } 
+    }else if($("#inputTipo").val()==2 ){
+      $("#isearchRegion").show('fast');
+      $("#inputEstado").rules("remove", "required");
+      $("#inputRadio").rules("remove", "required");
+      $("#inputLatOrigen").rules("remove", "required");    
+      $("#inputLonOrigen").rules("remove", "required");
+    }
 
     if($("#usTaximetro").val()==0){
       $("#inputCosto").rules("remove", "required");
@@ -131,6 +138,8 @@ function selectOption(inputValue){
     $("#inputRadio").rules("remove", "required");
     $("#inputLatOrigen").rules("remove", "required");    
     $("#inputLonOrigen").rules("remove", "required");    
+  }else if(inputValue==2){
+    $("#isearchRegion").show('fast');
   }
 }
 
@@ -146,12 +155,15 @@ function initMapToDraw(){
         center: new google.maps.LatLng(19.435113686545755,-99.13316173010253)
     };
 
-    mapGeo = new google.maps.Map(document.getElementById('myMapDraw'),mapOptions);        
-    printCircle();
-    drawinit();  
+    mapGeo = new google.maps.Map(document.getElementById('myMapDraw'),mapOptions);     
+    if($("#inputTipo").val()==1 || $("#inputTipo").val()==2 ){
+      drawinit(1);    
+    }else{
+      printCircle();
+    }
 }
 
-function drawinit(){
+function drawinit(option){
     if(geos_poins_polygon!=null && geos_poins_polygon.length>0){
       geos_polygon = new google.maps.Polygon(geos_options);
       geos_polygon.setMap(mapGeo); 
@@ -162,39 +174,6 @@ function drawinit(){
 
       mapGeo.fitBounds( latlngbounds );  
     }
-}
-
-function getPositionsGeo(){
-  var resOp=false;
-
-  if(geos_polygon!=null){
-    var contentString='';
-    var polygonBounds = geos_polygon.getPath();
-    var xy;
-    var firstposition = '';
-    for (var i = 0; i < polygonBounds.length; i++) {
-        xy = polygonBounds.getAt(i);
-
-        if(contentString==""){
-            firstposition  = (','+xy.lat().toFixed(6)+" "+xy.lng().toFixed(6));
-        }
-        contentString += (contentString!="") ? ',':'';
-        contentString += xy.lat().toFixed(6)+" "+xy.lng().toFixed(6);        
-    }
-
-    contentString += firstposition;
-    $('#inputPoints').html(contentString);
-
-    if(contentString!=""){
-      resOp=true;
-    }    
-  }
-
-  if($("#catId").val()==-1){
-    resOp=true;
-  }
-  
-  return resOp;
 }
 
 function distanciaEntrePuntos(lat1,lon1,lat2,lon2){
@@ -231,6 +210,14 @@ function printCircle(){
       center: new google.maps.LatLng(iLatitud,iLongitud),
       radius: (iRadio*1000)
     });
+
+    google.maps.event.addListener(geos_polygon, 'dragend', function() {
+      var iLatitud  = this.getCenter().lat().toFixed(6); 
+      var iLongitud = this.getCenter().lng().toFixed(6); 
+      $("#inputLatOrigen").val(iLatitud);
+      $("#inputLonOrigen").val(iLongitud);
+      printCircle()
+    });    
     mapGeo.fitBounds(geos_polygon.getBounds());
   }
 }
@@ -252,25 +239,47 @@ function autoCompleteFunction(){
 
       var ne = place.geometry.viewport.getNorthEast();
       var sw = place.geometry.viewport.getSouthWest();
-      var distancia = distanciaEntrePuntos(ne.lat(), ne.lng(),place.geometry.location.lat(),place.geometry.location.lng());
-      
+
       var resultBounds = new google.maps.LatLngBounds(
           place.geometry.viewport.getSouthWest(),
           place.geometry.viewport.getNorthEast()
       );
 
       mapGeo.fitBounds(resultBounds);        
-      $("#inputLatOrigen").val(place.geometry.location.lat().toFixed(6));
-      $("#inputLonOrigen").val(place.geometry.location.lng().toFixed(6));
-      $("#inputRadio").val(distancia);
-      printCircle();
+
+      if($("#inputTipo").val()==2){
+        var viewportPoints = [
+            ne, new google.maps.LatLng(ne.lat(), sw.lng()),
+            sw, new google.maps.LatLng(sw.lat(), ne.lng()), ne
+        ];
+
+        geos_options = {
+          paths: viewportPoints,
+          strokeColor: "#FF0000",
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: "#FF0000",
+          fillOpacity: 0.35,
+          editable:true
+        }
+
+      geos_polygon = new google.maps.Polygon(geos_options);
+      geos_polygon.setMap(mapGeo); 
+
+      }else{
+        var distancia = distanciaEntrePuntos(ne.lat(), ne.lng(),place.geometry.location.lat(),place.geometry.location.lng());      
+        $("#inputLatOrigen").val(place.geometry.location.lat().toFixed(6));
+        $("#inputLonOrigen").val(place.geometry.location.lng().toFixed(6));
+        $("#inputRadio").val(distancia);
+        printCircle();
+      }
   });
 }
 
 function getPositionsGeo(){
   var bResult = false;
 
-  if($("#inputTipo").val()==1){
+  if($("#inputTipo").val()==1 || $("#inputTipo").val()==2 ){
       console.log("Es tipo 1");
       $('#inputPoints').html('');  
       var contentString='';
@@ -287,17 +296,101 @@ function getPositionsGeo(){
           contentString += xy.lat().toFixed(6)+" "+xy.lng().toFixed(6);        
       }
 
-      contentString += firstposition;
-      console.log(contentString);
+      contentString += firstposition;      
       $('#inputPoints').html(contentString);  
 
       if(contentString!=""){
+        var PointGeo = geos_polygon.getCenter();
+        $("#inputLatOrigen").val(PointGeo.lat().toFixed(6));
+        $("#inputLonOrigen").val(PointGeo.lng().toFixed(6));        
         bResult = true;
       }    
   }else{
-    console.log("Es tipo 0");
+    var path = circlePath(geos_polygon.getCenter());
+    console.log("Es tipo 0 "+path);
     bResult = true;
   }
 
   return bResult;
+}
+
+function optionAll(inputCheck){
+    if(inputCheck){
+        $('.chkOn').prop('checked', true);         
+    }else{
+        $('.chkOn').prop('checked', false);
+    }
+    timeUpGeos();
+}
+
+function circlePath(center){
+  var bResult= false;  
+  var radius = $("#inputRadio").val()*1000;
+  var points = 360 ;
+    var a=[],p=360/points,d=0;
+    var contentString='';
+    var firstposition = '';
+    for(var i=0;i<points;++i,d+=p){
+      var point = google.maps.geometry.spherical.computeOffset(center,radius,d);
+
+      if(contentString==""){
+          firstposition  = (','+point.lat().toFixed(6)+" "+point.lng().toFixed(6));
+      }
+      contentString += (contentString!="") ? ',':'';
+      contentString += point.lat().toFixed(6)+" "+point.lng().toFixed(6);         
+    }
+
+    contentString += firstposition;   
+    $('#inputPoints').html(contentString);  
+    if(contentString!=""){
+      bResult = true;
+    }     
+
+    return bResult;
+}
+
+function calcularDistancia(lat1, lat2, lon1, lon2){
+    var R = 6371; // Radio del planeta tierra en km
+    var phi1 = lat1.toRadians();
+    var phi2 = lat2.toRadians();
+    var deltaphi = (lat2-lat1).toRadians();
+    var deltalambda = (lon2-lon1).toRadians();
+
+    var a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) +
+            Math.cos(phi1) * Math.cos(phi2) *
+            Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    var d = R * c
+    return d;
+}
+
+function timeUpGeos(){
+  setTimeout(printGeos(), 2000);
+}
+
+function mapClearMap(){
+  if(markersGeo || markersGeo.length>-1){
+    for (var i = 0; i < markersGeo.length; i++) {
+        markersGeo[i].setMap(null);
+    } 
+    markersGeo = [];
+  }
+}
+
+function printGeos(){
+  mapClearMap();
+  var myVarGeo =null;
+  $('#dataTable input[type=checkbox]').each(function(){
+    var id = $(this).val();    
+    if(id>-1){             
+      myVarGeo = eval('Polygono_'+id);    
+
+      if(this.checked){        
+          myVarGeo = new google.maps.Polygon(eval('sPolygono_'+id));
+          myVarGeo.setMap(mapGeo);   
+          markersGeo.push(myVarGeo);
+      }
+    }
+  }); 
 }

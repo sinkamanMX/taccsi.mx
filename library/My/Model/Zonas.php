@@ -27,7 +27,7 @@ class My_Model_Zonas extends My_Db_Table
     public function getData($idObject){
 		try{
 			$result= Array();
-	    	$sql ="SELECT *
+	    	$sql ="SELECT *, ASTEXT(MAP_OBJECT) AS GEO
 					FROM ADMIN_ZONAS
 					WHERE ID_ZONA = $idObject
 					LIMIT 1";
@@ -115,5 +115,20 @@ class My_Model_Zonas extends My_Db_Table
             echo $e->getErrorMessage();
         }
 		return $result;
-    }     
+    }   
+
+	public function getZonesTables($idTarifa,$idZona){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	$sql ="SELECT  *, ASTEXT(MAP_OBJECT) AS GEO
+				FROM ADMIN_ZONAS
+				WHERE ID_TARIFA = $idTarifa
+				AND ID_ZONA NOT IN ($idZona)";
+		$query   = $this->query($sql);
+		if(count($query)>0){		  
+			$result = $query;			
+		}
+        
+		return $result;			
+	}    
 }
