@@ -54,7 +54,8 @@ class cusfinances_ZonesController extends My_Controller_Action
     	try{
     		$aOptions   = Array(
 				array("id"=>"1",'name'=>'Estado' ),
-				array("id"=>"0",'name'=>'Circunferencia' )
+				array("id"=>"0",'name'=>'Circunferencia'),
+				array("id"=>"2",'name'=>'Pol&iacute;gono')
 			); 
     		
     		$dataInfo 	= Array();
@@ -66,7 +67,7 @@ class cusfinances_ZonesController extends My_Controller_Action
     		$sTipoa		= '';
     		$sEstado	= '';
     		$sAcumulado = '';
-    		$sPositions	= '';    		
+    		$sPositions	= '';
     		$aEstados   = $cEstados->getCbo();
     		
     		if(isset($this->_dataIn['catIdtar']) && $this->_dataIn['catIdtar']!="" ){
@@ -79,6 +80,13 @@ class cusfinances_ZonesController extends My_Controller_Action
 				$sEstado	= $dataInfo['ID_ESTADO'];
 				$sAcumulado = $dataInfo['COSTO_ACUMULABLE'];
 				$sTipoa 	= $dataInfo['TIPO_ZONA'];
+				
+				if($dataInfo['TIPO_ZONA']==1){
+					$aResultado = $cEstados->getData($dataInfo['ID_ESTADO']);					
+					$sPositions = $this->processAreaSpatial($aResultado['GEO']);	
+				}else{
+					$sPositions = $this->processArea($dataInfo['GEO']);
+				}
 			}			
 			
     		if($this->_dataOp=='new'){
@@ -115,8 +123,7 @@ class cusfinances_ZonesController extends My_Controller_Action
 						$sAcumulado = $dataInfo['COSTO_ACUMULABLE'];
 						$sTipoa 	= $dataInfo['TIPO_ZONA'];
 						
-						$aResultado = $cEstados->getData($dataInfo['ID_ESTADO']);
-						$sPositions = $this->processAreaSpatial($aResultado['GEO']);		
+
 						$this->_resultOp = 'okRegister';
 					}else{
 						$this->errors['status'] = 'no-insert';
@@ -137,7 +144,8 @@ class cusfinances_ZonesController extends My_Controller_Action
 				$sAcumulado 			= $this->_dataIn['inputAcumulable'];
 				$dataInfo['TIPO_ZONA']  = $this->_dataIn['inputTipo'];
 			}			
-			
+			$aAllZones				= $cZona->getZonesTables($this->_dataIn['catIdtar'], $this->_idUpdate);
+			$this->view->aZonas		= $this->processListGeo($aAllZones);
 			$this->view->catIdtar   = $this->_dataIn['catIdtar'];
 			$this->view->aAcum	    = $cFunctions->cboOptions($sAcumulado);
 			$this->view->aEstados	= $cFunctions->selectDb($aEstados,$sEstado);
@@ -155,6 +163,25 @@ class cusfinances_ZonesController extends My_Controller_Action
         	echo "Message: " . $e->getMessage() . "\n";                
         }
     }   
+    
+    public function processListGeo($aZones){
+    	$aResult = Array();
+    	$aColores = Array(0=>'#CF3232',1=>'#3c8dbc',2=>'#39cccc',
+    					  3=>'#00a65a',4=>'#f56954',5=>'#f39c12',
+    					  6=>'#ff851b',7=>'#00a65a',8=>'#3c8dbc',9=>'#4FB8F5');
+    	
+    	$control=0;
+    	foreach($aZones as $key => $items){
+    		$items['SPC']   = $this->processArea($items['GEO']);
+    		$items['COLOR'] = $aColores[$control];
+    		$aResult[]    = $items;
+    		$control++;
+    		if($control==10){
+    			$control=0;
+    		}
+    	}
+    	return $aResult;
+    }
 
     
    	public function processArea($sPosition){
@@ -163,7 +190,6 @@ class cusfinances_ZonesController extends My_Controller_Action
 		$sClean = substr($sPosition, 0, -3);
 		$mult 	= substr($sClean ,9);			
 		$pre_positions=explode(",",$mult);		
-		
 		
 		for($p=0;$p<count($pre_positions);$p++){	
 			$a_position .= ($a_position=="") ? '':',';		
@@ -188,7 +214,7 @@ class cusfinances_ZonesController extends My_Controller_Action
 		for($p=0;$p<count($pre_positions);){	
 			$a_position .= ($a_position=="") ? '':',';		
 			$fixed   = str_replace(' ',',',$pre_positions[$p]);	
-			$aLs     = explode(',', $fixed);		
+			$aLs     = explode(',', $fixed);
 			$iLatitud  = str_replace($sReplace,'',$aLs[1]);
 			$iLongitud = str_replace($sReplace,'',$aLs[0]);
 			$a_position .= 'new google.maps.LatLng('.$iLatitud.','.$iLongitud.')';
