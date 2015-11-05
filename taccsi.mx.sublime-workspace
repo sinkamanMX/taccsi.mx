@@ -4,8 +4,20 @@
 		"selected_items":
 		[
 			[
+				"id",
+				"idTaccista"
+			],
+			[
+				"mapo",
+				"mapGeo"
+			],
+			[
+				"set",
+				"setMap"
+			],
+			[
 				"iL",
-				"iLongitud"
+				"iLatitud"
 			],
 			[
 				"res",
@@ -122,10 +134,6 @@
 			[
 				"mar",
 				"margin"
-			],
-			[
-				"id",
-				"idInc"
 			],
 			[
 				"e",
@@ -388,18 +396,42 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/admin/views/scripts/cars/index.phtml",
+			"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
 			"settings":
 			{
-				"buffer_size": 3919,
+				"buffer_size": 15786,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "application/modules/admin/views/scripts/cars/getinfo.phtml",
+			"file": "public/controllers/admin/js/jsValidateRates.js",
 			"settings":
 			{
-				"buffer_size": 27381,
+				"buffer_size": 7070,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "application/modules/finances/views/scripts/rates/index.phtml",
+			"settings":
+			{
+				"buffer_size": 3186,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/wbs/getRates.php",
+			"settings":
+			{
+				"buffer_size": 1967,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "cron_mailing/sendMails.php",
+			"settings":
+			{
+				"buffer_size": 2389,
 				"line_ending": "Unix"
 			}
 		}
@@ -448,21 +480,27 @@
 	},
 	"file_history":
 	[
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CarsController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/getRates.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/zones/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/zones/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateTaxi.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateRegions.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/zones/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/gralFunctions.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/rastreoTaxis.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CarsController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/controllers/RatesController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateRates.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateRegions.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/zones/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/cancels/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reporCancels.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/cancels/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/controllers/CancelsController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/cancels",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateDrivers.js",
@@ -476,7 +514,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/controllers/RatesController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateClases.js",
 		"/Users/itecno2/Downloads/NOTAS_TACCSI",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/regions/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/clases/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsTableTaxis.js",
@@ -485,7 +522,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/tBienvenida.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sWelcome.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateTaxi.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/docscomplete.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/notifcomplete.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/notifincomplete.html",
@@ -517,7 +553,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valtaxis/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateTaxis.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateDocs.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateAssign.js",
@@ -548,7 +583,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/rastreoTaxis.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/modules/admin/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
@@ -573,9 +607,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/reportincidencia.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/Viajes.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/traveldet/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportDetail.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/travelsrep/index.phtml"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportDetail.js"
 	],
 	"find":
 	{
@@ -583,7 +615,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 			"<open folders>",
@@ -596,6 +628,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"inputCobro",
+			"/finances/",
+			"getPositionsGeo",
+			"computeTotalDistance",
 			"/finances",
 			"/finances/zones/",
 			"/finances/rates/",
@@ -719,11 +755,7 @@
 			"= '	",
 			"	,APATERNO",
 			"margin",
-			"push",
-			"registra_asignacion",
-			"ASIGNADO",
-			"MARCA",
-			"MODELO"
+			"push"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -731,6 +763,7 @@
 		"regex": true,
 		"replace_history":
 		[
+			"/cusfinances/",
 			"/cusfinances",
 			"/cusfinances/zones/",
 			"/cusfinances/rates/",
@@ -783,51 +816,23 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/admin/views/scripts/cars/index.phtml",
+					"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
 					"settings":
 					{
-						"buffer_size": 3919,
+						"buffer_size": 15786,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2004,
-								2004
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 179.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "application/modules/admin/views/scripts/cars/getinfo.phtml",
-					"settings":
-					{
-						"buffer_size": 27381,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7375,
-								7375
+								14519,
+								14519
 							]
 						],
 						"settings":
@@ -837,8 +842,119 @@
 							"translate_tabs_to_spaces": true,
 							"word_wrap": false
 						},
-						"translation.x": 166.0,
-						"translation.y": 1440.0,
+						"translation.x": 66.0,
+						"translation.y": 2858.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/controllers/admin/js/jsValidateRates.js",
+					"settings":
+					{
+						"buffer_size": 7070,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6442,
+								6442
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2603.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "application/modules/finances/views/scripts/rates/index.phtml",
+					"settings":
+					{
+						"buffer_size": 3186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1568,
+								1568
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 274.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "public/wbs/getRates.php",
+					"settings":
+					{
+						"buffer_size": 1967,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1547,
+								1547
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 457.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "cron_mailing/sendMails.php",
+					"settings":
+					{
+						"buffer_size": 2389,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								918,
+								882
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 105.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

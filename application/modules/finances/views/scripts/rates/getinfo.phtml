@@ -108,29 +108,37 @@
                             <h4 class="optTaximetro">Costos (Si usa taximetro)</h4>
                             <div class="col-xs-12 optTaximetro">
                                 <div class="form-group col-xs-4">
+                                    <label for="inputCobro">Costo ($)</label>
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputCobro" id="inputCobro" placeholder="Costo Recorrido" value="<?php echo @$this->data['COSTO_RECORRIDO']; ?>">
+                                </div>                                
+                                <div class="form-group col-xs-4">
                                    <label for="inputMinsCobro">Cobrar cada (mins)</label>
-                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsCobro" id="inputMinsCobro" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['COSTO_MINUTOS']; ?>">                           
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsCobro" id="inputMinsCobro" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['TAXIMETRO_MINS']; ?>">                           
                                 </div>
                                 <div class="form-group col-xs-4">
                                     <label for="inputKmsCobro">Cobrar cada (kms)</label>
-                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsCobro" id="inputKmsCobro" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['COSTO_KILOMETRO']; ?>">
-                                </div>                        
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsCobro" id="inputKmsCobro" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['TAXIMETRO_KMS']; ?>">
+                                </div>
                             </div>                         
 
                             <h4 class="optTaximetro">Costos Fuera de Horario</h4>
                             <div class="col-xs-12 optTaximetro">
                                 <div class="form-group col-xs-4">
-                                   <label for="inputMinsFhor">Cobrar cada (mins)</label>
-                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsFhor" id="inputMinsFhor" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_HORARIO']; ?>">
+                                   <label for="inputMinsFhor">Costo Banderazo ($)</label>
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsFhor" id="inputMinsFhor" placeholder="Costo Banderazo" value="<?php echo @$this->data['BAN_FUERA_HORARIO']; ?>">
                                 </div>
                                 <div class="form-group col-xs-4">
-                                    <label for="inputKmsFhor">Cobrar cada (kms)</label>
-                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsFhor" id="inputKmsFhor" placeholder="Cobrar cada x kilómetros" value="<?php echo @$this->data['KM_FUERA_HORARIO']; ?>">
+                                    <label for="inputKmsFhor">Costo Recorrido ($)</label>
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputKmsFhor" id="inputKmsFhor" placeholder="Costo Recorrido" value="<?php echo @$this->data['TAX_FUERA_HORARIO']; ?>">
                                 </div>                        
                             </div>
 
                             <h4 class="optTaximetro">Costos Fuera de Zona</h4>
                             <div class="col-xs-12 optTaximetro">
+                                <div class="form-group col-xs-4">
+                                    <label for="inputCobroZona">Costo ($)</label>
+                                    <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputCobroZona" id="inputCobroZona" placeholder="Costo Recorrido" value="<?php echo @$this->data['COSTO_FUERA_ZONA']; ?>">
+                                </div>      
                                 <div class="form-group col-xs-4">
                                    <label for="inputMinsFzona">Cobrar cada (mins)</label>
                                     <input type="text" class="form-control upperClass only-numbers" autocomplete="off" name="inputMinsFzona" id="inputMinsFzona" placeholder="Cobrar cada x minutos" value="<?php echo @$this->data['MIN_FUERA_ZONA']; ?>">                           
@@ -183,7 +191,7 @@
                                     <!--<th>Por Default</th>    -->       
                                     <td><?php echo $items['DESCRIPCION']; ?></td>
                                     <td><?php echo "$ ".number_format($items['COSTO']); ?></td>                                    
-                                    <td><?php echo $items['N_ACUM']; ?></td>                                    
+                                    <td><?php echo $items['N_ACUM']; ?></td>
                                     <td class="text-center" style="width:100px;">
                                         <?php if($this->dataUser['LECTURA']==1): ?>
                                             <a href="/finances/zones/getinfo?catIdtar=<?php echo @$this->catId;?>&catId=<?php echo $items['ID_ZONA']; ?>"><button class="btn btn-primary"> <i class="fa fa-eye"></i></button></a>   

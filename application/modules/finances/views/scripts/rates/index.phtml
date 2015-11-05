@@ -25,8 +25,7 @@
                             <th>Estado</th>
                             <th>Usa Taxímetro</th>
                             <th>Banderazo ($)</th>
-                            <th>Costo por Km.</th>
-                            <th>Costo por Min.</th>
+                            <th>Costo Recorrido</th>
                             <th>Horario</th>
                             <th>Estatus</th>
                             <th></th>
@@ -40,8 +39,8 @@
                             <td><?php echo $items['NOM_ENT']; ?></td>
                             <td><?php echo $items['N_TAXIMETRO']; ?></td>
                             <td><?php echo '$'.$items['BANDERAZO']; ?></td>
-                            <td><?php echo (isset($items['COSTO_KILOMETRO']) && $items['COSTO_KILOMETRO']!="") ? '$'.$items['COSTO_KILOMETRO'] : '-'; ?></td>
-                            <td><?php echo (isset($items['COSTO_MINUTOS'])   && $items['COSTO_MINUTOS']  !="") ? '$'.$items['COSTO_MINUTOS']   : '-'; ?></td>
+                            <td><?php echo '$'.$items['COSTO_RECORRIDO']; ?></td>
+                            
                             <td><?php echo $items['HORARIO_INICIO'].'-'.$items['HORARIO_FIN']; ?></td>
                             <td><?php echo $items['N_ESTATUS']; ?></td>
                             <td class="text-center" style="width:100px;">

@@ -281,14 +281,7 @@
                     $miURL);
 
    $server->register('dame_tipo_taxis',
-                      array('latitud'  => 'xsd:string',
-                            'longitud'  => 'xsd:string'), 
-                      array('return' => 'xsd:string'),
-                    $miURL);
-
-   $server->register('dame_servicios_taxis',
-                      array('latitud'  => 'xsd:string',
-                            'longitud'  => 'xsd:string'), 
+                      array('so'  => 'xsd:string'), 
                       array('return' => 'xsd:string'),
                     $miURL);
 
@@ -544,7 +537,7 @@ function InsertaLog($funcion,$descripcion,$push_token = ""){
 
   }
 
-  function dame_tipo_taxis($latitud,$longitud){
+  function dame_tipo_taxis($so){
 
     $idx = -1;
     $msg = 'Eror al conecctarse con el servico';
@@ -554,10 +547,8 @@ function InsertaLog($funcion,$descripcion,$push_token = ""){
       $base = mysql_select_db("taccsi",$con);
       $sql = "SELECT ID_TIPO_TAXI,
                      DESCRIPCION,
-                     PASAJEROS_MAX,
-                     ICONO
-              FROM ADMIN_TIPO_TAXIS
-              WHERE ESTATUS = 1";
+                     PASAJEROS_MAX
+              FROM ADMIN_TIPO_TAXIS";
       if ($qry = mysql_query($sql)){
         if (mysql_num_rows($qry) > 0){
           $dat='<tipo_taxis>';
@@ -566,67 +557,9 @@ function InsertaLog($funcion,$descripcion,$push_token = ""){
                         <id_tipo>'.$row->ID_TIPO_TAXI.'</id_tipo>
                         <descripcion>'.$row->DESCRIPCION.'</descripcion>
                         <max_pasajeros>'.$row->PASAJEROS_MAX.'</max_pasajeros>
-                        <texto>Máximo '.$row->PASAJEROS_MAX.' pasajeros</texto>
-                        <icono>'.$row->ICONO.'</icono>
                       </tipo>';
           }
           $dat=$dat.'</tipo_taxis>';
-        }else{
-          $dat="";
-        }
-        mysql_free_result($qry);
-      }
-
-      if (strlen($dat) > 0){
-        $idx = 1;
-        $msg = 'OK';
-      } else {
-        $idx = -1;
-        $msg = 'No se pudo obtener la información';  
-      }
-    }
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>'.$idx.'</code>
-                     <msg>'.$msg.'</msg>
-                   </Status>
-                   '.($dat).'
-                 </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-
-  }
-
-  function dame_servicios_taxis($latitud,$longitud){
-
-    $idx = -1;
-    $msg = 'Eror al conecctarse con el servico';
-    $dat = "";
-    $con = mysql_connect("localhost","dba","t3cnod8A!");
-    if ($con){
-      $base = mysql_select_db("taccsi",$con);
-      $sql = "SELECT ID_SERVICIO,
-                     DESCRIPCION,
-                     ICONO,
-                     ICONO_AMARILLO,
-                     ICONO_BLANCO
-              FROM ADMIN_SERVICIOS
-              WHERE ESTATUS = 1";
-      if ($qry = mysql_query($sql)){
-        if (mysql_num_rows($qry) > 0){
-          $dat='<servicios>';
-          while ($row = mysql_fetch_object($qry)){
-              $dat= $dat.'<servicio>
-                            <id_tipo>'.$row->ID_SERVICIO.'</id_tipo>
-                            <descripcion>'.$row->DESCRIPCION.'</descripcion>
-                            <icono_negro>'.$row->ICONO.'</icono_negro>
-                            <icono_amarillo>'.$row->ICONO_AMARILLO.'</icono_amarillo>
-                            <icono_blanco>'.$row->ICONO_BLANCO.'</icono_blanco>
-                         </servicio>';
-          }
-          $dat=$dat.'</servicios>';
         }else{
           $dat="";
         }
@@ -2957,7 +2890,6 @@ $sql = "SELECT A.ID_USUARIO,
                    C.PLACAS,
                    M.DESCRIPCION AS MODELO,
                    'taxi_libre' AS ESTATUS,
-                   TT.ID_TIPO_TAXI,
                    TT.DESCRIPCION AS TIPO,
                    A.LATITUD,
                    A.LONGITUD,
@@ -3009,7 +2941,6 @@ $sql = "SELECT A.ID_USUARIO,
                   <placas>".$row->PLACAS."</placas>
                   <modelo>".$row->MODELO."</modelo>
                   <estatus>".$row->ESTATUS."</estatus>
-                  <id_tipo>".$row->ID_TIPO_TAXI."</id_tipo>
                   <tipo>".$row->TIPO."</tipo>
                   <latitud>".$row->LATITUD."</latitud>
                   <longitud>".$row->LONGITUD."</longitud>
@@ -3031,7 +2962,6 @@ $sql = "SELECT A.ID_USUARIO,
                   <placas>".$row->PLACAS."</placas>
                   <modelo>".$row->MODELO."</modelo>
                   <estatus>".$row->ESTATUS."</estatus>
-                  <id_tipo>".$row->ID_TIPO_TAXI."</id_tipo>
                   <tipo>".$row->TIPO."</tipo>
                   <latitud>".$row->LATITUD."</latitud>
                   <longitud>".$row->LONGITUD."</longitud>

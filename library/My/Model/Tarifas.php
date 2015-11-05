@@ -14,7 +14,7 @@ class My_Model_Tarifas extends My_Db_Table
 		$result= Array();
 		$this->query("SET NAMES utf8",false); 		
     	$sql ="SELECT T.ID_TARIFA,T.DESCRIPCION, C.DESCRIPCION AS N_CLASE, E.NOM_ENT, IF(USA_TAXIMETRO=0,'No','Si') AS N_TAXIMETRO,
-    			T.BANDERAZO , IF(T.ESTATUS=0,'Inactivo','Activo') AS N_ESTATUS,T.HORARIO_INICIO, T.HORARIO_FIN, T.COSTO_KILOMETRO ,T.COSTO_MINUTOS,
+    			T.BANDERAZO , IF(T.ESTATUS=0,'Inactivo','Activo') AS N_ESTATUS,T.HORARIO_INICIO, T.HORARIO_FIN, T.COSTO_RECORRIDO,
     			IF(T.TIPO_TARIFA=0,'Sistema','Propio') AS N_TIPO
 				FROM ADMIN_TARIFAS T
 				INNER JOIN ADMIN_CLASE_TAXIS C ON T.ID_CLASE  = C.ID_CLASE
@@ -51,7 +51,7 @@ class My_Model_Tarifas extends My_Db_Table
         $result     = Array();
         $result['status']  = false;
         
-        $idEmpresa= (isset($data['inputEmpresa'])    && $data['inputEmpresa']   !="")   ? $data['inputEstado']     : 'NULL' ;
+        $idEmpresa= (isset($data['inputEmpresa'])    && $data['inputEmpresa']   !="")   ? $data['inputEmpresa']     : 'NULL' ;
         $iTipo 	  = (isset($data['inputTipo'])       && $data['inputTipo']      !="")   ? $data['inputTipo']       : '0' ;        
         
         $sql="INSERT INTO ADMIN_TARIFAS
@@ -61,15 +61,17 @@ class My_Model_Tarifas extends My_Db_Table
 				  DESCRIPCION			='".$data['inputNombre']."',
 				  USA_TAXIMETRO			= ".$data['inputuTaximetro'].",
 				  BANDERAZO				= ".$data['inputBanderazo'].",
-				  COSTO_KILOMETRO		= ".((!isset($data['inputKmsCobro'])  || $data['inputKmsCobro'] =="") ? 'NULL': $data['inputKmsCobro']).",
-				  COSTO_MINUTOS			= ".((!isset($data['inputMinsCobro']) || $data['inputMinsCobro']=="") ? 'NULL': $data['inputMinsCobro']).",
+				  COSTO_RECORRIDO		= ".((!isset($data['inputCobro'])     || $data['inputCobro'] =="")    ? 'NULL': $data['inputCobro']).",
+				  TAXIMETRO_KMS			= ".((!isset($data['inputKmsCobro'])  || $data['inputKmsCobro'] =="") ? 'NULL': $data['inputKmsCobro']).",
+				  TAXIMETRO_MINS		= ".((!isset($data['inputMinsCobro']) || $data['inputMinsCobro']=="") ? 'NULL': $data['inputMinsCobro']).",
 				  HORARIO_INICIO		='".$data['inputHinicio']."',
 				  HORARIO_FIN			='".$data['inputHfin']."',
-				  KM_FUERA_HORARIO		= ".((!isset($data['inputKmsFhor'])   || $data['inputKmsFhor']  =="") ? 'NULL': $data['inputKmsFhor']).",
-				  MIN_FUERA_HORARIO		= ".((!isset($data['inputMinsFhor'])  || $data['inputMinsFhor'] =="") ? 'NULL': $data['inputMinsFhor']).",
+				  TAX_FUERA_HORARIO		= ".((!isset($data['inputKmsFhor'])   || $data['inputKmsFhor']  =="") ? 'NULL': $data['inputKmsFhor']).",
+				  BAN_FUERA_HORARIO		= ".((!isset($data['inputMinsFhor'])  || $data['inputMinsFhor'] =="") ? 'NULL': $data['inputMinsFhor']).",
 				  KM_FUERA_ZONA			= ".((!isset($data['inputKmsFzona'])  || $data['inputKmsFzona'] =="") ? 'NULL': $data['inputKmsFzona']).",
 				  MIN_FUERA_ZONA		= ".((!isset($data['inputMinsFzona']) || $data['inputMinsFzona']=="") ? 'NULL': $data['inputMinsFzona']).",
 				  COSTO_FUERA_HORARIO	= ".((!isset($data['inputCobroFhor']) || $data['inputCobroFhor']=="") ? 'NULL': $data['inputCobroFhor']).",
+				  COSTO_FUERA_ZONA		= ".((!isset($data['inputCobroZona']) || $data['inputCobroZona']  =="") ? 'NULL': $data['inputCobroZona']).",
 				  TIPO_TARIFA			= ".$iTipo.",				  
 				  ESTATUS				= ".$data['inputEstatus'].",
 				  CREADO			 	= CURRENT_TIMESTAMP";       

@@ -92,7 +92,15 @@ $().ready(function() {
             inputCobroFhor  : {
               required: "Campo Requerido",    
               number: "Este campo acepta solo números"
-            }                       
+            },
+            inputCobro      : {
+              required: "Campo Requerido",    
+              number: "Este campo acepta solo números"
+            },
+            inputCobroZona  : {
+              required: "Campo Requerido",    
+              number: "Este campo acepta solo números"
+            }
         },
         submitHandler: function(form) {
             form.submit();
@@ -107,27 +115,6 @@ $().ready(function() {
         $("#inputHinicio").val('00:00:00');
         $("#inputHfin").val('23:59:59');
     }
-
-    /*
-    var nowTemp = new Date();
-    $('#inputHinicio').timepicker({
-        minuteStep: 1,
-        template: 'modal',
-        appendWidgetTo: 'body',
-        showSeconds: true,
-        showMeridian: false,
-        defaultTime: false
-    });
-
-    $('#inputHfin').timepicker({
-        minuteStep: 1,
-        template: 'modal',
-        appendWidgetTo: 'body',
-        showSeconds: true,
-        showMeridian: false,
-        defaultTime: false
-    });   
-    */
 
   $('.table').dataTable( {
     "sDom": "<'row'<'col-md-3'l><'col-md-9'f>r>t<'row'<'col-md-3'i><'col-md-9'p>>",
@@ -171,11 +158,14 @@ function onChangeTaximetro(inputValue){
         $("#inputMinsFzona").rules("remove", "required");
         $("#inputKmsFzona").rules("remove", "required");
         $("#inputCobroFhor").rules("remove", "required");
-
+        $("#inputCobro").rules("remove", "required");
+        $("#inputCobroZona").rules("remove", "required");
     }else if(inputValue==0){
         $(".optTaximetro").hide('fast');
         $(".optNotaximetro").show('fast');
 
+        $("#inputCobro").rules("remove", "required");
+        $("#inputCobroZona").rules("remove", "required");
         $("#inputMinsCobro").rules("remove", "required");
         $("#inputKmsCobro").rules("remove", "required");
         $("#inputMinsFhor").rules("remove", "required");
@@ -187,6 +177,8 @@ function onChangeTaximetro(inputValue){
         $(".optTaximetro").show('fast');
         $(".optNotaximetro").hide('fast');
 
+        $("#inputCobroZona").rules("add",  {required:true});
+        $("#inputCobro").rules("add",  {required:true});
         $("#inputMinsCobro").rules("add",  {required:true});
         $("#inputKmsCobro").rules("add",  {required:true});
         $("#inputMinsFhor").rules("add",  {required:true});
