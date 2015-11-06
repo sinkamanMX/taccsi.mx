@@ -1,4 +1,5 @@
 <?php  
+  error_reporting(0);
   set_time_limit(60000);
   require_once('./lib/nusoap.php'); 
   include 'lib/phpmailer.php';
@@ -314,6 +315,42 @@
                            'app'          => 'xsd:string'),
                      array('return' => 'xsd:string'),
                      $miURL);
+
+   $server->register('getReservaciones',
+                     array('id_usuario'     => 'xsd:string'),
+                     array('return' => 'xsd:string'),
+                     $miURL);
+
+    $server->register('usrNuevaReservacion',// Nombre de la funcion 
+                    array(
+                          'usuario'      => 'xsd:string',
+                          'dispositivo'  => 'xsd:string',
+                          'push_token'   => 'xsd:string',
+                          'origen'       => 'xsd:string',
+                          'destino'      => 'xsd:string',
+                          'lat_origen'   => 'xsd:string',
+                          'lon_origen'   => 'xsd:string',
+                          'lat_destino'  => 'xsd:string',
+                          'lon_destino'  => 'xsd:string',                          
+                          'pago'         => 'xsd:string',
+                          'referencias'  => 'xsd:string',
+                          'tipo'         => 'xsd:string',
+                          'iave'         => 'xsd:string',
+                          'ac'           => 'xsd:string',
+                          'conectores'   => 'xsd:string',
+                          'wifi'         => 'xsd:string',
+                          'so'           => 'xsd:string',
+                          'id_tarjeta'   => 'xsd:string',
+                          'fecha_reservacion'=> 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);
+
+  $server->register('cancelarReservacion', // Nombre de la funcion 
+                    array('id_usuario'        => 'xsd:string',
+                          'id_reservacion'    => 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);
+
 /****************/
 function envia_mail($archivo,$destinatarios, $asunto, $mensaje, $from, $FromName){
     $mail  = new PHPMailer();
@@ -3877,6 +3914,283 @@ $sql = "SELECT A.ID_USUARIO,
     }       
     return $res;
   }
+
+  function getReservaciones($idUsuario){
+    $sResult           = '';
+    $sReservaciones    = '';
+    $totalReservaciones= 0;
+    //$con = mysql_connect("localhost","dba","t3cnod8A!");
+    $con = mysql_connect("localhost","root","root");
+    if($con){
+      $base = mysql_select_db("BD_TACCSI",$con);
+      //$base = mysql_select_db("taccsi",$con);
+      $sql  = "SELECT * 
+              FROM ADMIN_RESERVACIONES
+              WHERE ID_CLIENTE             = ".$idUsuario."
+               AND  ID_ESTATUS_RESERVACION = 0
+              ORDER BY FECHA_RESERVACION ASC";
+      if ($qry = mysql_query($sql)){         
+        while ($row = mysql_fetch_object($qry)){          
+          $sReservaciones .= "<reservacion>
+                              <id_reservacion>".$row->ID_RESERVACION."</id_reservacion>
+                              <id_estatus>".$row->ID_ESTATUS_RESERVACION."</id_estatus>
+                              <id_formapago>".$row->ID_FORMA_PAGO."</id_formapago>
+                              <id_tarjeta>".$row->ID_TARJETA."</id_tarjeta>
+                              <id_tipo_taxi>".$row->ID_TIPO_TAXI."</id_tipo_taxi>
+                              <fecha_reservacion>".$row->FECHA_RESERVACION."</fecha_reservacion>
+                              <origen>".$row->ORIGEN."</origen>
+                              <origen_latitud>".$row->ORIGEN_LATITUD."</origen_latitud>
+                              <origen_longitud>".$row->ORIGEN_LONGITUD."</origen_longitud>
+                              <origen_refs>".$row->ORIGEN_REFERENCIAS."</origen_refs>
+                              <destino>".$row->DESTINO."</destino>
+                              <destino_latitud>".$row->DESTINO_LATITUD."</destino_latitud>
+                              <destino_longitud>".$row->DESTINO_LONGITUD."</destino_longitud>
+                              <destino_refs>".$row->DESTINO_REFERENCIAS."</destino_refs>
+                              <ac>".$row->AC."</ac>
+                              <iave>".$row->IAVE."</iave>
+                              <wifi>".$row->WIFI."</wifi>
+                              <cargador>".$row->CARGADOR."</cargador>                              
+                              </reservacion>";                          
+          $totalReservaciones++;
+        }    
+        mysql_free_result($qry);        
+      }
+      
+      mysql_close($con); 
+    }
+
+    $sResult =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response>
+                   <total>'.$totalReservaciones.'</total>
+                   <reservaciones>
+                      '.$sReservaciones.'
+                   </reservaciones>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $sResult);
+  }
+
+  function genIdReservacion(){
+    $res = -1;
+    $sql = "LOCK TABLE ADMIN_RESERV_GEN WRITE";
+    if ($qry = mysql_query($sql)){
+      $sql2 = "INSERT INTO ADMIN_RESERV_GEN (ID_RESERVACION) VALUES (0)";
+      mysql_query($sql2);
+      $sql3 = "SELECT MAX(ID_RESERVACION) AS ID FROM ADMIN_RESERV_GEN";
+      if ($qry3 = mysql_query($sql3)){
+        $row = mysql_fetch_object($qry3);
+        $res = $row->ID;
+        mysql_free_result($qry3);
+      }
+      $sql4 = "UNLOCK TABLES";
+      mysql_query($sql4);
+      mysql_free_result($qry);
+    } 
+    return $res; 
+  }
+
+  function getIdReservacion(){
+    $res = false;
+    while ($res <> true){
+      $id = genIdReservacion();
+      $sql = "SELECT COUNT(*) AS ID 
+              FROM ADMIN_RESERVACIONES
+              WHERE ID_RESERVACION = ".$id;
+      if ($qry = mysql_query($sql)){
+        $row = mysql_fetch_object($qry);     
+        if ($row->ID == 0){
+          $res = true;
+        }
+        mysql_free_result($qry);
+      }
+    }
+    return $id; 
+  }  
+
+  function registraReservacion($aInsert){
+    $res = false;
+    global $base;
+
+    $sql = "INSERT INTO ADMIN_RESERVACIONES
+            SET ID_RESERVACION          = ".$aInsert['idReservacion'].",
+                ID_VIAJE                = NULL,
+                ID_ESTATUS_RESERVACION  = 0,
+                ID_FORMA_PAGO           = ".$aInsert['pago'].",
+                ID_TARJETA              = ".$aInsert['id_tarjeta'].",
+                ID_CLIENTE              = ".$aInsert['id_usuario'].",
+                ID_TIPO_TAXI            = ".$aInsert['tipo'].",
+                FECHA_RESERVACION       ='".$aInsert['fecha_reservacion']."',
+                ORIGEN                  ='".$aInsert['origen']."',
+                ORIGEN_LATITUD          ='".$aInsert['lat_origen']."',
+                ORIGEN_LONGITUD         ='".$aInsert['lon_origen']."',
+                ORIGEN_REFERENCIAS      ='".$aInsert['referencias']."',
+                DESTINO                 ='".$aInsert['destino']."',
+                DESTINO_LATITUD         ='".$aInsert['lat_destino']."',
+                DESTINO_LONGITUD        ='".$aInsert['lon_destino']."',
+                SOLICITADO_DESDE        ='M',
+                DISPOSITIVO_ORIGEN      ='".$aInsert['dispositivo']."',
+                CARGADOR                = ".$aInsert['conectores'].",
+                AC                      = ".$aInsert['ac'].",
+                WIFI                    = ".$aInsert['wifi'].",
+                IAVE                    = ".$aInsert['iave'].",
+                CREADO                  = CURRENT_TIMESTAMP";
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    } 
+    return $res;
+  }  
+
+  function usrNuevaReservacion(
+                      $usuario,
+                      $dispositivo,
+                      $push_token,
+                      $origen,
+                      $destino,
+                      $lat_origen,
+                      $lon_origen,
+                      $lat_destino,
+                      $lon_destino,
+                      $pago,
+                      $referencias,
+                      $tipo,
+                      $iave,
+                      $ac,
+                      $conectores,
+                      $wifi,
+                      $so,
+                      $id_tarjeta,
+                      $fecha_reservacion){    
+    //$con = mysql_connect("localhost","dba","t3cnod8A!");
+    $con = mysql_connect("localhost","root","root");
+    if ($con){
+      //$base = mysql_select_db("taccsi",$con);
+      $base = mysql_select_db("BD_TACCSI",$con);
+      $id_usuario = valida_usuario($usuario);
+      if ($id_usuario > 0){
+        $idReservacion = 0;
+        registra_token($dispositivo,$push_token,$so);
+        $idReservacion = getIdReservacion();
+
+        $aInsert  = Array();
+        $aInsert['idReservacion']     = $idReservacion;
+        $aInsert['fecha_reservacion'] = $fecha_reservacion; 
+        $aInsert['id_usuario']        = $id_usuario;
+        $aInsert['dispositivo']       = $dispositivo;
+        $aInsert['origen']            = $origen; 
+        $aInsert['destino']           = $destino;
+        $aInsert['lat_origen']        = $lat_origen;
+        $aInsert['lon_origen']        = $lon_origen;
+        $aInsert['lat_destino']       = $lat_destino;
+        $aInsert['lon_destino']       = $lon_destino;
+        $aInsert['personas']          = $personas;
+        $aInsert['pago']              = $pago;
+        $aInsert['referencias']       = $referencias;
+        $aInsert['id_tarjeta']        = $id_tarjeta;
+        $aInsert['tipo']              = $tipo;
+        $aInsert['iave']              = $iave;
+        $aInsert['ac']                = $ac;
+        $aInsert['conectores']        = $conectores;
+        $aInsert['wifi']              = $wifi;
+
+        if(registraReservacion($aInsert)){
+          $idx = $idReservacion;
+          $msg = 'Su reservación ha sido registrado.'.$res; 
+        }else{
+          $idx = -2;
+          $msg = 'No fue posible asignar su reservacion, intente mas tarde '.$idReservacion;
+        }          
+      } else {
+        $idx = -1;
+        $msg = 'Usuario no registrado'.$id_usuario;
+      }
+
+      mysql_close($con);
+    }
+    
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function cancelarReservacion($id_usuario,$id_reservacion){
+    $idx = -1;
+    $msg = 'Servicio TACSSI no disponible, intente mas tarde.';
+    /*Buscar viaje*/
+    //$con = mysql_connect("localhost","dba","t3cnod8A!");
+    $con = mysql_connect("localhost","root","root");
+    if ($con){
+      //$base = mysql_select_db("taccsi",$con);
+      $base = mysql_select_db("BD_TACCSI",$con);
+      $aValidation =  validaReservacion($id_usuario,$id_reservacion);
+      var_dump($aValidation['TIEMPO']);
+      if($aValidation['ESTATUS']==0){
+        if($aValidation['N_ESTATUS']==1 && $aValidation['TIEMPO']>=60){          
+           if(cancelReservacion($id_reservacion)){
+            $idx = 1;
+            $msg = 'Su reservacion ha sido cancelada.';
+           }else{
+            $idx = -2;
+            $msg = 'No fue posible registrar su cancelación. Intente mas tarde.';  
+           }
+        }else{
+          $idx = '3';
+          $msg = 'No es posible cancelar la reservacion';
+        }
+      }else{
+        $idx = '2';
+        $msg = 'El viaje ya fue cancelado previamente.';        
+      }
+      mysql_close($con);
+    } 
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);    
+  }
+
+  function validaReservacion($id_usuario,$id_reservacion){
+    $res = Array();
+    $sql = "SELECT ID_ESTATUS_RESERVACION AS ESTATUS, 
+            IF(FECHA_RESERVACION > CURRENT_TIMESTAMP,'1','0') AS N_ESTATUS, 
+            (TIMESTAMPDIFF(MINUTE , CURRENT_TIMESTAMP,FECHA_RESERVACION )) AS TIEMPO
+            FROM ADMIN_RESERVACIONES
+            WHERE ID_RESERVACION = ".$id_reservacion.
+            " AND  ID_CLIENTE     = ".$id_usuario." LIMIT 1";    
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res['ESTATUS']    = $row->ESTATUS;
+      $res['N_ESTATUS']  = $row->N_ESTATUS;  
+      $res['TIEMPO']     = $row->TIEMPO;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }
+
+  function cancelReservacion($idReservacion){
+    $res = false;
+    $sql = "UPDATE ADMIN_RESERVACIONES
+            SET ID_ESTATUS_RESERVACION = 3,
+                FECHA_CANCELACION = CURRENT_TIMESTAMP
+            WHERE ID_RESERVACION = ".$idReservacion." LIMIT 1";       
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;
+  }  
   
-  $server->service($HTTP_RAW_POST_DATA);   
+  $server->service(@$HTTP_RAW_POST_DATA);   
 ?>
