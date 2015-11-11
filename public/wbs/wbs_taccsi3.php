@@ -3921,39 +3921,45 @@ $sql = "SELECT A.ID_USUARIO,
 
   function getReservaciones($idUsuario){
     $sResult           = '';
+    $siReservacion     = '';
     $sReservaciones    = '';
     $totalReservaciones= 0;
+    $codex             = -1;
+    $msg               = 'Sin Reservaciones';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     //$con = mysql_connect("localhost","root","root");
     if($con){
       //$base = mysql_select_db("BD_TACCSI",$con);
       $base = mysql_select_db("taccsi",$con);
-      $sql  = "SELECT * 
-              FROM ADMIN_RESERVACIONES
-              WHERE ID_CLIENTE             = ".$idUsuario."
-               AND  ID_ESTATUS_RESERVACION = 0
-              ORDER BY FECHA_RESERVACION ASC";
+      $sql  = "SELECT R.*, T.DESCRIPCION AS N_TIPO
+              FROM ADMIN_RESERVACIONES R
+              INNER JOIN ADMIN_TIPO_TAXIS T ON R.ID_TIPO_TAXI = T.ID_TIPO_TAXI
+              WHERE R.ID_CLIENTE             = ".$idUsuario."
+               AND  R.ID_ESTATUS_RESERVACION = 0
+              ORDER BY R.FECHA_RESERVACION ASC";
       if ($qry = mysql_query($sql)){         
-        while ($row = mysql_fetch_object($qry)){          
-          $sReservaciones .= "<reservacion>
-                              <id_reservacion>".$row->ID_RESERVACION."</id_reservacion>
-                              <id_estatus>".$row->ID_ESTATUS_RESERVACION."</id_estatus>
-                              <id_formapago>".$row->ID_FORMA_PAGO."</id_formapago>
-                              <id_tarjeta>".$row->ID_TARJETA."</id_tarjeta>
-                              <id_tipo_taxi>".$row->ID_TIPO_TAXI."</id_tipo_taxi>
-                              <fecha_reservacion>".$row->FECHA_RESERVACION."</fecha_reservacion>
-                              <origen>".$row->ORIGEN."</origen>
-                              <origen_latitud>".$row->ORIGEN_LATITUD."</origen_latitud>
-                              <origen_longitud>".$row->ORIGEN_LONGITUD."</origen_longitud>
-                              <origen_refs>".$row->ORIGEN_REFERENCIAS."</origen_refs>
-                              <destino>".$row->DESTINO."</destino>
-                              <destino_latitud>".$row->DESTINO_LATITUD."</destino_latitud>
-                              <destino_longitud>".$row->DESTINO_LONGITUD."</destino_longitud>
-                              <destino_refs>".$row->DESTINO_REFERENCIAS."</destino_refs>
-                              <ac>".$row->AC."</ac>
-                              <iave>".$row->IAVE."</iave>
-                              <wifi>".$row->WIFI."</wifi>
-                              <cargador>".$row->CARGADOR."</cargador>                              
+        while ($row = mysql_fetch_object($qry)){
+
+          $siReservacion .= "<reservacion>
+                                <id_reservacion>".$row->ID_RESERVACION."</id_reservacion>
+                                <id_estatus>".$row->ID_ESTATUS_RESERVACION."</id_estatus>
+                                <id_formapago>".$row->ID_FORMA_PAGO."</id_formapago>
+                                <id_tarjeta>".$row->ID_TARJETA."</id_tarjeta>
+                                <id_tipo_taxi>".$row->ID_TIPO_TAXI."</id_tipo_taxi>
+                                <tipo_taxi>".$row->N_TIPO."</tipo_taxi>
+                                <fecha_reservacion>".$row->FECHA_RESERVACION."</fecha_reservacion>
+                                <origen>".$row->ORIGEN."</origen>
+                                <origen_latitud>".$row->ORIGEN_LATITUD."</origen_latitud>
+                                <origen_longitud>".$row->ORIGEN_LONGITUD."</origen_longitud>
+                                <origen_refs>".$row->ORIGEN_REFERENCIAS."</origen_refs>
+                                <destino>".$row->DESTINO."</destino>
+                                <destino_latitud>".$row->DESTINO_LATITUD."</destino_latitud>
+                                <destino_longitud>".$row->DESTINO_LONGITUD."</destino_longitud>
+                                <destino_refs>".$row->DESTINO_REFERENCIAS."</destino_refs>
+                                <ac>".$row->AC."</ac>
+                                <iave>".$row->IAVE."</iave>
+                                <wifi>".$row->WIFI."</wifi>
+                                <cargador>".$row->CARGADOR."</cargador>                              
                               </reservacion>";                          
           $totalReservaciones++;
         }    
@@ -3963,13 +3969,23 @@ $sql = "SELECT A.ID_USUARIO,
       mysql_close($con); 
     }
 
+    if($totalReservaciones>0){
+      $codex  = 1;      
+      $msg    = 'OK';
+
+      $sReservaciones = '<reservaciones>
+                          '.$siReservacion.'
+                        </reservaciones>';
+    }
+
     $sResult =  '<?xml version="1.0" encoding="UTF-8"?>
                <space>
                  <Response>
-                   <total>'.$totalReservaciones.'</total>
-                   <reservaciones>
-                      '.$sReservaciones.'
-                   </reservaciones>
+                   <Status>
+                     <code>'.$codex.'</code>
+                     <msg>'.$msg.'_test</msg>
+                   </Status>
+                   '.utf8_encode($sReservaciones).'
                  </Response>
                </space>';
     return new soapval('return', 'xsd:string', $sResult);
