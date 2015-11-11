@@ -1334,7 +1334,6 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                 FIN_VIAJE_USUARIO = CURRENT_TIMESTAMP,
                 RATING_USUARIO = ".$puntos_servicio.",
                 COMENTARIOS = '".$comentarios."',
-                MONTO_TOTAL = ".$importe.",
                 DISTANCIA = ".$distancia."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
@@ -1374,6 +1373,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
+      $str_inser_log = "antes de las validaciones: id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+      InsertaLog("usrFinViaje",$str_inser_log,$push_token);
       if (finaliza_viaje($id_viaje,$comentarios,$puntos_taxista,$importe,$distancia)){
         $id_taxista = dame_id_taxista($id_viaje);
         if ($id_taxista > -1){
@@ -1381,7 +1382,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           //Manda push al taxista
           $push_token = dame_pushtoken_viaje($id_viaje,'T');
 
-          $str_inser_log = "id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
+          $str_inser_log = "Todo salio OK : id_usuario =".$id_usuario.", id_viaje = ".$id_viaje.", comentarios = ".$comentarios.", puntos_servicio = ".$puntos_servicio.", puntos_taxista = ".$puntos_taxista.", importe = ".$importe.", distancia = ".$distancia.", so = ".$so;
           InsertaLog("usrFinViaje",$str_inser_log,$push_token);
 
           if (strlen($push_token) > 1){
@@ -1732,8 +1733,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                          $pago,
                          $descuento,
                          $referencias){
+
     $res = false;
     global $base;
+
+    $codigo = rand(1,9999);
+
     $sql = "INSERT ADMIN_VIAJES(
               ID_VIAJES,
               ID_FORMA_PAGO,
@@ -1748,7 +1753,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               ID_CLIENTE,
               DISPOSITIVO_ORIGEN,
               ID_SRV_ESTATUS,
-              ORIGEN_REFERENCIAS
+              ORIGEN_REFERENCIAS,
+              CLAVE_VIAJE
             ) VALUES (
               ".$id_viaje.",
               ".$pago.",
@@ -1763,7 +1769,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               '".$id_usuario."',
               '".$dispositivo."',
               1,
-              '".$referencias."')";
+              '".$referencias."',
+              ".$codigo.")";
     
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -1972,6 +1979,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               INNER JOIN DISP_REGISTRO_TOKENS C ON DEVICE_ID = B.IDENTIFICADOR
 
             WHERE A.DISPONIBLE = 0 AND
+                  A.DEMOS = 1 AND
                   DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") < 400 AND
                   CAST(B.FECHA_GPS AS DATE)=CURRENT_DATE
             ORDER BY DIST
@@ -2146,8 +2154,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $res = false;
     /*revisar*/
     $sql = 'UPDATE ADMIN_VIAJES 
-            SET CLAVE_VIAJE = '.$codigo_viaje.',
-                ID_TAXISTA = '.$id_usuario.',
+            SET ID_TAXISTA = '.$id_usuario.',
                 ID_SRV_ESTATUS = 2,
                 ASIGNADO = CURRENT_TIMESTAMP
             WHERE ID_VIAJES = '.$id_viaje;
@@ -2192,6 +2199,19 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
   }
 
 
+  function dame_codigo_viaje($id_viaje){
+    $res = '';
+    $sql = "SELECT CLAVE_VIAJE
+              FROM ADMIN_VIAJES
+              WHERE ID_VIAJES = ".$id_viaje;
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->CLAVE_VIAJE;
+      mysql_free_result($close);  
+    }
+    return $res;
+  }
+
 
   function oprTomarViaje ($id_usuario,$id_viaje,$dispositivo){
     /*Funccion para asignar el viaje a un taxista, cuando ya fue confirmado*/
@@ -2204,7 +2224,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     if ($con){
       $base = mysql_select_db("taccsi",$con);
       if (valida_viaje_libre($id_viaje)){
-        $codigo = rand(1,9999);
+        $codigo = dame_codigo_viaje($id_viaje);
         //$x = tomar_viaje($id_usuario,$id_viaje,$codigo);
         if (tomar_viaje($id_usuario,$id_viaje,$codigo)){
           $token = dame_pushtoken_cliente($id_viaje);
@@ -2448,7 +2468,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
     $msg = 'Servicio TACCSI no disponible, intente mas tarde.';  
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
+
       $base = mysql_select_db("taccsi",$con);
+
       //actualiza la tabla viajes asignacion
       //revisa la tabla del viaje
       if (marca_rechazo($id_viaje,$id_usuario)){
@@ -2459,11 +2481,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           marca_rechazo_viaje($id_viaje);
           $token = dame_pushtoken_cliente($id_viaje);
 
-          $str_inser_log = "id_viaje =".$id_viaje.
-                      ", id_usuario = ".$id_usuario;
-
-
-      InsertaLog("oprRechazarViaje",$str_inser_log,$token);
+          
 
 
           if (strlen($token) > 0){
@@ -2627,6 +2645,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
               INNER JOIN ADMIN_MODELO M ON M.ID_MODELO = C.ID_MODELO
             WHERE CAST(A.FECHA_SERVER AS DATE) = CURRENT_DATE AND
                   B.DISPONIBLE = 0 AND 
+                  B.DEMOS = 1 AND
                   DISTANCIA(A.LATITUD,A.LONGITUD,".$latitud.",".$longitud.") < 400
             ORDER BY DIST
             LIMIT 10";
@@ -2793,7 +2812,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
                        'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago.@'.$importe.'@'.$forma."@".$id_viaje,
                        $push_token,
                        $so,
-                       'Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago');
+                       'Su viaje ha concluido. Fue un placer atenderlo.');
             //envia_push_dev('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token,$so);
           }
           $idx = 0;
@@ -3267,13 +3286,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio)
           SET  NO_TARJETA = AES_ENCRYPT('".$tdc."', 'myTa4ss1.c0m'), 
                TARJETA_VIEW = '".$view."', 
                NOMBRE_TARJETA = '".$nombre."', 
+               ID_TIPO_TARJETA = '".$tipo_tdc."',
                MES_VENCIMIENTO = AES_ENCRYPT('".$month."', 'myTa4ss1.c0m'),  
                ANO_VENCIMIENTO = AES_ENCRYPT('".$year."', 'myTa4ss1.c0m'),  
                CODIGO_AUTORIZACION = AES_ENCRYPT('".$cod_aut."', 'myTa4ss1.c0m'), 
                POR_DEFECTO = 0, 
                ESTATUS     = 1,  
                CREADO =  CURRENT_TIMESTAMP
-          WHERE ID_TIPO_TARJETA = '".$tipo_tdc."'";
+          WHERE ID_FORMA_PAGO = '".$id_tarjeta."'";
     if ($qry = mysql_query($sql)){
       $res = '<code>0</code>
               <msg>Su tarjeta fue registrada correctamente</msg>';

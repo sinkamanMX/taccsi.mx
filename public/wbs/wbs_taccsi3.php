@@ -350,6 +350,11 @@
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
+  $server->register('getStatusReservacion',
+                     array('id_reservacion' => 'xsd:string'),
+                     array('return'         => 'xsd:string'),
+                     $miURL);     
+
 /****************/
 function envia_mail($archivo,$destinatarios, $asunto, $mensaje, $from, $FromName){
     $mail  = new PHPMailer();
@@ -4189,6 +4194,57 @@ $sql = "SELECT A.ID_USUARIO,
     }
     return $res;
   }    
+
+  function getStatusReservacion($id_reservacion){    
+    $iEstatus   = -1;
+    $msgEstatus = 'Servicio TACSSI no disponible, intente mas tarde.';
+    $idx        = -2;
+    $msg        = 'Sin Viaje';
+    $dat        = '';
+    //Buscar viaje
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      //$base  = mysql_select_db("BD_TACCSI",$con);
+      $aInfo = getInfoReservacion($id_reservacion);
+
+      $iEstatus = $aInfo['ID_ESTATUS_RESERVACION'];
+
+      if($aInfo['ID_ESTATUS_RESERVACION']==0){
+        $msgEstatus = 'Reservacion Pendiente';
+      }else if($aInfo['ID_ESTATUS_RESERVACION']==1){
+        $msgEstatus = 'Reservacion Atendida';
+        $id_viaje   = 
+
+        $dat = dame_taxista($aInfo['ID_TAXISTA'],$aInfo['ID_VIAJE']);
+        if (strlen($dat) == 0){
+          $idx = -2;
+          $msg = 'No se logro obtener la información del TACCSISTA, intente mas tarde';
+        } else {
+          $idx = 0;
+          $msg = 'OK';
+        }
+
+      }else if($aInfo['ID_ESTATUS_RESERVACION']==2){
+        $msgEstatus = 'Reservacion cancelada';
+      }
+      mysql_close($con);
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                      <codeReservacion>'.$iEstatus.'</codeReservacion>
+                      <msgReservacion>'.$msgEstatus.'</msgReservacion>
+                      <code>'.$idx.'</code>
+                      <msg>'.$msg.'</msg>
+                   </Status>
+                   '.utf8_encode($dat).'
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);     
+  }  
   
   $server->service($HTTP_RAW_POST_DATA);   
 ?>

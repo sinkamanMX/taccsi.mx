@@ -4,6 +4,134 @@
 		"selected_items":
 		[
 			[
+				"ori",
+				"origen"
+			],
+			[
+				"destino",
+				"destino_latitud"
+			],
+			[
+				"orige",
+				"origen_refs"
+			],
+			[
+				"fe",
+				"fecha_reservacion"
+			],
+			[
+				"id_ti",
+				"id_tipo_taxi"
+			],
+			[
+				"rese",
+				"reservacion"
+			],
+			[
+				"SRE",
+				"sReservaciones"
+			],
+			[
+				"TOTA",
+				"totalReservaciones"
+			],
+			[
+				"ro",
+				"routes"
+			],
+			[
+				"iL",
+				"iLongitud"
+			],
+			[
+				"lon",
+				"lonCentroide"
+			],
+			[
+				"lat",
+				"latCentroide"
+			],
+			[
+				"dis",
+				"distancia_puntos"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"data",
+				"dataTaccsi"
+			],
+			[
+				"it",
+				"itipoTaxi"
+			],
+			[
+				"lat_",
+				"lat_destino"
+			],
+			[
+				"form",
+				"formacobro"
+			],
+			[
+				"a",
+				"aCosto"
+			],
+			[
+				"con",
+				"conexion"
+			],
+			[
+				"c",
+				"cobrarCada"
+			],
+			[
+				"cos",
+				"costoDistancia"
+			],
+			[
+				"cost",
+				"costoRecorrido"
+			],
+			[
+				"co",
+				"costoRecorrido"
+			],
+			[
+				"coso",
+				"costoDistancia"
+			],
+			[
+				"lo",
+				"lonDestino"
+			],
+			[
+				"l",
+				"latDestino"
+			],
+			[
+				"iD",
+				"iDlon"
+			],
+			[
+				"il",
+				"iLatitud"
+			],
+			[
+				"TI",
+				"tipoTaxi"
+			],
+			[
+				"LO",
+				"lonOrigen"
+			],
+			[
+				"LA",
+				"latOrigen"
+			],
+			[
 				"id",
 				"idTaccista"
 			],
@@ -14,14 +142,6 @@
 			[
 				"set",
 				"setMap"
-			],
-			[
-				"iL",
-				"iLatitud"
-			],
-			[
-				"res",
-				"resOp"
 			],
 			[
 				"geo",
@@ -40,10 +160,6 @@
 				"utf8_decode"
 			],
 			[
-				"c",
-				"codigo"
-			],
-			[
 				"valida",
 				"validateCodigo"
 			],
@@ -58,10 +174,6 @@
 			[
 				"va",
 				"validateDigits"
-			],
-			[
-				"con",
-				"console"
 			],
 			[
 				"control",
@@ -90,10 +202,6 @@
 			[
 				"pu",
 				"public"
-			],
-			[
-				"data",
-				"dataUser"
 			],
 			[
 				"s",
@@ -144,10 +252,6 @@
 				"markerOrigen"
 			],
 			[
-				"lon",
-				"lonMarker"
-			],
-			[
 				"m",
 				"mapGeo"
 			],
@@ -170,10 +274,6 @@
 			[
 				"sA",
 				"sApm"
-			],
-			[
-				"l",
-				"label	Tag"
 			],
 			[
 				"font",
@@ -296,10 +396,6 @@
 				"formMessage"
 			],
 			[
-				"form",
-				"formEmail"
-			],
-			[
 				"formT",
 				"formTypeMsg"
 			],
@@ -396,42 +492,10 @@
 	"buffers":
 	[
 		{
-			"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
+			"file": "public/wbs/wbs_taccsi2.php",
 			"settings":
 			{
-				"buffer_size": 15786,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/controllers/admin/js/jsValidateRates.js",
-			"settings":
-			{
-				"buffer_size": 7070,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "application/modules/finances/views/scripts/rates/index.phtml",
-			"settings":
-			{
-				"buffer_size": 3186,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/wbs/getRates.php",
-			"settings":
-			{
-				"buffer_size": 1967,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "cron_mailing/sendMails.php",
-			"settings":
-			{
-				"buffer_size": 2389,
+				"buffer_size": 148763,
 				"line_ending": "Unix"
 			}
 		}
@@ -480,8 +544,24 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/cFunctions.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/getRates.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs_tarifas/getTarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/tarifas/getTarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/tarifas/cFunciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/tarifas/getTarifa.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/getinfo.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateRates.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/index.phtml",
+		"/Users/itecno2/Documents/workspace/zendblog.net/tarifas/getTarifa.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/Taxis.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sendMails.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/zones/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/index.phtml",
@@ -496,8 +576,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/cars/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/CarsController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/controllers/RatesController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateRates.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/cancels/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reporCancels.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/cancels/serviceinfo.phtml",
@@ -510,7 +588,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/backups/js/AdminLTE/app.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/myprofile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/createservice.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/controllers/RatesController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateClases.js",
 		"/Users/itecno2/Downloads/NOTAS_TACCSI",
@@ -521,16 +598,13 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/serviceinfo.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/tBienvenida.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sWelcome.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/docscomplete.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/notifcomplete.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/notifincomplete.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/docscompleteCar.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/css/jquery.cslider.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/dist/css/AdminLTE.css",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/backups/wbs/wbs_taccsi.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/css/style.css",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/js/app.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/MapFunctions.js",
@@ -538,7 +612,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/php/solicitud_informacion.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/php/mail.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/configs/app.ini",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sendMails.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/registeruser/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegisterUser.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegister.js",
@@ -598,16 +671,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_options.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/options/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/admin_header.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_contact.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/login/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/new.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/waiting.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/clientsbynumber.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/drivers/getinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/reportincidencia.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/Viajes.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/reports/views/scripts/traveldet/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportDetail.js"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_contact.phtml"
 	],
 	"find":
 	{
@@ -628,6 +692,28 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"dame_so_pushtoken",
+			"registra_token",
+			"dame_pushtoken_viaje",
+			"cancelar_viaje",
+			"valida_viaje",
+			"CancelarViaje",
+			"cancela",
+			"usrNuevaReservacion",
+			"valida_usuario",
+			"Su viaje ha sido registrado",
+			"nuevoViaje",
+			"msgq",
+			"registra_viaje",
+			"dame_id_viaje",
+			"usrNuevoViaje",
+			"getReservaciones",
+			"DameViaje",
+			"viaje\nviaje",
+			"viaje",
+			"CalificarViaje",
+			"getZonaInit",
+			"FijaTarjeta",
 			"inputCobro",
 			"/finances/",
 			"getPositionsGeo",
@@ -733,29 +819,7 @@
 			"../../",
 			"h-40",
 			"offset",
-			"ooffset",
-			"color",
-			"307095",
-			"3c8dbc",
-			"428bca",
-			"content",
-			"toggleBounce",
-			"toogle",
-			"remove",
-			"removeMap",
-			"sendMailSmtp",
-			"td",
-			"src=\"js/",
-			"PluginDir",
-			"mails",
-			"mail",
-			"	,TELEFONO",
-			"NICKNAME='	",
-			"	',",
-			"= '	",
-			"	,APATERNO",
-			"margin",
-			"push"
+			"ooffset"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -816,145 +880,33 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "application/modules/finances/views/scripts/rates/getinfo.phtml",
+					"file": "public/wbs/wbs_taccsi2.php",
 					"settings":
 					{
-						"buffer_size": 15786,
+						"buffer_size": 148763,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								14519,
-								14519
+								148711,
+								146154
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 66.0,
-						"translation.y": 2858.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "public/controllers/admin/js/jsValidateRates.js",
-					"settings":
-					{
-						"buffer_size": 7070,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6442,
-								6442
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"syntax": "Packages/PHP/PHP.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2603.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "application/modules/finances/views/scripts/rates/index.phtml",
-					"settings":
-					{
-						"buffer_size": 3186,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1568,
-								1568
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 274.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "public/wbs/getRates.php",
-					"settings":
-					{
-						"buffer_size": 1967,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1547,
-								1547
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 457.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "cron_mailing/sendMails.php",
-					"settings":
-					{
-						"buffer_size": 2389,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								918,
-								882
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 105.0,
+						"translation.y": 69824.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1022,6 +974,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 241.0,
+	"side_bar_width": 268.0,
 	"status_bar_visible": true
 }
