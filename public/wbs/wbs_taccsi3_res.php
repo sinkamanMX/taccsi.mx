@@ -253,14 +253,6 @@
                     array('app'       => 'xsd:string'),
                     array('return' => 'xsd:string'),
                     $miURL);
-  $server->register('MotivosBajaCalificacion', 
-                    array('app'       => 'xsd:string'),
-                    array('return' => 'xsd:string'),
-                    $miURL);
-  $server->register('MensajesPredefinidos', 
-                    array('app'       => 'xsd:string'),
-                    array('return' => 'xsd:string'),
-                    $miURL);
   $server->register('TengoViaje', 
                     array('id_usuario'  => 'xsd:string'),
                     array('return' => 'xsd:string'),
@@ -1759,16 +1751,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
              PASSWORD = '".$password."'";
 
     } else {
-      $sql = "SELECT ADMIN_USUARIOS.ID_USUARIO,
-                     ADMIN_USUARIOS.NOMBRE,
-                     ADMIN_USUARIOS.APATERNO,
-                     ADMIN_USUARIOS.AMATERNO,
-                     ADMIN_USUARIOS.TELEFONO,
-                     ADMIN_USUARIOS.FOTO,
-                     ADMIN_USUARIOS.NICKNAME AS EMAIL,
-                     ADMIN_TAXIS.ID_TAXI              
+      $sql = "SELECT ID_USUARIO,
+                     NOMBRE,
+                     APATERNO,
+                     AMATERNO,
+                     TELEFONO,
+                     FOTO,
+                     NICKNAME AS EMAIL
               FROM ADMIN_USUARIOS
-              LEFT OUTER JOIN ADMIN_TAXIS ON ADMIN_TAXIS.ADMIN_USUARIOS_ID_USUARIO= ADMIN_USUARIOS.ID_USUARIO
               WHERE NICKNAME = '".$usuario."' AND
                     PASSWORD_TEXT = '".$password."'";
     }
@@ -1780,29 +1770,15 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
         }else{
             $foto="http://taccsi.com/images/taxis/".$row->FOTO;
         }
-
-        if ($tipo == 'U'){
-          $res = '<usuario>
-                    <id>'.$row->ID_USUARIO.'</id>
-                    <foto_perfil>'.$foto.'</foto_perfil>
-                    <nombre>'.$row->NOMBRE.'</nombre>
-                    <apaterno>'.$row->APATERNO.'</apaterno>
-                    <amaterno>'.$row->AMATERNO.'</amaterno>
-                    <telefono>'.$row->TELEFONO.'</telefono>
-                    <correo>'.$row->EMAIL.'</correo>
-                  </usuario>';
-          }else{
-            $res = '<usuario>
-                    <id>'.$row->ID_USUARIO.'</id>
-                    <id_taccsi>'.$row->ID_TAXI.'</id_taccsi>
-                    <foto_perfil>'.$foto.'</foto_perfil>
-                    <nombre>'.$row->NOMBRE.'</nombre>
-                    <apaterno>'.$row->APATERNO.'</apaterno>
-                    <amaterno>'.$row->AMATERNO.'</amaterno>
-                    <telefono>'.$row->TELEFONO.'</telefono>
-                    <correo>'.$row->EMAIL.'</correo>
-                  </usuario>';
-          }
+        $res = '<usuario>
+                  <id>'.$row->ID_USUARIO.'</id>
+                  <foto_perfil>'.$foto.'</foto_perfil>
+                  <nombre>'.$row->NOMBRE.'</nombre>
+                  <apaterno>'.$row->APATERNO.'</apaterno>
+                  <amaterno>'.$row->AMATERNO.'</amaterno>
+                  <telefono>'.$row->TELEFONO.'</telefono>
+                  <correo>'.$row->EMAIL.'</correo>
+                </usuario>';
       }
       mysql_free_result($qry);
     }
@@ -3543,81 +3519,6 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);
   }
 
-  function MensajesPredefinidos($app){
-
-      $dat = '<mensajes>
-                <mensaje>
-                  <id>1</id>
-                  <descripcion>Trafico denso, tardare 10 minutos mas.</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>2</id>
-                  <descripcion>He llegado</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>3</id>
-                  <descripcion>Estoy esperando</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>4</id>
-                  <descripcion>Estoy por llegar</descripcion>
-                </mensaje>
-              </mensajes>';
-    
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>2</code>
-                     <msg>OK</msg>
-                   </Status>
-                   '.$dat.'
-                  </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-  }
-
-  function MotivosBajaCalificacion($app){
-
-      $dat = '<motivos>
-                <motivo>
-                  <id>1</id>
-                  <descripcion>Falta de limpieza</descripcion>
-                </motivo>
-                <motivo>
-                  <id>2</id>
-                  <descripcion>Mala atención del taxista</descripcion>
-                </motivo>
-                <motivo>
-                  <id>3</id>
-                  <descripcion>Tiempo de arribo excesivo</descripcion>
-                </motivo>
-                <motivo>
-                  <id>4</id>
-                  <descripcion>Auto en malas condiciones</descripcion>
-                </motivo>
-                <motivo>
-                  <id>5</id>
-                  <descripcion>Forma de conducir</descripcion>
-                </motivo>
-                <motivo>
-                  <id>6</id>
-                  <descripcion>Mala elección de ruta</descripcion>
-                </motivo>
-              </motivos>';
-    
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>2</code>
-                     <msg>OK</msg>
-                   </Status>
-                   '.$dat.'
-                  </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-  }
 
 
   function dame_id_empresa($clave_empresa){
@@ -4421,10 +4322,9 @@ $sql = "SELECT A.ID_USUARIO,
                         ", dispositivo = ".$dispositivo.
                         ", token_cliente = ".$token;
 
-              InsertaLog("oprTomarReservacion",$str_inser_log,$push_token);
+              InsertaLog("oprTomarViaje",$str_inser_log,$push_token);
 
-              //envia_push('dev','usuario','Su TACCSI va en camino, Confirmación: '.$codigo.' @'.$id_usuario,$token,$so,'Su TACCSI va en camino, Confirmación: '.$codigo);
-              envia_push('dev','usuario','Su TACCSI va en camino,'.$id_viaje.'@codigo_cofirmacion:'.$codigo.' @'.$id_usuario);
+              envia_push('dev','usuario','Su TACCSI va en camino, Confirmación: '.$codigo.' @'.$id_usuario,$token,$so,'Su TACCSI va en camino, Confirmación: '.$codigo);              
             }
             $idx = 0;
             $msg = 'Su viaje ha sido asignado.';

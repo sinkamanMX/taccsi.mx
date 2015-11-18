@@ -253,14 +253,6 @@
                     array('app'       => 'xsd:string'),
                     array('return' => 'xsd:string'),
                     $miURL);
-  $server->register('MotivosBajaCalificacion', 
-                    array('app'       => 'xsd:string'),
-                    array('return' => 'xsd:string'),
-                    $miURL);
-  $server->register('MensajesPredefinidos', 
-                    array('app'       => 'xsd:string'),
-                    array('return' => 'xsd:string'),
-                    $miURL);
   $server->register('TengoViaje', 
                     array('id_usuario'  => 'xsd:string'),
                     array('return' => 'xsd:string'),
@@ -3543,81 +3535,6 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);
   }
 
-  function MensajesPredefinidos($app){
-
-      $dat = '<mensajes>
-                <mensaje>
-                  <id>1</id>
-                  <descripcion>Trafico denso, tardare 10 minutos mas.</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>2</id>
-                  <descripcion>He llegado</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>3</id>
-                  <descripcion>Estoy esperando</descripcion>
-                </mensaje>
-                <mensaje>
-                  <id>4</id>
-                  <descripcion>Estoy por llegar</descripcion>
-                </mensaje>
-              </mensajes>';
-    
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>2</code>
-                     <msg>OK</msg>
-                   </Status>
-                   '.$dat.'
-                  </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-  }
-
-  function MotivosBajaCalificacion($app){
-
-      $dat = '<motivos>
-                <motivo>
-                  <id>1</id>
-                  <descripcion>Falta de limpieza</descripcion>
-                </motivo>
-                <motivo>
-                  <id>2</id>
-                  <descripcion>Mala atención del taxista</descripcion>
-                </motivo>
-                <motivo>
-                  <id>3</id>
-                  <descripcion>Tiempo de arribo excesivo</descripcion>
-                </motivo>
-                <motivo>
-                  <id>4</id>
-                  <descripcion>Auto en malas condiciones</descripcion>
-                </motivo>
-                <motivo>
-                  <id>5</id>
-                  <descripcion>Forma de conducir</descripcion>
-                </motivo>
-                <motivo>
-                  <id>6</id>
-                  <descripcion>Mala elección de ruta</descripcion>
-                </motivo>
-              </motivos>';
-    
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>2</code>
-                     <msg>OK</msg>
-                   </Status>
-                   '.$dat.'
-                  </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-  }
 
 
   function dame_id_empresa($clave_empresa){
@@ -4421,10 +4338,9 @@ $sql = "SELECT A.ID_USUARIO,
                         ", dispositivo = ".$dispositivo.
                         ", token_cliente = ".$token;
 
-              InsertaLog("oprTomarReservacion",$str_inser_log,$push_token);
+              InsertaLog("oprTomarViaje",$str_inser_log,$push_token);
 
-              //envia_push('dev','usuario','Su TACCSI va en camino, Confirmación: '.$codigo.' @'.$id_usuario,$token,$so,'Su TACCSI va en camino, Confirmación: '.$codigo);
-              envia_push('dev','usuario','Su TACCSI va en camino,'.$id_viaje.'@codigo_cofirmacion:'.$codigo.' @'.$id_usuario);
+              envia_push('dev','usuario','Su TACCSI va en camino, Confirmación: '.$codigo.' @'.$id_usuario,$token,$so,'Su TACCSI va en camino, Confirmación: '.$codigo);              
             }
             $idx = 0;
             $msg = 'Su viaje ha sido asignado.';
