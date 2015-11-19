@@ -369,7 +369,7 @@
                           'id_reservacion'     => 'xsd:string',
                           'dispositivo'  => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
-                    $miURL);    
+                    $miURL);
 
   $server->register('oprRechazarReservacion',
                      array('id_reservacion' => 'xsd:string',
@@ -1623,14 +1623,17 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
             SET COMENTARIOS_TAXISTA = '".$comentarios."',
-                RATING_TAXISTA = ".$puntos."
-            WHERE ID_VIAJES = ".$id_viaje;
+                RATING_TAXISTA      = ".$puntos."
+            WHERE ID_VIAJES         = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
     }        
     return $res;
   }
 
+  /**********************************************************************
+  * En esta funcion que reciba los comentarios -> comentarios
+  **/
   function CalificarViaje($id_viaje,$comentarios,$puntos,$app){
      $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
@@ -4360,6 +4363,14 @@ $sql = "SELECT A.ID_USUARIO,
       }
       mysql_close($con);
     }
+    $foto = '';
+
+    if($aInfo['FOTO']=="" or $aInfo['FOTO']=="null"){
+        $foto="http://taccsi.com/images/taxis/sin_foto_perfil.png";
+    }else{
+        $foto="http://taccsi.com/images/taxis/".$aInfo['FOTO'];
+    }
+
     $res =  '<?xml version="1.0" encoding="UTF-8"?>
                <space>
                  <Response> 
@@ -4370,6 +4381,30 @@ $sql = "SELECT A.ID_USUARIO,
                       <msg>'.$msg.'</msg>
                    </Status>
                    '.utf8_encode($dat).'
+                    <reservacion>
+                      <id_reservacion>'.$aInfo['ID_RESERVACION'].'</id_reservacion>
+                      <id_estatus>'.$aInfo['ID_ESTATUS_RESERVACION'].'</id_estatus>
+                      <id_formapago>'.$aInfo['ID_FORMA_PAGO'].'</id_formapago>
+                      <id_tarjeta>'.$aInfo['ID_TARJETA'].'</id_tarjeta>
+                      <id_tipo_taxi>'.$aInfo['ID_TIPO_TAXI'].'</id_tipo_taxi>
+                      <fecha_reservacion>'.$aInfo['FECHA_RESERVACION'].'</fecha_reservacion>
+                      <origen>'.$aInfo['ORIGEN'].'</origen>
+                      <origen_latitud>'.$aInfo['ORIGEN_LATITUD'].'</origen_latitud>
+                      <origen_longitud>'.$aInfo['ORIGEN_LONGITUD'].'</origen_longitud>
+                      <origen_refs>'.$aInfo['ORIGEN_REFERENCIAS'].'</origen_refs>
+                      <destino>'.$aInfo['DESTINO'].'</destino>
+                      <destino_latitud>'.$aInfo['DESTINO_LATITUD'].'</destino_latitud>
+                      <destino_longitud>'.$aInfo['DESTINO_LONGITUD'].'</destino_longitud>
+                      <destino_refs>'.$aInfo['DESTINO_REFERENCIAS'].'</destino_refs>
+                      <ac>'.$aInfo['AC'].'</ac>
+                      <iave>'.$aInfo['IAVE'].'</iave>
+                      <wifi>'.$aInfo['WIFI'].'</wifi>
+                      <cargador>'.$aInfo['CARGADOR'].'</cargador> 
+                      <cliente>'.$aInfo['NOMBRE'].' '.$aInfo['APATERNO'].' '.$aInfo['AMATERNO'].'</cliente>
+                      <telefono>'.$aInfo['TELEFONO'].'</telefono>
+                      <rating>'.$aInfo['RATING'].'</rating>
+                      <foto>'.$foto.'</foto>
+                    </reservacion>                 
                  </Response>
                </space>';
     return new soapval('return', 'xsd:string', $res);     
@@ -4379,6 +4414,8 @@ $sql = "SELECT A.ID_USUARIO,
     /*Funccion para asignar el viaje a un taxista, cuando ya fue confirmado*/
     $idx = -1;
     $msg = '';
+    $id_viaje = -1;
+    $codigo   = -1; 
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     //$con = mysql_connect("localhost","root","root");
 
@@ -4451,13 +4488,15 @@ $sql = "SELECT A.ID_USUARIO,
                    <Status>
                      <code>'.$idx.'</code>
                      <msg>'.$msg.'</msg>
+                     <id_viaje>'.$id_viaje.'</id_viaje>
+                     <codigo>'.$codigo.'</codigo>
                    </Status>
                  </Response>
                </space>';
 
                
     return new soapval('return', 'xsd:string', $res);
-  }  
+  }
 
   function valida_reservacion_libre($id_reservacion){
     $res = false;
@@ -4504,9 +4543,15 @@ $sql = "SELECT A.ID_USUARIO,
 
   function getinfoReservacion($id_reservacion){
     $res = Array();
+    /*
     $sql = "SELECT *
             FROM ADMIN_RESERVACIONES
-            WHERE ID_RESERVACION = ".$id_reservacion." LIMIT 1";    
+            WHERE ID_RESERVACION = ".$id_reservacion." LIMIT 1";    */
+    $sql = "SELECT R.*, U.APATERNO,U.AMATERNO, U.RATING, U.IMAGEN AS FOTO,U.NOMBRE,U.TELEFONO
+          FROM ADMIN_RESERVACIONES R
+          INNER JOIN SRV_USUARIOS U ON R.ID_CLIENTE = U.ID_SRV_USUARIO
+          WHERE R.ID_RESERVACION = ".$id_reservacion."
+          LIMIT 1";            
     if ($qry = mysql_query($sql)){
       $row = mysql_fetch_array($qry);
       $res = $row;

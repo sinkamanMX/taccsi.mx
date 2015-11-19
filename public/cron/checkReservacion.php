@@ -13,7 +13,7 @@
   	$count = 0;
 	while($result = mysqli_fetch_array($query)){
 		if($result['TODAY']==1){
-			if($result['TIEMPO']>0 && $result['TIEMPO']<=60 ){
+			if($result['TIEMPO']>0 && $result['TIEMPO']<=30 ){
 				//echo "Debe de empezar a atenderse";	
 				activarReservacion($result['ID']);	
 			}elseif($result['TIEMPO']<0){

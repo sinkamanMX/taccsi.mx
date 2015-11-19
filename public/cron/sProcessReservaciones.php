@@ -1,5 +1,5 @@
 <?php
-  	include('funciones_push.php');
+  include('funciones_push.php');
 	$conexion = new mysqli('localhost','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
 	//$conexion = new mysqli('localhost','root','root','BD_TACCSI') or die("Some error occurred during connection " . mysqli_error($conexion));
 
@@ -27,6 +27,7 @@
 					   $result['AC'],
 					   $result['CARGADOR'],
 					   $result['WIFI']);
+      update_asignacion($result['ID']);
 		}
 	}
 
@@ -63,10 +64,12 @@
             var_dump($sql);
   	$query = mysqli_query($conexion, $sql);
 	while($result = mysqli_fetch_array($query)){
-		registra_asignacion($idReservacion,$result['ID_USUARIO']);
-		envia_push('dev','taxi',"Hay una reservacion disponible.@".$idReservacion,$result['PUSH_TOKEN'],$result['SO'],'');		
+		
+        registra_asignacion($idReservacion,$result['ID_USUARIO']);
+		    envia_push('dev','taxi',"Hay una reservacion disponible.@".$idReservacion,$result['PUSH_TOKEN'],$result['SO'],'');		
         sleep(2);
-	}
+	   }
+    
   }
 
   function registra_asignacion($id_reservacion,$id_taxista){
@@ -97,5 +100,13 @@
 
 	return $bResult;
   }  
+
+  function update_asignacion($id_reservacion){
+    global $conexion;
+    $sql = "UPDATE ADMIN_RESERVACIONES 
+            SET TIEMPO_ENVIADO =  CURRENT_TIMESTAMP
+            WHERE ID_RESERVACION = ".$id_reservacion." LIMIT 1";
+    $query = mysqli_query($conexion, $sql);   
+  }
 
 ?>
