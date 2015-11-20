@@ -143,8 +143,13 @@
 			$iLatitud  = $aLs[1];
 			$iLongitud = $aLs[0];
 
+			/*'.$fixed.','.$distacia.'*/
 			$distacia = distancia_puntos($latCentroide,$lonCentroide,$iLatitud,$iLongitud);
-			$a_position  .= '<posicion>'.$fixed.','.$distacia.'</posicion>';
+			$a_position  .= '<posicion>
+								<latitud>'.$iLatitud.'</latitud>
+								<longitud>'.$iLongitud.'</longitud>
+								<distancia>'.$distacia.'</distancia>
+							</posicion>';
 		}
 					
 		return $a_position;
