@@ -4,8 +4,8 @@
 	function conectar(){
 		global $conexion;
 		//$conexion   = new mysqli('localhost','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));		
-		//$conexion   = new mysqli('localhost','root','root','BD_TACCSI') or die("Some error occurred during connection " . mysqli_error($conexion));		
-		$conexion   = new mysqli('201.131.96.45','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
+		$conexion   = new mysqli('localhost','root','root','BD_TACCSI') or die("Some error occurred during connection " . mysqli_error($conexion));		
+		//$conexion   = new mysqli('201.131.96.45','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
 		return $conexion;
 	}
 
@@ -17,12 +17,16 @@
 				T.* , IF(CURRENT_TIME BETWEEN T.HORARIO_INICIO  AND T.HORARIO_FIN, T.COSTO_RECORRIDO, T.COSTO_FUERA_HORARIO ) AS N_COSTO				
 			FROM ADMIN_ZONAS Z 
 			INNER JOIN ADMIN_TARIFAS T ON Z.ID_TARIFA = T.ID_TARIFA
-			WHERE Z.ID_TARIFA IN ( 
+			WHERE T.ESTATUS  = 1 AND Z.ID_TARIFA IN ( 
 				SELECT ID_TARIFA 
 				FROM ADMIN_TARIFAS 
 				WHERE /*ID_CLASE  = $tipoTaxi 
 				AND */ TIPO_TARIFA = 0)
-				AND CONTAINS(MAP_OBJECT, geomfromtext('Point($iLatitud $iLongitud)')) ORDER BY DISTANCIA ASC LIMIT 1";
+				AND CONTAINS(MAP_OBJECT, geomfromtext('Point($iLatitud $iLongitud)'))
+				GROUP BY Z.ID_TARIFA				
+				ORDER BY DISTANCIA, Z.CREADO  ASC
+				 LIMIT 1";
+				//var_dump($sql);
 		//var_dump($sql);
 	    $query  = mysqli_query($conexion, $sql);
 	    if($query){

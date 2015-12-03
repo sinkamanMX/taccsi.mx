@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"ut",
+				"utf8_encode"
+			],
+			[
+				"La",
+				"LatLng"
+			],
+			[
+				"u",
+				"url"
+			],
+			[
+				"la",
+				"latitude"
+			],
+			[
+				"info",
+				"infoTaccista"
+			],
+			[
+				"taxis",
+				"taxista_nombre"
+			],
+			[
+				"foto",
+				"foto_taxista"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"ID_RES",
+				"id_reservacion"
+			],
+			[
 				"C",
 				"Código"
 			],
@@ -22,10 +58,6 @@
 			[
 				"ADMIN_",
 				"ADMIN_RESERVACIONES"
-			],
-			[
-				"res",
-				"res"
 			],
 			[
 				"cone",
@@ -226,10 +258,6 @@
 			[
 				"in",
 				"inputValue"
-			],
-			[
-				"la",
-				"latitud"
 			],
 			[
 				"pu",
@@ -486,76 +514,33 @@
 			[
 				"M",
 				"My_Model_Orders"
-			],
-			[
-				"appr",
-				"apprfc"
-			],
-			[
-				"apprazon",
-				"apprazon"
-			],
-			[
-				"appra",
-				"apprazon"
-			],
-			[
-				"no",
-				"noext"
-			],
-			[
-				"cur",
-				"currentpos"
-			],
-			[
-				"SLH",
-				"slh1"
-			],
-			[
-				"param",
-				"params"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "public/cron/sCalculateDir.php",
+			"file": "/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
 			"settings":
 			{
-				"buffer_size": 2380,
+				"buffer_size": 2203,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "public/cron/checkReservacion.php",
+			"contents": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO ",
 			"settings":
 			{
-				"buffer_size": 2075,
-				"line_ending": "Unix"
+				"buffer_size": 48,
+				"line_ending": "Unix",
+				"name": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO"
 			}
 		},
 		{
-			"file": "public/wbs/wbs_taccsi3.php",
+			"file": "public/tarifas/cFunciones.php",
 			"settings":
 			{
-				"buffer_size": 160261,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/cron/sProcessReservaciones.php",
-			"settings":
-			{
-				"buffer_size": 3545,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/wbs/wbs_taccsi2.php",
-			"settings":
-			{
-				"buffer_size": 148714,
+				"buffer_size": 6253,
 				"line_ending": "Unix"
 			}
 		}
@@ -604,15 +589,22 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sAssignReservacion.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sProcessReservaciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/checkReservacion.php",
+		"/Users/itecno2/Documents/Backup_servers/taccsi.com/htdocs/public/wbs/wbs_taccsi3.php.121115",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sCalculateDir.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sCheckRev.sh",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sProcessReserv.sh",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/funciones_push.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/funciones_push.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sProcessReservaciones.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi2.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sendMails.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/cFunctions.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/getRates.php",
@@ -696,7 +688,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getingo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateCompProf.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/maps/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sCalculateDir.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/daterangepicker/daterangepicker.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_register.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/layouts/mail/registeruser.html",
@@ -725,13 +716,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/listtaccis.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/jsValidateTaccsi.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/JsonController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/monitorInfo.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/controllers/ProfileController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/main/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/controllers/ServicesController.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/controllers/OptionsController.php"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/JsonController.php"
 	],
 	"find":
 	{
@@ -752,6 +737,111 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			";",
+			"	&,",
+			",&	",
+			"\"",
+			"INSERT INTO PET_VETERINARIAS",
+			";",
+			",&	",
+			"	&,",
+			"\"",
+			"INSERT INTO PET_VETERINARIAS ",
+			";",
+			"	&,",
+			",&	",
+			"INSERT INTO PET_VETERINARIAS",
+			";",
+			",1);",
+			"INSERT INTO PET_VETERINARIAS",
+			"INSERT INTO PET_VETERINARIAS (",
+			"	&,",
+			",&	",
+			"”",
+			"“",
+			"dame_taxista",
+			"FOTO_TAXISTA",
+			"foto",
+			"ESTATUS",
+			"estatus",
+			"usrInicioViaje",
+			"<viaje",
+			"dame_viaje",
+			"ID_SRV_ESTATUS",
+			"dameViajeActivo",
+			"dame_viaje",
+			"oprDameViaje",
+			"viaje",
+			"info",
+			"TengoViaje",
+			"monto",
+			"oprDameViaje",
+			"estatus_mi_viaje",
+			"EstatusMiViaje",
+			"envia_push",
+			"CancelarViaje",
+			"InsertaLog",
+			"valida_reservacion_libre",
+			"DAME_VIAJE",
+			"MONTO_TAXISTA",
+			"<monto>",
+			"dame_viaje",
+			"oprDameViaje",
+			"viaje",
+			"ADMIN_VIAJES",
+			"info_viaje",
+			"estatus_mi_viaje",
+			"EstatusMiViaje",
+			"viaje",
+			"info_viaje",
+			"dame_info",
+			"Viaje",
+			"dame_info_viaje",
+			"oprTomarReservacion",
+			"dame_viaje",
+			"oprDame",
+			"'),",
+			"estatus_mi_viaje",
+			"dame_viaje",
+			"oprDameViaje",
+			"dame",
+			"estatus_mi_viaje",
+			"EstatusMiViaje",
+			"RecibePosicion",
+			"califica_viaje_taxista",
+			"CalificarViaje",
+			"historico_usuario",
+			"califica_viaje_usr",
+			"CalificarViaje",
+			"gracias",
+			"getInfoReservacion",
+			"foto_",
+			"foto",
+			"getInfoReservacion",
+			"dame_viaje",
+			"oprTomar",
+			"oprTomarViaje",
+			"dame_so_pushtoken",
+			"marca_viaje",
+			"marca_tomar_viaje",
+			"registra_asignacion",
+			"marca_tomar_reservacion",
+			"dame_pushtoken_cliente",
+			"dame_codigo_viaje",
+			"registra_viaje",
+			"dame_id_viaje",
+			"      \n",
+			"getInfoReservacion",
+			"getStatusReservacion",
+			"valida_usuario",
+			"usrNuevaReservacion",
+			"Login",
+			"predefinidos",
+			"dame_usuario",
+			"login",
+			"dame_usuario",
+			"Login",
+			"login",
 			"dame_pushtoken_cliente",
 			"asignados",
 			"marca_rechazo",
@@ -774,112 +864,7 @@
 			"dame_codigo_viaje",
 			"registra_asignacion",
 			"marca_tomar_reservacion",
-			"marca_tomar_viaje",
-			"registra_viaje",
-			"nuevoviaje",
-			"usrNuevoViaje",
-			"marca_viaje",
-			"tomar_viaje",
-			"valida_viaje_libre",
-			"oprTomarViaje",
-			"marca_tomar_viaje",
-			"VIAJES_ASIGNACIONES",
-			"envia_push",
-			"registra_asignacion",
-			"asignacion",
-			"registra",
-			"manda_viaje_taxistas",
-			"usrNuevoViaje",
-			"historico_usuario",
-			"historico\nhistorico_usuario",
-			"historico\nhistorico",
-			"DameViaje",
-			"DameViajes",
-			"Viajes",
-			"utf8",
-			"Dame",
-			"Viajes",
-			"DameViaje",
-			"usrDameInfoTaxista",
-			"DameViaje",
-			"ADMIN_VIAJES",
-			"viaje",
-			"cancelarReservacion",
-			"oprDameViaje",
-			"viaje",
-			"dame_so_pushtoken",
-			"registra_token",
-			"dame_pushtoken_viaje",
-			"cancelar_viaje",
-			"valida_viaje",
-			"CancelarViaje",
-			"cancela",
-			"usrNuevaReservacion",
-			"valida_usuario",
-			"Su viaje ha sido registrado",
-			"nuevoViaje",
-			"msgq",
-			"registra_viaje",
-			"dame_id_viaje",
-			"usrNuevoViaje",
-			"getReservaciones",
-			"DameViaje",
-			"viaje\nviaje",
-			"viaje",
-			"CalificarViaje",
-			"getZonaInit",
-			"FijaTarjeta",
-			"inputCobro",
-			"/finances/",
-			"getPositionsGeo",
-			"computeTotalDistance",
-			"/finances",
-			"/finances/zones/",
-			"/finances/rates/",
-			"getPositionsGeo",
-			"offcanvas",
-			"datetimepicker",
-			"/admin/cars/",
-			"/finances/clases/",
-			"/admin/cars/",
-			"Calculate",
-			"_aviso_",
-			"registra_usuario",
-			"No fue Posible ",
-			"registra_token",
-			"RegistraUsuario",
-			"srv_USUARIOS",
-			"registra_usuario",
-			"getRandomCode()",
-			"SRV_USUARIOS",
-			"registra_usuario",
-			"SRV_USUARIOS",
-			"USUARIOS",
-			"SRV_USUARIOS",
-			"Registrate",
-			"background",
-			"Sin título12",
-			"background",
-			"Slider.png",
-			"Slider",
-			"png",
-			".png",
-			"Slider.png",
-			"CLAVE_VIAJE",
-			"registra_viaje",
-			"CLAVE_VIAJE",
-			"actualiza_usuario",
-			"SRV_USUARIOS",
-			"height=250&width=280",
-			"->data",
-			"aDataKardex",
-			"/admin/profile/index",
-			"tabMap",
-			"El documento fue rechazado, favor de volverlo a enviar.",
-			"/image/",
-			"datepicker",
-			"viajar",
-			"login"
+			"marca_tomar_viaje"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -887,6 +872,27 @@
 		"regex": true,
 		"replace_history":
 		[
+			",",
+			"\",",
+			",\"",
+			"'",
+			"",
+			",",
+			",\"",
+			"\",",
+			"'",
+			"",
+			",",
+			"\",",
+			",\"",
+			"",
+			",",
+			",1),",
+			"",
+			"(",
+			"\",",
+			",\"",
+			"'",
 			"/cusfinances/",
 			"/cusfinances",
 			"/cusfinances/zones/",
@@ -940,23 +946,23 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "public/cron/sCalculateDir.php",
+					"file": "/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
 					"settings":
 					{
-						"buffer_size": 2380,
+						"buffer_size": 2203,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1061,
-								0
+								586,
+								586
 							]
 						],
 						"settings":
@@ -971,24 +977,23 @@
 				},
 				{
 					"buffer": 1,
-					"file": "public/cron/checkReservacion.php",
 					"settings":
 					{
-						"buffer_size": 2075,
+						"buffer_size": 48,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								679,
-								322
+								48,
+								48
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"auto_name": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -998,84 +1003,27 @@
 				},
 				{
 					"buffer": 2,
-					"file": "public/wbs/wbs_taccsi3.php",
+					"file": "public/tarifas/cFunciones.php",
 					"settings":
 					{
-						"buffer_size": 160261,
+						"buffer_size": 6253,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								154779,
-								154779
+								903,
+								903
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
-						"translation.x": 0.0,
-						"translation.y": 73414.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "public/cron/sProcessReservaciones.php",
-					"settings":
-					{
-						"buffer_size": 3545,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2684,
-								2684
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 460.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "public/wbs/wbs_taccsi2.php",
-					"settings":
-					{
-						"buffer_size": 148714,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								90729,
-								90729
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 37124.0,
+						"translation.x": 19.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
