@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"aZona",
+				"aZonaOrigen"
+			],
+			[
+				"cos",
+				"costoRecorrido"
+			],
+			[
+				"aZ",
+				"aZonaOrigen"
+			],
+			[
 				"ut",
 				"utf8_encode"
 			],
@@ -158,10 +170,6 @@
 			[
 				"c",
 				"cobrarCada"
-			],
-			[
-				"cos",
-				"costoDistancia"
 			],
 			[
 				"cost",
@@ -506,41 +514,24 @@
 			[
 				"paralla",
 				"parallaxsl3"
-			],
-			[
-				"up",
-				"updateUser"
-			],
-			[
-				"M",
-				"My_Model_Orders"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
+			"file": "application/modules/external/views/scripts/main/index.phtml",
 			"settings":
 			{
-				"buffer_size": 2203,
+				"buffer_size": 6770,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO ",
+			"file": "public/controllers/external/js/createService.js",
 			"settings":
 			{
-				"buffer_size": 48,
-				"line_ending": "Unix",
-				"name": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO"
-			}
-		},
-		{
-			"file": "public/tarifas/cFunciones.php",
-			"settings":
-			{
-				"buffer_size": 6253,
+				"buffer_size": 10605,
 				"line_ending": "Unix"
 			}
 		}
@@ -589,9 +580,13 @@
 	},
 	"file_history":
 	[
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/atn/js/scripts.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/clientinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
+		"/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sAssignReservacion.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sProcessReservaciones.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/checkReservacion.php",
@@ -617,7 +612,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/finances/views/scripts/rates/index.phtml",
 		"/Users/itecno2/Documents/workspace/zendblog.net/tarifas/getTarifa.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/Taxis.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/zones/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/cusfinances/views/scripts/rates/index.phtml",
@@ -713,10 +707,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/modules/admin/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/listtaccis.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/jsValidateTaccsi.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/controllers/JsonController.php"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml"
 	],
 	"find":
 	{
@@ -951,78 +942,54 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
+					"file": "application/modules/external/views/scripts/main/index.phtml",
 					"settings":
 					{
-						"buffer_size": 2203,
+						"buffer_size": 6770,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								586,
-								586
+								6118,
+								6118
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1056.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "public/controllers/external/js/createService.js",
 					"settings":
 					{
-						"buffer_size": 48,
+						"buffer_size": 10605,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								48,
-								48
+								724,
+								724
 							]
 						],
 						"settings":
 						{
-							"auto_name": "--ignore-table=SIMA.PROD_FORM_DETALLE_RESULTADO",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
 						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "public/tarifas/cFunciones.php",
-					"settings":
-					{
-						"buffer_size": 6253,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								903,
-								903
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 19.0,
+						"translation.x": 4.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
@@ -1091,6 +1058,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 268.0,
+	"side_bar_width": 202.0,
 	"status_bar_visible": true
 }
