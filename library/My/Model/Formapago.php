@@ -29,9 +29,27 @@ class My_Model_Formapago extends My_Db_Table
 		if(count($query)>0){		  
 			$result = $query;			
 		}	
-		
-        
+		       
 		return $result;			
 	}
-	   
+	
+	public function getTarjetas($idusuario){
+		$result= Array();
+		$this->query("SET NAMES utf8",false); 		
+    	/*$sql ="SELECT ID_FORMA_PAGO AS ID, TARJETA_VIEW AS NAME
+				FROM SRV_FORMAS_PAGO
+				WHERE ID_SRV_USUARIO = ".$idusuario;*/
+		
+		$sql = "SELECT '-1' AS ID, 'EFECTIVO' AS NAME				
+				UNION 
+				SELECT ID_FORMA_PAGO AS ID, TARJETA_VIEW AS NAME
+				FROM SRV_FORMAS_PAGO
+				WHERE ID_SRV_USUARIO = ".$idusuario;;
+		$query   = $this->query($sql);
+		if(count($query)>0){
+			$result = $query;
+		}
+		       
+		return $result;		
+	}
 }	

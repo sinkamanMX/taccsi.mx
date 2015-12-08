@@ -1,4 +1,4 @@
-<?php $this->headScript()->appendFile('/controllers/callcenter/services/js/createService.js') ?>
+<?php $this->headScript()->appendFile('/controllers/external/js/createService.js') ?>
     <section class="content">
         <div id="divAlert" class="alert alert-danger alert-dismissable hide">
             <i class="fa fa-ban"></i>
@@ -11,96 +11,156 @@
             <div class="box">                
                 <!--<h3 class="box-title">Información del Viaje</h3>-->
                 <form role="form" id="FormData" class="row-min-h" method="POST" action="/external/main/index">
-                    <input type="hidden" id="inputOpr"          name="optReg" value="new" />
+                    <input type="hidden" id="inputOpr"          name="optReg"          value="<?php echo (@$this->data['optReg']=='newres') ? 'newres': 'new';?>" />
                     <input type="hidden" id="strClient"         name="strClient"       value="<?php echo @$this->data['strClient'];  ?>">
                     <input type="hidden" id="inputLatOrigen"    name="inputLatOrigen"  value="<?php echo @$this->data['inputLatOrigen'];  ?>">
                     <input type="hidden" id="inputLonOrigen"    name="inputLonOrigen"  value="<?php echo @$this->data['inputLonOrigen'];  ?>">
                     <input type="hidden" id="inputLatDestino"   name="inputLatDestino" value="<?php echo @$this->data['inputLatDestino']; ?>">
                     <input type="hidden" id="inputLonDestino"   name="inputLonDestino" value="<?php echo @$this->data['inputLonDestino']; ?>">                    
-                    <input type="hidden" id="inputDistancia" name="inputDistancia" value="<?php (isset($this->aDataViaje['DISTANCIA_VIAJE'])) ? $this->aDataViaje['DISTANCIA_VIAJE']: '0'; ?>">
-                    <input type="hidden" id="inputTiempo"    name="inputTiempo"    value="<?php (isset($this->aDataViaje['TIEMPO_VIAJE']))    ? $this->aDataViaje['TIEMPO_VIAJE']   : '0'; ?>">                    
+                    <input type="hidden" id="inputDistancia"    name="inputDistancia"  value="<?php (isset($this->data['inputDistancia'])) ? $this->data['inputDistancia']: '0'; ?>">
+                    <input type="hidden" id="inputTiempo"       name="inputTiempo"     value="<?php (isset($this->data['inputTiempo']))    ? $this->data['inputTiempo']   : '0'; ?>">
 
-                    <div class="box-body">          
+                    <div class="box-body">  
+                        <?php if(count(@$this->errors)>0):?>
+                         <div class="alert alert-danger alert-dismissable">
+                                <i class="fa fa-ban"></i>
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <b>!Atención¡</b>
+                                <?php if(@$this->errors['existReservacion']==1):?>
+                                    <div>Ya existe una reservacion en ese horario.</div>
+                                <?php endif; ?>                                
+                            </div>
+                        <?php endif;?>
+
                         <div class="row">
-                            <div class=" col-xs-3">
-                                <label for="inputNoPasajeros">No. Pasajeros</label>
-                                <select class="form-control" id="inputNoPasajeros" name="inputNoPasajeros">
-                                    <option value="">Seleccionar una opción</option>  
-                                    <?php echo $this->totalClientes;?>
-                                </select>
-                            </div>
-                            <div class="col-xs-3">
-                                <label for="inputFormaPago">Forma de Pago</label>
-                                <select class="form-control" id="inputFormaPago" name="inputFormaPago">
-                                    <option value="">Seleccionar una opción</option>  
-                                    <?php echo $this->formaPago;?>
-                                </select>
-                            </div>
-                            <div id="divFechaHora" class="col-xs-3">
-                                <label for="inputFechaViaje">Fecha/Hora del Viaje</label>
-                                <input readonly  id="inputFechaViaje" type="text" class="form-control noEnterSubmit" name="inputFechaViaje"  placeholder="">
-                            </div>
-                            <div id="divInformacion" class="col-xs-3" style="display:none;">
-                                <label for="inputInfo">Distancia / Tiempo</label>
-                                <input readonly  id="inputInfo" type="text" class="form-control noEnterSubmit" name="" disabled value="">
+                            <div class="col-md-8 col-xs-8">
+                                <div class="col-xs-12">
+                                    <label class="col-md-2" for="inputFechaViaje">Origen</label>
+                                    <div class="input-group input-group-sm col-md-10">
+                                        <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio" value="<?php  echo @$this->data['inputOrigen'];?>">
+                                        <span class="input-group-btn">
+                                          <button class="btn btn-success btn-flat" type="button" onClick="setOrigen()">OK</button>
+                                        </span>
+                                    </div>
+                                    <br/>
+                                    <div class="">
+                                        <label  class="col-md-2" for="inputNoPasajeros">Referencias</label>
+                                        <div class="input-group input-group-sm col-xs-12 col-md-10">
+                                            <input type="text" class="form-control noEnterSubmit" name="inputRefsO" id="inputRefsO" placeholder="Referencias,ej. color casa,nombre negocio." value="<?php echo @$this->data['inputRefsO'];?>">
+                                        </div> 
+                                    </div>                                                                        
+                                    <br/>
+                                    <label  class="col-md-2" for="inputFechaViaje">Destino</label>
+                                    <div class="input-group input-group-sm col-md-10">
+                                        <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio" value="<?php  echo @$this->data['inputDestino'];?>">
+                                        <span class="input-group-btn">
+                                          <button id="spanOrigen" class="btn btn-success btn-flat" type="button" onClick="setDestino()">OK</button>
+                                        </span>
+                                    </div>                                    
+                                    <br/>
+                                </div>        
+                                <div id="divTEA" class="col-xs-12" style="display:none;">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-5">
+                                        <label  class="col-md-12" for="inputFechaViaje">Distancia Aprox: <label id="inputDistancialbl"></label></label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label  class="col-md-12" for="inputFechaViaje">Tiempo Estimado: <label id="inputTiempolbl"></label></label>
+                                    </div>
+                                </div>                        
+                                <div class="col-xs-12">
+                                    <div id="myMapDraw" style="height:350px;"></div>                                
+                                </div>
                             </div>                            
-                            <br/>
-                            <br/>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <span><b>Origen</b></span>
-                            </div>
-                            <div class="col-xs-6">
-                                <span><b>Destino</b></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="input-group input-group-sm">
-                                    <input type="text" class="form-control noEnterSubmit" name="inputOrigen" id="inputOrigen" placeholder="Calle, Colonia, Delefación o Municipio">
-                                    <span class="input-group-btn">
-                                      <button class="btn btn-success btn-flat" type="button" onClick="setOrigen()">OK</button>
-                                    </span>
-                                </div>                      
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="input-group input-group-sm">
-                                    <input disabled type="text" class="form-control noEnterSubmit"  name="inputDestino"  id="inputDestino" placeholder="Calle, Colonia, Delefación o Municipio">
-                                    <span class="input-group-btn">
-                                      <button id="spanOrigen" class="btn btn-success btn-flat" type="button" onClick="setDestino()">OK</button>
-                                    </span>
+                            <div class="col-md-4 col-xs-4">
+                                <div class="row">
+                                    <div class=" col-xs-12">
+                                        <label for="inputWhen">¿Cuando deseas que llegue tu taccsi?</label>
+                                        <select class="form-control" id="inputWhen" name="inputWhen" onChange="changeReservacion(this.value);">
+                                            <?php echo @$this->optionDate;?>
+                                        </select>
+                                    </div>                            
+                                    <div id="divFechaHora" class="col-xs-12" style="display:<?php echo (@$this->data['inputWhen']==2)  ? 'display': 'none';?>;">
+                                        <label for="inputFechaViaje">Fecha/Hora del Viaje</label>
+                                        <input readonly  id="inputFechaViaje" type="text" class="form-control noEnterSubmit" name="inputFechaViaje"  placeholder="" value="<?php  echo @$this->data['inputFechaViaje'];?>">
+                                    </div>
+                                    <div class=" col-xs-12">
+                                        <label for="inputTarjeta">Forma de Pago</label>
+                                        <select class="form-control" id="inputTarjeta" name="inputTarjeta">                                            
+                                            <?php echo @$this->aTarjetas;?>
+                                        </select>
+                                    </div>                                     
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <br/>
+                                        <label for="inputNoPasajeros">Tamaño de taccsi</label>
+                                        <div class="form-group">
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionSize[]" value="1" <?php echo (@$this->data['optionSize'][0]=='1') ? 'checked': '';?>>
+                                              <img src="/images/assets/car_compacto.png" style="width:30px;"/>
+                                              Compacto (Máximo 3 pasajeros)
+                                            </label>
+                                          </div>
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionSize[]" value="2" <?php echo (@$this->data['optionSize'][0]=='2') ? 'checked': '';?>>
+                                              <img src="/images/assets/car_mediano.png" style="width:30px;"/> 
+                                              Grande (Máximo 4 pasajeros)
+                                            </label>
+                                          </div>
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionSize[]" value="3" <?php echo (@$this->data['optionSize'][0]=='3') ? 'checked': '';?>>
+                                              <img src="/images/assets/car_xl.png" style="width:30px;"/>
+                                              XL (Máximo 6 pasajeros)
+                                            </label>
+                                          </div>
+                                        </div>
+                                    </div>                                     
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="box-body table-responsive">                                    
+                                            <table id="tableCLients" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>&nbsp;</th>
+                                                        <th>Servicios Adicionales</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                               
+                                                 <?php foreach(@$this->aServicios as $key => $items):?>   
+                                                    <tr><?php $option = '';?>
+                                                        <?php for($i=0;$i<count(@$this->data['optionServ']);$i++): ?>
+                                                            <?php if(@$this->data['optionServ'][$i]):?>
+                                                                <?php $option = 'checked';?>
+                                                            <?php endif;?>
+                                                        <?php endfor;?>
+                                                        <td><input type="checkbox" name="optionServ[]" value="<?php echo $items['ID'];?>" <?php echo $option;?>></td>
+                                                        <td><img src="<?php echo $items['ICONO'];?>" style="width:25px;"/>&nbsp;<?php echo $items['NAME'];?></td>
+                                                    </tr>
+                                                <?php endforeach;?>
+                                                </tbody>
+                                                <tfoot></tfoot>
+                                            </table>
+                                        </div>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="">
-                                    <label for="inputNoPasajeros">Referencias</label>
-                                    <div class="input-group input-group-sm col-xs-12">
-                                        <input type="text" class="form-control noEnterSubmit" name="inputRefsO" id="inputRefsO" placeholder="Ej.Puerta de color rojo.">
-                                    </div> 
-                                </div>                                 
-                            </div>
-                            <div class="col-xs-6">
-                                <div class="">
-                                    <label for="inputNoPasajeros">Referencias</label>
-                                    <div class="input-group input-group-sm col-xs-12">
-                                        <input type="text" class="form-control noEnterSubmit" name="inputRefsD" id="inputRefsD" placeholder="Ej.Puerta de color rojo.">
-                                    </div> 
-                                </div>                                  
-                            </div>
-                        </div> 
-                            <span class="box-title"><i>Verifique que la ubicaciones sean correctas, puedes cambiar la ubicación con el ratón(dando click o arrastrando el icono).</i></span>
                         <br/>
-                        <div id="myMapDraw" style="width:100%; height:350px;"></div>
-
-                        <br/>
-                        <div class="input-group input-group-sm  col-xs-offset-10">
+                        <div class="" style="bottom: 0;left: 50%;position: fixed;">
                             <div id="divBtnSubmit" class="pull-right col-xs-12" style="display:block;">
+                                <a href="javascript:submitForm();">
+                                    <img src="/images/assets/solicitar.png"/>
+                                </a>
+                                <!--
                                 <button id="btnSearch" type="submit" class="btn btn-block btn-success btn-lg">
                                     Solicitar Viaje</button>
-                            </div>                        
+                                -->
+                            </div>
                         </div>
                     </div>                        
                 </form>

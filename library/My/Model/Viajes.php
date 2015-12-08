@@ -418,4 +418,79 @@ class My_Model_Viajes extends My_Db_Table
 		        
 		return $result;		    	
     }        
+    
+    public function insertNewRow($data){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $idToInsert = $this->insertGenId();
+        $codigo 	= rand(1,9999);
+        
+        $dFpago	 = ($data['inputTarjeta']=='-1') ? '1': '2';
+        $dLat    = ($data['inputLatOrigen']=='') ? '0.000000': $data['inputLatOrigen'] ;
+        $dLon	 = ($data['inputLonOrigen']=='') ? '0.000000': $data['inputLonOrigen'] ;
+        $iDistan = ($data['inputDistancia']=='') ? '0': $data['inputDistancia'];
+        
+        $sql="INSERT INTO $this->_name			 
+				SET ID_VIAJES 		= ".$idToInsert.",
+              		ID_FORMA_PAGO	= ".$dFpago.",
+              		FECHA_VIAJE		='".$data['inputFechaViaje']."',
+              		ORIGEN			='".$data['inputOrigen']."',
+              		ORIGEN_REFERENCIAS='".$data['inputRefsO']."',
+              		DESTINO			='".$data['inputDestino']."',
+              		ORIGEN_LATITUD	= ".$data['inputLatOrigen'].",
+              		ORIGEN_LONGITUD	= ".$data['inputLonOrigen'].",
+              		DESTINO_LATITUD	= ".$dLat.",
+              		DESTINO_LONGITUD= ".$dLon.",
+              		DISTANCIA_VIAJE = ".$iDistan.",
+              		TIEMPO_VIAJE	='".$data['inputTiempo']."',
+              		ID_CLIENTE		= ".$data['strClient'].",
+              		USUARIO_REGISTRO= ".$data['userRegistro'].",
+              		CLAVE_VIAJE    = '".$codigo."',
+              		SOLICITADO_DESDE= 'W',              		
+              		ID_TIPO_TAXI	= ".$data['inputSize'].",
+              		/*
+              		AC 				= ".$data['inAc'].",
+              		WIFI 			= ".$data['inWifi'].",
+              		IAVE 			= ".$data['inIave'].",
+              		CARGADOR        = ".$data['inCargdor'].",
+              		*/
+              		ID_SRV_ESTATUS  = 1";
+        try{            
+    		$query   = $this->query($sql,false);
+    		$sql_id ="SELECT LAST_INSERT_ID() AS ID_LAST;";
+			$query_id   = $this->query($sql_id);
+			if(count($query_id)>0){
+				$result['id']	   = $idToInsert;
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    }    
+    
+    public function insertServices($idViaje,$idServicio){
+        $result     = Array();
+        $result['status']  = false;
+        
+        $idToInsert = $this->insertGenId();
+        $codigo 	= rand(1,9999);
+        
+        $sql="INSERT INTO ADMIN_VIAJES_SERVICIOS
+				SET ID_VIAJE    = ".$idViaje.",
+                	ID_SERVICIO = ".$idServicio;
+        try{            
+    		$query   = $this->query($sql,false);    		
+			if(count($query)>0){				
+				$result['status']  = true;					
+			}	
+        }catch(Exception $e) {
+            echo $e->getMessage();
+            echo $e->getErrorMessage();
+        }
+		return $result;	
+    } 
+    	  
 }	

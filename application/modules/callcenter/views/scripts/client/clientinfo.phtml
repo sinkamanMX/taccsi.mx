@@ -27,7 +27,7 @@
                                 <div style="margin-top: 15px;">
                                     <ul class="nav nav-pills nav-stacked">
                                         <li>Total Viajes:</li>
-                                        <li class="header"><?php echo ($this->dataClient['VIAJES']!="") ? $this->dataClient['VIAJES'] : '---'; ?></li>
+                                        <li class="header"><?php echo ($this->totalViajes!="") ? $this->totalViajes : '---'; ?></li>
                                         <li>Nombre Completo:</li>
                                         <li class="header"><?php echo $this->dataClient['NOMBRE']." ".$this->dataClient['APATERNO']." ".$this->dataClient['AMATERNO']; ?></li>
                                         <li>Teléfono:</li>
@@ -42,41 +42,40 @@
                                 </div>
                             </div><!-- /.col (LEFT) -->
                             <div class="col-md-9 col-sm-8">
-
-                                        <div class="box-body table-responsive">                                    
-                                            <table id="tableViajes" class="table table-bordered table-striped">
-                                                <thead>
+                                    <div class="box-body table-responsive">                                    
+                                        <table id="tableViajes" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id Viaje</th>
+                                                    <th>Fecha</th>
+                                                    <th>Taxista</th>
+                                                    <th>Taxi</th>
+                                                    <th>Estatus</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($this->dataViajes as $key => $items):?>
                                                     <tr>
-                                                        <th>Id Viaje</th>
-                                                        <th>Fecha</th>
-                                                        <th>Taxista</th>
-                                                        <th>Taxi</th>
-                                                        <th>Estatus</th>
-                                                        <th></th>
+                                                        <td><?php echo $items['ID_VIAJES']; ?></td>
+                                                        <td><?php echo $items['FECHA_VIAJE']; ?></td>
+                                                        <td><?php echo $items['TAXISTA']; ?></td>
+                                                        <td><?php echo $items['PLACAS']; ?></td>
+                                                        <td><?php echo $items['ESTATUS']; ?></td>
+                                                        <td><button type="button" class="btn btn-primary" onClick="getToServicio('<?php echo $items['ID_VIAJES']; ?>')">
+                                                            <i class="fa fa-arrow-circle-right"></i> </button></td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach($this->dataViajes as $key => $items):?>
-                                                        <tr>
-                                                            <td><?php echo $items['ID_VIAJES']; ?></td>
-                                                            <td><?php echo $items['FECHA_VIAJE']; ?></td>
-                                                            <td><?php echo $items['TAXISTA']; ?></td>
-                                                            <td><?php echo $items['PLACAS']; ?></td>
-                                                            <td><?php echo $items['ESTATUS']; ?></td>
-                                                            <td><button type="button" class="btn btn-primary" onClick="getToServicio('<?php echo $items['ID_VIAJES']; ?>')">
-                                                                <i class="fa fa-arrow-circle-right"></i> </button></td>
-                                                        </tr>
-                                                    <?php endforeach;?>
-                                                </tbody>
-                                                <tfoot></tfoot>
-                                            </table>
-                                        </div><!-- /.box-body -->
+                                                <?php endforeach;?>
+                                            </tbody>
+                                            <tfoot></tfoot>
+                                        </table>
+                                    </div><!-- /.box-body -->
  
                                 </div><!-- /.tab-content -->
                             </div>
 
-                            </div><!-- /.col (RIGHT) -->
-                        </div><!-- /.row -->
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
+                        </div><!-- /.col (RIGHT) -->
+                    </div><!-- /.row -->
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
     </section><!-- /.content -->

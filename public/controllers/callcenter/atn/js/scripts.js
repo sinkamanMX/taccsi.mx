@@ -1,10 +1,11 @@
 $(document).ready(function() {
+
     oTable = $('#tableViajes').dataTable({
       "bDestroy": true,
       "bLengthChange": false,
       "bPaginate": true,
       "bFilter": true,
-      "bSort": true,
+      "bSort": false,
       "bJQueryUI": true,
       "iDisplayLength": 9,      
       "bProcessing": true,

@@ -48,30 +48,79 @@ class external_MainController extends My_Controller_Action
     		$cFormaPago = new My_Model_Formapago();
     		$cTaxis		= new My_Model_Taxis();  
     		$cViajes	= new My_Model_Viajes();   
-
+    		$cServicios	= new My_Model_Servicios();
+    		$aServicios = $cServicios->getOptions();
+    		$aTarjetas	= $cFormaPago->getTarjetas($this->_dataUser['ID_SRV_USUARIO']);
+    		
+    		$aCustom	 = Array(
+				array("id"=>"1",'name'=> utf8_encode('Lo m&aacute;s pronto posible') ),
+				array("id"=>"2",'name'=>'Quiero hacer una reservaci&oacute;n' )    
+		    ); 
+    		
     		if($this->_dataOp=='new'){
-    			$aDataViaje		 = $this->_dataIn;
-				$aDataViaje['userRegistro'] = $this->_dataUser['ID_SRV_USUARIO'];
+    			$aDataViaje		 = $this->_dataIn;    			
+    			$aDataViaje['userRegistro'] = $this->_dataUser['ID_SRV_USUARIO'];
 				$aDataViaje['strClient'] 	= $this->_dataUser['ID_SRV_USUARIO'];
-				$registerService = $cViajes->insertRow($aDataViaje);
-				
-				if($registerService['status']){
-					$idViaje = $registerService['id'];
-					
-					$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
-					$this->addTaxis($aTaxis, $idViaje);					
+				$aDataViaje['inputFechaViaje'] = date('Y-m-d H:i:s');
+				$aDataViaje['inputSize']	= $this->_dataIn['optionSize'][0];
+    			$registerService = $cViajes->insertNewRow($aDataViaje);
+    			if($registerService['status']){
+    				$idViaje = $registerService['id'];
+    				
+    				if(isset($this->_dataIn['optionServ']) && count($this->_dataIn['optionServ'])>0){
+    					for($i=0;$i<count($this->_dataIn['optionServ']);$i++){
+    						$insertService = $cViajes->insertServices($idViaje,$this->_dataIn['optionServ'][$i]);
+    					}
+    				}
+    				
+    				$aTaxis	 = $cTaxis->getTaxiService($aDataViaje);						
+					$this->addTaxis($aTaxis, $idViaje);
 					$this->_redirect('/external/main/serviceinfo?strViaje='.$idViaje);
+    			}
+    		}else if($this->_dataOp=='newres'){
+    			$cReservaciones  = new My_Model_Reservaciones();
+    		    $aDataViaje		 = $this->_dataIn;    			
+    			$aDataViaje['userRegistro'] = $this->_dataUser['ID_SRV_USUARIO'];
+				$aDataViaje['strClient'] 	= $this->_dataUser['ID_SRV_USUARIO'];
+				$aDataViaje['inputSize']	= $this->_dataIn['optionSize'][0];
+				
+				if($cReservaciones->validaSinReservaciones($this->_dataUser['ID_SRV_USUARIO'],$this->_dataIn['inputFechaViaje'])){
+	    			$registerService = $cReservaciones->insertNewRow($aDataViaje);
+	    			if($registerService['status']){
+	    				$idReservacion = $registerService['id'];
+	    				
+	    				if(isset($this->_dataIn['optionServ']) && count($this->_dataIn['optionServ'])>0){
+	    					for($i=0;$i<count($this->_dataIn['optionServ']);$i++){
+	    						$insertService = $cReservaciones->insertServices($idViaje,$this->_dataIn['optionServ'][$i]);
+	    					}
+	    				}
+	    					    								
+						$this->_redirect('/external/reports/index');						
+	    			}
+				}else{
+					$this->_aErrors['existReservacion'] = '1';
 				}
     		}
-
+    		
+    		$sFormaPago = '';
+    		$sOptionDate= '';
+    		
+    		if(count($this->_aErrors)>0){
+    			$sFormaPago = $this->_dataIn['inputTarjeta'];
+    			$sOptionDate= $this->_dataIn['inputWhen'];
+    		}
     		
 			$aFpagos	= $cFormaPago->getCbo();
 			$this->view->totalClientes   = $cFunctions->cbo_number(6);	
 			$this->view->viajeProgramado = $cFunctions->cboOptions(0);		   	
-			$this->view->formaPago		 = $cFunctions->selectDb($aFpagos);    		
+			$this->view->formaPago		 = $cFunctions->selectDb($aFpagos,$sFormaPago);
+			$this->view->aServicios		 = $aServicios;    		
+			$this->view->aTarjetas		 = $cFunctions->selectDb($aTarjetas,$sFormaPago);
+			$this->view->optionDate		 = $cFunctions->cbo_from_array($aCustom,$sOptionDate);
     		$this->view->data		= $this->_dataIn;
 			$this->view->errors 	= $this->_aErrors;	
-			$this->view->resultOp   = $this->_resultOp;   	
+			$this->view->resultOp   = $this->_resultOp;   
+			$this->view->data 		= $this->_dataIn;	
         } catch (Zend_Exception $e) {
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
@@ -206,5 +255,15 @@ class external_MainController extends My_Controller_Action
             echo "Caught exception: " . get_class($e) . "\n";
         	echo "Message: " . $e->getMessage() . "\n";                
         }   	    	
-    }    
+    }   
+
+    public function processServices($aServices,$iFind){
+    	$result = false;    	
+    	for($i=0;$i<count($aServices);$i++){
+    		if($aServices[$i]==$iFind){
+    			$result =  true;
+    		}
+    	}
+    	return $result;
+    }
 }
