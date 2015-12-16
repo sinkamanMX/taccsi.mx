@@ -784,11 +784,12 @@ function historico_usuario($id_usuario){
     $idx = -1;
     $msg = 'Eror al conecctarse con el servico';
     $dat = "";
-    //$con = mysql_connect("localhost","dba","t3cnod8A!");
-    $con = mysql_connect("201.131.96.45","dba","t3cnod8A!");
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("201.131.96.45","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
     if ($con){
-
       $base = mysql_select_db("taccsi",$con);
+      //$base = mysql_select_db("BD_TACCSI",$con);
 
       $sql = "SELECT ADMIN_VIAJES.ID_VIAJES,
                    CONCAT(ADMIN_USUARIOS.NOMBRE,' ',ADMIN_USUARIOS.APATERNO,' ' ,ADMIN_USUARIOS.AMATERNO) AS TACCSISTA,
@@ -853,6 +854,7 @@ function historico_usuario($id_usuario){
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS.'</comentarios>
                         <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
+                        '.getServiciosViaje($row->ID_VIAJES).'
                       </viaje>';
           }
           $dat.='</historico>';
@@ -887,6 +889,31 @@ function historico_usuario($id_usuario){
 
   }
 
+  function getServiciosViaje($idviaje){
+    $res = "<servicios>";
+    global $base;
+    $sql = "SELECT S.ID_SERVICIO, S.DESCRIPCION, S.ICONO, S.ICONO_AMARILLO,S.ICONO_BLANCO 
+            FROM ADMIN_VIAJES_SERVICIOS R
+            INNER JOIN ADMIN_SERVICIOS S ON R.ID_SERVICIO = S.ID_SERVICIO
+            WHERE R.ID_VIAJE = ".$idviaje;
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      if (mysql_num_rows($qry) > 0){
+        $res .= '<servicio>
+                    <id_tipo>'.$row->ID_SERVICIO.'</id_tipo>
+                    <descripcion>'.$row->DESCRIPCION.'</descripcion>
+                    <icono_negro>'.$row->ICONO.'</icono_negro>
+                    <icono_amarillo>'.$row->ICONO_AMARILLO.'</icono_amarillo>
+                    <icono_blanco>'.$row->ICONO_BLANCO.'</icono_blanco>
+                 </servicio>';
+        $res .= $infoTaccista;                
+      }
+      mysql_free_result($qry);
+    } 
+    $res .= '</servicios>';
+    return $res;    
+  }
+
 
   function historico_taccsista($id_usuario){
     $idx = -1;
@@ -915,7 +942,8 @@ function historico_usuario($id_usuario){
                    ADMIN_VIAJES.TIEMPO_VIAJE,
                    SRV_ESTATUS.ESTATUS,
                    IF (SRV_FORMAS_PAGO.TARJETA_VIEW IS NULL, 'EFECTIVO',SRV_FORMAS_PAGO.TARJETA_VIEW) AS FORMA_PAGO,
-                   IF (ADMIN_TIPO_TARJETAS.IMAGEN IS NULL, 'EFECTIVO',ADMIN_TIPO_TARJETAS.IMAGEN) AS ICONO_PAGO
+                   IF (ADMIN_TIPO_TARJETAS.IMAGEN IS NULL, 'EFECTIVO',ADMIN_TIPO_TARJETAS.IMAGEN) AS ICONO_PAGO,
+                   IF(ADMIN_VIAJES.EXTRAS IS NULL,'0.00',ADMIN_VIAJES.EXTRAS) AS N_EXTRAS                    
             FROM ADMIN_VIAJES
             INNER JOIN SRV_ESTATUS ON
                        SRV_ESTATUS.ID_ADMIN_ESTATUS = ADMIN_VIAJES.ID_SRV_ESTATUS
@@ -943,6 +971,7 @@ function historico_usuario($id_usuario){
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
                         <monto>'.$row->MONTO_TAXISTA.'</monto>
+                        <extras>'.$row->N_EXTRAS.'</extras>
                         <forma_pago>'.$row->FORMA_PAGO.'</forma_pago>
                         <icono_pago>'.$row->ICONO_PAGO.'</icono_pago>
                         <origen>'.$row->ORIGEN.'</origen>
@@ -955,6 +984,7 @@ function historico_usuario($id_usuario){
                         <distancia>'.$row->DISTANCIA_TAXISTA.'</distancia>
                         <comentarios>'.$row->COMENTARIOS_TAXISTA.'</comentarios>
                         <tiempo>'.$row->TIEMPO_VIAJE.'</tiempo>
+                        '.getServiciosViaje($row->ID_VIAJES).'
                       </viaje>';
           }
           $dat.='</historico>';
