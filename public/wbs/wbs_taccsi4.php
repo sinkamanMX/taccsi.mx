@@ -401,12 +401,15 @@
                           'descripcion' => 'xsd:string',                         
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
+                          'direccion'   => 'xsd:string',
+                          /*
                           'calle'       => 'xsd:string',
                           'numero'      => 'xsd:string',
                           'colonia'     => 'xsd:string',
                           'municipio'   => 'xsd:string',
                           'estado'      => 'xsd:string',
-                          'cp'          => 'xsd:string'), // Parametros de entrada 
+                          'cp'          => 'xsd:string'
+                          */), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -417,12 +420,16 @@
                           'descripcion' => 'xsd:string',                         
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
+                          'direccion'   => 'xsd:string'
+                          /*
                           'calle'       => 'xsd:string',
                           'numero'      => 'xsd:string',
                           'colonia'     => 'xsd:string',
                           'municipio'   => 'xsd:string',
                           'estado'      => 'xsd:string',
-                          'cp'          => 'xsd:string'), // Parametros de entrada 
+                          'cp'          => 'xsd:string'
+                          */
+                          ), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);  
 
@@ -482,7 +489,7 @@ function RecuperaPass($usName){
   //fb96549631c835eb239cd614cc6b5cb7d295121a
   $sql = "SELECT PASSWORD AS EXISTE 
           FROM SRV_USUARIOS 
-        WHERE EMAIL = '".$usName."'"; 
+          WHERE EMAIL = '".$usName."'"; 
   if ($qry = mysql_query($sql)){
     if (mysql_num_rows($qry) > 0){
       $row = mysql_fetch_object($qry);
@@ -499,13 +506,13 @@ En caso de que no haya solicitado su password, le recomendamos tome las medidas 
 Atentamente 
 TACCSI";
 //(envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI'))
-        if (envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI')){
+        if (envia_mail('',$usName, utf8_encode('Recuperación de password'), utf8_encode($mensaje),'no-reply@taccsi.com.','TACCSI')){
           $result = '<?xml version="1.0" encoding="UTF-8"?> 
                   <space>
                     <Response> 
                       <Status>
                         <code>1</code>
-                        <msg>'.utf8_decode('Su contraseña ha sido enviada al e-mail que proporciono para su registro.').'</msg>
+                        <msg>'.utf8_encode('Su contraseña ha sido enviada al e-mail que proporcionó para su registro.').'</msg>
                       </Status>
                     </Response>
                   </space>'; 
@@ -526,7 +533,7 @@ TACCSI";
                     <Response> 
                       <Status>
                         <code>-2</code>
-                        <msg>'.utf8_decode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
+                        <msg>'.utf8_encode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
                       </Status>
                     </Response>
                   </space>';
@@ -4974,16 +4981,14 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res); 
   }    
 
-  function usrNuevoLugar($usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+  function usrNuevoLugar($usuario,$descripcion,$latitud,$longitud,$direccion){    
     $msg = 'No hay conexión con el servicio TACCSI';
     $idx = -1;
     $con = mysql_connect("localhost","dba","t3cnod8A!");
-    //$con = mysql_connect("localhost","root","root");
 
     if($con){
-      //$base = mysql_select_db("BD_TACCSI",$con);
       $base = mysql_select_db("taccsi",$con);
-      if(registraLugar($usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp)){
+      if(registraLugar($usuario,$descripcion,$latitud,$longitud,$direccion)){
         $msg = 'OK';
         $idx = 0;
       } else {
@@ -5005,17 +5010,15 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);
   }
 
-  function usrEditarLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+  function usrEditarLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion){
     $msg = 'No hay conexión con el servicio TACCSI';
     $idx = -1;
     $con = mysql_connect("localhost","dba","t3cnod8A!");
-    //$con = mysql_connect("localhost","root","root");
 
     if($con){
-      //$base = mysql_select_db("BD_TACCSI",$con);
       $base = mysql_select_db("taccsi",$con);
       if(valida_lugar($idLugar,$usuario)){
-        if(actualizaLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp)){
+        if(actualizaLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion)){
           $msg = 'OK';
           $idx = 0;
         } else {
@@ -5046,10 +5049,8 @@ $sql = "SELECT A.ID_USUARIO,
     $msg = 'No hay conexión con el servicio TACCSI';
     $idx = -1;
     $con = mysql_connect("localhost","dba","t3cnod8A!");
-    //$con = mysql_connect("localhost","root","root");
 
     if($con){
-      //$base = mysql_select_db("BD_TACCSI",$con);
       $base = mysql_select_db("taccsi",$con);
       if(valida_lugar($idLugar,$usuario)){
         if(eliminaLugar($idLugar,$usuario)){
@@ -5082,13 +5083,9 @@ $sql = "SELECT A.ID_USUARIO,
   function DameLugares($usuario){
     $res = '<code>-1</code>
             <msg>El servicio TACCSI, no esta disponible</msg>';
-
-    //$con = mysql_connect("localhost","root","root");            
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     if ($con){
       $base = mysql_select_db("taccsi",$con);
-      //$base = mysql_select_db("BD_TACCSI",$con);
-
       $lugares = dame_lugares($usuario);
       if (strlen($lugares) > 0){
         $res = '<code>0</code>
@@ -5111,19 +5108,14 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);    
   }  
 
-  function registraLugar($id_cliente,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+  function registraLugar($id_cliente,$descripcion,$latitud,$longitud,$direccion){  
     $res = false;
     $sql = "INSERT INTO SRV_PUNTOS_FAVORITOS SET
             ID_SRV_USUARIO  = ".$id_cliente.",
             DESCRIPCION     = '".$descripcion."',
             LATITUD         =  ".$latitud.",
             LONGITUD        =  ".$longitud.",
-            CALLE           = '".$calle."',
-            NO_EXT          = '".$numero."',
-            COLONIA         = '".$colonia."',
-            MUNICIPIO       = '".$municipio."',
-            ESTADO          = '".$estado."',
-            CP              = '".$cp."',            
+            DIRECCION_COMPLETA = '".$direccion."',          
             FECHA_REGISTRO  = CURRENT_TIMESTAMP,
             ESTATUS         = 1";
     if ($qry = mysql_query($sql)){
@@ -5132,18 +5124,13 @@ $sql = "SELECT A.ID_USUARIO,
     return $res;    
   }
 
-  function actualizaLugar($idLugar,$id_cliente,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+  function actualizaLugar($idLugar,$id_cliente,$descripcion,$latitud,$longitud,$direccion){  
     $res = false;
     $sql = "UPDATE SRV_PUNTOS_FAVORITOS SET
               DESCRIPCION     = '".$descripcion."',
               LATITUD         =  ".$latitud.",
               LONGITUD        =  ".$longitud.",
-              CALLE           = '".$calle."',
-              NO_EXT          = '".$numero."',
-              COLONIA         = '".$colonia."',
-              MUNICIPIO       = '".$municipio."',
-              ESTADO          = '".$estado."',
-              CP              = '".$cp."',
+              DIRECCION_COMPLETA = '".$direccion."'
             WHERE ID_PUNTO        = ".$idLugar."
               AND ID_SRV_USUARIO  = ".$id_cliente." LIMIT 1";
     if ($qry = mysql_query($sql)){
@@ -5183,20 +5170,15 @@ $sql = "SELECT A.ID_USUARIO,
 
   function dame_lugares($id_usuario){
     $res = '<sitios>';
-    $sql = "SELECT ID_PUNTO,DESCRIPCION,CALLE,NO_INT,NO_EXT,COLONIA,CP,MUNICIPIO,ESTADO,LATITUD,LONGITUD
+    $sql = "SELECT ID_PUNTO,DESCRIPCION,DIRECCION_COMPLETA,LATITUD,LONGITUD
             FROM SRV_PUNTOS_FAVORITOS
             WHERE ID_SRV_USUARIO = ".$id_usuario;
     if ($qry = mysql_query($sql)){
       while ($row = mysql_fetch_object($qry)){
         $res = $res.'<sitio>
                        <id>'.$row->ID_PUNTO.'</id>
-                       <nombre>'.$row->DESCRIPCION.'</nombre>                       
-                       <calle>'.$row->CALLE.'</calle>
-                       <no_ext>'.$row->NO_EXT.'</no_ext>
-                       <colonia>'.$row->COLONIA.'</colonia>
-                       <cp>'.$row->CP.'</cp>
-                       <municipio>'.$row->MUNICIPIO.'</municipio>
-                       <estado>'.$row->ESTADO.'</estado>
+                       <nombre>'.$row->DESCRIPCION.'</nombre>   
+                       <direccion>'.$row->DIRECCION_COMPLETA.'</direccion>
                        <latitud>'.$row->LATITUD.'</latitud>
                        <longitud>'.$row->LONGITUD.'</longitud>
                      </sitio>';
@@ -5209,6 +5191,3 @@ $sql = "SELECT A.ID_USUARIO,
   
   $server->service(@$HTTP_RAW_POST_DATA);   
 ?>
-
-
-
