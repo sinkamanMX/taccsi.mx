@@ -202,8 +202,7 @@
                           'id_viaje'        => 'xsd:string',
                           'importe'         => 'xsd:string',
                           'distancia'       => 'xsd:string',
-                          'tiempo'          => 'xsd:string',
-                          'extras'          => 'xsd:string'), // Parametros de entrada 
+                          'tiempo'          => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -3177,15 +3176,14 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);
   }
 
-   function finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras){
+   function finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo){
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
             SET ID_SRV_ESTATUS = 3,
                 FIN_VIAJE_TAXISTA = CURRENT_TIMESTAMP,
                 MONTO_TAXISTA = ".$importe.",
                 DISTANCIA_TAXISTA = ".$distancia.",
-                TIEMPO_VIAJE='".$tiempo."',
-                EXTRAS=".$extras."
+                TIEMPO_VIAJE='".$tiempo."'
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -3232,7 +3230,7 @@ $sql = "SELECT A.ID_USUARIO,
     return $res;  
   }
 
-  function oprFinViaje($id_usuario,$id_viaje,$importe,$distancia,$tiempo,$extras){
+  function oprFinViaje($id_usuario,$id_viaje,$importe,$distancia,$tiempo){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
@@ -3244,12 +3242,11 @@ $sql = "SELECT A.ID_USUARIO,
                       ", id_viaje = ".$id_viaje.
                       ", importe = ".$importe.
                       ", distancia = ".$distancia.
-                      ", tiempo = ".$tiempo.
-                      ", extras = ".$extras;
+                      ", tiempo = ".$tiempo;
 
       InsertaLog("oprFinViaje",$str_inser_log,$token);
 
-      $fin = finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras);
+      $fin = finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo);
       if ($fin){
         $id_cliente = dame_id_usuario($id_viaje);
         if ($id_cliente > -1){
@@ -3262,7 +3259,7 @@ $sql = "SELECT A.ID_USUARIO,
             //envia_push('Su viaje ha concluido. Su TACCSISTA ha enviado una solicitud de pago $forma.@'.$importe.'@'.$forma,$push_token);
             envia_push('dev',
                        'usuario',
-                       $importe.'@'.$distancia.'@'.$extras.'@'.$tiempo.'@Su viaje ha concluido. Fue un placer atenderlo.',
+                       $importe.'@'.$distancia.'@0@'.$tiempo.'@Su viaje ha concluido. Fue un placer atenderlo.',
                        $push_token,
                        $so,
                        'Su viaje ha concluido. Fue un placer atenderlo.');
@@ -4120,7 +4117,7 @@ $sql = "SELECT A.ID_USUARIO,
                  <Response>
                    <Status>
                      <code>'.$codex.'</code>
-                     <msg>'.$msg.'</msg>
+                     <msg>'.$msg.'_test</msg>
                    </Status>
                    '.utf8_encode($sReservaciones).'
                  </Response>
@@ -4253,7 +4250,7 @@ $sql = "SELECT A.ID_USUARIO,
 
           if(registraReservacion($aInsert)){
             $idx = $idReservacion;
-            $msg = 'Su reservacion ha sido registrada.'; 
+            $msg = 'Su reservacion ha sido registrado.'; 
           }else{
             $idx = -2;
             $msg = 'No fue posible asignar su reservacion, intente mas tarde '.$idReservacion;
@@ -4786,7 +4783,7 @@ $sql = "SELECT A.ID_USUARIO,
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
               INNER JOIN SRV_ESTATUS      E ON A.ID_SRV_ESTATUS = E.ID_ADMIN_ESTATUS 
-            WHERE  A.ID_SRV_ESTATUS IN (2,5) 
+            WHERE  A.ID_SRV_ESTATUS IN (2,5,6) 
               AND  A.ID_CLIENTE     = ".$id_usuario;
     if ($qry = mysql_query($sql)){
       $row = mysql_fetch_object($qry);

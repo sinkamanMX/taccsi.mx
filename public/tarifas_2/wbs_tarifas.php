@@ -44,9 +44,6 @@
     $cobrarCadaMins  = $aZonaOrigen['TAXIMETRO_MINS'];
     $costoRecorrido += $banderazo;
 
-    //var_dump($aZonaOrigen);
-    //die();    
-
     if($aZonaOrigen['USA_TAXIMETRO']==1){
      // var_dump("USA TAXIMETRO");
       $sEstatus       = 1;
@@ -108,77 +105,138 @@
           }       
         }
       }
-    }else{ 
-      //var_dump("NOOOO USA TAXIMETRO");
-      $sEstatus       = 1;
-      $sFormaCobro    = '';
-      $aZonaOrigen    = getZonaInit($lat_origen,$lon_origen,$itipoTaxi);
-      //var_dump($aZonaOrigen);
-      $sUsaTaximetro  = 'No';
-      $cobrarCada     = "";
-      
-      if($bOnZona){
-        //var_dump("EN ZONA");
-        $distancia      = distancia_puntos($lat_origen,$lon_origen,$lat_destino,$lon_destino);
-        $aDestino       = "Dentro de la zona";
-        $banderazo      = 0;
-        $aCosto         = $aZonaOrigen['COSTO_NT'];
-        $costoRecorrido = $aZonaOrigen['COSTO_NT'];
-        $cotrolDistancia= $distancia;
-      }else{
-        //var_dump("FUER A DE EN ZONA");
-        $aDestino   = "Fuera de la zona";
-        $route = "https://maps.googleapis.com/maps/api/directions/json?origin=".$lat_origen.",".$lon_origen."&destination=".$lat_destino.",".$lon_destino."&avoid=highways&mode=driving&key=AIzaSyBTBZIN5X9lsstyry5yGDwC4s_Z3IXkIC0";
-        $json  = file_get_contents($route); // this WILL do an http request for you
-        $data  = json_decode($json);
-        $routes= $data->routes; 
+    }else{        
+        $sEstatus       = 1;
+        $sFormaCobro    = '';
+        $aZonaOrigen    = getZona($lat_origen,$lon_origen,$itipoTaxi);
+        //var_dump($aZonaOrigen);
+        $sUsaTaximetro  = 'No';
+        $cobrarCada     = "";        
+        $banderazo      = $aZonaOrigen['BANDERAZO'];
+        $aCosto         = $aZonaOrigen['N_COSTO'];
+        $cobrarCada     = $aZonaOrigen['TAXIMETRO_KMS'];           
 
-        $aPocisiones  = Array();
-        
-        foreach($routes as $items){
-          $positions  = $items->legs;
-          foreach($positions as $p){
-            $steps = $p->steps;
-            foreach($steps as $s){
-              $intLat= $s->start_location->lat;
-              $inLon = $s->start_location->lng;
+      if($aZonaOrigen['N_CLASE']==3){
+        if($bOnZona){
+          $distancia      = distancia_puntos($lat_origen,$lon_origen,$lat_destino,$lon_destino);
 
-              if($aControl==0){
-                $aPocisiones['lat'] = $intLat;
-                $aPocisiones['lon'] = $inLon;
-              }else{
-                $inZone     = onZona($aZonaOrigen['ID_ZONA'],$intLat,$inLon);
-                $sDistancia = distancia_puntos($aPocisiones['lat'],$aPocisiones['lon'],$intLat,$inLon); 
+          var_dump($distancia);
 
-                if(!$inZone){
-                  $aZonaget   = getZonaInit($intLat,$inLon,$itipoTaxi);
-                  $aCosto     = $aZonaget['COSTO_NT'];
+          $aDestino       = "Dentro de la zona";       
+          $costoDistancia = ($distancia/$cobrarCada)*$aCosto;
+          $costoRecorrido = $costoDistancia+$banderazo;
+          $cotrolDistancia = $distancia;
+        }else{
+          //var_dump("FUERA DE LA ZONA");
+          //var_dump("FUER A DE EN ZONA");
+          $aDestino   = "Fuera de la zona";
+          $route = "https://maps.googleapis.com/maps/api/directions/json?origin=".$lat_origen.",".$lon_origen."&destination=".$lat_destino.",".$lon_destino."&avoid=highways&mode=driving&key=AIzaSyBTBZIN5X9lsstyry5yGDwC4s_Z3IXkIC0";
+          $json  = file_get_contents($route); // this WILL do an http request for you
+          $data  = json_decode($json);
+          $routes= $data->routes; 
 
-                  if($aZonaget['COSTO_ACUMULABLE']==1){
-                    $costoRecorrido += $aCosto;
-                  }else{
-                    $costoRecorrido  = $aCosto;
-                  }
+          $aPocisiones  = Array();          
+
+          foreach($routes as $items){
+            $positions  = $items->legs;
+            foreach($positions as $p){
+              $steps = $p->steps;
+              foreach($steps as $s){
+                $intLat= $s->start_location->lat;
+                $inLon = $s->start_location->lng;
+
+                if($aControl==0){
+                  $aPocisiones['lat'] = $intLat;
+                  $aPocisiones['lon'] = $inLon;
                 }else{
-                  $aCosto       = $aZonaOrigen['COSTO_NT'];
-                  if($aZonaOrigen['COSTO_ACUMULABLE']==1){
-                    $costoRecorrido += $aCosto;
+                  $inZone     = onZona($aZonaOrigen['ID_ZONA'],$intLat,$inLon);
+                  $sDistancia = distancia_puntos($aPocisiones['lat'],$aPocisiones['lon'],$intLat,$inLon); 
+
+                  if(!$inZone){
+                    $aCosto         = $aZonaOrigen['COSTO_FUERA_ZONA'];
+                    $cobrarCada     = $aZonaOrigen['KM_FUERA_ZONA'];      
                   }else{
-                    $costoRecorrido  = $aCosto;
+                    $aCosto         = $aZonaOrigen['N_COSTO'];
+                    $cobrarCada     = $aZonaOrigen['TAXIMETRO_KMS'];      
                   }
-                }   
-                //var_dump($aZonaOrigen);
 
-                $cotrolDistancia += $sDistancia;            
+                  $costoDistancia  = ($sDistancia/$cobrarCada)*$aCosto;
+                  $costoRecorrido  += $costoDistancia; 
+                  $cotrolDistancia += $sDistancia;            
 
-                $aPocisiones['lat'] = $intLat;
-                $aPocisiones['lon'] = $inLon; 
+                  $aPocisiones['lat'] = $intLat;
+                  $aPocisiones['lon'] = $inLon; 
+                }
+                $aControl++;
               }
-              $aControl++;
-            }
-          }       
-        }        
-      }
+            }       
+          }
+          $costoRecorrido += $banderazo;
+        }
+      }else{        
+        if($bOnZona){
+          //var_dump("EN ZONA");
+          $distancia      = distancia_puntos($lat_origen,$lon_origen,$lat_destino,$lon_destino);
+          $aDestino       = "Dentro de la zona";
+          $banderazo      = 0;
+          $aCosto         = $aZonaOrigen['COSTO_NT'];
+          $costoRecorrido = $aZonaOrigen['COSTO_NT'];
+          $cotrolDistancia= $distancia;
+        }else{
+          //var_dump("FUER A DE EN ZONA");
+          $aDestino   = "Fuera de la zona";
+          $route = "https://maps.googleapis.com/maps/api/directions/json?origin=".$lat_origen.",".$lon_origen."&destination=".$lat_destino.",".$lon_destino."&avoid=highways&mode=driving&key=AIzaSyBTBZIN5X9lsstyry5yGDwC4s_Z3IXkIC0";
+          $json  = file_get_contents($route); // this WILL do an http request for you
+          $data  = json_decode($json);
+          $routes= $data->routes; 
+
+          $aPocisiones  = Array();
+          
+          foreach($routes as $items){
+            $positions  = $items->legs;
+            foreach($positions as $p){
+              $steps = $p->steps;
+              foreach($steps as $s){
+                $intLat= $s->start_location->lat;
+                $inLon = $s->start_location->lng;
+
+                if($aControl==0){
+                  $aPocisiones['lat'] = $intLat;
+                  $aPocisiones['lon'] = $inLon;
+                }else{
+                  $inZone     = onZona($aZonaOrigen['ID_ZONA'],$intLat,$inLon);
+                  $sDistancia = distancia_puntos($aPocisiones['lat'],$aPocisiones['lon'],$intLat,$inLon); 
+
+                  if(!$inZone){
+                    $aZonaget   = getZonaInit($intLat,$inLon,$itipoTaxi);
+                    $aCosto     = $aZonaget['COSTO_NT'];
+
+                    if($aZonaget['COSTO_ACUMULABLE']==1){
+                      $costoRecorrido += $aCosto;
+                    }else{
+                      $costoRecorrido  = $aCosto;
+                    }
+                  }else{
+                    $aCosto       = $aZonaOrigen['COSTO_NT'];
+                    if($aZonaOrigen['COSTO_ACUMULABLE']==1){
+                      $costoRecorrido += $aCosto;
+                    }else{
+                      $costoRecorrido  = $aCosto;
+                    }
+                  }   
+                  //var_dump($aZonaOrigen);
+
+                  $cotrolDistancia += $sDistancia;            
+
+                  $aPocisiones['lat'] = $intLat;
+                  $aPocisiones['lon'] = $inLon; 
+                }
+                $aControl++;
+              }
+            }       
+          }        
+        }
+      }      
     }
 
     $sResult =  '<?xml version="1.0" encoding="UTF-8"?>
@@ -188,7 +246,7 @@
                    <taximetro>'.$sUsaTaximetro.'</taximetro>
                    <banderazo>'.$banderazo.'</banderazo>
                    <destino>'.$aDestino.'</destino>
-                   <costoRecorrido>'.round($costoRecorrido,2).'</costoRecorrido>
+                   <costoRecorrido>'.(round($costoRecorrido,2)*1.50).'</costoRecorrido>
                    <distancia>'.round($cotrolDistancia,2).'</distancia>
                    <formacobro>'.$sFormaCobro.'</formacobro>
                  </Response>
@@ -215,7 +273,7 @@
                     <hor_inicio>'.$dataTaccsi['HORARIO_INICIO'].'</hor_inicio>
                     <hor_fin>'.$dataTaccsi['HORARIO_FIN'].'</hor_fin>
                     <tax_fhorario>'.$dataTaccsi['TAX_FUERA_HORARIO'].'</tax_fhorario>
-                    <banderazo_fzona><'.$dataTaccsi['BAN_FUERA_HORARIO'].'</banderazo_fzona>
+                    <banderazo_fhorario>'.$dataTaccsi['BAN_FUERA_HORARIO'].'</banderazo_fhorario>
                     <tax_mts_zona>'.$dataTaccsi['KM_FUERA_ZONA'].'</tax_mts_zona>
                     <tax_mins_zona>'.$dataTaccsi['MIN_FUERA_ZONA'].'</tax_mins_zona>
                     <costo_recorrido_fz>'.$dataTaccsi['COSTO_FUERA_ZONA'].'</costo_recorrido_fz>

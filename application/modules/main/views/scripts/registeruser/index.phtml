@@ -1,4 +1,26 @@
 <?php $this->headScript()->appendFile('/controllers/main/validateRegisterUser.js') ?>    
+<?php $this->headScript()->captureStart() ?>
+  window.fbAsyncInit = function() {
+    FB.init({
+          appId      : '445290902345421',
+          xfbml      : true,
+          version    : 'v2.4'
+        });
+
+     FB.getLoginStatus(function(response) {
+        statusChangeCallback(response)
+      });                           
+  };
+
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/es_LA/sdk.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+<?php $this->headScript()->captureEnd() ?>
+<div id="fb-root"></div>
     <?php if(count(@$this->errors)>0):?>
         <?php if(@$this->errors['eUsuario']==1):?>
             <div id="divAlert" class="alert alert-danger alert-dismissable">
@@ -68,11 +90,20 @@
           </a>
         </div>-->    
         <div class="login-box-body box_body_login">
-            <p class="login-box-msg">Registrate para comenzar a viajar</p>               
+            <p class="login-box-msg">Registrate para comenzar a viajar</p>
+            <p class="login-box-msg" id="box_login">
+                <a href="javascript:loginRegister();">
+                    <img src="/images/assets/registrate_fbc.png" class="col-xs-11 col-xs-offset-1"/>
+                </a>
+                <br/>
+                <br/>
+            </p>  
+            <p class="login-box-msg"></p>
+
             <form role="form" method="POST" action="/main/registeruser/index" id="FormData" enctype="multipart/form-data">
                 <input type="hidden" name="optReg" value="opRegister" />
 
-                <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12 col-offset-12">
                     <!--<label for="inputNombre2">Nombre</label>-->
                     <input type="text" class="form-control upperClass h-50"  autocomplete="off"  name="inputNombre" id="inputNombre" placeholder="Nombre(s)" value="<?php echo @$this->data['inputNombre']; ?>">
                 </div>

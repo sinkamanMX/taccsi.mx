@@ -3,9 +3,8 @@
 	
 	function conectar(){
 		global $conexion;
-		//$conexion   = new mysqli('localhost','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));		
-		$conexion   = new mysqli('localhost','root','root','BD_TACCSI') or die("Some error occurred during connection " . mysqli_error($conexion));		
-		//$conexion   = new mysqli('201.131.96.45','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));
+		$conexion   = new mysqli('localhost','dba','t3cnod8A!','taccsi') or die("Some error occurred during connection " . mysqli_error($conexion));		
+		//$conexion   = new mysqli('localhost','root','root','BD_TACCSI') or die("Some error occurred during connection " . mysqli_error($conexion));		
 		return $conexion;
 	}
 
@@ -17,17 +16,13 @@
 				T.* , IF(CURRENT_TIME BETWEEN T.HORARIO_INICIO  AND T.HORARIO_FIN, T.COSTO_RECORRIDO, T.COSTO_FUERA_HORARIO ) AS N_COSTO				
 			FROM ADMIN_ZONAS Z 
 			INNER JOIN ADMIN_TARIFAS T ON Z.ID_TARIFA = T.ID_TARIFA
-			WHERE T.ESTATUS  = 1 AND Z.ID_TARIFA IN ( 
+			WHERE Z.ID_TARIFA IN ( 
 				SELECT ID_TARIFA 
 				FROM ADMIN_TARIFAS 
 				WHERE /*ID_CLASE  = $tipoTaxi 
 				AND */ TIPO_TARIFA = 0)
-				AND CONTAINS(MAP_OBJECT, geomfromtext('Point($iLatitud $iLongitud)'))
-				GROUP BY Z.ID_TARIFA				
-				ORDER BY DISTANCIA, Z.CREADO  ASC
-				 LIMIT 1";
+				AND CONTAINS(MAP_OBJECT, geomfromtext('Point($iLatitud $iLongitud)')) ORDER BY DISTANCIA ASC LIMIT 1";
 				//var_dump($sql);
-		//var_dump($sql);
 	    $query  = mysqli_query($conexion, $sql);
 	    if($query){
 	    	$result = mysqli_fetch_array($query);
@@ -117,7 +112,7 @@
 	    $sResult = '';
 	    $sql ="SELECT ASTEXT(Z.MAP_OBJECT) AS GEO, X(CENTROID(MAP_OBJECT))  AS C_X ,Y(CENTROID(MAP_OBJECT)) AS C_Y,  Z.*
 				FROM ADMIN_ZONAS Z
-				WHERE Z.ID_TARIFA = 7";
+				WHERE Z.ID_TARIFA = $idTarifa";
 	    $query  = mysqli_query($conexion, $sql);
 	    if($query){
 	    	while ($result = mysqli_fetch_array($query)) {
@@ -144,16 +139,16 @@
 		for($p=0;$p<count($pre_positions);$p++){	
 			$fixed   = str_replace(' ',',',$pre_positions[$p]);	
 			$aLs     = explode(',', $fixed);
-			$iLatitud  = $aLs[1];
-			$iLongitud = $aLs[0];
+			$iLatitud  = $aLs[0];
+			$iLongitud = $aLs[1];
 
-			/*'.$fixed.','.$distacia.'*/
 			$distacia = distancia_puntos($latCentroide,$lonCentroide,$iLatitud,$iLongitud);
+			/*$a_position  .= '<posicion>'.$fixed.','.$distacia.'</posicion>';*/
 			$a_position  .= '<posicion>
 								<latitud>'.$iLatitud.'</latitud>
 								<longitud>'.$iLongitud.'</longitud>
 								<distancia>'.$distacia.'</distancia>
-							</posicion>';
+							</posicion>';			
 		}
 					
 		return $a_position;

@@ -10,7 +10,7 @@
   $server->configureWSDL('wbs_taccsi', $miURL); 
   $server->wsdl->schemaTargetNamespace=$miURL;
   
-  $server->register('FijaTarjeta', // Nombre de la funcion 
+  $server->register('FijaTarjeta', // Nombreface de la funcion 
                    array('id_tarjeta'  => 'xsd:string',
                          'id_usuario'  => 'xsd:string'), // Parametros de entrada 
                    array('return' => 'xsd:string'), // Parametros de salida 
@@ -250,6 +250,19 @@
                           'so'          => 'xsd:string'),
                     array('return' => 'xsd:string'),
                     $miURL);
+  $server->register('RegistraUsuarioFacebook', 
+                    array('nombre'      => 'xsd:string',
+                          'apaterno'    => 'xsd:string',
+                          'amaterno'    => 'xsd:string',
+                          'movil'       => 'xsd:string',
+                          'email'       => 'xsd:string',
+                          'regID'       => 'xsd:string',
+                          'img_perfil'  => 'xsd:string',
+                          'dispositivo' => 'xsd:string',
+                          'push_token'  => 'xsd:string',
+                          'so'          => 'xsd:string'),
+                    array('return' => 'xsd:string'),
+                    $miURL);  
   $server->register('RazonesCancelacion', 
                     array('app'       => 'xsd:string'),
                     array('return' => 'xsd:string'),
@@ -771,7 +784,8 @@ function historico_usuario($id_usuario){
     $idx = -1;
     $msg = 'Eror al conecctarse con el servico';
     $dat = "";
-    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","dba","t3cnod8A!");
+    $con = mysql_connect("201.131.96.45","dba","t3cnod8A!");
     if ($con){
 
       $base = mysql_select_db("taccsi",$con);
@@ -795,7 +809,8 @@ function historico_usuario($id_usuario){
                    SRV_ESTATUS.ESTATUS,
                    IF (SRV_FORMAS_PAGO.TARJETA_VIEW IS NULL, 'EFECTIVO',SRV_FORMAS_PAGO.TARJETA_VIEW) AS FORMA_PAGO,
                    IF (ADMIN_TIPO_TARJETAS.IMAGEN IS NULL, 'EFECTIVO',ADMIN_TIPO_TARJETAS.IMAGEN) AS ICONO_PAGO,
-                   ADMIN_TAXIS.PLACAS
+                   ADMIN_TAXIS.PLACAS,
+                   IF(ADMIN_VIAJES.EXTRAS IS NULL,'0.00',ADMIN_VIAJES.EXTRAS) AS N_EXTRAS                   
             FROM ADMIN_VIAJES
             INNER JOIN SRV_ESTATUS ON
                        SRV_ESTATUS.ID_ADMIN_ESTATUS = ADMIN_VIAJES.ID_SRV_ESTATUS
@@ -810,6 +825,7 @@ function historico_usuario($id_usuario){
             LEFT JOIN ADMIN_TIPO_TARJETAS ON 
                       ADMIN_TIPO_TARJETAS.ID_TIPO_TARJETA  = SRV_FORMAS_PAGO.ID_TIPO_TARJETA
             WHERE ADMIN_VIAJES.ID_CLIENTE=".$id_usuario." 
+             AND  ADMIN_VIAJES.ID_SRV_ESTATUS IN (3,4,8)
             ORDER BY ADMIN_VIAJES.ID_VIAJES DESC";
       if ($qry = mysql_query($sql)){
         if (mysql_num_rows($qry) > 0){
@@ -824,6 +840,7 @@ function historico_usuario($id_usuario){
                         <fecha>'.$row->FECHA_VIAJE.'</fecha>
                         <vehiculo>'.$row->VEHICULO.'</vehiculo>
                         <monto>'.$row->MONTO_TAXISTA.'</monto>
+                        <extras>'.$row->N_EXTRAS.'</extras>
                         <forma_pago>'.$row->FORMA_PAGO.'</forma_pago>
                         <icono_pago>'.$row->ICONO_PAGO.'</icono_pago>
                         <origen>'.$row->ORIGEN.'</origen>
@@ -1222,6 +1239,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     if ($con){
         $base = mysql_select_db("taccsi",$con);
         if (valida_correo($email,'taxista')){
+        /*
+        
           if (valida_telefono($movil,'taxista')){
             $id_empresa=dame_id_empresa($clave_empresa);
             if($id_empresa==0 Or strlen($id_empresa)==0){
@@ -1247,7 +1266,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
           } else {
             $msg = 'El teléfono ya fue registrado previamente';   
             $idx = -4;
-          }
+          }        
+        */
         } else {
           $msg = 'Este correo ya esta registrado';   
           $idx = -3;
@@ -4835,6 +4855,96 @@ $sql = "SELECT A.ID_USUARIO,
       mysql_free_result($qry);
     } 
     return $res;
+  }  
+
+  function registra_usuariofb($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo,$img_perfil){
+    $res = false;
+    $codeActivacion = getRandomCode();
+    $sql = "INSERT INTO SRV_USUARIOS (
+              NOMBRE,
+              USUARIO,
+              PASSWORD,
+              FECHA_CREADO,
+              ESTATUS,
+              APATERNO,
+              AMATERNO,
+              TELEFONO,
+              EMAIL,
+              DISPOSITIVO,
+              RATING,
+              VIAJES,
+              COD_CONFIRMACION,
+              TIPO_REGISTRO,
+              PERFIL_FACEBOOK,
+              IMAGEN
+            ) VALUES (
+              '".$nombre."',
+              '".$email."',
+              '".$password."',
+              CURRENT_TIMESTAMP,
+              1,
+              '".$apaterno."',
+              '".$amaterno."',
+              '".$movil."',
+              '".$email."',
+              '".$dispositivo."',
+              0,
+              0,
+              '".$codeActivacion."',
+              'Facebook',
+              '".$password."',       
+              '".$img_perfil."'
+            )";
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;
+  }  
+
+  function RegistraUsuarioFacebook($nombre,$apaterno,$amaterno,$movil,$email,$regID,$img_perfil,$dispositivo,$push_token,$so){
+    $idx = -1;
+    $msg = 'El servicio TACSSI no esta disponible, intente mas tarde.';
+    $dat = '';
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      //$base = mysql_select_db("BD_TACCSI",$con);
+      if (valida_correo($email,'usuario')){
+        if (valida_telefono($email,'usuario')){
+
+          if (registra_usuariofb($nombre,$apaterno,$amaterno,$movil,$email,$regID,$dispositivo,$img_perfil)){
+            registra_token($dispositivo,$push_token,$so);  
+            //envia_push('Bienvenido a TACCSI',$push_token);
+            //envia_push('dev','usuario','Bienvenido a TACCSI',$push_token,$so);
+            $dat = dame_info_usuario($movil,$email);
+            $idx = 0;
+            $msg = 'OK';
+          } else {
+            $idx = -4;
+            $msg = 'No fue posible completar su registro, intente mas tarde';
+          }
+        } else {
+          $idx = -3;
+          $msg = 'El teléfono móvil ya esta en uso.';
+        }
+      } else {
+        $idx = -2;
+        $msg = 'El correo ya esta en uso.';
+      }
+      mysql_close($con);
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                   '.utf8_encode($dat).'
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res); 
   }    
   
   $server->service(@$HTTP_RAW_POST_DATA);   
