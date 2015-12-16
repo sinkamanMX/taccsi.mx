@@ -207,9 +207,8 @@
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
-  $server->register('DameSitios', // Nombre de la funcion 
-                    array('usuario'  => 'xsd:string',
-                          'password' => 'xsd:string'), // Parametros de entrada 
+  $server->register('DameLugares', // Nombre de la funcion 
+                    array('usuario'  => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -394,8 +393,45 @@
   $server->register('dameViajeActivo', 
                     array('id_usuario'  => 'xsd:string'),
                     array('return' => 'xsd:string'),
-                    $miURL);                                                            
+                    $miURL); 
 
+  $server->register('usrNuevoLugar',// Nombre de la funcion 
+                    array(
+                          'usuario'     => 'xsd:string',
+                          'descripcion' => 'xsd:string',                         
+                          'latitud'     => 'xsd:string',
+                          'longitud'    => 'xsd:string',
+                          'calle'       => 'xsd:string',
+                          'numero'      => 'xsd:string',
+                          'colonia'     => 'xsd:string',
+                          'municipio'   => 'xsd:string',
+                          'estado'      => 'xsd:string',
+                          'cp'          => 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);
+
+  $server->register('usrEditarLugar',// Nombre de la funcion 
+                    array(
+                          'idLugar'     => 'xsd:string',
+                          'usuario'     => 'xsd:string',
+                          'descripcion' => 'xsd:string',                         
+                          'latitud'     => 'xsd:string',
+                          'longitud'    => 'xsd:string',
+                          'calle'       => 'xsd:string',
+                          'numero'      => 'xsd:string',
+                          'colonia'     => 'xsd:string',
+                          'municipio'   => 'xsd:string',
+                          'estado'      => 'xsd:string',
+                          'cp'          => 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);  
+
+  $server->register('usrEliminarLugar',// Nombre de la funcion 
+                    array(
+                          'idLugar'     => 'xsd:string',
+                          'usuario'     => 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);   
 /****************/
 function envia_mail($archivo,$destinatarios, $asunto, $mensaje, $from, $FromName){
     $mail  = new PHPMailer();
@@ -1350,45 +1386,6 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                </space>';
     return new soapval('return', 'xsd:string', $res);  
   }
-  
-
-  function DameSitios($usuario,$password){
-    $cod = -1;
-    $msg = 'Usuario no registrado';
-    if (($usuario == 'demo') and ($password == 'demo')){
-      $cod = 1;
-      $msg = 'OK';    
-    }
-    $res =  '<?xml version="1.0" encoding="UTF-8"?>
-               <space>
-                 <Response> 
-                   <Status>
-                     <code>1</code>
-                     <msg>OK</msg>
-                   </Status>
-                   <sitios>
-                     <sitio>
-                       <id>MBB2554</id>
-                       <nombre>Mi casa</nombre>
-                       <idCategoria>1</idCategoria>
-                       <Categoria>Casa</Categoria>
-                       <calle>Calle 1</calle>
-                       <no_int>12</no_int>
-                       <no_ext></no_ext>
-                       <colonia>Desconocida</colonia>
-                       <cp>54400</cp>
-                       <municipio>Nicolás Romero</municipio>
-                       <estado>México</estado>
-                       <latitud>19.7522166667</latitud>
-                       <longitud>-101.17275</longitud>
-                     </sitio>
-                   </sitios>
-                 </Response>
-               </space>';
-    return new soapval('return', 'xsd:string', $res);
-  }
-
-
 
   function dame_push_viaje($idViaje,$clave){
    global $base;  
@@ -4976,6 +4973,242 @@ $sql = "SELECT A.ID_USUARIO,
                </space>';
     return new soapval('return', 'xsd:string', $res); 
   }    
+
+  function usrNuevoLugar($usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+    $msg = 'No hay conexión con el servicio TACCSI';
+    $idx = -1;
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
+
+    if($con){
+      //$base = mysql_select_db("BD_TACCSI",$con);
+      $base = mysql_select_db("taccsi",$con);
+      if(registraLugar($usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp)){
+        $msg = 'OK';
+        $idx = 0;
+      } else {
+        $msg = 'No es posible registrar el lugar.';
+        $idx = -2; 
+      }    
+      mysql_close($con);
+    }
+
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function usrEditarLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+    $msg = 'No hay conexión con el servicio TACCSI';
+    $idx = -1;
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
+
+    if($con){
+      //$base = mysql_select_db("BD_TACCSI",$con);
+      $base = mysql_select_db("taccsi",$con);
+      if(valida_lugar($idLugar,$usuario)){
+        if(actualizaLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp)){
+          $msg = 'OK';
+          $idx = 0;
+        } else {
+          $msg = 'No es posible actualizar el lugar.';
+          $idx = -2; 
+        }
+      }else{
+        $msg = 'No es posible actualizar el lugar.';
+        $idx = -3; 
+      }
+
+      mysql_close($con);
+    }
+
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }  
+
+  function usrEliminarLugar($idLugar,$usuario){
+    $msg = 'No hay conexión con el servicio TACCSI';
+    $idx = -1;
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    //$con = mysql_connect("localhost","root","root");
+
+    if($con){
+      //$base = mysql_select_db("BD_TACCSI",$con);
+      $base = mysql_select_db("taccsi",$con);
+      if(valida_lugar($idLugar,$usuario)){
+        if(eliminaLugar($idLugar,$usuario)){
+          $msg = 'OK';
+          $idx = 0;
+        } else {
+          $msg = 'No es posible eliminar el lugar.';
+          $idx = -2; 
+        }
+      }else{
+        $msg = 'No es posible eliminar el lugar.';
+        $idx = -3; 
+      }
+
+      mysql_close($con);
+    }
+
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);
+  }
+
+  function DameLugares($usuario){
+    $res = '<code>-1</code>
+            <msg>El servicio TACCSI, no esta disponible</msg>';
+
+    //$con = mysql_connect("localhost","root","root");            
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      //$base = mysql_select_db("BD_TACCSI",$con);
+
+      $lugares = dame_lugares($usuario);
+      if (strlen($lugares) > 0){
+        $res = '<code>0</code>
+                <msg>OK</msg>';  
+      } else {
+        $res = '<code>-1</code>
+                <msg>No tiene lugares registrados</msg>';  
+      }
+       
+      mysql_close($con); 
+    }
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     '.$res.'
+                   </Status>'.utf8_encode($lugares).'
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res);    
+  }  
+
+  function registraLugar($id_cliente,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+    $res = false;
+    $sql = "INSERT INTO SRV_PUNTOS_FAVORITOS SET
+            ID_SRV_USUARIO  = ".$id_cliente.",
+            DESCRIPCION     = '".$descripcion."',
+            LATITUD         =  ".$latitud.",
+            LONGITUD        =  ".$longitud.",
+            CALLE           = '".$calle."',
+            NO_EXT          = '".$numero."',
+            COLONIA         = '".$colonia."',
+            MUNICIPIO       = '".$municipio."',
+            ESTADO          = '".$estado."',
+            CP              = '".$cp."',            
+            FECHA_REGISTRO  = CURRENT_TIMESTAMP,
+            ESTATUS         = 1";
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;    
+  }
+
+  function actualizaLugar($idLugar,$id_cliente,$descripcion,$latitud,$longitud,$calle,$numero,$colonia,$municipio,$estado,$cp){
+    $res = false;
+    $sql = "UPDATE SRV_PUNTOS_FAVORITOS SET
+              DESCRIPCION     = '".$descripcion."',
+              LATITUD         =  ".$latitud.",
+              LONGITUD        =  ".$longitud.",
+              CALLE           = '".$calle."',
+              NO_EXT          = '".$numero."',
+              COLONIA         = '".$colonia."',
+              MUNICIPIO       = '".$municipio."',
+              ESTADO          = '".$estado."',
+              CP              = '".$cp."',
+            WHERE ID_PUNTO        = ".$idLugar."
+              AND ID_SRV_USUARIO  = ".$id_cliente." LIMIT 1";
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;    
+  }  
+
+  function valida_lugar($id_lugar,$id_usuario){
+    global $base;
+    $res = false; 
+    $sql = "SELECT COUNT(ID_PUNTO) AS EXISTE
+            FROM SRV_PUNTOS_FAVORITOS
+            WHERE ID_PUNTO       = ".$id_lugar."
+              AND ID_SRV_USUARIO = ".$id_usuario;
+    if ($qry=mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      if ($row->EXISTE == 1){
+        $res = true;
+      }
+      mysql_free_result($qry);
+    }       
+    return $res; 
+  }
+
+  function eliminaLugar($idLugar,$id_cliente){
+    $res = false;
+    $sql = "DELETE FROM SRV_PUNTOS_FAVORITOS
+            WHERE ID_PUNTO        = ".$idLugar."
+              AND ID_SRV_USUARIO  = ".$id_cliente." 
+            LIMIT 1";
+    if ($qry = mysql_query($sql)){
+      $res = true;
+    }
+    return $res;    
+  }  
+
+  function dame_lugares($id_usuario){
+    $res = '<sitios>';
+    $sql = "SELECT ID_PUNTO,DESCRIPCION,CALLE,NO_INT,NO_EXT,COLONIA,CP,MUNICIPIO,ESTADO,LATITUD,LONGITUD
+            FROM SRV_PUNTOS_FAVORITOS
+            WHERE ID_SRV_USUARIO = ".$id_usuario;
+    if ($qry = mysql_query($sql)){
+      while ($row = mysql_fetch_object($qry)){
+        $res = $res.'<sitio>
+                       <id>'.$row->ID_PUNTO.'</id>
+                       <nombre>'.$row->DESCRIPCION.'</nombre>                       
+                       <calle>'.$row->CALLE.'</calle>
+                       <no_ext>'.$row->NO_EXT.'</no_ext>
+                       <colonia>'.$row->COLONIA.'</colonia>
+                       <cp>'.$row->CP.'</cp>
+                       <municipio>'.$row->MUNICIPIO.'</municipio>
+                       <estado>'.$row->ESTADO.'</estado>
+                       <latitud>'.$row->LATITUD.'</latitud>
+                       <longitud>'.$row->LONGITUD.'</longitud>
+                     </sitio>';
+      }
+      mysql_free_result($qry);
+    }
+    $res .= '</sitios>';
+    return $res; 
+  }   
   
   $server->service(@$HTTP_RAW_POST_DATA);   
 ?>
+
+
+
