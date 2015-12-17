@@ -401,15 +401,7 @@
                           'descripcion' => 'xsd:string',                         
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
-                          'direccion'   => 'xsd:string',
-                          /*
-                          'calle'       => 'xsd:string',
-                          'numero'      => 'xsd:string',
-                          'colonia'     => 'xsd:string',
-                          'municipio'   => 'xsd:string',
-                          'estado'      => 'xsd:string',
-                          'cp'          => 'xsd:string'
-                          */), // Parametros de entrada 
+                          'direccion'   => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -421,14 +413,6 @@
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
                           'direccion'   => 'xsd:string'
-                          /*
-                          'calle'       => 'xsd:string',
-                          'numero'      => 'xsd:string',
-                          'colonia'     => 'xsd:string',
-                          'municipio'   => 'xsd:string',
-                          'estado'      => 'xsd:string',
-                          'cp'          => 'xsd:string'
-                          */
                           ), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);  
@@ -481,80 +465,6 @@ function checkEmail($email) {
     $reg = "#^(((([a-z\d][\.\-\+_]?)*)[a-z0-9])+)\@(((([a-z\d][\.\-_]?){0,62})[a-z\d])+)\.([a-z\d]{2,6})$#i";  
     return preg_match($reg, $email);  
 } 
-
-/*
-function RecuperaPass($usName){
-  global $base;
-    $result = 0;
-  //5d0952cc20a7a4a7b1446194a709cc6b83c63d72
-  //fb96549631c835eb239cd614cc6b5cb7d295121a
-  $sql = "SELECT PASSWORD AS EXISTE 
-          FROM SRV_USUARIOS 
-          WHERE EMAIL = '".$usName."'"; 
-  if ($qry = mysql_query($sql)){
-    if (mysql_num_rows($qry) > 0){
-      $row = mysql_fetch_object($qry);
-      $pass = $row->EXISTE;
-      if (checkEmail($usName)) {
-        $mensaje = "Buen día,
-
-Usted ha solicitado la recuperación de su password desde nuestra Aplicación Móvil.
-
-Su password es: ".$pass."
-
-En caso de que no haya solicitado su password, le recomendamos tome las medidas necesarias, realizando su cambio en http://www.taccsi.com.
-
-Atentamente 
-TACCSI";
-//(envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI'))
-        if (envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI')){
-          $result = '<?xml version="1.0" encoding="UTF-8"?>
-                  <space>
-                    <Response> 
-                      <Status>
-                        <code>1</code>
-                        <msg>'.utf8_decode('Su contraseña ha sido enviada al e-mail que proporcionó para su registro.').'</msg>
-                      </Status>
-                    </Response>
-                  </space>'; 
-        } else {
-          $result = '<?xml version="1.0" encoding="UTF-8"?>
-                  <space>
-                    <Response> 
-                      <Status>
-                        <code>-1</code>
-                        <msg>No fue posible completar el proceso. Intente mas tarde.</msg>
-                      </Status>
-                    </Response>
-                  </space>'; 
-        }
-      } else {
-        $result = '<?xml version="1.0" encoding="UTF-8"?>
-                  <space>
-                    <Response> 
-                      <Status>
-                        <code>-2</code>
-                        <msg>'.utf8_decode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
-                      </Status>
-                    </Response>
-                  </space>';
-      }
-    } else {
-      $result = '<?xml version="1.0" encoding="UTF-8"?>
-                  <space>
-                    <Response> 
-                      <Status>
-                        <code>-3</code>
-                        <msg>El correo que propociono no esta registrado. Comuniquese al 01 800 444 82 94</msg>
-                      </Status>
-                    </Response>
-                  </space>';
-    }
-    mysql_free_result($qry);
-  }
-  return $result;
-  }
-  */
 
   function RecuperarPassword($usName,$llave){
     if ($llave == 't4ccs1'){
@@ -3185,7 +3095,8 @@ $sql = "SELECT A.ID_USUARIO,
                    IF(C.AC IS NULL,0,C.AC) AS AC,
                    IF(C.IAVE IS NULL,0,C.IAVE) AS IAVE,
                    IF(C.CONECTOR_CELULAR IS NULL,0,C.CONECTOR_CELULAR) AS CONECTOR_CELULAR,
-                   IF(C.WIFI IS NULL,0,C.WIFI) AS WIFI
+                   IF(C.WIFI IS NULL,0,C.WIFI) AS WIFI,
+                   C.ID_TAXI
             FROM DISP_ULTIMA_POSICION A
               INNER JOIN ADMIN_USUARIOS B ON B.ID_USUARIO = A.ID_USUARIO
               INNER JOIN ADMIN_TAXIS C ON C.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO 
@@ -3218,8 +3129,9 @@ $sql = "SELECT A.ID_USUARIO,
           $icono = 'http://taccsi.com/wbs/taccsi_331_29.png';
         }
 
-        if($row->IMAGEN=="" or $row->IMAGEN=="null"){
-           $res = $res."<taxi>
+        $imagen = ($row->IMAGEN=="" or $row->IMAGEN=="null") ? 'sin_foto_perfil.png': $row->IMAGEN;
+
+        $res = $res."<taxi>
                   <id>".$row->ID_USUARIO."</id>
                   <conductor>".$row->NOMBRE." ".$row->APATERNO." ".$row->AMATERNO."</conductor>
                   <placas>".$row->PLACAS."</placas>
@@ -3230,39 +3142,16 @@ $sql = "SELECT A.ID_USUARIO,
                   <latitud>".$row->LATITUD."</latitud>
                   <longitud>".$row->LONGITUD."</longitud>
                   <distancia>".$row->DIST."</distancia>
-                  <foto>"."http://taccsi.com/images/taxis/sin_foto_perfil.png</foto>
+                  <foto>"."http://taccsi.com/images/taxis/".$imagen."</foto>
                   <puntos>".$row->RATING."</puntos>
-                  <foto_taxista>".$foto_taxista."</foto_taxista>
-                  <servicios>".$row->VIAJES."</servicios>
+                  <foto_taxista>".$foto_taxista."</foto_taxista>                  
                   <ac>".$row->AC."</ac>
                   <iave>".$row->IAVE."</iave>
                   <conector>".$row->CONECTOR_CELULAR."</conector>
                   <wifi>".$row->WIFI."</wifi>
                   <icono>".$icono."</icono>
+                  <servicios>".getServiciosTaccsi($row->ID_TAXI)."</servicios>
                 </taxi>"; 
-        }else{
-          $res = $res."<taxi>
-                  <id>".$row->ID_USUARIO."</id>
-                  <conductor>".$row->NOMBRE." ".$row->APATERNO." ".$row->AMATERNO."</conductor>
-                  <placas>".$row->PLACAS."</placas>
-                  <modelo>".$row->MODELO."</modelo>
-                  <estatus>".$row->ESTATUS."</estatus>
-                  <id_tipo>".$row->ID_TIPO_TAXI."</id_tipo>
-                  <tipo>".$row->TIPO."</tipo>
-                  <latitud>".$row->LATITUD."</latitud>
-                  <longitud>".$row->LONGITUD."</longitud>
-                  <distancia>".$row->DIST."</distancia>
-                  <foto>"."http://taccsi.com/images/taxis/".$row->IMAGEN."</foto>
-                  <puntos>".$row->RATING."</puntos>
-                  <foto_taxista>".$foto_taxista."</foto_taxista>
-                  <servicios>".$row->VIAJES."</servicios>
-                  <ac>".$row->AC."</ac>
-                  <iave>".$row->IAVE."</iave>
-                  <conector>".$row->CONECTOR_CELULAR."</conector>
-                  <wifi>".$row->WIFI."</wifi>
-                  <icono>".$icono."</icono>
-                </taxi>"; 
-        }
       }
       mysql_free_result($qry);
     } 
@@ -5252,6 +5141,31 @@ $sql = "SELECT A.ID_USUARIO,
     $res .= '</sitios>';
     return $res; 
   }   
+
+  function getServiciosTaccsi($idtaccsi){
+    $res = "<servicios>";
+    global $base;
+    $sql = "SELECT S.ID_SERVICIO, S.DESCRIPCION, S.ICONO, S.ICONO_AMARILLO, S.ICONO_BLANCO
+            FROM ADMIN_TAXI_SERVICIOS R
+            INNER JOIN ADMIN_SERVICIOS S ON R.ID_SERVICIO = S.ID_SERVICIO
+            WHERE R.ID_TAXI  = ".$id_taccsi;
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      if (mysql_num_rows($qry) > 0){
+        $res .= '<servicio>
+                    <id_tipo>'.$row->ID_SERVICIO.'</id_tipo>
+                    <descripcion>'.$row->DESCRIPCION.'</descripcion>
+                    <icono_negro>'.$row->ICONO.'</icono_negro>
+                    <icono_amarillo>'.$row->ICONO_AMARILLO.'</icono_amarillo>
+                    <icono_blanco>'.$row->ICONO_BLANCO.'</icono_blanco>
+                 </servicio>';
+        $res .= $infoTaccista;                
+      }
+      mysql_free_result($qry);
+    } 
+    $res .= '</servicios>';
+    return $res;    
+  }  
   
   $server->service(@$HTTP_RAW_POST_DATA);   
 ?>
