@@ -423,6 +423,12 @@
                           'usuario'     => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);   
+
+  $server->register('usrValidaUsuario',// Nombre de la funcion 
+                    array('usuario'     => 'xsd:string'), // Parametros de entrada 
+                    array('return' => 'xsd:string'), // Parametros de salida 
+                    $miURL);   
+
 /****************/
 function envia_mail($archivo,$destinatarios, $asunto, $mensaje, $from, $FromName){
     $mail  = new PHPMailer();
@@ -5165,6 +5171,57 @@ $sql = "SELECT A.ID_USUARIO,
     } 
     $res .= '</servicios>';
     return $res;    
+  }  
+
+  function usrValidaUsuario($usuario){
+    $idx = -1;
+    $msg = 'El servicio TACSSI no esta disponible, intente mas tarde.';
+    $tipo_registro = '';
+    //$con = mysql_connect("localhost","root","root");
+    $con = mysql_connect("localhost","dba","t3cnod8A!");
+    if ($con){
+      $base = mysql_select_db("taccsi",$con);
+      //$base = mysql_select_db("BD_TACCSI",$con);
+
+      $aResult = usuario_existe($usuario);
+      if($aResult['existe']==1){
+        $idx = -1;
+        $msg = 'El correo ya esta en uso.';
+        $tipo_registro = $aResult['t_registro'];
+      }else{
+        $idx = 0;
+        $msg = 'OK';
+      }
+      
+      mysql_close($con);
+    } 
+
+    $res =  '<?xml version="1.0" encoding="UTF-8"?>
+               <space>
+                 <Response> 
+                   <Status>
+                     <code>'.$idx.'</code>
+                     <msg>'.$msg.'</msg>
+                     <tipo_registro>'.$tipo_registro.'</tipo_registro>
+                   </Status>
+                 </Response>
+               </space>';
+    return new soapval('return', 'xsd:string', $res); 
+  }  
+
+  function usuario_existe($usuario){
+    $res = Array();
+    global $base;
+    $sql = "SELECT COUNT(ID_SRV_USUARIO) AS TOTAL,IF(TIPO_REGISTRO='Facebook','facebook','email') AS N_REGISTRO
+            FROM SRV_USUARIOS
+            WHERE UPPER(USUARIO) = UPPER('".$usuario."')";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res['existe'] = $row->TOTAL;
+      $res['t_registro'] = $row->N_REGISTRO; 
+      mysql_free_result($qry);
+    } 
+    return $res;
   }  
   
   $server->service(@$HTTP_RAW_POST_DATA);   
