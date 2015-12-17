@@ -482,6 +482,7 @@ function checkEmail($email) {
     return preg_match($reg, $email);  
 } 
 
+/*
 function RecuperaPass($usName){
   global $base;
     $result = 0;
@@ -506,18 +507,18 @@ En caso de que no haya solicitado su password, le recomendamos tome las medidas 
 Atentamente 
 TACCSI";
 //(envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI'))
-        if (envia_mail('',$usName, utf8_encode('Recuperación de password'), utf8_encode($mensaje),'no-reply@taccsi.com.','TACCSI')){
-          $result = '<?xml version="1.0" encoding="UTF-8"?> 
+        if (envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI')){
+          $result = '<?xml version="1.0" encoding="UTF-8"?>
                   <space>
                     <Response> 
                       <Status>
                         <code>1</code>
-                        <msg>'.utf8_encode('Su contraseña ha sido enviada al e-mail que proporcionó para su registro.').'</msg>
+                        <msg>'.utf8_decode('Su contraseña ha sido enviada al e-mail que proporcionó para su registro.').'</msg>
                       </Status>
                     </Response>
                   </space>'; 
         } else {
-          $result = '<?xml version="1.0" encoding="UTF-8"?> 
+          $result = '<?xml version="1.0" encoding="UTF-8"?>
                   <space>
                     <Response> 
                       <Status>
@@ -528,18 +529,18 @@ TACCSI";
                   </space>'; 
         }
       } else {
-        $result = '<?xml version="1.0" encoding="UTF-8"?> 
+        $result = '<?xml version="1.0" encoding="UTF-8"?>
                   <space>
                     <Response> 
                       <Status>
                         <code>-2</code>
-                        <msg>'.utf8_encode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
+                        <msg>'.utf8_decode('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
                       </Status>
                     </Response>
                   </space>';
       }
     } else {
-      $result = '<?xml version="1.0" encoding="UTF-8"?> 
+      $result = '<?xml version="1.0" encoding="UTF-8"?>
                   <space>
                     <Response> 
                       <Status>
@@ -553,13 +554,77 @@ TACCSI";
   }
   return $result;
   }
+  */
 
   function RecuperarPassword($usName,$llave){
     if ($llave == 't4ccs1'){
       $con = mysql_connect("localhost","dba","t3cnod8A!");
       if ($con){
         $base = mysql_select_db("taccsi",$con);
-        $res = RecuperaPass($usName);
+        //$res = RecuperaPass($usName);
+
+        $sql = "SELECT PASSWORD AS EXISTE 
+                FROM SRV_USUARIOS 
+                WHERE EMAIL = '".$usName."'";
+        if ($qry = mysql_query($sql)){
+            if (mysql_num_rows($qry) > 0){
+              $row  = mysql_fetch_object($qry);
+              $pass = $row->EXISTE;
+              if(checkEmail($usName)){
+                $mensaje = "Buen día,
+
+  Usted ha solicitado la recuperación de su password desde nuestra Aplicación Móvil.
+
+  Su password es: ".$pass."
+
+  En caso de que no haya solicitado su password, le recomendamos tome las medidas necesarias, realizando su cambio en http://www.taccsi.com.
+
+  Atentamente 
+  TACCSI";                
+                if (envia_mail('',$usName, utf8_decode('Recuperación de password'), utf8_decode($mensaje),'no-reply@taccsi.com.','TACCSI')){
+                  $res = '<?xml version="1.0" encoding="UTF-8"?>
+                          <space>
+                            <Response> 
+                              <Status>
+                                <code>1</code>
+                                <msg>'.('Su contraseña ha sido enviada al e-mail que proporcionó para su registro.').'</msg>
+                              </Status>
+                            </Response>
+                          </space>'; 
+                }else{
+                  $res = '<?xml version="1.0" encoding="UTF-8"?>
+                          <space>
+                            <Response> 
+                              <Status>
+                                <code>-1</code>
+                                <msg>No fue posible completar el proceso. Intente mas tarde.</msg>
+                              </Status>
+                            </Response>
+                          </space>'; 
+                }
+              }else{
+                $res = '<?xml version="1.0" encoding="UTF-8"?>
+                          <space>
+                            <Response> 
+                              <Status>
+                                <code>-2</code>
+                                <msg>'.('No dispone de una cuenta de correo para el envío. Comuníquese al 01 800 444 82 94').'</msg>
+                              </Status>
+                            </Response>
+                          </space>';
+              }
+            }else{
+              $res = '<?xml version="1.0" encoding="UTF-8"?>
+                          <space>
+                            <Response> 
+                              <Status>
+                                <code>-3</code>
+                                <msg>El correo que propociono no esta registrado. Comuniquese al 01 800 444 82 94</msg>
+                              </Status>
+                            </Response>
+                          </space>';
+            }
+        }
       } else {
         $res = '<?xml version="1.0" encoding="UTF-8"?> 
                   <space>
@@ -2202,8 +2267,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                    A.CARGADOR,
                    A.MONTO_TAXISTA,
                    A.TIEMPO_VIAJE,
-                   A.DISTANCIA_TAXISTA
-
+                   A.DISTANCIA_TAXISTA,
+                   IF(A.EXTRAS IS NULL,'0.00',A.EXTRAS) AS N_EXTRAS,
+                   A.ID_VIAJES
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -2235,14 +2301,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                <foto>".$foto_."</foto>
                <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>
                <clave>".$row->CLAVE_VIAJE."</clave>
-               <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
-               <ac>".$row->AC."</ac>
-               <iave>".$row->IAVE."</iave>
-               <wifi>".$row->WIFI."</wifi>
-               <cargador>".$row->CARGADOR."</cargador>
+               <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>               
                <monto>".$row->MONTO_TAXISTA."</monto>
+               <extras>".$row->N_EXTRAS."</extras>
                <distancia>".$row->DISTANCIA_TAXISTA."</distancia>
-               <tiempo>".$row->TIEMPO_VIAJE."</tiempo>               
+               <tiempo>".$row->TIEMPO_VIAJE."</tiempo> 
+               ".getServiciosViaje($row->ID_VIAJES)."              
               </viaje>";
       }
       mysql_free_result($qry);
@@ -3475,7 +3539,8 @@ $sql = "SELECT A.ID_USUARIO,
                    U.ANGULO,
                    A.ID_RAZON_CANCELACION,
                    A.DISTANCIA_TAXISTA,
-                   A.TIEMPO_VIAJE
+                   A.TIEMPO_VIAJE,
+                   IF(A.EXTRAS IS NULL,'0.00',A.EXTRAS) AS N_EXTRAS
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_ESTATUS B ON A.ID_SRV_ESTATUS = B.ID_ADMIN_ESTATUS
               LEFT OUTER JOIN DISP_ULTIMA_POSICION U ON U.ID_USUARIO=A.ID_TAXISTA
@@ -4835,7 +4900,8 @@ $sql = "SELECT A.ID_USUARIO,
                    A.ID_SRV_ESTATUS,
                    A.ID_TAXISTA,
                    A.ID_FORMA_PAGO,
-                   A.ID_TARJETA                   
+                   A.ID_TARJETA,
+                   IF(A.EXTRAS IS NULL,'0.00',A.EXTRAS) AS N_EXTRAS                  
             FROM ADMIN_VIAJES A
               INNER JOIN SRV_USUARIOS B ON A.ID_CLIENTE = B.ID_SRV_USUARIO 
               INNER JOIN ADMIN_FORMA_PAGO C ON A.ID_FORMA_PAGO = C.ID_FORMA_PAGO
@@ -4875,14 +4941,12 @@ $sql = "SELECT A.ID_USUARIO,
                <formapago>".$row->FORMA_PAGO."</formapago>
                <foto>".$foto_."</foto>
                <referencias>".$row->ORIGEN_REFERENCIAS."</referencias>               
-               <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>
-               <ac>".$row->AC."</ac>
-               <iave>".$row->IAVE."</iave>
-               <wifi>".$row->WIFI."</wifi>
-               <cargador>".$row->CARGADOR."</cargador>
+               <tarifa>banderazo=13.10@costo_minuto=1.73@costo_distancia=1.3@mts=250@nocturno=20@comision=3@inicio_nocturno=23:00@fin_nocturno=06:00</tarifa>               
                <monto>".$row->MONTO_TAXISTA."</monto>
+               <extras>".$row->N_EXTRAS."</extras>
                <distancia>".$row->DISTANCIA_TAXISTA."</distancia>
-               <tiempo>".$row->TIEMPO_VIAJE."</tiempo>               
+               <tiempo>".$row->TIEMPO_VIAJE."</tiempo>
+               ".getServiciosViaje($row->ID_VIAJES)."            
               </viaje>"; 
         $res .= $infoTaccista;                
       }
