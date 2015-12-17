@@ -246,7 +246,8 @@
                           'password'    => 'xsd:string',
                           'dispositivo' => 'xsd:string',
                           'push_token'  => 'xsd:string',
-                          'so'          => 'xsd:string'),
+                          'so'          => 'xsd:string',
+                          'img_perfil'  => 'xsd:string'),
                     array('return' => 'xsd:string'),
                     $miURL);
   $server->register('RegistraUsuarioFacebook', 
@@ -2964,7 +2965,7 @@ $sql = "SELECT A.ID_USUARIO,
     return new soapval('return', 'xsd:string', $res);
   }
  
-  function registra_usuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo){
+  function registra_usuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo,$img_perfil){
     $res = false;
     $codeActivacion = getRandomCode();
     $sql = "INSERT INTO SRV_USUARIOS (
@@ -2980,7 +2981,8 @@ $sql = "SELECT A.ID_USUARIO,
               DISPOSITIVO,
               RATING,
               VIAJES,
-              COD_CONFIRMACION
+              COD_CONFIRMACION,
+              IMAGEN
             ) VALUES (
               '".$nombre."',
               '".$email."',
@@ -2994,7 +2996,8 @@ $sql = "SELECT A.ID_USUARIO,
               '".$dispositivo."',
               0,
               0,
-              '".$codeActivacion."'
+              '".$codeActivacion."',
+              '".$img_perfil."'
             )";
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -3036,7 +3039,7 @@ $sql = "SELECT A.ID_USUARIO,
     return $res;
   }
 
-  function RegistraUsuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo,$push_token,$so){
+  function RegistraUsuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo,$push_token,$so,$img_perfil){
     $idx = -1;
     $msg = 'El servicio TACSSI no esta disponible, intente mas tarde.';
     $dat = '';
@@ -3045,7 +3048,7 @@ $sql = "SELECT A.ID_USUARIO,
       $base = mysql_select_db("taccsi",$con);
       if (valida_correo($email,'usuario')){
         if (valida_telefono($email,'usuario')){
-          if (registra_usuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo)){
+          if (registra_usuario($nombre,$apaterno,$amaterno,$movil,$email,$password,$dispositivo,$img_perfil)){
             registra_token($dispositivo,$push_token,$so);  
             //envia_push('Bienvenido a TACCSI',$push_token);
             //envia_push('dev','usuario','Bienvenido a TACCSI',$push_token,$so);
