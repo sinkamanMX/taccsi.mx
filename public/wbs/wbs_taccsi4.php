@@ -105,7 +105,8 @@
                           'ac'           => 'xsd:string',
                           'conectores'   => 'xsd:string',
                           'wifi'         => 'xsd:string',
-                          'id_tarjeta'   => 'xsd:string'), // Parametros de entrada 
+                          'id_tarjeta'   => 'xsd:string',
+                          'servicios'    => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL); 
   /*Metodo para login*/
@@ -363,7 +364,8 @@
                           'wifi'         => 'xsd:string',
                           'so'           => 'xsd:string',
                           'id_tarjeta'   => 'xsd:string',
-                          'fecha_reservacion'=> 'xsd:string'), // Parametros de entrada 
+                          'fecha_reservacion'=> 'xsd:string',
+                          'servicios'    => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);      
 
@@ -2362,8 +2364,9 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     $qry = mysql_query($sql);
   }
 
-  function manda_viaje_taxistas($id_viaje,$latitud,$longitud,$tipo,$iave,$ac,$conector,$wifi){
-    $where = '';
+  function manda_viaje_taxistas($id_viaje,$latitud,$longitud,$tipo,$iave,$ac,$conector,$wifi,$servicios){
+    $sFilter = ($servicios!="") ? 'INNER JOIN ADMIN_TAXI_SERVICIOS S ON T.ID_TAXI = S.ID_TAXI AND S.ID_SERVICIO IN ('.$servicios.')': '';
+    /*
     if ($iave == 1){
       $where = $where."T.IAVE = 1 AND ";
     }
@@ -2375,25 +2378,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     }
     if ($wifi == 1){
       $where = $where."T.WIFI = 1 AND ";
-    }
-    /*
-$sql = "SELECT A.ID_USUARIO, 
-                   C.PUSH_TOKEN, 
-                   C.SO,
-                   ROUND(DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") ,2) AS DIST
-            FROM ADMIN_USUARIOS A
-              INNER JOIN DISP_ULTIMA_POSICION B ON B.IDENTIFICADOR = A.DISPOSITIVO
-              INNER JOIN DISP_REGISTRO_TOKENS C ON DEVICE_ID = B.IDENTIFICADOR
-              INNER JOIN ADMIN_TAXIS T ON T.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO
-            WHERE A.DISPONIBLE = 0 AND
-                  A.DEMOS = 1 AND
-                  ".$where."
-                  T.ID_TIPO_TAXI = ".$tipo." AND
-                  DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") < 400 AND
-                  CAST(B.FECHA_GPS AS DATE)=CURRENT_DATE
-            ORDER BY DIST
-            LIMIT 3";
-    */
+    }*/
+
     $sql = "SELECT A.ID_USUARIO, 
                    C.PUSH_TOKEN, 
                    C.SO,
@@ -2402,10 +2388,12 @@ $sql = "SELECT A.ID_USUARIO,
               INNER JOIN DISP_ULTIMA_POSICION B ON B.IDENTIFICADOR = A.DISPOSITIVO
               INNER JOIN DISP_REGISTRO_TOKENS C ON DEVICE_ID = B.IDENTIFICADOR
               INNER JOIN ADMIN_TAXIS T ON T.ADMIN_USUARIOS_ID_USUARIO = A.ID_USUARIO
+              ".$sFilter." 
             WHERE A.DISPONIBLE = 0 AND
                   A.DEMOS = 1 AND
                   DISTANCIA(B.LATITUD,B.LONGITUD,".$latitud.",".$longitud.") < 400 AND
                   CAST(B.FECHA_GPS AS DATE)=CURRENT_DATE
+            GROUP BY A.ID_USUARIO                  
             ORDER BY DIST
             LIMIT 3";
     if ($qry = mysql_query($sql)){
@@ -2466,7 +2454,8 @@ $sql = "SELECT A.ID_USUARIO,
                          $ac,
                          $conectores,
                          $wifi,
-                         $id_tarjeta){
+                         $id_tarjeta,
+                         $servicios){
 
     $con = mysql_connect("localhost","dba","t3cnod8A!");
 
@@ -2520,36 +2509,42 @@ $sql = "SELECT A.ID_USUARIO,
                          $ac,
                          $conectores,
                          $wifi)){
-          //$id_viaje = dame_viaje($id_usuario,$dispositivo,$lat_origen,$lon_origen,$lat_destino,$lon_destino);
-          //tiene que buscar el usuario
-          $mensaje = "Se le ha asignado un viaje.@".$id_viaje;
-          //$id_conductor = max_taxista();
-          //$id_conductor = 23;
-          if ($id_conductor == 0){
-            //obtienen los 3 mas cercanos junto con su push key
-            //les manda push
-            /*$pushkey_taccsista = dame_pushkey_taccsista($id_conductor);
-            registra_asignacion($id_viaje,$id_conductor);
-            //$res = envia_push($mensaje,$dispositivo);*/
-            //manda la notifiacion  a los  mas cercanos al origen
-            manda_viaje_taxistas($id_viaje,$lat_origen,$lon_origen,$tipo,$iave,$ac,$conectores,$wifi);
-          } else {
-            //obtiene el push key del id del taxista
-            $pushkey_taccsista = dame_pushkey_taccsista($id_conductor);
-            registra_asignacion($id_viaje,$id_conductor);
-            //$res = envia_push($mensaje,$pushkey_taccsista);
-             // manda la notifación al mas cercano
-            if (strlen($pushkey_taccsista) > 0){
-              $so = dame_so_pushtoken($pushkey_taccsista);
-              envia_push('dev','taxi',$mensaje,$pushkey_taccsista,$so,'');
-              //envia_push_dev_taccista('Se le ha asignado un nuevo viaje. ¿Desea atenderlo?',$pushkey_taccsista,$so);
-            }
-          }
-          //$clave = rand(1,99999);
-          //$idx = $clave;
 
-          $idx = $id_viaje;
-          $msg = 'Su viaje ha sido registrado.'.$res;
+            if(registra_servicios($id_viaje,$servicios,'s')){
+                //$id_viaje = dame_viaje($id_usuario,$dispositivo,$lat_origen,$lon_origen,$lat_destino,$lon_destino);
+                //tiene que buscar el usuario
+                $mensaje = "Se le ha asignado un viaje.@".$id_viaje;
+                //$id_conductor = max_taxista();
+                //$id_conductor = 23;
+                if ($id_conductor == 0){
+                  //obtienen los 3 mas cercanos junto con su push key
+                  //les manda push
+                  /*$pushkey_taccsista = dame_pushkey_taccsista($id_conductor);
+                  registra_asignacion($id_viaje,$id_conductor);
+                  //$res = envia_push($mensaje,$dispositivo);*/
+                  //manda la notifiacion  a los  mas cercanos al origen
+                  manda_viaje_taxistas($id_viaje,$lat_origen,$lon_origen,$tipo,$iave,$ac,$conectores,$wifi,$servicios);
+                } else {
+                  //obtiene el push key del id del taxista
+                  $pushkey_taccsista = dame_pushkey_taccsista($id_conductor);
+                  registra_asignacion($id_viaje,$id_conductor);
+                  //$res = envia_push($mensaje,$pushkey_taccsista);
+                   // manda la notifación al mas cercano
+                  if (strlen($pushkey_taccsista) > 0){
+                    $so = dame_so_pushtoken($pushkey_taccsista);
+                    envia_push('dev','taxi',$mensaje,$pushkey_taccsista,$so,'');
+                    //envia_push_dev_taccista('Se le ha asignado un nuevo viaje. ¿Desea atenderlo?',$pushkey_taccsista,$so);
+                  }
+                }
+                //$clave = rand(1,99999);
+                //$idx = $clave;
+
+                $idx = $id_viaje;
+                $msg = 'Su viaje ha sido registrado.'.$res;
+            } else {
+              $idx = -2;
+              $msg = 'No fue posible asignar su viaje, intente mas tarde '.$msgq.' '.$id_viaje;
+            }
         } else {
           $idx = -2;
           $msg = 'No fue posible asignar su viaje, intente mas tarde '.$msgq.' '.$id_viaje;
@@ -3159,7 +3154,7 @@ $sql = "SELECT A.ID_USUARIO,
                   <conector>".$row->CONECTOR_CELULAR."</conector>
                   <wifi>".$row->WIFI."</wifi>
                   <icono>".$icono."</icono>
-                  <servicios>".getServiciosTaccsi($row->ID_TAXI)."</servicios>
+                  ".getServiciosTaccsi($row->ID_TAXI)."
                 </taxi>"; 
       }
       mysql_free_result($qry);
@@ -4113,7 +4108,8 @@ $sql = "SELECT A.ID_USUARIO,
                                 <ac>".$row->AC."</ac>
                                 <iave>".$row->IAVE."</iave>
                                 <wifi>".$row->WIFI."</wifi>
-                                <cargador>".$row->CARGADOR."</cargador>                              
+                                <cargador>".$row->CARGADOR."</cargador>
+                                ".getServiciosReservacion($row->ID_RESERVACION)."                            
                               </reservacion>";                          
           $totalReservaciones++;
         }    
@@ -4234,7 +4230,8 @@ $sql = "SELECT A.ID_USUARIO,
                       $wifi,
                       $so,
                       $id_tarjeta,
-                      $fecha_reservacion){    
+                      $fecha_reservacion,
+                      $servicios){    
     $con = mysql_connect("localhost","dba","t3cnod8A!");
     //$con = mysql_connect("localhost","root","root");
     if ($con){
@@ -4269,8 +4266,14 @@ $sql = "SELECT A.ID_USUARIO,
           $aInsert['wifi']              = $wifi;
 
           if(registraReservacion($aInsert)){
-            $idx = $idReservacion;
-            $msg = 'Su reservacion ha sido registrada.'; 
+            if(registra_servicios($idReservacion,$servicios,'r')){
+
+              $idx = $idReservacion;
+              $msg = 'Su reservacion ha sido registrada.'; 
+            }else{
+              $idx = -2;
+              $msg = 'No fue posible asignar su reservacion, intente mas tarde '.$idReservacion;
+            }
           }else{
             $idx = -2;
             $msg = 'No fue posible asignar su reservacion, intente mas tarde '.$idReservacion;
@@ -4465,6 +4468,7 @@ $sql = "SELECT A.ID_USUARIO,
                       <telefono>'.$aInfo['TELEFONO'].'</telefono>
                       <rating>'.$aInfo['RATING'].'</rating>
                       <foto>'.$foto.'</foto>
+                      '.getServiciosReservacion($aInfo['ID_RESERVACION']).'
                     </reservacion>                 
                  </Response>
                </space>';
@@ -5157,24 +5161,45 @@ $sql = "SELECT A.ID_USUARIO,
     $sql = "SELECT S.ID_SERVICIO, S.DESCRIPCION, S.ICONO, S.ICONO_AMARILLO, S.ICONO_BLANCO
             FROM ADMIN_TAXI_SERVICIOS R
             INNER JOIN ADMIN_SERVICIOS S ON R.ID_SERVICIO = S.ID_SERVICIO
-            WHERE R.ID_TAXI  = ".$id_taccsi;
+            WHERE R.ID_TAXI  = ".$idtaccsi;
     if ($qry = mysql_query($sql)){
-      $row = mysql_fetch_object($qry);
-      if (mysql_num_rows($qry) > 0){
+      while ($row = mysql_fetch_object($qry)){
         $res .= '<servicio>
                     <id_tipo>'.$row->ID_SERVICIO.'</id_tipo>
                     <descripcion>'.$row->DESCRIPCION.'</descripcion>
                     <icono_negro>'.$row->ICONO.'</icono_negro>
                     <icono_amarillo>'.$row->ICONO_AMARILLO.'</icono_amarillo>
                     <icono_blanco>'.$row->ICONO_BLANCO.'</icono_blanco>
-                 </servicio>';
-        $res .= $infoTaccista;                
+                 </servicio>';             
       }
       mysql_free_result($qry);
     } 
     $res .= '</servicios>';
     return $res;    
   }  
+
+  function getServiciosReservacion($idReservacion){
+    $res = "<servicios>";
+    global $base;
+    $sql = "SELECT S.ID_SERVICIO, S.DESCRIPCION, S.ICONO, S.ICONO_AMARILLO, S.ICONO_BLANCO
+            FROM ADMIN_RESERVACIONES_SERVICIOS R
+            INNER JOIN ADMIN_SERVICIOS S ON R.ID_SERVICIO = S.ID_SERVICIO
+            WHERE R.ID_RESERVACION  = ".$idReservacion;
+    if ($qry = mysql_query($sql)){
+      while ($row = mysql_fetch_object($qry)){
+        $res .= '<servicio>
+                    <id_tipo>'.$row->ID_SERVICIO.'</id_tipo>
+                    <descripcion>'.$row->DESCRIPCION.'</descripcion>
+                    <icono_negro>'.$row->ICONO.'</icono_negro>
+                    <icono_amarillo>'.$row->ICONO_AMARILLO.'</icono_amarillo>
+                    <icono_blanco>'.$row->ICONO_BLANCO.'</icono_blanco>
+                 </servicio>';             
+      }
+      mysql_free_result($qry);
+    } 
+    $res .= '</servicios>';
+    return $res;    
+  }    
 
   function usrValidaUsuario($usuario){
     $idx = -1;
@@ -5226,6 +5251,38 @@ $sql = "SELECT A.ID_USUARIO,
     } 
     return $res;
   }  
+
+   function registra_servicios($idObject,$aServicios,$tipo){
+    $res = false;
+    $countValidator=0;
+    $total = 0;
+    if($aServicios!=""){
+      $aData = explode($aServicios,",");
+      $total = count($aData);
+      for($i=0;$i<count($aData);$i++){
+        if($tipo=='s'){//viaje
+          $sql = "INSERT INTO ADMIN_VIAJES_SERVICIOS 
+                  SET ID_VIAJE    = ".$idObject.", 
+                      ID_SERVICIO = ".$aData[$i];
+        }else if($tipo=='r'){//servicio
+          $sql = "INSERT INTO ADMIN_RESERVACIONES_SERVICIOS
+                  SET ID_RESERVACION = ".$idObject.", 
+                      ID_SERVICIO    = ".$aData[$i];
+        }
+
+        if($qry = mysql_query($sql)){
+          $countValidator++;            
+        }
+      }
+
+      if($total==$countValidator){
+        $res = true;
+      }
+    }else{
+      $res = true;
+    }
+    return $res;
+  }
   
   $server->service(@$HTTP_RAW_POST_DATA);   
 ?>
