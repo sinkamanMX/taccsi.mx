@@ -1296,8 +1296,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     if ($con){
         $base = mysql_select_db("taccsi",$con);
         if (valida_correo($email,'taxista')){
-        /*
-        
+       
           if (valida_telefono($movil,'taxista')){
             $id_empresa=dame_id_empresa($clave_empresa);
             if($id_empresa==0 Or strlen($id_empresa)==0){
@@ -1314,8 +1313,10 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                 $dat = dame_usuario($email,$password,'T');
 
                 //registra_token($identificador,$push_token,$so);
-                $msg = 'OK';  
-                $idx = $id;
+                //$msg = 'OK';  
+                $msg = 'Un miembro de nuestro equipo se pondra en contacto contigo para indicarte, lo que debes hacer a continuación.';
+                $idx = -1;
+                //$idx = $id;
             }else{
               $msg = "Error al registrar el taxista";  
               $idx = -5;
@@ -1323,8 +1324,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
           } else {
             $msg = 'El teléfono ya fue registrado previamente';   
             $idx = -4;
-          }        
-        */
+          }
         } else {
           $msg = 'Este correo ya esta registrado';   
           $idx = -3;
@@ -1803,7 +1803,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                    AMATERNO,
                    TELEFONO,
                    IMAGEN as FOTO,
-                   USUARIO as EMAIL
+                   USUARIO as EMAIL                   
             FROM SRV_USUARIOS
             WHERE USUARIO = '".$usuario."' AND
              PASSWORD = '".$password."'";
@@ -1816,7 +1816,8 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                      ADMIN_USUARIOS.TELEFONO,
                      ADMIN_USUARIOS.FOTO,
                      ADMIN_USUARIOS.NICKNAME AS EMAIL,
-                     ADMIN_TAXIS.ID_TAXI              
+                     ADMIN_TAXIS.ID_TAXI,
+                     ADMIN_USUARIOS.DOCUMENTOS_VALIDADOS              
               FROM ADMIN_USUARIOS
               LEFT OUTER JOIN ADMIN_TAXIS ON ADMIN_TAXIS.ADMIN_USUARIOS_ID_USUARIO= ADMIN_USUARIOS.ID_USUARIO
               WHERE NICKNAME = '".$usuario."' AND
@@ -1970,6 +1971,11 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
           if (taccsista_activo_octubre($usuario) == 0){
             $idx = 2;
             $msg = 'Disponible apartir del 15 de Octubre de 2015';
+          }else{
+            if (taccista_activo($usuario) == 0){
+              $idx = -2;
+              $msg = 'Usuario sin verificar.';
+            }            
           }
         }
       } else {
@@ -2415,6 +2421,22 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
       mysql_free_result($qry);
     }
   }
+
+  function taccista_activo($usuario){
+    //aquimequede
+    $res = '';  
+    $foto= "";
+    global $base;
+    $sql = "SELECT DOCUMENTOS_VALIDADOS
+            FROM   ADMIN_USUARIOS
+            WHERE  NICKNAME = '".$usuario."'";
+    if ($qry = mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      $res = $row->DOCUMENTOS_VALIDADOS;
+      mysql_free_result($qry);
+    }
+    return $res;
+  }  
 
   function usuario_activo_octubre($usuario){
 
