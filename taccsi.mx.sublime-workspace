@@ -4,6 +4,58 @@
 		"selected_items":
 		[
 			[
+				"ser",
+				"servicios"
+			],
+			[
+				"res",
+				"res"
+			],
+			[
+				"coun",
+				"countValidator"
+			],
+			[
+				"tota",
+				"total"
+			],
+			[
+				"tipo",
+				"tipo_registro"
+			],
+			[
+				"ID_TA",
+				"id_taccsi"
+			],
+			[
+				"dir",
+				"direccion"
+			],
+			[
+				"icono",
+				"icono_negro"
+			],
+			[
+				"icono_",
+				"icono_blanco"
+			],
+			[
+				"ic",
+				"icono_amarillo"
+			],
+			[
+				"dis",
+				"distancia"
+			],
+			[
+				"AZ",
+				"aZonaOrigen"
+			],
+			[
+				"az",
+				"aZonaOrigen"
+			],
+			[
 				"aZona",
 				"aZonaOrigen"
 			],
@@ -42,10 +94,6 @@
 			[
 				"foto",
 				"foto_taxista"
-			],
-			[
-				"res",
-				"result"
 			],
 			[
 				"ID_RES",
@@ -138,10 +186,6 @@
 			[
 				"lat",
 				"latCentroide"
-			],
-			[
-				"dis",
-				"distancia_puntos"
 			],
 			[
 				"data",
@@ -470,71 +514,11 @@
 			[
 				"fot",
 				"font-size"
-			],
-			[
-				"d",
-				"direccion"
-			],
-			[
-				"contct",
-				"contacto"
-			],
-			[
-				"add",
-				"add_info_marker"
-			],
-			[
-				"list",
-				"listLatLon"
-			],
-			[
-				"da",
-				"datapoints"
-			],
-			[
-				"text",
-				"text-transform"
-			],
-			[
-				"auto",
-				"autocontrol"
-			],
-			[
-				"end",
-				"endforeach"
-			],
-			[
-				"th",
-				"this"
-			],
-			[
-				"current",
-				"CURRENT_TIMESTAMP"
-			],
-			[
-				"paralla",
-				"parallaxsl3"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "application/modules/external/views/scripts/main/index.phtml",
-			"settings":
-			{
-				"buffer_size": 6770,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "public/controllers/external/js/createService.js",
-			"settings":
-			{
-				"buffer_size": 10605,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -580,13 +564,29 @@
 	},
 	"file_history":
 	[
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/profile/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi4.php",
+		"/Users/itecno2/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/registeruser/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/bootstrap/css/bootstrap.css",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegisterUser.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportCompanies.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegister.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas_2/wbs_tarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas_2/cFunciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/main/index.phtml",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/external/js/createService.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateCompProf.js",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/public/coming/tools/style.css",
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/backup_layout.back",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/createService.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/atn/js/scripts.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/client/clientinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/cFunciones.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/tarifas/wbs_tarifas.php",
 		"/Users/itecno2/Documents/workspace/zendblog.net/getLats.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi3.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sAssignReservacion.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/sProcessReservaciones.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/cron/checkReservacion.php",
@@ -600,7 +600,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sProcessReservaciones.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/sendMails.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/wbs_taccsi.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/cFunctions.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs/getRates.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/wbs_tarifas/getTarifas.php",
@@ -662,9 +661,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/php/solicitud_informacion.html",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/branding/php/mail.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/configs/app.ini",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/registeruser/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegisterUser.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/main/validateRegister.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/controllers/RegisterController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/main/views/scripts/register/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/cron_mailing/endProcess.php",
@@ -672,7 +668,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valtaxis/getinfo.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/backups/wbs/cargar_imagen.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/library/My/Model/ServUsuarios.php",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/profile/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valtaxis/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateTaxis.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getinfo.phtml",
@@ -680,7 +675,6 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateDocs.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/validateAssign.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/valdocs/getingo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/admin/js/jsValidateCompProf.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/maps/index.phtml",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/js/plugins/daterangepicker/daterangepicker.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_register.phtml",
@@ -697,17 +691,7 @@
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/reports/js/reportInfoTravel.js",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/controllers/MainController.php",
 		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/login.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/profile/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/layouts/layout_login.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/login/js/login_contact.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/dist/css/skins/skin-yellow.css",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/public/controllers/callcenter/services/js/scripts.js",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/callcenter/views/scripts/services/serviceinfo.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/rastreo/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/views/modules/admin/views/scripts/main/index.phtml",
-		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/admin/views/scripts/main/index.phtml"
+		"/Users/itecno2/Documents/workspace/taccsi.mx/application/modules/external/views/scripts/profile/index.phtml"
 	],
 	"find":
 	{
@@ -715,7 +699,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 			"<open folders>",
@@ -728,134 +712,134 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			";",
-			"	&,",
-			",&	",
-			"\"",
-			"INSERT INTO PET_VETERINARIAS",
-			";",
-			",&	",
-			"	&,",
-			"\"",
-			"INSERT INTO PET_VETERINARIAS ",
-			";",
-			"	&,",
-			",&	",
-			"INSERT INTO PET_VETERINARIAS",
-			";",
-			",1);",
-			"INSERT INTO PET_VETERINARIAS",
-			"INSERT INTO PET_VETERINARIAS (",
-			"	&,",
-			",&	",
-			"”",
-			"“",
-			"dame_taxista",
-			"FOTO_TAXISTA",
-			"foto",
-			"ESTATUS",
-			"estatus",
-			"usrInicioViaje",
-			"<viaje",
-			"dame_viaje",
-			"ID_SRV_ESTATUS",
-			"dameViajeActivo",
-			"dame_viaje",
-			"oprDameViaje",
-			"viaje",
-			"info",
-			"TengoViaje",
-			"monto",
-			"oprDameViaje",
-			"estatus_mi_viaje",
-			"EstatusMiViaje",
-			"envia_push",
-			"CancelarViaje",
-			"InsertaLog",
-			"valida_reservacion_libre",
-			"DAME_VIAJE",
-			"MONTO_TAXISTA",
-			"<monto>",
-			"dame_viaje",
-			"oprDameViaje",
-			"viaje",
-			"ADMIN_VIAJES",
-			"info_viaje",
-			"estatus_mi_viaje",
-			"EstatusMiViaje",
-			"viaje",
-			"info_viaje",
-			"dame_info",
-			"Viaje",
-			"dame_info_viaje",
-			"oprTomarReservacion",
-			"dame_viaje",
-			"oprDame",
-			"'),",
-			"estatus_mi_viaje",
-			"dame_viaje",
-			"oprDameViaje",
-			"dame",
-			"estatus_mi_viaje",
-			"EstatusMiViaje",
-			"RecibePosicion",
-			"califica_viaje_taxista",
-			"CalificarViaje",
+			"RegistraUsuarioFacebook",
+			"ADMIN_VIAJES.DESTINO",
+			"historico",
+			"hist",
+			"historico",
 			"historico_usuario",
-			"califica_viaje_usr",
-			"CalificarViaje",
-			"gracias",
-			"getInfoReservacion",
-			"foto_",
-			"foto",
-			"getInfoReservacion",
-			"dame_viaje",
-			"oprTomar",
-			"oprTomarViaje",
-			"dame_so_pushtoken",
-			"marca_viaje",
-			"marca_tomar_viaje",
-			"registra_asignacion",
-			"marca_tomar_reservacion",
-			"dame_pushtoken_cliente",
-			"dame_codigo_viaje",
-			"registra_viaje",
-			"dame_id_viaje",
-			"      \n",
-			"getInfoReservacion",
+			"finaliza_viaje_operador",
+			"oprFinViaje",
+			"finViaje",
+			"LOGIN",
+			"ADMIN_USUARIOS",
+			"dame_usuario",
+			"LOGIN",
+			"dame_usuario",
+			"RegistraTaccsista",
+			"registra",
+			"taccsista_activo_octubre",
+			"Login",
+			"login",
 			"getStatusReservacion",
-			"valida_usuario",
 			"usrNuevaReservacion",
-			"Login",
-			"predefinidos",
-			"dame_usuario",
-			"login",
-			"dame_usuario",
-			"Login",
-			"login",
-			"dame_pushtoken_cliente",
-			"asignados",
-			"marca_rechazo",
-			"rechazar",
-			"oprRechazarViaje",
-			"marca_viaje",
-			"UPDATE ",
-			"tomar_viaje",
-			"marca_viaje",
-			"ID_TAXISTA",
-			"marca_tomar_viaje",
-			"VIAJES_ASIGNACIONES",
-			"registra_asignacion",
-			"oprTOmar",
+			"registraReservacion",
+			"usrNuevaReservacion",
+			"registra_servicios",
+			"manda_viaje_taxistas",
+			"usrNuevoViaje",
+			"getServiciosReservacion",
+			"getReservaciones",
+			"dame_taxis_libres",
+			"getServiciosTaccsi",
+			"getTacc",
+			"registraUsuario",
+			"registra_usuario",
+			"RegistraUsuario",
+			"valida_usuario",
+			"registra",
+			"usrNuevo",
+			"SERVICIOS",
+			"dame_servicios_taxis",
+			"ac",
+			"Cercanos",
+			"taccis",
+			"valida_correo",
+			"servicios",
+			"dame_taxis_libres",
+			"GetTaccsis",
+			"taccsi",
+			"Dame",
+			"DameT",
+			"oprDameViaje",
+			"VIAJE",
+			"estatus_mi_viaje",
+			"EstatusMiViaje",
+			"estatus",
+			"dameViajeActivo",
+			"viaje",
+			"RecuperaPass",
+			"recuperarPassword",
+			"ADMIN_USUARIOS",
+			"nuevo\n\n\n\n\n",
+			"nuevo",
+			"registro",
+			"taccista",
+			"estatus",
+			"dame",
+			"á",
+			"ñ",
+			"ó",
+			"utf8",
+			"RecuperaPass",
+			"RecuperarPassword",
+			"<monto>",
 			"ADMIN_VIAJES",
-			"codigo",
-			"marca_tomar_viaje",
-			"oprTomarViaje",
-			"CLAVE_VIAJE",
-			"dame_codigo_viaje",
-			"registra_asignacion",
-			"marca_tomar_reservacion",
-			"marca_tomar_viaje"
+			"viajes",
+			"estatus_mi_viaje",
+			"EstatusMiViaje",
+			"_viaje",
+			"estatus",
+			"DameViajeActivo",
+			"EXTRAS",
+			"servicios",
+			"dameViajeActivo",
+			"dameViaje",
+			"RecuperaPass",
+			"RecuperarPassword",
+			"DameLugares",
+			"dame_tarjetas",
+			"tarjetas",
+			"DameSitios",
+			"DameLugares",
+			"sitios",
+			"DameSitios",
+			"DameTarjetas",
+			"registra",
+			"SRV_PUNTOS_FAVORITOS",
+			"<servicio>",
+			"SERVICIO",
+			"historico",
+			"servicios",
+			"historico",
+			"usuario",
+			"historico",
+			"historico_usuario",
+			"favoritos",
+			"offset",
+			"N_CLASE",
+			"dame_usuario",
+			"RegistraUsuarioFacebook",
+			"regLink",
+			"face",
+			"RegistraUsuarioFacebook",
+			"registra_usuario",
+			"face",
+			"valida_telefono",
+			"valida_correo",
+			"RegistraUsuarioFacebook",
+			"RegistraUsuario",
+			"formaPago",
+			"6",
+			"validaSinReservaciones",
+			"           ",
+			"validate",
+			"date :",
+			"date : true",
+			"date:true",
+			"date",
+			"validaSinReservaciones",
+			"registraReservacion"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -937,64 +921,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "application/modules/external/views/scripts/main/index.phtml",
-					"settings":
-					{
-						"buffer_size": 6770,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								6118,
-								6118
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1056.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "public/controllers/external/js/createService.js",
-					"settings":
-					{
-						"buffer_size": 10605,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								724,
-								724
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 4.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1058,6 +986,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 202.0,
+	"side_bar_width": 262.0,
 	"status_bar_visible": true
 }

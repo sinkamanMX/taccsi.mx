@@ -204,7 +204,9 @@
                           'importe'         => 'xsd:string',
                           'distancia'       => 'xsd:string',
                           'tiempo'          => 'xsd:string',
-                          'extras'          => 'xsd:string'), // Parametros de entrada 
+                          'extras'          => 'xsd:string',
+                          'lat_destino'     => 'xsd:string',
+                          'lon_destino'     => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -404,7 +406,8 @@
                           'descripcion' => 'xsd:string',                         
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
-                          'direccion'   => 'xsd:string'), // Parametros de entrada 
+                          'direccion'   => 'xsd:string',
+                          'place_id'    => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);
 
@@ -415,8 +418,8 @@
                           'descripcion' => 'xsd:string',                         
                           'latitud'     => 'xsd:string',
                           'longitud'    => 'xsd:string',
-                          'direccion'   => 'xsd:string'
-                          ), // Parametros de entrada 
+                          'direccion'   => 'xsd:string',
+                          'place_id'    => 'xsd:string'), // Parametros de entrada 
                     array('return' => 'xsd:string'), // Parametros de salida 
                     $miURL);  
 
@@ -827,9 +830,9 @@ function historico_usuario($id_usuario){
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
-                   ADMIN_VIAJES.DESTINO,
-                   ADMIN_VIAJES.DESTINO_LATITUD,
-                   ADMIN_VIAJES.DESTINO_LONGITUD,
+                   IF(ADMIN_VIAJES.DESTINO = '', ADMIN_VIAJES.DESTINO_FINAL , ADMIN_VIAJES.DESTINO) AS DESTINO,
+                   IF(ADMIN_VIAJES.DESTINO_LATITUD  = 0.000000000000000, ADMIN_VIAJES.LAT_DESTINO ,ADMIN_VIAJES.DESTINO_LATITUD )  AS DESTINO_LATITUD,
+                   IF(ADMIN_VIAJES.DESTINO_LONGITUD = 0.000000000000000, ADMIN_VIAJES.LON_DESTINO ,ADMIN_VIAJES.DESTINO_LONGITUD ) AS DESTINO_LONGITUD, 
                    ADMIN_VIAJES.RATING_USUARIO,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS,
@@ -838,7 +841,7 @@ function historico_usuario($id_usuario){
                    IF (SRV_FORMAS_PAGO.TARJETA_VIEW IS NULL, 'EFECTIVO',SRV_FORMAS_PAGO.TARJETA_VIEW) AS FORMA_PAGO,
                    IF (ADMIN_TIPO_TARJETAS.IMAGEN IS NULL, 'EFECTIVO',ADMIN_TIPO_TARJETAS.IMAGEN) AS ICONO_PAGO,
                    ADMIN_TAXIS.PLACAS,
-                   IF(ADMIN_VIAJES.EXTRAS IS NULL,'0.00',ADMIN_VIAJES.EXTRAS) AS N_EXTRAS                   
+                   IF(ADMIN_VIAJES.EXTRAS IS NULL,'0.00',ADMIN_VIAJES.EXTRAS) AS N_EXTRAS
             FROM ADMIN_VIAJES
             INNER JOIN SRV_ESTATUS ON
                        SRV_ESTATUS.ID_ADMIN_ESTATUS = ADMIN_VIAJES.ID_SRV_ESTATUS
@@ -960,9 +963,9 @@ function historico_usuario($id_usuario){
                    ADMIN_VIAJES.ORIGEN,
                    ADMIN_VIAJES.ORIGEN_LATITUD,
                    ADMIN_VIAJES.ORIGEN_LONGITUD,
-                   ADMIN_VIAJES.DESTINO,
-                   ADMIN_VIAJES.DESTINO_LATITUD,
-                   ADMIN_VIAJES.DESTINO_LONGITUD,
+                   IF(ADMIN_VIAJES.DESTINO = '', ADMIN_VIAJES.DESTINO_FINAL , ADMIN_VIAJES.DESTINO) AS DESTINO,
+                   IF(ADMIN_VIAJES.DESTINO_LATITUD  = 0.000000000000000, ADMIN_VIAJES.LAT_DESTINO ,ADMIN_VIAJES.DESTINO_LATITUD )  AS DESTINO_LATITUD,
+                   IF(ADMIN_VIAJES.DESTINO_LONGITUD = 0.000000000000000, ADMIN_VIAJES.LON_DESTINO ,ADMIN_VIAJES.DESTINO_LONGITUD ) AS DESTINO_LONGITUD, 
                    ADMIN_VIAJES.RATING_TAXISTA,
                    ADMIN_VIAJES.DISTANCIA_TAXISTA,
                    ADMIN_VIAJES.COMENTARIOS_TAXISTA,
@@ -3210,15 +3213,19 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return new soapval('return', 'xsd:string', $res);
   }
 
-   function finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras){
+   function finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras,$lat_destino,$lon_destino){
+    $slatitud   = ($lat_destino!="") ? $lat_destino : '';
+    $sLongitud  = ($lon_destino!="") ? $lon_destino : '';
     $res = false;
     $sql = "UPDATE ADMIN_VIAJES 
-            SET ID_SRV_ESTATUS = 3,
-                FIN_VIAJE_TAXISTA = CURRENT_TIMESTAMP,
-                MONTO_TAXISTA = ".$importe.",
-                DISTANCIA_TAXISTA = ".$distancia.",
-                TIEMPO_VIAJE='".$tiempo."',
-                EXTRAS=".$extras."
+            SET ID_SRV_ESTATUS    =  3,
+                FIN_VIAJE_TAXISTA =  CURRENT_TIMESTAMP,
+                MONTO_TAXISTA     =  ".$importe.",
+                DISTANCIA_TAXISTA =  ".$distancia.",
+                TIEMPO_VIAJE      = '".$tiempo."',
+                EXTRAS            = ".$extras.",
+                LAT_DESTINO       = ".$slatitud.",
+                LON_DESTINO       = ".$sLongitud."
             WHERE ID_VIAJES = ".$id_viaje;
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -3265,7 +3272,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return $res;  
   }
 
-  function oprFinViaje($id_usuario,$id_viaje,$importe,$distancia,$tiempo,$extras){
+  function oprFinViaje($id_usuario,$id_viaje,$importe,$distancia,$tiempo,$extras,$lat_destino,$lon_destino){
     $idx = -1;
     $msg = 'El servicio TACCSI, no esta disponible';
     $con = mysql_connect("localhost","dba","t3cnod8A!");
@@ -3282,7 +3289,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
 
       InsertaLog("oprFinViaje",$str_inser_log,$token);
 
-      $fin = finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras);
+      $fin = finaliza_viaje_operador($id_viaje,$importe,$distancia,$tiempo,$extras,$lat_destino,$lon_destino);
       if ($fin){
         $id_cliente = dame_id_usuario($id_viaje);
         if ($id_cliente > -1){
@@ -4969,20 +4976,37 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return new soapval('return', 'xsd:string', $res); 
   }    
 
-  function usrNuevoLugar($usuario,$descripcion,$latitud,$longitud,$direccion){    
+  function usrNuevoLugar($usuario,$descripcion,$latitud,$longitud,$direccion,$place_id){    
     $msg = 'No hay conexión con el servicio TACCSI';
     $idx = -1;
     $con = mysql_connect("localhost","dba","t3cnod8A!");
 
     if($con){
       $base = mysql_select_db("taccsi",$con);
-      if(registraLugar($usuario,$descripcion,$latitud,$longitud,$direccion)){
-        $msg = 'OK';
-        $idx = 0;
-      } else {
-        $msg = 'No es posible registrar el lugar.';
-        $idx = -2; 
-      }    
+
+      if($place_id!=""){
+        if(place_valido($usuario,$place_id)){
+          if(registraLugar($usuario,$descripcion,$latitud,$longitud,$direccion,$place_id)){
+            $msg = 'OK';
+            $idx = 0;
+          } else {
+            $msg = 'No es posible registrar el lugar.';
+            $idx = -2; 
+          }
+        }else{
+          $msg = 'El place id ya se encuentra registrado.';
+          $idx = -3; 
+        }
+      }else{
+        if(registraLugar($usuario,$descripcion,$latitud,$longitud,$direccion,$place_id)){
+          $msg = 'OK';
+          $idx = 0;
+        } else {
+          $msg = 'No es posible registrar el lugar.';
+          $idx = -2; 
+        }
+      }
+
       mysql_close($con);
     }
 
@@ -4998,7 +5022,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return new soapval('return', 'xsd:string', $res);
   }
 
-  function usrEditarLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion){
+  function usrEditarLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion,$place_id){
     $msg = 'No hay conexión con el servicio TACCSI';
     $idx = -1;
     $con = mysql_connect("localhost","dba","t3cnod8A!");
@@ -5096,7 +5120,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return new soapval('return', 'xsd:string', $res);    
   }  
 
-  function registraLugar($id_cliente,$descripcion,$latitud,$longitud,$direccion){  
+  function registraLugar($id_cliente,$descripcion,$latitud,$longitud,$direccion,$place_id){  
     $res = false;
     $sql = "INSERT INTO SRV_PUNTOS_FAVORITOS SET
             ID_SRV_USUARIO  = ".$id_cliente.",
@@ -5105,6 +5129,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
             LONGITUD        =  ".$longitud.",
             DIRECCION_COMPLETA = '".$direccion."',          
             FECHA_REGISTRO  = CURRENT_TIMESTAMP,
+            PLACE_ID        = '".$place_id."',
             ESTATUS         = 1";
     if ($qry = mysql_query($sql)){
       $res = true;
@@ -5144,6 +5169,23 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return $res; 
   }
 
+  function place_valido($id_usuario,$place_id){
+    global $base;
+    $res = true; 
+    $sql = "SELECT COUNT(ID_PUNTO) AS EXISTE
+            FROM SRV_PUNTOS_FAVORITOS
+            WHERE PLACE_ID       = '".$place_id."'
+              AND ID_SRV_USUARIO = ".$id_usuario;
+    if ($qry=mysql_query($sql)){
+      $row = mysql_fetch_object($qry);
+      if ($row->EXISTE == 1){
+        $res = false;
+      }
+      mysql_free_result($qry);
+    }       
+    return $res; 
+  }  
+
   function eliminaLugar($idLugar,$id_cliente){
     $res = false;
     $sql = "DELETE FROM SRV_PUNTOS_FAVORITOS
@@ -5158,7 +5200,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
 
   function dame_lugares($id_usuario){
     $res = '<sitios>';
-    $sql = "SELECT ID_PUNTO,DESCRIPCION,DIRECCION_COMPLETA,LATITUD,LONGITUD
+    $sql = "SELECT ID_PUNTO,DESCRIPCION,DIRECCION_COMPLETA,LATITUD,LONGITUD,PLACE_ID
             FROM SRV_PUNTOS_FAVORITOS
             WHERE ID_SRV_USUARIO = ".$id_usuario;
     if ($qry = mysql_query($sql)){
@@ -5169,6 +5211,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
                        <direccion>'.$row->DIRECCION_COMPLETA.'</direccion>
                        <latitud>'.$row->LATITUD.'</latitud>
                        <longitud>'.$row->LONGITUD.'</longitud>
+                       <place_id>'.$row->PLACE_ID.'</place_id>
                      </sitio>';
       }
       mysql_free_result($qry);
