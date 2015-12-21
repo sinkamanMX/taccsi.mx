@@ -1832,7 +1832,12 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
         if($row->FOTO=="" or $row->FOTO=="null"){
             $foto="http://taccsi.com/images/taxis/sin_foto_perfil.png";
         }else{
-            $foto="http://taccsi.com/images/taxis/".$row->FOTO;
+            $pos_cadena = strpos($row->FOTO, "http://");
+            if ($pos_cadena === false) {
+               $foto="http://taccsi.com/images/taxis/".$row->FOTO;
+            }else{
+              $foto=$row->FOTO;
+            }
         }
 
         if ($tipo == 'U'){

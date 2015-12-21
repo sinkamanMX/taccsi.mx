@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"place",
+				"place_id"
+			],
+			[
 				"ser",
 				"servicios"
 			],
@@ -510,15 +514,19 @@
 			[
 				"formT",
 				"formTypeMsg"
-			],
-			[
-				"fot",
-				"font-size"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"file": "public/wbs/wbs_taccsi4.php",
+			"settings":
+			{
+				"buffer_size": 192681,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -699,7 +707,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 			"<open folders>",
@@ -712,6 +720,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"dame_lugares",
+			"dame",
+			"registraLugar",
+			"usrnuevoLugar",
+			"USRNUEVOLUGAR",
 			"RegistraUsuarioFacebook",
 			"ADMIN_VIAJES.DESTINO",
 			"historico",
@@ -834,12 +847,7 @@
 			"validaSinReservaciones",
 			"           ",
 			"validate",
-			"date :",
-			"date : true",
-			"date:true",
-			"date",
-			"validaSinReservaciones",
-			"registraReservacion"
+			"date :"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -921,8 +929,37 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "public/wbs/wbs_taccsi4.php",
+					"settings":
+					{
+						"buffer_size": 192681,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								187586,
+								187586
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 88078.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
