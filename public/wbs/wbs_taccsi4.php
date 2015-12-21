@@ -5035,7 +5035,7 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     if($con){
       $base = mysql_select_db("taccsi",$con);
       if(valida_lugar($idLugar,$usuario)){
-        if(actualizaLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion)){
+        if(actualizaLugar($idLugar,$usuario,$descripcion,$latitud,$longitud,$direccion,$place_id)){
           $msg = 'OK';
           $idx = 0;
         } else {
@@ -5142,13 +5142,14 @@ function registra_taxis($empresa,$modelo,$id_usuario,$chofer,$placas,$eco,$anio,
     return $res;    
   }
 
-  function actualizaLugar($idLugar,$id_cliente,$descripcion,$latitud,$longitud,$direccion){  
+  function actualizaLugar($idLugar,$id_cliente,$descripcion,$latitud,$longitud,$direccion,$place_id){  
     $res = false;
     $sql = "UPDATE SRV_PUNTOS_FAVORITOS SET
               DESCRIPCION     = '".$descripcion."',
               LATITUD         =  ".$latitud.",
               LONGITUD        =  ".$longitud.",
-              DIRECCION_COMPLETA = '".$direccion."'
+              DIRECCION_COMPLETA = '".$direccion."',
+              PLACE_ID        = '".$place_id."'
             WHERE ID_PUNTO        = ".$idLugar."
               AND ID_SRV_USUARIO  = ".$id_cliente." LIMIT 1";
     if ($qry = mysql_query($sql)){
